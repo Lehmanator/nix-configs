@@ -24,8 +24,7 @@
       nixosConfigurations."fw" = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [
-          ./configuration.nix
-          ./snowflake.nix
+          ./hosts/fw/configuration.nix
           inputs.snowflake.nixosModules.snowflake
           inputs.nix-data.nixosModules.${system}.nix-data
 	  inputs.nixos-hardware.nixosModules.framework-12th-gen-intel

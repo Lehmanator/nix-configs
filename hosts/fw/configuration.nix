@@ -4,7 +4,7 @@
 { 
   self,
   system,
-  userPrimary,
+  host, userPrimary,
   inputs,
   config, lib, pkgs,
   ...
@@ -12,22 +12,27 @@
 
 {
   imports = [
+    # Include SnowflakeOS config
+    ./snowflake.nix
+
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ./profiles/active-directory-admin.nix
-    ./profiles/adb.nix
-    ./profiles/emu-windows.nix
-    ./profiles/flatpak.nix
-    ./profiles/fprintd.nix
-    ./profiles/gnome.nix
-    ./profiles/locale-est.nix
-    ./profiles/nix.nix
-    ./profiles/pipewire.nix
-    ./profiles/polkit.nix
-    ./profiles/shell-zsh.nix
-    ./profiles/tpm2.nix
-    ./profiles/user-defaults.nix
-    ./profiles/virt-vm-host.nix
+
+    # Activate profiles
+    ../../profiles/active-directory-admin.nix
+    ../../profiles/adb.nix
+    ../../profiles/emu-windows.nix
+    ../../profiles/flatpak.nix
+    ../../profiles/fprintd.nix
+    ../../profiles/gnome.nix
+    ../../profiles/locale-est.nix
+    ../../profiles/nix.nix
+    ../../profiles/pipewire.nix
+    ../../profiles/polkit.nix
+    ../../profiles/shell-zsh.nix
+    ../../profiles/tpm2.nix
+    ../../profiles/user-defaults.nix
+    ../../profiles/virt-vm-host.nix
   ];
 
   # --- Bootloader ---
@@ -96,7 +101,6 @@
   #programs.home-manager.enable = true;
 
   # --- Shell ---
-  programs.command-not-found.enable = false;
   programs.git.enable = true;
   programs.git.package = pkgs.gitFull;
   programs.fzf.fuzzyCompletion = true;
