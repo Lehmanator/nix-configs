@@ -17,6 +17,9 @@ in
   ];
 
   environment.systemPackages = with pkgs; [
+    # Tool to convert dconf settings to Nix config
+    dconf2nix
+
     gnomeExtensions.appindicator
     gnomeExtensions.burn-my-windows
     gnomeExtensions.ddterm
