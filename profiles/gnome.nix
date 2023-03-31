@@ -18,7 +18,9 @@ in
 
   environment.systemPackages = with pkgs; [
     gnomeExtensions.appindicator
+    gnomeExtensions.burn-my-windows
     gnomeExtensions.ddterm
+    gnomeExtensions.forge
     gnomeExtensions.gsconnect
     gnomeExtensions.pano
     gnomeExtensions.shortcuts

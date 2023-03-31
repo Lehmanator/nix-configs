@@ -69,7 +69,6 @@
     ripgrep
     tealdeer
 
-    gnomeExtensions.pop-shell
     gnumake
 
     # --- Security ---
