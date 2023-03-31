@@ -12,24 +12,30 @@
     #./shell.nix
   ];
 
-  programs.zsh = {
+  # --- Default ---------------
+  programs.zsh.enable = true;         # Enable ZSH
+  users.defaultUserShell = pkgs.zsh;  # ZSH default for users
+
+  # --- Integration -----------
+  programs.zsh.vteIntegration = true;
+
+  # --- Completion ------------
+  programs.zsh.enableCompletion = true;
+  programs.zsh.enableBashCompletion = true;
+
+  # --- Autosuggestions -------
+  # - completion     - Based on what tab-completion would choose (req: zpty)
+  # - history *      - Most recent history match
+  # - match_prev_cmd - Like history, but prefers entry after last cmd
+  programs.zsh.autosuggestions = {
     enable = true;
+    strategy = [ "match_prev_cmd" "completion" ];
+  };
 
-    # --- Completion ------------
-    enableCompletion = true;
-    enableBashCompletion = true;
-
-    # --- Suggestions -----------
-    # Stategies:
-    # - completion     - Based on what tab-completion would choose (req: zpty)
-    # - history *      - Most recent history match
-    # - match_prev_cmd - Like history, but prefers entry following prev cmd
-    autosuggestions.enable = true;
-    autosuggestions.strategy = [ "match_prev_cmd" "completion" ];
-
-    # --- Syntax Highlighting ---
-    syntaxHighlighting.enable = true;
-    syntaxHighlighting.highlighters = [ 
+  # --- Syntax Highlighting ---
+  programs.zsh.syntaxHighlighting = {
+    enable = true;
+    highlighters = [ 
       # Ordered by priority
       "main"     # Base highlighter (Default)
       "cursor"   # Matches cursor position
@@ -39,24 +45,34 @@
       "root"     # Matches entire command line if user=root
       "line"     # Matches entire command line
     ];
-
-    # --- Terminal --------------
-    vteIntegration = true;
   };
 
+  # --- Prompt ----------------
+  programs.starship.enable = true; # Prompt for Bash & ZSH
 
-  # --- Login -----------------
+
+  # --- Initialization -------------------------------------
+
+  # --- Prompt Init ----------
+  programs.zsh.promptInit = ''
+  '';
+
+  # --- All Shells -----------
+  programs.zsh.shellInit = ''
+    # Load nearcolor module if we have 256 color support
+    [[ "$COLORTERM" == (24bit|truecolor) || "${terminfo[colors]}" -eq '16777216' ]] || zmodload zsh/nearcolor
+  '';
+
+  # --- Interactive Shells ---
+  programs.zsh.interactiveShellInit = ''
+    zmodload zsh/zpty  # Load pseudo-terminal module
+  '';
+
+  # --- Login Shells ----------
   # TODO: Put shell-agnostic form in ./shell.nix
   programs.zsh.loginShellInit = ''
     # Show system info on login
     (( $+commands[neofetch] )) && neofetch
   '';
 
-  # --- Prompt ----------------
-  # Prompt for Bash & ZSH
-  programs.starship.enable = true;
-
-  # --- Default ---------------
-  # Make ZSH default for all users
-  users.defaultUserShell = pkgs.zsh;
 }
