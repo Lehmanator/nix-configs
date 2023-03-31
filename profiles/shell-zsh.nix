@@ -8,8 +8,8 @@
 }:
 {
   imports = [
-    # TODO: Put generic shell-agnostic settings here
-    #./shell.nix
+    # TODO: Move any generic shell-agnostic settings here
+    ./shell.nix
   ];
 
   # --- Default ---------------
