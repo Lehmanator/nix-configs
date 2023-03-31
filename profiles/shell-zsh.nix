@@ -18,7 +18,14 @@
     # --- Completion ------------
     enableCompletion = true;
     enableBashCompletion = true;
+
+    # --- Suggestions -----------
+    # Stategies:
+    # - completion     - Based on what tab-completion would choose (req: zpty)
+    # - history *      - Most recent history match
+    # - match_prev_cmd - Like history, but prefers entry following prev cmd
     autosuggestions.enable = true;
+    autosuggestions.strategy = [ "match_prev_cmd" "completion" ];
 
     # --- Syntax Highlighting ---
     syntaxHighlighting.enable = true;
