@@ -44,6 +44,14 @@
     vteIntegration = true;
   };
 
+
+  # --- Login -----------------
+  # TODO: Put shell-agnostic form in ./shell.nix
+  programs.zsh.loginShellInit = ''
+    # Show system info on login
+    (( $+commands[neofetch] )) && neofetch
+  '';
+
   # --- Prompt ----------------
   # Prompt for Bash & ZSH
   programs.starship.enable = true;
