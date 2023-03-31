@@ -56,7 +56,7 @@ in
     core-developer-tools.enable = true;
     core-os-services.enable = true;
     core-shell.enable = true;
-    core-utilities.enable = false;
+    core-utilities.enable = true;
 
     evolution-data-server.enable = true;
     #evolution-data-server.plugins = [
