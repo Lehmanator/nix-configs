@@ -15,9 +15,10 @@
   ];
 
   # TODO: Find nix-related program from old config that was better
-  programs.command-not-found.enable = true;
+  # - nix-index
+  programs.command-not-found.enable = false;
   programs.thefuck.enable = true;
-  programs.thefuck.alias = true;
+  programs.thefuck.alias = "fuck";
 
   # --- Shell Initialization -------------------------------
 
