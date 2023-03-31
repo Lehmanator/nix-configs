@@ -26,6 +26,7 @@
     ./profiles/polkit.nix
     ./profiles/shell-zsh.nix
     ./profiles/tpm2.nix
+    ./profiles/user-defaults.nix
     ./profiles/virt-vm-host.nix
   ];
 
