@@ -24,18 +24,14 @@ in
     gnomeExtensions.gsconnect
     gnomeExtensions.pano
     gnomeExtensions.shortcuts
-    gnomeExtensions.snowy
-    gnomeExtensions.surf
+    #gnomeExtensions.snowy
+    #gnomeExtensions.surf            # <43
+
+    gnome.gnome-software
   ];
 
   # Exclude broken packages
-  environment.gnome.excludePackages = [ pkgs.gnome-decoder ];
-  environment.cinnamon.excludePackages = [ pkgs.gnome-decoder ];
-  environment.lxqt.excludePackages = [ pkgs.gnome-decoder ];
-  environment.mate.excludePackages = [ pkgs.gnome-decoder ];
-  environment.pantheon.excludePackages = [ pkgs.gnome-decoder ];
-  environment.plasma5.excludePackages = [ pkgs.gnome-decoder ];
-  services.xserver.excludePackages = [ pkgs.gnome-decoder ];
+  environment.gnome.excludePackages = [];
 
   # --- NetworkManager ---
   networking.networkmanager.enable = true;
