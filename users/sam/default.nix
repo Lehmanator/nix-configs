@@ -17,7 +17,12 @@ in
   ];
 
   nixpkgs.config.allowBroken = true;
+  nixpkgs.config.allowUnfree = true;
+  nixpkgs.overlays = [
+    inputs.nur.overlay
+  ];
   home.stateVersion = "23.05";
+  home.enableNixpkgsReleaseCheck = true;
 
   home.packages = with pkgs; [
     gnome.dconf-editor
