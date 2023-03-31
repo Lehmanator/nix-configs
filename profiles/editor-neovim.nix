@@ -5,6 +5,7 @@
 
   #nixpkgs.overlays = [ inputs.neovim-nightly.overlays.default ];
 
+  environment.sessionVariables."EDITOR" = "nvim";
   environment.systemPackages = with pkgs; [
     neovim
   ];
