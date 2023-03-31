@@ -30,7 +30,7 @@
 	  inputs.nixos-hardware.nixosModules.framework-12th-gen-intel
 	  inputs.nur.nixosModules.nur
 	  inputs.home.nixosModules.home-manager {
-	    home-manager.useGlobalPkgs = true;
+	    home-manager.useGlobalPkgs = false;
 	    home-manager.useUserPackages = true;
 	    home-manager.extraSpecialArgs = {
 	      inherit self;
