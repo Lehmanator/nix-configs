@@ -29,7 +29,16 @@
 
     # --- Syntax Highlighting ---
     syntaxHighlighting.enable = true;
-    syntaxHighlighting.highlighters = [ "main" "brackets" "cursor" "line" ];
+    syntaxHighlighting.highlighters = [ 
+      # Ordered by priority
+      "main"     # Base highlighter (Default)
+      "cursor"   # Matches cursor position
+      "brackets" # Matches brackets & paren
+      "regexp"   # Matches user-defined regular expression
+      "pattern"  # Matches user-defined glob pattern
+      "root"     # Matches entire command line if user=root
+      "line"     # Matches entire command line
+    ];
 
     # --- Terminal --------------
     vteIntegration = true;
