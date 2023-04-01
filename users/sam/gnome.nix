@@ -37,6 +37,8 @@ in
     #./gnome-view-audio.nix
     #./gnome-view-images.nix
     #./gnome-view-video.nix
+
+    #./gnome/apps
   ];
 
   home.packages = with pkgs; [
@@ -73,14 +75,28 @@ in
     clapper
     gotktrix
     gtkcord4
+    endeavour
     fractal-next
     headlines
     megapixels
     newsflash
   ];
 
+  programs.rbw.settings.pinentry = "gnome3";
+
+  qt.platformTheme = "gnome";
+  qt.style.package = pkgs.adwaita-qt;
+  #qt.style.name = "adwaita-dark";
+
   services.gnome-keyring.enable = true;
   services.gnome-keyring.components = [ "pkcs11" "secrets" "ssh" ];
+
+  services.gpg-agent.pinentryFlavor = "gnome3";
+
+  # Dunst: Notification Daemon
+  services.dunst.iconTheme.name = "Adwaita";
+  services.dunst.iconTheme.package = pkgs.adwaita-icon-theme;
+
 
   # https://gist.github.com/quidome/4e225db4b1611a9624d3927919f96bc6
   #config = lib.mkIf (cfg.desktopManager.gnome.enable == true) {
