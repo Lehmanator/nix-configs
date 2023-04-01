@@ -1,4 +1,6 @@
 {
+  self, inputs, system,
+  host, user,
   config, lib, pkgs,
   ...
 }:
@@ -6,6 +8,8 @@ let
 in
 {
   imports = [
+    #inputs.nixvim.homeManagerModules.nixvim
+    #./editor.nix
   ];
 
   programs.neovim.enable = true;
