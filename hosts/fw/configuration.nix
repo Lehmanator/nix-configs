@@ -33,6 +33,11 @@
     ../../profiles/tpm2.nix
     ../../profiles/user-defaults.nix
     ../../profiles/virt-vm-host.nix
+
+    # Include configuration managed by apps:
+    # - nixos-conf-editor
+    # - nix-software-center
+    ./managed.nix
   ];
 
   # --- Bootloader ---
