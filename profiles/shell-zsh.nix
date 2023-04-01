@@ -60,7 +60,7 @@
   # --- All Shells -----------
   programs.zsh.shellInit = ''
     # Load nearcolor module if we have 256 color support
-    [[ "$COLORTERM" == (24bit|truecolor) || "${terminfo[colors]}" -eq '16777216' ]] || zmodload zsh/nearcolor
+    [[ "$COLORTERM" == (24bit|truecolor) || "$terminfo[colors]" -eq '16777216' ]] || zmodload zsh/nearcolor
   '';
 
   # --- Interactive Shells ---
