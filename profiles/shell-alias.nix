@@ -3,6 +3,7 @@
   system,
   host, userPrimary,
   config, lib, pkgs,
+  ...
 }:
 {
   imports = [
