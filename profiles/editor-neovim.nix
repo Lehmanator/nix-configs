@@ -1,9 +1,12 @@
-{ inputs, pkgs, ... }: {
+{ inputs, config, lib, pkgs, ... }: {
   imports = [
+    inputs.nixvim.nixosModules.nixvim
     #inputs.neovim-nightly.nixosModules.
   ];
 
-  #nixpkgs.overlays = [ inputs.neovim-nightly.overlays.default ];
+  nixpkgs.overlays = [ 
+    #inputs.neovim-nightly.overlays.default
+  ];
 
   environment.sessionVariables."EDITOR" = "nvim";
   environment.systemPackages = with pkgs; [

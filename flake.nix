@@ -15,6 +15,7 @@
     home.url = "github:nix-community/home-manager";
     home.inputs.nixpkgs.follows = "nixpkgs";
     nur.url = github:nix-community/NUR;
+    nixvim.url = github:pta2002/nixvim;
   };
   outputs = { self, nixpkgs, ... }@inputs:
     let

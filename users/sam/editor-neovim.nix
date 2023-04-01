@@ -8,7 +8,7 @@ let
 in
 {
   imports = [
-    #inputs.nixvim.homeManagerModules.nixvim
+    inputs.nixvim.homeManagerModules.nixvim
     #./editor.nix
   ];
 
