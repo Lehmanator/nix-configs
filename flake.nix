@@ -16,7 +16,8 @@
     home.inputs.nixpkgs.follows = "nixpkgs";
     nur.url = github:nix-community/NUR;
     nixvim.url = github:pta2002/nixvim;
-    agenix = { url = "github:ryantm/agenix"; inputs.nixpkgs.follows = "nixpkgs"; };
+    agenix   = { url = "github:ryantm/agenix";  inputs.nixpkgs.follows = "nixpkgs"; };
+    sops-nix = { url = "github:Mic92/sops-nix"; inputs.nixpkgs.follows = "nixpkgs"; };
 
   };
   outputs = { self, nixpkgs, ... }@inputs:
@@ -33,7 +34,11 @@
 	  inputs.nixos-hardware.nixosModules.framework-12th-gen-intel
 	  inputs.nur.nixosModules.nur
           inputs.agenix.nixosModules.default
+          inputs.sops-nix.nixosModules.sops
 	  inputs.home.nixosModules.home-manager {
+            home-manager.sharedModules = [
+              inputs.sops-nix.homeManagerModules.sops
+            ];
 	    home-manager.useGlobalPkgs = false;
 	    home-manager.useUserPackages = true;
 	    home-manager.extraSpecialArgs = {
