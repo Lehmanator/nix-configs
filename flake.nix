@@ -16,6 +16,8 @@
     home.inputs.nixpkgs.follows = "nixpkgs";
     nur.url = github:nix-community/NUR;
     nixvim.url = github:pta2002/nixvim;
+    agenix = { url = "github:ryantm/agenix"; inputs.nixpkgs.follows = "nixpkgs"; };
+
   };
   outputs = { self, nixpkgs, ... }@inputs:
     let
@@ -30,6 +32,7 @@
           inputs.nix-data.nixosModules.${system}.nix-data
 	  inputs.nixos-hardware.nixosModules.framework-12th-gen-intel
 	  inputs.nur.nixosModules.nur
+          inputs.agenix.nixosModules.default
 	  inputs.home.nixosModules.home-manager {
 	    home-manager.useGlobalPkgs = false;
 	    home-manager.useUserPackages = true;
