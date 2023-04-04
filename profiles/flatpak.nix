@@ -25,12 +25,11 @@
   environment.shellAliases = {
     fp = "flatpak";
     fpb = "flatpak build";
-    fpo = "flatpak override";
-    fpu = "flatpak update";
     fpi = "flatpak install";
+    fpo = "flatpak override";
+    fps = "flatpak search";
     fpun = "flatpak uninstall";
     fpup = "flatpak update";
     fpu = "flatpak update";
-    fps = "flatpak search";
   };
 }
