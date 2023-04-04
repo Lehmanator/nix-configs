@@ -9,17 +9,10 @@
   ];
 
   environment.sessionVariables."EDITOR" = "nvim";
-  environment.systemPackages = with pkgs; [
-    neovim
-  ];
 
-  programs.neovim.enable = true;
-  programs.neovim.defaultEditor = true;
   programs.neovim.withNodeJs = true;
   programs.neovim.withPython3 = true;
   programs.neovim.withRuby = true;
-  programs.neovim.viAlias = true;
-  programs.neovim.vimAlias = true;
   programs.neovim.configure = {
     packages.all.start = with pkgs.vimPlugins; [
       #(nvim-treesitter.withPlugins (ps: [ ps.nix ]))
@@ -27,4 +20,21 @@
       nvim-treesitter.withAllGrammars  # to install all treesitter grammars (incl. nix)
     ];
   };
+
+  programs.nixvim.enable = true;
+
+  programs.nixvim.options = {
+    number = true;
+    relativeNumber = true;
+    shiftwidth = 2;
+  };
+
+  programs.nixvim.plugins = {
+    lsp.enable = true;
+    lualine.enable = true;
+
+  };
+
+  programs.nixvim.viAlias = true;
+  programs.nixvim.vimAlias = true;
 }
