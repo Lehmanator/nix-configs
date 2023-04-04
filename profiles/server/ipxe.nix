@@ -8,7 +8,8 @@ let
 in
 {
   imports = [
-    #./samba-server.nix
+    ./samba.nix
+    #./tftpd.nix
   ];
 
 
