@@ -43,6 +43,9 @@ in
   };
 
   home.packages = [
-    pkgs.figlet
+    pkgs.figlet               # Print ASCII art text
+    pkgs.nix-zsh-completions  # Completions for Nix, NixOS, NixOps, & ecosystem
+    pkgs.with-shell           # Interactive shell where each command starts with cmd prefix
+    pkgs.zsh-nix-shell        # ZSH plugin that lets you use ZSH in nix-shell
   ];
 }
