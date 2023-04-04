@@ -58,11 +58,11 @@ in
   programs.zsh.history.extended = true;
   programs.zsh.history.ignorePatterns = [ 
     "rm -r *"          "rm -rf *"
-    'echo * > *key*'   'echo * > *secret*'
-    'echo "*" > *key*' 'echo "*" > *secret*'
+    "echo * > *key*"   "echo * > *secret*"
+    "echo \"*\" > *key*" "echo \"*\" > *secret*"
     "echo '*' > *key*" "echo '*' > *secret*"
     # TODO: LUKS commands w/ key passed in CLI
-  ]
+  ];
   programs.zsh.history.ignoreSpace = true;
   programs.zsh.historySubstringSearch.enable = true;
 
@@ -70,4 +70,8 @@ in
   programs.zsh.shellGlobalAliases = {
     G = "| rg";
   };
+
+  # --- Initialization -------------------------------------
+  programs.zsh.initExtra = ''
+  '';
 }
