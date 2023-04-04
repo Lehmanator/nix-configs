@@ -41,4 +41,8 @@ in
     ".bat" = "01;32";
     ".msi" = "01;32";
   };
+
+  home.packages = [
+    pkgs.figlet
+  ];
 }
