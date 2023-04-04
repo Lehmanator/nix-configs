@@ -26,7 +26,6 @@
     ../../profiles/fprintd.nix
     ../../profiles/gnome.nix
     ../../profiles/locale-est.nix
-    ../../profiles/nix.nix
     ../../profiles/nixos.nix
     ../../profiles/pipewire.nix
     ../../profiles/polkit.nix

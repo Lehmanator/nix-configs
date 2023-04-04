@@ -16,6 +16,10 @@ let
   ];
 in
 {
+  imports = [
+    ./nix.nix
+  ];
+
   # TODO: Abstract out sudo program
   environment.shellAliases = {
     # --- systemd ----------------
