@@ -14,6 +14,7 @@ in
     ./browsers.nix
     ./editor-neovim.nix
     ./gnome.nix
+    ./shell-zsh.nix
   ];
 
   nixpkgs.config.allowBroken = true;
