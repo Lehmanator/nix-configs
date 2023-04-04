@@ -21,4 +21,16 @@
   services.packagekit.enable = true;
 
   users.users."sam".extraGroups = [ "flatpak" ];
+
+  environment.shellAliases = {
+    fp = "flatpak";
+    fpb = "flatpak build";
+    fpo = "flatpak override";
+    fpu = "flatpak update";
+    fpi = "flatpak install";
+    fpun = "flatpak uninstall";
+    fpup = "flatpak update";
+    fpu = "flatpak update";
+    fps = "flatpak search";
+  };
 }
