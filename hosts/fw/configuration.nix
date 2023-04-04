@@ -19,7 +19,7 @@
     ./hardware-configuration.nix
 
     # Activate profiles
-    ../../profiles/active-directory-admin.nix
+    ../../profiles/activedirectory/admin.nix
     ../../profiles/adb.nix
     ../../profiles/emu-windows.nix
     ../../profiles/flatpak.nix
