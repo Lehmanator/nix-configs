@@ -80,15 +80,17 @@ in
   nix.settings.builders-use-substitutes = true;  # Allow builders to use binary caches
   nix.settings.substituters = [
     "https://cache.nixos.org/"
-    "https://nrdxp.cachix.org/"
     "https://nix-community.cachix.org/"
+    "https://nrdxp.cachix.org/"
     "https://snowflakeos.cachix.org/"
   ];
   nix.settings.trusted-substituters = [
     "https://hydra.nixos.org/"
+    "https://nix-community.cachix.org/"
+    "https://nrdxp.cachix.org/"
     "https://snowflakeos.cachix.org/"
   ];
-  trusted-public-keys = [
+  nix.settings.trusted-public-keys = [
     "hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs="
     "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     "nrdxp.cachix.org-1:Fc5PSqY2Jm1TrWfm88l6cvGWwz3s93c6IOifQWnhNW4="
