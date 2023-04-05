@@ -20,8 +20,8 @@
     agenix           = { url = "github:ryantm/agenix";         inputs.nixpkgs.follows = "nixpkgs"; };
     sops-nix         = { url = "github:Mic92/sops-nix";        inputs.nixpkgs.follows = "nixpkgs"; };
 
-    flake-utils      = { url = "github:numtide/flake-utils";   inputs.nixpkgs.follows = "nixpkgs"; };
-    flake-utils-plus = { url = "github:gytis-ivaskevicius/flake-utils-plus"; inputs.nixpkgs.follows = "nixpkgs"; };
+    flake-utils      = { url = "github:numtide/flake-utils";                                       };
+    flake-utils-plus = { url = "github:gytis-ivaskevicius/flake-utils-plus";                       };
     flake-compat     = { url = "github:edolstra/flake-compat"; flake = false;                      };
   };
   outputs = { self, nixpkgs, ... }@inputs:
