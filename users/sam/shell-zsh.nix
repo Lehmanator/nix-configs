@@ -6,8 +6,6 @@
   config, lib, pkgs,
   ...
 }:
-let
-in
 {
   imports = [
     ./shell.nix
@@ -63,12 +61,20 @@ in
     "echo '*' > *key*" "echo '*' > *secret*"
     # TODO: LUKS commands w/ key passed in CLI
   ];
+  programs.zsh.history.share = true;
   programs.zsh.history.ignoreSpace = true;
   programs.zsh.historySubstringSearch.enable = true;
 
   # --- Aliases ---
   programs.zsh.shellGlobalAliases = {
-    G = "| rg";
+    BAT = "| bat";
+    CAT = "| cat";
+    RG = "| rg";
+    LO = "| lessopen";
+    "..." = "../..";
+    "...." = "../../..";
+    "....." = "../../../..";
+
   };
 
   # --- Initialization -------------------------------------
