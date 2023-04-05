@@ -16,15 +16,33 @@
     home.inputs.nixpkgs.follows = "nixpkgs";
     nur.url = github:nix-community/NUR;
     nixvim.url = github:pta2002/nixvim;
-    agenix   = { url = "github:ryantm/agenix";  inputs.nixpkgs.follows = "nixpkgs"; };
-    sops-nix = { url = "github:Mic92/sops-nix"; inputs.nixpkgs.follows = "nixpkgs"; };
 
+    agenix           = { url = "github:ryantm/agenix";         inputs.nixpkgs.follows = "nixpkgs"; };
+    sops-nix         = { url = "github:Mic92/sops-nix";        inputs.nixpkgs.follows = "nixpkgs"; };
+
+    flake-utils      = { url = "github:numtide/flake-utils";   inputs.nixpkgs.follows = "nixpkgs"; };
+    flake-utils-plus = { url = "github:gytis-ivaskevicius/flake-utils-plus"; inputs.nixpkgs.follows = "nixpkgs"; };
+    flake-compat     = { url = "github:edolstra/flake-compat"; flake = false;                      };
   };
   outputs = { self, nixpkgs, ... }@inputs:
     let
+      supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
+      forAllSystems = f: nixpkgs.lib.genAttrs supportedSystems (s: f s);
       system = "x86_64-linux";
+      #networks = import ./networks.nix;
+      #machines = import ./machines.nix;
+      #users = import ./users.nix;
     in
     {
+      #overlays.default = final: prev: {
+      #  <pname> = final.callPackages ./pkgs/<pname> { };
+      #};
+      #packages = forAllSystems (system: let
+      #  pkgs = import nixpkgs { inherit system; overlays = [self.overlays.default]; };
+      #in { 
+      #  inherit (pkgs) <pname>;
+      #});
+
       nixosConfigurations."fw" = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [
