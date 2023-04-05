@@ -34,6 +34,7 @@ in
     forge                    # Tile, tab, & stack windows extension like pop-shell
     gsconnect                # Connect your phone
     live-captions-assistant  # Better desktop integration w/ Live Captions app
+    material-you-color-theming # Material You palettes from wallpaper applied to libadwaita
     pano                     # Clipboard manager
     quick-settings-tweaker   # QS config. Notifs: clock -> QS
 
