@@ -10,7 +10,7 @@
   imports = [
     ./browsers.nix
     ./editor/neovim.nix
-    ./gnome.nix
+    ./gnome/default.nix
     ./shell-zsh.nix
   ];
 

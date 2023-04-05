@@ -9,7 +9,7 @@ in {
     # --- Proprietary --------------------------------------
 
     # --- Discord -------
-    gotktrix4
+    gotktrix
     gtkcord4
 
     # --- Reddit --------
@@ -23,6 +23,8 @@ in {
     # --- Facebook ------
     # --- Hacker News ---
     # --- Instagram -----
+    # --- Signal --------
+    signal-desktop
     # --- Snapchat ------
     # --- Telegram ------
     # --- Tinder --------
@@ -35,7 +37,12 @@ in {
     # --- Friendica -----
     # --- Lemmy ---------
     # --- Mastodon ------
+    tootle
+
     # --- Matrix --------
+    element-desktop
+    fractal-next
+
     # --- PixelFed ------
 
   ];

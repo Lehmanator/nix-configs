@@ -15,30 +15,30 @@ in
     #inputs.nixos-conf-editor.packages.${system}.nixos-conf-editor
     #inputs.snow.packages.${system}.snow
 
-    ./gtk.nix
+    ../gtk.nix
 
-    #./gnome-admin.nix
-    #./gnome-dev.nix
+    #./admin.nix
+    #./dev.nix
 
-    #./gnome-edit-audio.nix
-    #./gnome-edit-images.nix
-    #./gnome-edit-video.nix
+    #./edit-audio.nix
+    #./edit-images.nix
+    #./edit-video.nix
 
-    #./gnome-emu-android.nix
-    #./gnome-emu-windows.nix
+    #./emu-android.nix
+    #./emu-windows.nix
 
-    #./gnome-games.nix
+    #./games.nix
 
-    #./gnome-mobile.nix
+    #./mobile.nix
 
-    #./gnome-chat.nix
-    #./gnome-social.nix
+    #./chat.nix
+    ./social.nix
 
-    #./gnome-view-audio.nix
-    #./gnome-view-images.nix
-    #./gnome-view-video.nix
+    #./view-audio.nix
+    #./view-images.nix
+    #./view-video.nix
 
-    #./gnome/apps
+    #./apps
   ];
 
   home.packages = with pkgs; [
@@ -73,11 +73,7 @@ in
     gnome-secrets
 
     clapper
-    gotktrix
-    gtkcord4
     endeavour
-    fractal-next
-    headlines
     megapixels
     newsflash
   ];
