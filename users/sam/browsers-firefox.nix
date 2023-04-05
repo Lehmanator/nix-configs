@@ -2,11 +2,10 @@
   self, 
   modulesPath,
   inputs, outputs,
+  host, network, repo,
   config, lib, pkgs,
   ...
 }:
-let
-in
 {
   imports = [
     #./browsers-firefox-dev-app.nix
@@ -16,6 +15,10 @@ in
 
   programs.firefox.enable = true;
   programs.firefox.enableGnomeExtensions = true;
+  pkgs.firefox.override = {
+    enableGnomeExtensions = config.services.xserver.desktopManager.gnome.enable;
+    enableTridactylNative = true;
+  };
 
   #programs.firefox.profiles.default.isDefault = true;
   #programs.firefox.profiles.default.name = "Default";
