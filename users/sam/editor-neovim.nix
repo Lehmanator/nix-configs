@@ -5,6 +5,10 @@
   ...
 }:
 let
+  # --- NixVim ---
+  # Configures Neovim via Nix modules
+  # https://github.com/pta2002/nixvim
+  # https://pta2002.github.io/nixvim
 in
 {
   imports = [
@@ -82,7 +86,12 @@ in
 
   # --- Plugins ---
   programs.nixvim.extraPlugins = with pkgs.vimPlugins; [
+    nix-develop-nvim
+    statix
+    vim-addon-nix  # TODO: Handled by LSP?
     vim-nix
+    vim-nixhash
+    vim2nix
   ];
 
   home.packages = [ 
