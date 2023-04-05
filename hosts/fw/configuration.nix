@@ -21,18 +21,18 @@
     # Activate profiles
     ../../profiles/activedirectory/admin.nix
     ../../profiles/adb.nix
-    ../../profiles/emu-windows.nix
-    ../../profiles/flatpak.nix
-    ../../profiles/fprintd.nix
-    ../../profiles/gnome.nix
+    ../../profiles/desktop/de/gnome/default.nix
+    ../../profiles/desktop/pipewire.nix
+    ../../profiles/desktop/flatpak.nix
+    ../../profiles/hardware/fprintd.nix
+    ../../profiles/hardware/tpm2.nix
     ../../profiles/locale-est.nix
     ../../profiles/nixos.nix
-    ../../profiles/pipewire.nix
     ../../profiles/polkit.nix
     ../../profiles/shell-zsh.nix
-    ../../profiles/tpm2.nix
     ../../profiles/user-defaults.nix
-    ../../profiles/virt-vm-host.nix
+    ../../profiles/virt/vm-host.nix
+    ../../profiles/virt/wine.nix
 
     # Include configuration managed by apps:
     # - nixos-conf-editor
