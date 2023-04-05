@@ -1,1 +1,25 @@
+# --- Build Artifacts ---
+**/result
 result
+
+# --- Keys ---
+*.key
+*.luks
+*.lukskey
+*.privkey
+*.pubkey
+*.pub
+*.p11
+*.pks
+*.pkcs
+*.p7
+
+# --- Private Info ---
+hosts.nix
+networks.nix
+repo.nix
+users.nix
+
+# --- Logging ---
+**/logs
+*.log
