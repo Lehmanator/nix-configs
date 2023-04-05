@@ -76,7 +76,7 @@ in
   '';
 
   # --- Plugins --------------------------------------------
-  plugins = [
+  programs.zsh.plugins = [
     # Use ZSH inside nix-shell
     { name = "zsh-nix-shell"; file = "nix-shell.plugin.zsh";
       src = pkgs.fetchFromGitHub {
