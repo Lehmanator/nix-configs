@@ -4,25 +4,24 @@
   };
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    snowflake.url = "github:snowflakelinux/snowflake-modules";
-    snowflake.inputs.nixpkgs.follows = "nixpkgs";
-    nix-data.url = "github:snowflakelinux/nix-data";
-    nix-software-center.url = "github:vlinkz/nix-software-center";
-    nixos-conf-editor.url = "github:vlinkz/nixos-conf-editor";
-    snow.url = "github:snowflakelinux/snow";
-    icicle.url = "github:snowflakelinux/icicle";
-    nixos-hardware.url = "github:NixOS/nixos-hardware";
-    home.url = "github:nix-community/home-manager";
-    home.inputs.nixpkgs.follows = "nixpkgs";
-    nur.url = github:nix-community/NUR;
-    nixvim.url = github:pta2002/nixvim;
+    snowflake           = { url = "github:snowflakelinux/snowflake-modules";                               };
+    nix-data            = { url = "github:snowflakelinux/nix-data";                                        };
+    nix-software-center = { url = "github:vlinkz/nix-software-center";                                     };
+    nixos-conf-editor   = { url = "github:vlinkz/nixos-conf-editor";                                       };
+    snow                = { url = "github:snowflakelinux/snow";                                            };
+    icicle              = { url = "github:snowflakelinux/icicle";                                          };
+    nixos-hardware      = { url = "github:NixOS/nixos-hardware";                                           };
 
-    agenix           = { url = "github:ryantm/agenix";         inputs.nixpkgs.follows = "nixpkgs"; };
-    sops-nix         = { url = "github:Mic92/sops-nix";        inputs.nixpkgs.follows = "nixpkgs"; };
+    home                = { url = "github:nix-community/home-manager"; inputs.nixpkgs.follows = "nixpkgs"; };
+    nur                 = { url = "github:nix-community/NUR";                                              };
+    nixvim              = { url = "github:pta2002/nixvim";             inputs.nixpkgs.follows = "nixpkgs"; };
 
-    flake-utils      = { url = "github:numtide/flake-utils";                                       };
-    flake-utils-plus = { url = "github:gytis-ivaskevicius/flake-utils-plus";                       };
-    flake-compat     = { url = "github:edolstra/flake-compat"; flake = false;                      };
+    agenix              = { url = "github:ryantm/agenix";              inputs.nixpkgs.follows = "nixpkgs"; };
+    sops-nix            = { url = "github:Mic92/sops-nix";             inputs.nixpkgs.follows = "nixpkgs"; };
+
+    flake-utils         = { url = "github:numtide/flake-utils";                                            };
+    flake-utils-plus    = { url = "github:gytis-ivaskevicius/flake-utils-plus";                            };
+    flake-compat        = { url = "github:edolstra/flake-compat";                           flake = false; };
   };
   outputs = { self, nixpkgs, ... }@inputs:
     let

@@ -4,16 +4,14 @@
   config, lib, pkgs,
   ...
 }:
-let
   # --- NixVim ---
   # Configures Neovim via Nix modules
   # https://github.com/pta2002/nixvim
   # https://pta2002.github.io/nixvim
-in
 {
   imports = [
     inputs.nixvim.homeManagerModules.nixvim
-    ./editor.nix
+    ./editorconfig.nix
   ];
 
   programs.neovim.withNodeJs = true;
@@ -31,6 +29,7 @@ in
     number = true;
     relativenumber = true;
     shiftwidth = 2;
+    title = true;
   };
 
 

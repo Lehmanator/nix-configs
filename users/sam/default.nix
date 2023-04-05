@@ -6,13 +6,10 @@
   config, lib, pkgs,
   ...
 }:
-let
-
-in 
 {
   imports = [
     ./browsers.nix
-    ./editor-neovim.nix
+    ./editor/neovim.nix
     ./gnome.nix
     ./shell-zsh.nix
   ];
