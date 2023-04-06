@@ -14,6 +14,7 @@
     ./gnome/default.nix
     ./pager.nix
     ./shell-zsh.nix
+    ./social/default.nix
   ];
 
   nixpkgs.config.allowBroken = true;
