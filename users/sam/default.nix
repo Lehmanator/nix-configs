@@ -8,8 +8,9 @@
 }:
 {
   imports = [
-    ./editor/neovim.nix
     ./browsers/default.nix
+    ./editor/neovim.nix
+    ./git.nix
     ./gnome/default.nix
     ./shell-zsh.nix
   ];
