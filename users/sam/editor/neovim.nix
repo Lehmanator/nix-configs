@@ -13,6 +13,10 @@
     inputs.nixvim.homeManagerModules.nixvim
     ./editorconfig.nix
   ];
+  home.sessionVariables = {
+    EDITOR = "nvim";
+  };
+  programs.git.extraConfig.core.editor = "nvim";
 
   programs.neovim.withNodeJs = true;
   programs.neovim.withPython3 = true;
