@@ -2,12 +2,11 @@
   self,
   inputs,
   system,
-  hosts, userPrimary,
+  host, network, repo,
+  userPrimary,
   config, lib, pkgs,
   ...
 }:
-let
-in
 {
   imports = [
     ./shell-alias.nix
@@ -48,4 +47,6 @@ in
     pkgs.with-shell           # Interactive shell where each command starts with cmd prefix
     pkgs.zsh-nix-shell        # ZSH plugin that lets you use ZSH in nix-shell
   ];
+
+  services.lorri.enable = true;
 }

@@ -26,7 +26,7 @@
     pkgs.pre-commit           # Git pre-commit hooks
     pkgs.vulnix               # Nix(OS) vulnerability scanner
   ];
-
+  services.lorri.enable = true;
   programs.nix-ld.enable = true;
   programs.nix-index = {
     enable = true;
