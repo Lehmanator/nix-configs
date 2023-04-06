@@ -12,6 +12,7 @@
     ./editor/neovim.nix
     ./git.nix
     ./gnome/default.nix
+    ./pager.nix
     ./shell-zsh.nix
   ];
 
