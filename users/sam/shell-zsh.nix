@@ -78,6 +78,10 @@
   };
 
   # --- Initialization -------------------------------------
+  programs.zsh.initExtraBeforeCompInit = ''
+    zstyle ":completion:*" list-prompt   ""
+    zstyle ":completion:*" select-prompt ""
+  '';
   programs.zsh.initExtra = ''
     autoload -Uz add-zsh-hook
     function xterm_title_precmd() {
