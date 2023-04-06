@@ -8,16 +8,19 @@
 }:
 {
   imports = [
-    #./browsers-firefox-dev-app.nix
-    #./browsers-firefox-dev-web.nix
-    #./browsers-firefox-work.nix
+    #./firefox-dev-app.nix
+    #./firefox-dev-web.nix
+    #./firefox-work.nix
+
+    # TODO: Enable
+    #./firefox-settings.nix
   ];
 
   programs.firefox.enable = true;
-  programs.firefox.enableGnomeExtensions = true;
-  pkgs.firefox.override = {
-    enableGnomeExtensions = config.services.xserver.desktopManager.gnome.enable;
-    enableTridactylNative = true;
+  #programs.firefox.enableGnomeExtensions = true;
+  programs.firefox.package = pkgs.firefox.override {
+    cfg.enableGnomeExtensions = config.gtk.enable;  #config.services.xserver.desktopManager.gnome.enable;
+    cfg.enableTridactylNative = true;
   };
 
   #programs.firefox.profiles.default.isDefault = true;
