@@ -11,6 +11,7 @@
     snow                = { url = "github:snowflakelinux/snow";                                            };
     icicle              = { url = "github:snowflakelinux/icicle";                                          };
     nixos-hardware      = { url = "github:NixOS/nixos-hardware";                                           };
+    disko               = { url = "github:nix-community/disko";        inputs.nixpkgs.follows = "nixpkgs"; };
 
     home                = { url = "github:nix-community/home-manager"; inputs.nixpkgs.follows = "nixpkgs"; };
     nur                 = { url = "github:nix-community/NUR";                                              };
@@ -22,17 +23,32 @@
     flake-utils         = { url = "github:numtide/flake-utils";                                            };
     flake-utils-plus    = { url = "github:gytis-ivaskevicius/flake-utils-plus";                            };
     flake-compat        = { url = "github:edolstra/flake-compat";                           flake = false; };
+
+    #nur-local = {
+    #  url = "path:./.nur";
+    #  inputs.nixpkgs.follows = "nixpkgs";
+    #};
+    #nur-repo = {
+    #  url = "github:publicSam/nur-packages";
+    #  inputs.nixpkgs.follows = "nixpkgs";
+    #};
   };
-  outputs = { self, nixpkgs, ... }@inputs:
-    let
-      supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
-      forAllSystems = f: nixpkgs.lib.genAttrs supportedSystems (s: f s);
-      system = "x86_64-linux";
-      #networks = import ./networks.nix;
-      #machines = import ./machines.nix;
-      #users = import ./users.nix;
-    in
-    {
+  outputs = { self, nixpkgs, nur, flake-utils, flake-utils-plus, ... }@inputs: let
+
+    #flake-utils.lib.eachDefaultSystem (system:
+    #  let pkgs = nixpkgs.legacyPackages.${system}; in {
+    #    nurpkgs = import nixpkgs { inherit system; };
+    #  }
+    #)
+
+    supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
+    forAllSystems = f: nixpkgs.lib.genAttrs supportedSystems (s: f s);
+    system = "x86_64-linux";
+    #networks = import ./networks.nix;
+    #machines = import ./machines.nix;
+    #users = import ./users.nix;
+  in
+  {
       #overlays.default = final: prev: {
       #  <pname> = final.callPackages ./pkgs/<pname> { };
       #};
@@ -41,6 +57,7 @@
       #in { 
       #  inherit (pkgs) <pname>;
       #});
+      #system = builtins.currentSystem or 
 
       nixosConfigurations."fw" = nixpkgs.lib.nixosSystem {
         inherit system;
@@ -72,5 +89,36 @@
 	  inherit system;
 	};
     };
-  };
+
+
+    #modules = flake-utils.lib.eachDefaultSystem (system: let
+    #  inherit inputs;
+    #  nurpkgs = import nixpkgs {inherit system;};
+    #in [
+      # NUR repos via package overrides
+      #{ nixpkgs.config.packageOverrides = pkgs: {
+      #  inherit inputs system;
+      #  nur = import inputs.nur {
+      #    inherit pkgs nurpkgs;
+      #    repoOverrides = {
+      #      #local     = import inputs.nur-local { inherit pkgs; }; 
+      #      #publicSam = import inputs.nur-repo { inherit pkgs; };
+      #    };
+      #  }; };
+      #}
+      # NUR repos via overlays
+      #{ nixpkgs.overlays = let pkgs = nixpkgs.legacyPackages.${system}; in [ (final: prev: {
+      #  inherit inputs system pkgs;
+      #  #pkgs = import nixpkgs {inherit system;};
+      #  nur = import inputs.nur {
+      #    inherit pkgs nurpkgs;
+      #    repoOverrides = {
+      #      #local    = import inputs.nur-local { inherit pkgs; }; 
+      #      #publicSam = import inputs.nur-repo { inherit pkgs; }; 
+      #    };
+      #  };
+      #})];
+    #}
+    #]); # --- End: outputs.modules ---
+  };  # --- End: outputs ---
 }
