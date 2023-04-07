@@ -29,6 +29,7 @@
     #"--header"
     "--group-directories-first"
   ];
+  home.shellAliases.l = "exa -a";
 
   # --- Colors ---------------
   programs.dircolors.enable = true;
