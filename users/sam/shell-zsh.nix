@@ -114,7 +114,10 @@
   #  zstyle ":completion:*" list-prompt   ""
   #  zstyle ":completion:*" select-prompt ""
   #'';
-  #programs.zsh.initExtra = ''
+  programs.zsh.initExtra = ''
+    function cdls() { exa -a --icons --git --group-directories-first }
+    chpwd_functions=(cdls)
+  '';
   #  autoload -Uz add-zsh-hook
   #  function xterm_title_precmd() {
   #    print -Pn -- '\e]2;%n@%m %~\a'
