@@ -10,9 +10,13 @@
   imports = [];
 
   xdg.enable = true;
+  xdg.cacheHome  = "${config.home.homeDirectory}/.cache";
+  xdg.configHome = "${config.home.homeDirectory}/.config";
+  xdg.dataHome   = "${config.home.homeDirectory}/.local/share";
+  xdg.stateHome  = "${config.home.homeDirectory}/.local/state";
 
   # --- MIME Type Handling ---
-  xdg.mime.enable = true;
+  xdg.mime.enable     = true;
   xdg.mimeApps.enable = true;
   #xdg.mimeApps.associations.added = {
   #};

@@ -104,4 +104,39 @@
       gui.showIcons = true;
     };
   };
+
+  home.shellAliases = {
+    g = "git";
+    gs = "git status";
+    ga = "git add";
+    Ga = "git add !$";
+    gaa = "git add --all";
+    gb = "git branch";
+    gc = "git commit -m";
+    gcm = "git commit -m";
+    gco = "git checkout";
+    gcl = "git clone";
+    gi = "git init";
+    gl = "git log";
+    gmv = "git mv";
+    grm = "git rm";
+
+    add = "git add";
+    Add = "git add !$";
+    amend = "git commit --amend";
+    branch = "git branch";
+    checkout = "git checkout";
+    commit = "git commit -m";
+    fetch = "git fetch";
+    merge = "git merge";
+    pull = "git pull";
+    push = "git push";
+    rebase = "git rebase";
+    reset = "git reset";
+    restore = "git restore";
+    revert = "git revert";
+    stash = "git stash";
+    status = "git status";
+    submodule = "git submodule";
+  };
 }
