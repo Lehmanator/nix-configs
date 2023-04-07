@@ -20,8 +20,9 @@
   programs.zsh.vteIntegration = true;
 
   # --- Completion ------------
-  programs.zsh.enableCompletion = true;
-  programs.zsh.enableBashCompletion = true;
+  programs.zsh.enableCompletion = true;        # Enables ZSH completions
+  programs.zsh.enableBashCompletion = true;    # Enables using completions for Bash in ZSH
+  environment.pathsToLink = [ "/share/zsh" ];  # Enables completion for system packages
 
   # --- Autosuggestions -------
   # - completion     - Based on what tab-completion would choose (req: zpty)
