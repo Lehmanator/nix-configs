@@ -21,14 +21,13 @@
   programs.direnv.nix-direnv.enable = true;
 
   # --- Directory Listing -----
-  programs.exa.enable = true;
-  programs.exa.enableAliases = true;
-  programs.exa.git = false;
-  programs.exa.icons = true;
-  programs.exa.extraOptions = [
-    #"--header"
-    "--group-directories-first"
-  ];
+  programs.exa = {
+    enable = true;
+    enableAliases = true;
+    git = true;
+    icons = true;
+    extraOptions = [ "--group-directories-first" ]; #"--header"
+  };
   home.shellAliases.l = "exa -a";
 
   # --- Colors ---------------
