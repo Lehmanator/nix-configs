@@ -29,6 +29,7 @@ in
   ];
 
   programs.zsh.enable = true;
+  programs.zsh.dotDir = if config.xdg.configHome then "${config.xdg.configHome}/zsh" else "${config.homeDirectory}/.config/zsh";
 
   # --- Keybindings ---
   programs.zsh.defaultKeymap = "viins";
