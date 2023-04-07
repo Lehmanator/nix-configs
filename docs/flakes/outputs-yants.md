@@ -1,0 +1,25 @@
+[1mgithub:divnix/yants/9eab24b273ce021406c852166c216b86e2bb4ec4[0m
+[32;1m├───[0m[1m__functor[0m: [35;1munknown[0m
+[32;1m├───[0m[1m__unfix__[0m: [35;1munknown[0m
+[32;1m├───[0m[1many[0m: [35;1munknown[0m
+[32;1m├───[0m[1mattrs[0m: [35;1munknown[0m
+[32;1m├───[0m[1mbool[0m: [35;1munknown[0m
+[32;1m├───[0m[1mdefun[0m: [35;1munknown[0m
+[32;1m├───[0m[1mdrv[0m: [35;1munknown[0m
+[32;1m├───[0m[1meither[0m: [35;1munknown[0m
+[32;1m├───[0m[1meitherN[0m: [35;1munknown[0m
+[32;1m├───[0m[1menum[0m: [35;1munknown[0m
+[32;1m├───[0m[1mfloat[0m: [35;1munknown[0m
+[32;1m├───[0m[1mfunction[0m: [35;1munknown[0m
+[32;1m├───[0m[1mfunctionWithArgs[0m: [35;1munknown[0m
+[32;1m├───[0m[1mint[0m: [35;1munknown[0m
+[32;1m├───[0m[1mlist[0m: [35;1munknown[0m
+[32;1m├───[0m[1mopenStruct[0m: [35;1munknown[0m
+[32;1m├───[0m[1moption[0m: [35;1munknown[0m
+[32;1m├───[0m[1mpath[0m: [35;1munknown[0m
+[32;1m├───[0m[1mrestrict[0m: [35;1munknown[0m
+[32;1m├───[0m[1mstring[0m: [35;1munknown[0m
+[32;1m├───[0m[1mstruct[0m: [35;1munknown[0m
+[32;1m├───[0m[1msum[0m: [35;1munknown[0m
+[32;1m├───[0m[1mtype[0m: [35;1munknown[0m
+[32;1m└───[0m[1munit[0m: [35;1munknown[0m
