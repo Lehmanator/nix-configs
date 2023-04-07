@@ -41,6 +41,9 @@
     ".msi" = "01;32";
   };
 
+  # --- Prompt ---------------
+  programs.starship.enable = true;
+
   home.packages = [
     pkgs.figlet               # Print ASCII art text
     pkgs.nix-zsh-completions  # Completions for Nix, NixOS, NixOps, & ecosystem
