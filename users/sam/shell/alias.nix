@@ -29,6 +29,8 @@ in
     v     = "$VISUAL";
     vedit = "$VISUAL";
 
+    mkd   = "mkdir -p";
+
     # --- Programs ---------------
     w        = "which -a";
     ppath    = "echo \"$PATH\" | tr  ':' '\n'";
