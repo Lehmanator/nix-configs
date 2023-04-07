@@ -9,7 +9,7 @@
 {
   imports = [
     # TODO: Move any generic shell-agnostic settings here
-    ./shell.nix
+    ./common.nix
   ];
 
   # --- Default ---------------

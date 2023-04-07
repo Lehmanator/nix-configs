@@ -5,13 +5,14 @@
   self,
   inputs,
   system,
-  userPrimary, host,
+  host, network, repo,
+  userPrimary,
   config, lib, pkgs,
   ...
 }:
 {
   imports = [
-    ./shell-alias.nix
+    ./alias.nix
   ];
 
   # TODO: Find nix-related program from old config that was better

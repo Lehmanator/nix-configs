@@ -7,10 +7,12 @@
   ...
 }:
 let
+  inherit (lib) mkIf mkDefault;
 in
 {
   imports = [
   ];
+
 
   home.shellAliases = {
     # --- Directory Navigation ---
@@ -19,14 +21,13 @@ in
     "...." = "cd ../../..";
 
     # --- Files ------------------
-    b = "bat";
     c = "cat";
     e = "$EDITOR";
-    o = "xdg-open";
+    o = mkIf config.xdg.enable "xdg-open";
     v = "$VISUAL";
 
     # --- Programs ---------------
-    w = "which";
+    w = "which -a";
     ppath = "echo \"$PATH\" | tr -d ':' '\n'";
 
     # --- Privileges -------------
@@ -39,10 +40,20 @@ in
 
 
     # --- Home-Manager -----------
-    hm = "home-manager";
+    hm = mkIf config.programs.home-manager.enable "home-manager";
 
     # --- Development ------------
-    g = "git";
+    g = mkIf config.programs.git.enable "git";
+  };
 
+  # --- ZSH Global Aliases ---
+  # These aliases can be expanded anywhere in line
+  programs.zsh.shellGlobalAliases = {
+    CAT = "| cat";
+    RG = "| rg";
+    LO = "| lessopen";
+    "..." = "../..";
+    "...." = "../../..";
+    "....." = "../../../..";
   };
 }

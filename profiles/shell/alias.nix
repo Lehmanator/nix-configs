@@ -1,7 +1,8 @@
 {
   self, inputs,
   system,
-  host, userPrimary,
+  host, network, repo,
+  userPrimary,
   config, lib, pkgs,
   ...
 }:

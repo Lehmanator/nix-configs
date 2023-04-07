@@ -1,4 +1,7 @@
 {
+  self,
+  inputs,
+  host, network, repo,
   config, lib, pkgs,
   ...
 }:
@@ -17,5 +20,10 @@
     #theme = "TwoDark";
     theme = "Monokai Extended Light";
   };
-  programs.bat.themes = {};
+  programs.bat.themes = {
+  };
+
+  home.shellAliases.b = "bat";
+  programs.zsh.shellGlobalAliases.BAT = "| bat";
+  programs.zsh.shellGlobalAliases.B = "| bat";
 }

@@ -9,7 +9,8 @@
 }:
 {
   imports = [
-    ./shell-alias.nix
+    ./alias.nix
+    ./pager.nix
   ];
 
   programs.bash.enableVteIntegration = true;

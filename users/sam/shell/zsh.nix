@@ -6,9 +6,26 @@
   config, lib, pkgs,
   ...
 }:
+let
+  zsh-set-tab-title = ''
+    autoload -Uz add-zsh-hook
+    function xterm_title_precmd() {
+      print -Pn -- '\e]2;%n@%m %~\a'
+      [[ "$TERM" == 'screen'* ]] && print -Pn -- '\e_\005{g}%n\005{-}@\005{m}%m\005{-} \005{B}%~\005{-}\e\\'
+    }
+    function xterm_title_preexec () {
+      print -Pn -- '\e]2;%n@%m %~ %# ' && print -n -- "${"{(q)1}"}\a"
+     [[ "$TERM" == 'screen'* ]] && { print -Pn -- '\e_\005{g}%n\005{-}@\005{m}%m\005{-} \005{B}%~\005{-} %# ' && print -n -- "${"{(q)1}"}\e\\"; }
+    }
+    if [[ "$TERM" == (Eterm*|alacritty*|aterm*|foot*|gnome*|konsole*|kterm*|putty*|rxvt*|screen*|wezterm*|tmux*|xterm*) ]]; then
+      add-zsh-hook -Uz precmd  xterm_title_precmd
+      add-zsh-hook -Uz preexec xterm_title_preexec
+    fi
+  '';
+in
 {
   imports = [
-    ./shell.nix
+    ./common.nix
   ];
 
   programs.zsh.enable = true;
@@ -97,42 +114,11 @@
   programs.zsh.history.ignoreSpace = true;
   programs.zsh.historySubstringSearch.enable = true;
 
-  # --- Aliases ---
-  programs.zsh.shellGlobalAliases = {
-    BAT = "| bat";
-    CAT = "| cat";
-    RG = "| rg";
-    LO = "| lessopen";
-    "..." = "../..";
-    "...." = "../../..";
-    "....." = "../../../..";
-
-  };
-
   # --- Initialization -------------------------------------
-  #programs.zsh.initExtraBeforeCompInit = ''
-  #  zstyle ":completion:*" list-prompt   ""
-  #  zstyle ":completion:*" select-prompt ""
-  #'';
   programs.zsh.initExtra = ''
     function cdls() { exa -a --icons --git --group-directories-first }
     chpwd_functions=(cdls)
   '';
-  #  autoload -Uz add-zsh-hook
-  #  function xterm_title_precmd() {
-  #    print -Pn -- '\e]2;%n@%m %~\a'
-  #    [[ "$TERM" == 'screen'* ]] && print -Pn -- '\e_\005{g}%n\005{-}@\005{m}%m\005{-} \005{B}%~\005{-}\e\\'
-  #  }
-  #  function xterm_title_preexec () {
-  #    print -Pn -- '\e]2;%n@%m %~ %# ' && print -n -- "${"{(q)1}"}\a"
-  #    [[ "$TERM" == 'screen'* ]] && { print -Pn -- '\e_\005{g}%n\005{-}@\005{m}%m\005{-} \005{B}%~\005{-} %# ' && print -n -- "${"{(q)1}"}\e\\"; }
-  #  }
-  #
-  #  if [[ "$TERM" == (Eterm*|alacritty*|aterm*|foot*|gnome*|konsole*|kterm*|putty*|rxvt*|screen*|wezterm*|tmux*|xterm*) ]]; then
-  #    add-zsh-hook -Uz precmd  xterm_title_precmd
-  #    add-zsh-hook -Uz preexec xterm_title_preexec
-  #  fi
-  #'';
 
   # --- Plugins --------------------------------------------
   programs.zsh.prezto.enable = true;

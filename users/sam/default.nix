@@ -12,9 +12,9 @@
     ./editor/neovim.nix
     ./git.nix
     ./gnome/default.nix
-    ./pager.nix
-    ./shell-zsh.nix
+    ./shell/zsh.nix
     ./social/default.nix
+    ./xdg.nix
   ];
 
   nixpkgs.config.allowBroken = true;
@@ -22,47 +22,22 @@
   nixpkgs.overlays = [
     inputs.nur.overlay
   ];
+
   home.stateVersion = "23.05";
+  home.enableDebugInfo = true;
   home.enableNixpkgsReleaseCheck = true;
+  home.extraOutputsToInstall = [ "doc" "info" "devdoc" ];
+  home.sessionPath = [ 
+    config.xdg.userDirs.extraConfig.XDG_APPS_DIR
+    config.xdg.userDirs.extraConfig.XDG_BIN_DIR
+  ];
 
   home.packages = with pkgs; [
-    gnome.dconf-editor
-    gnome.gnome-autoar
-    gnome.gnome-dictionary
-    gnome.gnome-packagekit
-    gnome.gnome-sound-recorder
-    gnome.gnome-tweaks
-    gnome.ghex
-    gnome.simple-scan
-    gnome.totem
-    gnome.vinagre
-    gnome.zenity
-    gnome-builder
-    gnome-connections
-    gnome-doc-utils
-    gnome-epub-thumbnailer
-    gnome-extension-manager
-    gnome-firmware
-    gnome-frog
-    gnome-keysign
-    gnome-multi-writer
-    gnome-podcasts
-    gnome-obfuscate
-    gnome-recipes
-    gnome-secrets
-
-    clapper
-    gotktrix
-    gtkcord4
-    fractal-next
-    headlines
-    megapixels
-    newsflash
-
     bitwarden
     cmatrix
   ];
 
   programs.home-manager.enable = true;
-
+  services.home-manager.autoUpgrade.enable = true;
+  services.home-manager.autoUpgrade.frequency = "weekly";
 }

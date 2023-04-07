@@ -45,7 +45,7 @@ in
     gnome.dconf-editor
     gnome.devhelp
     gnome.ghex
-    #gnome.simple-scan
+    gnome.simple-scan
     gnome.totem
     gnome.vinagre
     gnome.zenity
@@ -98,5 +98,11 @@ in
   #config = lib.mkIf (cfg.desktopManager.gnome.enable == true) {
   #  services.xserver.desktopManager.gnome.extraGSettingsOverrides = ''
   #  '';
+  #};
+
+  #xdg.mimeApps.defaultApplications = {
+  #  "text/html" = [ "org.gnome.Epiphany.desktop" ];
+  #  "x-scheme-handler/https" = ["org.gnome.Epiphany.desktop"];
+  #  "x-scheme-handler/mailto" = ["org.gnome.Evolution.desktop"];
   #};
 }

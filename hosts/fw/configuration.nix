@@ -4,8 +4,9 @@
 { 
   self,
   system,
-  host, userPrimary,
   inputs,
+  host, network, repo,
+  userPrimary,
   config, lib, pkgs,
   ...
 }:
@@ -26,10 +27,10 @@
     ../../profiles/desktop/flatpak.nix
     ../../profiles/hardware/fprintd.nix
     ../../profiles/hardware/tpm2.nix
-    ../../profiles/locale-est.nix
+    ../../profiles/locale/est.nix
     ../../profiles/nixos.nix
     ../../profiles/polkit.nix
-    ../../profiles/shell-zsh.nix
+    ../../profiles/shell/zsh.nix
     ../../profiles/user-defaults.nix
     ../../profiles/virt/vm-host.nix
     ../../profiles/virt/wine.nix
