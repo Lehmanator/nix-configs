@@ -12,6 +12,9 @@
     # TODO: Check if desktop-icons extension provides this functionality
     add-to-desktop
 
+    # Widgets for calendar, CPU usage, network speed, & more
+    circular-widgets
+
     # Clock widget on desktop
     desktop-clock
 
