@@ -23,6 +23,9 @@
 
   environment.systemPackages = (with pkgs; [
     gnome-extension-manager
+
+    easy-effects
+    easyeffects-preset-selector  # environment.systemPackages = [pkgs.easyeffects];
   ]) ++ (with pkgs.gnomeExtensions; [
     # Display app indicator icons in the top panel
     # TODO: Determine best app indicator extension (DING, base, GTK4-ng, ...)
@@ -39,7 +42,6 @@
 
     # --- Integrations ------------
     # https://github.com/harshadgavali/searchprovider-for-browser-tabs
-    #easyeffects-preset-selector  # environment.systemPackages = [pkgs.easyeffects];
     gsconnect                     # Connect your phone
     #notifications-to-file        # Append notifications to a file in $HOME/.notifications
     pano                          # Clipboard manager
