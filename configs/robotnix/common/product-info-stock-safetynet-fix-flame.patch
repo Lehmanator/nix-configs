@@ -1,0 +1,40 @@
+From 8df17a36c369ec5bf72c169d18caf51ee930ecf9 Mon Sep 17 00:00:00 2001
+From: Danny Lin <danny@kdrag0n.dev>
+Date: Tue, 6 Apr 2021 23:29:00 -0700
+Subject: [PATCH] Update product info from stock
+
+Change-Id: Idde6811c2251b69bbd25a9ced7469499f79cb249
+---
+ aosp_coral.mk | 4 ++--
+ aosp_flame.mk | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/aosp_coral.mk b/aosp_coral.mk
+index bde1ce50..6805894e 100644
+--- a/aosp_coral.mk
++++ b/aosp_coral.mk
+@@ -64,7 +64,7 @@ ifneq (REL,$(PLATFORM_VERSION_CODENAME))
+ endif
+ 
+ PRODUCT_MANUFACTURER := Google
+-PRODUCT_BRAND := Android
++PRODUCT_BRAND := google
+ PRODUCT_NAME := aosp_coral
+ PRODUCT_DEVICE := coral
+-PRODUCT_MODEL := AOSP on coral
++PRODUCT_MODEL := Pixel 4 XL
+diff --git a/aosp_flame.mk b/aosp_flame.mk
+index 1b1c2021..da23bc9b 100644
+--- a/aosp_flame.mk
++++ b/aosp_flame.mk
+@@ -64,7 +64,7 @@ ifneq (REL,$(PLATFORM_VERSION_CODENAME))
+ endif
+ 
+ PRODUCT_MANUFACTURER := Google
+-PRODUCT_BRAND := Android
++PRODUCT_BRAND := google
+ PRODUCT_NAME := aosp_flame
+ PRODUCT_DEVICE := flame
+-PRODUCT_MODEL := AOSP on flame
++PRODUCT_MODEL := Pixel 4
+
