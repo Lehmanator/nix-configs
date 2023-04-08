@@ -8,7 +8,7 @@
   home.packages = [
     pkgs.nodejs
     pkgs.node2nix         # Convert npm packages to Nix
-    pkgs.npm-check-updates
+    pkgs.nodePackages_latest.npm-check-updates
     pkgs.zsh-better-npm-completion
     pkgs.prefetch-npm-deps
     pkgs.prefetch-yarn-deps
