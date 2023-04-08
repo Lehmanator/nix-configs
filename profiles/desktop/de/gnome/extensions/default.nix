@@ -24,7 +24,7 @@
   environment.systemPackages = (with pkgs; [
     gnome-extension-manager
 
-    easy-effects
+    easyeffects
     easyeffects-preset-selector  # environment.systemPackages = [pkgs.easyeffects];
   ]) ++ (with pkgs.gnomeExtensions; [
     # Display app indicator icons in the top panel
