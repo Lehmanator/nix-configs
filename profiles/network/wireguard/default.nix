@@ -9,12 +9,14 @@
 {
   imports = [
     #inputs.agenix.nixosModules.age
+    #inputs.sops-nix.nixosModules.sops
   ];
 
   networking.wireguard.enable = true;
-  networking.wireguard.intefaces.wg0 = {
+  networking.wireguard.interfaces.wg0 = {
     allowedIPsAsRoutes = true;       # default: true
     generatePrivateKeyFile = true;   # default: false
+    privateKeyFile = "/etc/wireguard/wg0.privkey";
     ips = [ "192.168.125.1/24" ];
     #listenPort = 42270;              # default: null  (51820)
     #mtu = 1420;                      # default: null

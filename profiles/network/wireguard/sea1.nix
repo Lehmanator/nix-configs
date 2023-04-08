@@ -6,11 +6,13 @@
   ...
 }:
 let
-  secretsDir = "/run/secrets";
-  #"/run/agenix"
-  #"/etc/wireguard"
-  #"/etc/keys/host/${host.hostname}"
-  sea1 = if allNetworks ? sea1 then allNetworks.sea1 else rec {
+  secretsDir = "/etc/wireguard";
+  #secretsDir = "/run/secrets";
+  #"/run/agenix";
+  #"/etc/keys/host/${host.hostname}";
+
+  #sea1 = if allNetworks ? sea1 then allNetworks.sea1 else rec {
+  sea1 = rec {
     name = "sea1";
     domain = "samlehman.me";
     ip = {
@@ -50,13 +52,16 @@ let
   settings-default = { allowedIPsAsRoutes = true; generatePrivateKey = true; mtu = 1420; };
   settings-admin = settings-default // {
     generatePrivateKey = false;
+    privateKeyFile = "${secretsDir}/sea1-admin.privkey";
     ips = ["192.168.123.1/24"];
     listenPort = 42270;
     peers = [peer-admin];
   };
   settings-ingress = settings-default // {
     ips = ["192.168.124.1/24"];
-    peers = [peer-ingress];
+    privateKeyFile = "${secretsDir}/sea1-ingress.privkey";
+    peers = [];
+    #peers = [peer-ingress];
   };
 
 in
@@ -85,16 +90,16 @@ in
     wg-sea1-ingress = {
       allowedIPsAsRoutes     = true;       # default: true
       generatePrivateKeyFile = true;
-      privateKeyFile = "${secretsDir}/wireguard-${sea1.name}-${sea1.services.ingress}.pub";
+      privateKeyFile = "${secretsDir}/sea1-ingress.privkey";
       ips = [ "192.168.124.1/24" ];
       listenPort = null; # default: null  (51820)
       mtu = 1420;                      # default: null
       peers = [
-        { allowedIPs = [ "45.42.244.62/32" "2602:fcc3::c00b/128" ];
-          endpoint = "${sea1.services.wireguard-ingress.subdomain}:${sea1.services.wireguard-ingress.port}";
-          persistentKeepalive = 25;   # default: null   # 10
-          #publicKey = "xTIBA5rboUvnH4htodjb6e697QjLERt1NAB4mZqp8Dg=";
-        }
+        #{ allowedIPs = [ "45.42.244.62/32" "2602:fcc3::c00b/128" ];
+        #  endpoint = "${sea1.services.wireguard-ingress.subdomain}:${sea1.services.wireguard-ingress.port}";
+        #  persistentKeepalive = 25;   # default: null   # 10
+        #  #publicKey = "xTIBA5rboUvnH4htodjb6e697QjLERt1NAB4mZqp8Dg=";
+        #}
       ];
     };
 
@@ -102,16 +107,23 @@ in
     wg-sea1-admin = {
       allowedIPsAsRoutes     = true;   # default: true
       generatePrivateKeyFile = false;  # default: 
+      privateKeyFile = "${secretsDir}/sea1-admin.privkey";
       ips = [ "192.168.123.1/24" ];
       listenPort = 42270;              # default: null  (51820)
       peers = [{
         allowedIPs = [ "45.42.244.62/32" "2602:fcc3::c00b/128" ];
         endpoint = "45.42.244.130:51420";  # 
         persistentKeepalive = 10;          # 25
-        publicKey = "xTIBA5rboUvnH4htodjb6e697QjLERt1NAB4mZqp8Dg=";
+        publicKey = "/XgG41yW5zjQvLJl3D6LKVx5UGMb5vmvQc5GHeW/oFc=";
+        #publicKey = "xTIBA5rboUvnH4htodjb6e697QjLERt1NAB4mZqp8Dg=";
       }];
     };
 
 
   };
+  environment.systemPackages = [
+    pkgs.kubectl
+    pkgs.k9s
+    pkgs.helm
+  ];
 }
