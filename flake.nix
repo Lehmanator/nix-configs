@@ -23,6 +23,7 @@
     flake-utils         = { url = "github:numtide/flake-utils";                                            };
     flake-utils-plus    = { url = "github:gytis-ivaskevicius/flake-utils-plus";                            };
     flake-compat        = { url = "github:edolstra/flake-compat";                           flake = false; };
+    android-nixpkgs     = { url = "github:tadfisher/android-nixpkgs";  inputs.nixpkgs.follows = "nixpkgs"; };
 
     #nur-local = {
     #  url = "path:./.nur";
@@ -42,7 +43,7 @@
     #)
 
     supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
-    forAllSystems = f: nixpkgs.lib.genAttrs supportedSystems (s: f s);
+    #forAllSystems = f: nixpkgs.lib.genAttrs supportedSystems (s: f s);
     system = "x86_64-linux";
     #networks = import ./networks.nix;
     #machines = import ./machines.nix;
@@ -72,6 +73,7 @@
 	  inputs.home.nixosModules.home-manager {
             home-manager.sharedModules = [
               inputs.sops-nix.homeManagerModules.sops
+              inputs.android-nixpkgs.hmModule
             ];
 	    home-manager.useGlobalPkgs = false;
 	    home-manager.useUserPackages = true;
