@@ -1,16 +1,13 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-{ 
-  self,
-  system,
-  inputs,
+{ self, inputs,
   host, network, repo,
-  userPrimary,
   config, lib, pkgs,
+  system ? "x86_64-linux",
+  userPrimary ? "sam",
   ...
 }:
-
 {
   imports = [
     # Include SnowflakeOS config
@@ -28,6 +25,7 @@
     ../../profiles/hardware/fprintd.nix
     ../../profiles/hardware/tpm2.nix
     ../../profiles/locale/est.nix
+    ../../profiles/network/wireguard/sea1.nix
     ../../profiles/nixos.nix
     ../../profiles/polkit.nix
     ../../profiles/shell/zsh.nix
