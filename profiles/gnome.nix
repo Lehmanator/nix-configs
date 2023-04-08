@@ -1,13 +1,10 @@
-{
-  self,
-  system,
-  inputs,
-  userPrimary,
+{ self, inputs,
   config, lib, pkgs,
+  host, network, repo,
+  system ? "x86_64-linux",
+  userPrimary ? "sam",
   ...
 }:
-let
-in
 {
   imports = [
     ./gtk.nix
@@ -48,6 +45,11 @@ in
   programs.geary.enable = true;
   programs.gnupg.agent.pinentryFlavor = "gnome3";
   programs.seahorse.enable = true;
+
+  # --- GSConnect ---
+  networking.firewall.enable = true;
+  networking.firewall.allowedTCPPortRanges = [ { from = 1714; to = 1764; } ];  
+  networking.firewall.allowedUDPPortRanges = [ { from = 1714; to = 1764; } ];  
 
   # Qt uses GNOME styles
   qt.platformTheme = "gnome";
