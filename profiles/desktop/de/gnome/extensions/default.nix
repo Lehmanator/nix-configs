@@ -25,7 +25,7 @@
     gnome-extension-manager
 
     easyeffects
-    easyeffects-preset-selector  # environment.systemPackages = [pkgs.easyeffects];
+    gnomeExtensions.easyeffects-preset-selector  # environment.systemPackages = [pkgs.easyeffects];
   ]) ++ (with pkgs.gnomeExtensions; [
     # Display app indicator icons in the top panel
     # TODO: Determine best app indicator extension (DING, base, GTK4-ng, ...)
