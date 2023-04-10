@@ -16,6 +16,8 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
 
+    ./displays.nix
+
     # Activate profiles
     ../../profiles/activedirectory/admin.nix
     ../../profiles/adb.nix
