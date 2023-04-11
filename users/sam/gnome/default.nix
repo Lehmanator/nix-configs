@@ -62,7 +62,6 @@ in
     #gnome-decoder
     gnome-doc-utils
     gnome-epub-thumbnailer
-    gnome-extension-manager
     gnome-firmware
     gnome-frog
     gnome-keysign
