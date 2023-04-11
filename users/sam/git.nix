@@ -65,8 +65,9 @@
   };
   programs.git.extraConfig = {
     core.whitespace = "trailing-space,space-before-tab";
+    pull.rebase = false;
     url = {
-      "ssh://git@github.com" = {
+      "git@github.com" = {
         insteadOf = "https://github.com";
       };
     };
