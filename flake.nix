@@ -23,7 +23,9 @@
     flake-utils         = { url = "github:numtide/flake-utils";                                            };
     flake-utils-plus    = { url = "github:gytis-ivaskevicius/flake-utils-plus";                            };
     flake-compat        = { url = "github:edolstra/flake-compat";                           flake = false; };
+
     android-nixpkgs     = { url = "github:tadfisher/android-nixpkgs";  inputs.nixpkgs.follows = "nixpkgs"; };
+    nvfetcher           = { url = "github:berberman/nvfetcher";        inputs.nixpkgs.follows = "nixpkgs"; };
 
     #nur-local = {
     #  url = "path:./.nur";
@@ -33,6 +35,7 @@
     #  url = "github:publicSam/nur-packages";
     #  inputs.nixpkgs.follows = "nixpkgs";
     #};
+
   };
   outputs = { self, nixpkgs, nur, flake-utils, flake-utils-plus, ... }@inputs: let
 
