@@ -14,7 +14,7 @@
     # - Evolution (Mail client)
     # - GNOME Online Accounts (all providers that support tasks)
     # - Thunderbird (Mail client)
-    task-widget
+    #task-widget
   ];
 
 }
