@@ -28,6 +28,10 @@ in
   #  { plugin = nvim-treesitter.withAllGrammars; }
   #];
 
+
+  # --- Editorconfig ---
+  editorconfig.enable = true;
+
   programs.nixvim.enable = true;
 
   programs.nixvim.highlight = {
@@ -828,9 +832,6 @@ in
 
     # --- Keymaps ----------------------
     easyescape.enable = true;
-
-    # --- Editorconfig ---
-    editorconfig.enable = true;
   };
 
 
