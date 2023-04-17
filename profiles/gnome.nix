@@ -20,7 +20,7 @@
     gnomeExtensions.appindicator
     gnomeExtensions.burn-my-windows
     gnomeExtensions.ddterm
-    gnomeExtensions.forge
+    #gnomeExtensions.forge
     gnomeExtensions.gsconnect
     gnomeExtensions.pano
     gnomeExtensions.shortcuts
