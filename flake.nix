@@ -29,22 +29,16 @@
 
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
-      inputs =  { nixpkgs.follows = "nixpkgs"; inputs.flake-utils.follows = "flake-utils"; };
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
     };
 
     lanzaboote = {
       url = "github:nix-community/lanzaboote";
-      inputs = { nixpkgs.follows = "nixpkgs"; flake-utils.follows = "flake-utils"; rust-overlay.follows = "rust-overlay"; };
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+      inputs.rust-overlay.follows = "rust-overlay";
     };
-
-    #nur-local = {
-    #  url = "path:./.nur";
-    #  inputs.nixpkgs.follows = "nixpkgs";
-    #};
-    #nur-repo = {
-    #  url = "github:publicSam/nur-packages";
-    #  inputs.nixpkgs.follows = "nixpkgs";
-    #};
 
   };
   outputs = { self, nixpkgs, nur, flake-utils, flake-utils-plus, ... }@inputs: let
@@ -55,7 +49,7 @@
     #  }
     #)
 
-    supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
+    #supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
     #forAllSystems = f: nixpkgs.lib.genAttrs supportedSystems (s: f s);
     system = "x86_64-linux";
     #networks = import ./networks.nix;
@@ -63,16 +57,6 @@
     #users = import ./users.nix;
   in
   {
-      #overlays.default = final: prev: {
-      #  <pname> = final.callPackages ./pkgs/<pname> { };
-      #};
-      #packages = forAllSystems (system: let
-      #  pkgs = import nixpkgs { inherit system; overlays = [self.overlays.default]; };
-      #in { 
-      #  inherit (pkgs) <pname>;
-      #});
-      #system = builtins.currentSystem or 
-
       nixosConfigurations."fw" = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [
