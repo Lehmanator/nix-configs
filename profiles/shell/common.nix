@@ -22,6 +22,7 @@
   programs.thefuck.alias = "fuck";
 
   # --- Shell Initialization -------------------------------
+  environment.variables.ZDOTDIR = "$HOME/.config/zsh";
 
   # --- Shell: All -----------
   environment.shellInit = ''

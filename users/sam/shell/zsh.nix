@@ -27,9 +27,11 @@ in
   imports = [
     ./common.nix
   ];
+  home.sessionVariables.ZDOTDIR = "${config.xdg.configHome}/zsh";  #"${config.home.homeDirectory}/.config/zsh";
 
   programs.zsh.enable = true;
-  programs.zsh.dotDir = if config.xdg.enable then "${config.xdg.configHome}/zsh" else "${config.homeDirectory}/.config/zsh";
+  programs.zsh.dotDir = config.home.sessionVariables.ZDOTDIR;
+  #programs.zsh.dotDir = if config.xdg.enable then "${config.xdg.configHome}/zsh" else "${config.homeDirectory}/.config/zsh";
 
   # --- Keybindings ---
   programs.zsh.defaultKeymap = "viins";
@@ -104,7 +106,7 @@ in
 
   # --- History ---
   programs.zsh.history.extended = true;
-  programs.zsh.history.ignorePatterns = [ 
+  programs.zsh.history.ignorePatterns = [
     "rm -r *"          "rm -rf *"
     "echo * > *key*"   "echo * > *secret*"
     "echo \"*\" > *key*" "echo \"*\" > *secret*"
