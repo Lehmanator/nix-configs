@@ -4,6 +4,10 @@
 
 - [ ] Check if package for `firefox-gnome-theme` exists, else create
 
+## GNOME Shell Extensions
+
+- [ ] [andyholmes/gnome-shell-extension-valent](https://github.com/andyholmes/gnome-shell-extension-valent)
+
 ## GNOME Apps
 
 - [ ] Flatseal
