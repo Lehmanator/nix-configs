@@ -1,0 +1,685 @@
+From c4a3132e81aaa9f6ebe8504fb2e8dd42bfe01a15 Mon Sep 17 00:00:00 2001
+From: Jan-Michael Brummer <jan.brummer@tabos.org>
+Date: Fri, 22 Jul 2022 19:01:55 +0200
+Subject: [PATCH] Add Microsoft 365 support
+
+Add Microsoft 365 provider to enable initial O365 integration (files).
+---
+ meson.build                         |  10 +
+ meson_options.txt                   |   3 +
+ src/goabackend/goamsgraphprovider.c | 534 ++++++++++++++++++++++++++++
+ src/goabackend/goamsgraphprovider.h |  42 +++
+ src/goabackend/goaprovider.c        |   4 +
+ src/goabackend/meson.build          |   1 +
+ 6 files changed, 594 insertions(+)
+ create mode 100644 src/goabackend/goamsgraphprovider.c
+ create mode 100644 src/goabackend/goamsgraphprovider.h
+
+diff --git a/meson.build b/meson.build
+index c9270d59..d2811922 100644
+--- a/meson.build
++++ b/meson.build
+@@ -200,6 +200,15 @@ config_h.set_quoted('GOA_WINDOWS_LIVE_CLIENT_ID', windows_live_client_id)
+ enable_windows_live = get_option('windows_live')
+ config_h.set('GOA_WINDOWS_LIVE_ENABLED', enable_windows_live)
+ 
++# Microsoft Graph API account
++config_h.set_quoted('GOA_MS_GRAPH_NAME', 'ms_graph')
++
++ms_graph_client_id = get_option('ms_graph_client_id')
++config_h.set_quoted('GOA_MSGRAPH_CLIENT_ID', ms_graph_client_id)
++
++enable_ms_graph = get_option('ms_graph')
++config_h.set('GOA_MS_GRAPH_ENABLED', enable_ms_graph)
++
+ # Optional timerfd support
+ timerfd_support_src = '''
+   #include <sys/timerfd.h>
+@@ -303,6 +312,7 @@ summary({
+     'Microsoft Exchange': enable_exchange,
+     'ownCloud': enable_owncloud,
+     'Windows Live': enable_windows_live,
++    'MS Graph': enable_ms_graph,
+   },
+   bool_yn: true,
+   section: 'Providers',
+diff --git a/meson_options.txt b/meson_options.txt
+index 6c8f32be..4f77a577 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -24,6 +24,9 @@ option('owncloud', type: 'boolean', value: true, description: 'Enable ownCloud p
+ option('windows_live', type: 'boolean', value: true, description: 'Enable Windows Live provider')
+ option('windows_live_client_id', type: 'string', value: '0000000044067703', description: 'Windows Live OAuth 2.0 client id')
+ 
++option('ms_graph', type: 'boolean', value: true, description: 'Enable Microsoft 365 provider')
++option('ms_graph_client_id', type: 'string', value: '6d893b55-dcd2-47c3-966c-67cbc73df7e0', description: 'Microsoft 365 client id')
++
+ option('gtk_doc', type: 'boolean', value: false, description: 'use gtk_doc to build documentation')
+ option('introspection', type: 'boolean', value: true, description: 'Enable GObject Introspection (depends on GObject)')
+ option('man', type: 'boolean', value: false, description: 'enable man pages')
+diff --git a/src/goabackend/goamsgraphprovider.c b/src/goabackend/goamsgraphprovider.c
+new file mode 100644
+index 00000000..371f49f0
+--- /dev/null
++++ b/src/goabackend/goamsgraphprovider.c
+@@ -0,0 +1,534 @@
++/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
++/*
++ * Copyright Â© 2019 VilÃ©m HoÅ™Ã­nek
++ * Copyright Â© 2022 Jan-Michael Brummer
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public
++ * License as published by the Free Software Foundation; either
++ * version 2 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General
++ * Public License along with this library; if not, see <http://www.gnu.org/licenses/>.
++ */
++
++#include "config.h"
++
++#include <glib/gi18n-lib.h>
++
++#include <rest/rest-proxy.h>
++#include <json-glib/json-glib.h>
++
++#include "goaprovider.h"
++#include "goaprovider-priv.h"
++#include "goamsgraphprovider.h"
++#include "goarestproxy.h"
++#include "goaobjectskeletonutils.h"
++#include "goautils.h"
++
++struct _GoaMsGraphProvider
++{
++  GoaOAuth2Provider parent_instance;
++
++  char *type;
++  char *client_id;
++  char *redirect_uri;
++  char *authorization_uri;
++  char *token_uri;
++  char *client_secret;
++};
++
++G_DEFINE_TYPE_WITH_CODE (GoaMsGraphProvider, goa_ms_graph_provider, GOA_TYPE_OAUTH2_PROVIDER,
++                         goa_provider_ensure_extension_points_registered ();
++                         g_io_extension_point_implement (GOA_PROVIDER_EXTENSION_POINT_NAME,
++                                                         g_define_type_id,
++                                                         GOA_MS_GRAPH_NAME, 0));
++
++typedef struct
++{
++  GCancellable *cancellable;
++
++  GtkDialog *dialog;
++  GMainLoop *loop;
++
++  GtkWidget *grid;
++  GtkWidget *combobox;
++  GtkWidget *expander;
++  GtkWidget *client_id_entry;
++  GtkWidget *redirect_uri_entry;
++  GtkWidget *connect_button;
++  GtkWidget *client_secret_entry;
++  GError *error;
++} AddAccountData;
++
++/* -------------------------------------------------------------------------- */
++
++static const gchar *
++get_provider_type (GoaProvider *provider)
++{
++  return GOA_MS_GRAPH_NAME;
++}
++
++static gchar *
++get_provider_name (GoaProvider *provider,
++                   GoaObject   *object)
++{
++  return g_strdup (_("Microsoft 365"));
++}
++
++static GIcon *
++get_provider_icon (GoaProvider *provider,
++                   GoaObject   *object)
++{
++  return g_themed_icon_new_with_default_fallbacks ("goa-account-msn");
++}
++
++static GoaProviderGroup
++get_provider_group (GoaProvider *provider)
++{
++  return GOA_PROVIDER_GROUP_BRANDED;
++}
++
++static GoaProviderFeatures
++get_provider_features (GoaProvider *provider)
++{
++  return GOA_PROVIDER_FEATURE_BRANDED |
++         GOA_PROVIDER_FEATURE_FILES;
++}
++
++static void
++update_uri_by_type (GoaMsGraphProvider *self)
++{
++  self->authorization_uri = g_strdup_printf ("https://login.microsoftonline.com/%s/oauth2/v2.0/authorize", self->type);
++  self->token_uri = g_strdup_printf ("https://login.microsoftonline.com/%s/oauth2/v2.0/token", self->type);
++}
++
++static const gchar *
++get_authorization_uri (GoaOAuth2Provider *oauth2_provider)
++{
++  GoaMsGraphProvider *self = GOA_MS_GRAPH_PROVIDER (oauth2_provider);
++  return self->authorization_uri;
++}
++
++static const gchar *
++get_token_uri (GoaOAuth2Provider *oauth2_provider)
++{
++  GoaMsGraphProvider *self = GOA_MS_GRAPH_PROVIDER (oauth2_provider);
++  return self->token_uri;
++}
++
++static const gchar *
++get_redirect_uri (GoaOAuth2Provider *oauth2_provider)
++{
++  GoaMsGraphProvider *self = GOA_MS_GRAPH_PROVIDER (oauth2_provider);
++  return self->redirect_uri;
++}
++
++static const gchar *
++get_scope (GoaOAuth2Provider *oauth2_provider)
++{
++  return "offline_access files.readwrite files.readwrite.all sites.read.all sites.readwrite.all";
++}
++
++static const gchar *
++get_client_id (GoaOAuth2Provider *oauth2_provider)
++{
++  GoaMsGraphProvider *self = GOA_MS_GRAPH_PROVIDER (oauth2_provider);
++  return self->client_id;
++}
++
++static const gchar *
++get_client_secret (GoaOAuth2Provider *oauth2_provider)
++{
++  GoaMsGraphProvider *self = GOA_MS_GRAPH_PROVIDER (oauth2_provider);
++  return self->client_secret;
++}
++
++static gchar *
++build_authorization_uri (GoaOAuth2Provider *self,
++                         const gchar       *authorization_uri,
++                         const gchar       *escaped_redirect_uri,
++                         const gchar       *escaped_client_id,
++                         const gchar       *escaped_scope)
++{
++  return g_strdup_printf ("%s"
++                          "?client_id=%s"
++                          "&response_type=code"
++                          "&redirect_uri=%s"
++                          "&response_mode=query"
++                          "&scope=%s",
++                          authorization_uri,
++                          escaped_client_id,
++                          escaped_redirect_uri,
++                          escaped_scope);
++}
++
++/* -------------------------------------------------------------------------- */
++
++static gchar *
++get_identity_sync (GoaOAuth2Provider  *oauth2_provider,
++                   const gchar        *access_token,
++                   gchar             **out_presentation_identity,
++                   GCancellable       *cancellable,
++                   GError            **error)
++{
++  JsonParser *parser = NULL;
++  JsonObject *json_object = NULL;
++  RestProxy *proxy = NULL;
++  RestProxyCall *call = NULL;
++  GError *identity_error = NULL;
++  gchar *authorization = NULL;
++  gchar *presentation_identity = NULL;
++  gchar *id = NULL;
++  gchar *ret = NULL;
++
++  authorization = g_strconcat ("Bearer ", access_token, NULL);
++
++  proxy = goa_rest_proxy_new ("https://graph.microsoft.com/v1.0/me/drive", FALSE);
++  call = rest_proxy_new_call (proxy);
++  rest_proxy_call_set_method (call, "GET");
++  rest_proxy_call_add_header (call, "Authorization", authorization);
++
++  if (!rest_proxy_call_sync (call, error))
++    {
++        goto out;
++    }
++  if (rest_proxy_call_get_status_code (call) != 200)
++    {
++      g_set_error (error,
++                   GOA_ERROR,
++                   GOA_ERROR_FAILED,
++                   _("Expected status 200 when requesting your identity, instead got status %d (%s)"),
++                   rest_proxy_call_get_status_code (call),
++                   rest_proxy_call_get_status_message (call));
++      goto out;
++    }
++
++  parser = json_parser_new ();
++  if (!json_parser_load_from_data (parser,
++                                   rest_proxy_call_get_payload (call),
++                                   rest_proxy_call_get_payload_length (call),
++                                   &identity_error))
++    {
++      g_debug ("json_parser_load_from_data() failed: %s (%s, %d)",
++               identity_error->message,
++               g_quark_to_string (identity_error->domain),
++               identity_error->code);
++      g_set_error (error,
++                   GOA_ERROR,
++                   GOA_ERROR_FAILED,
++                   _("Could not parse response"));
++      goto out;
++    }
++
++  json_object = json_node_get_object (json_parser_get_root (parser));
++  if (!json_object_has_member (json_object, "owner"))
++    {
++      g_debug ("Did not find owner in JSON data");
++      g_set_error (error,
++                   GOA_ERROR,
++                   GOA_ERROR_FAILED,
++                   _("Could not parse response"));
++      goto out;
++    }
++
++  json_object = json_object_get_object_member (json_object, "owner");
++  if (!json_object_has_member (json_object, "user"))
++    {
++      g_debug ("Did not find user in JSON data");
++      g_set_error (error,
++                   GOA_ERROR,
++                   GOA_ERROR_FAILED,
++                   _("Could not parse response"));
++      goto out;
++    }
++  json_object = json_object_get_object_member (json_object, "user");
++
++  id = g_strdup (json_object_get_string_member (json_object, "id"));
++
++  presentation_identity = g_strdup (json_object_get_string_member (json_object, "displayName"));
++  ret = id;
++  id = NULL;
++  if (out_presentation_identity != NULL)
++    {
++      *out_presentation_identity = presentation_identity;
++      presentation_identity = NULL;
++    }
++
++out:
++  g_clear_object (&parser);
++  g_clear_error (&identity_error);
++  g_clear_object (&call);
++  g_clear_object (&proxy);
++  g_free (authorization);
++  g_free (id);
++  g_free (presentation_identity);
++  return ret;
++}
++
++static gboolean
++build_object (GoaProvider        *provider,
++              GoaObjectSkeleton  *object,
++              GKeyFile           *key_file,
++              const gchar        *group,
++              GDBusConnection    *connection,
++              gboolean            just_added,
++              GError            **error)
++{
++  GoaMsGraphProvider *self = GOA_MS_GRAPH_PROVIDER (provider);
++  GoaAccount *account = NULL;
++  const gchar *email_address = NULL;
++  gboolean files_enabled = FALSE;
++  gchar *uri_onedrive = NULL;
++  gboolean ret = FALSE;
++
++  if (!GOA_PROVIDER_CLASS (goa_ms_graph_provider_parent_class)->build_object (provider,
++                                                                              object,
++                                                                              key_file,
++                                                                              group,
++                                                                              connection,
++                                                                              just_added,
++                                                                              error))
++    goto out;
++
++  account = goa_object_get_account (GOA_OBJECT (object));
++  email_address = goa_account_get_identity (account);
++
++  /* Files */
++  files_enabled = g_key_file_get_boolean (key_file, group, "FilesEnabled", NULL);
++  uri_onedrive = g_strconcat ("onedrive://", email_address, "/", NULL);
++  goa_object_skeleton_attach_files (object, uri_onedrive, files_enabled, FALSE);
++  g_free (uri_onedrive);
++
++  self->type = g_key_file_get_string (key_file, group, "Type", NULL);
++  self->client_id = g_key_file_get_string (key_file, group, "ClientId", NULL);
++  self->client_secret = g_key_file_get_string (key_file, group, "ClientSecret", NULL);
++  self->redirect_uri = g_key_file_get_string (key_file, group, "RedirectUri", NULL);
++  update_uri_by_type (self);
++
++  if (just_added)
++    {
++      goa_account_set_files_disabled (account, !files_enabled);
++
++      g_signal_connect (account,
++                        "notify::files-disabled",
++                        G_CALLBACK (goa_util_account_notify_property_cb),
++                        (gpointer) "FilesEnabled");
++    }
++
++  ret = TRUE;
++
++out:
++  g_clear_object (&account);
++  return ret;
++}
++
++static void
++add_account_key_values (GoaOAuth2Provider *oauth2_provider,
++                        GVariantBuilder   *builder)
++{
++  GoaMsGraphProvider *self = GOA_MS_GRAPH_PROVIDER (oauth2_provider);
++
++  g_variant_builder_add (builder, "{ss}", "FilesEnabled", "true");
++
++  g_variant_builder_add (builder, "{ss}", "ClientId", self->client_id);
++  g_variant_builder_add (builder, "{ss}", "ClientSecret", self->client_secret);
++  g_variant_builder_add (builder, "{ss}", "Type", self->type);
++  g_variant_builder_add (builder, "{ss}", "RedirectUri", self->redirect_uri);
++}
++
++static void
++create_account_details_ui (GoaProvider    *provider,
++                           GtkDialog      *dialog,
++                           GtkBox         *vbox,
++                           gboolean        new_account,
++                           AddAccountData *data)
++{
++  GtkWidget *label;
++  GtkWidget *grid1;
++  GtkStyleContext *context;
++
++  goa_utils_set_dialog_title (provider, dialog, new_account);
++
++  data->grid = gtk_grid_new ();
++  gtk_container_set_border_width (GTK_CONTAINER (data->grid), 12);
++  gtk_orientable_set_orientation (GTK_ORIENTABLE (data->grid), GTK_ORIENTATION_VERTICAL);
++  gtk_grid_set_column_spacing (GTK_GRID (data->grid), 6);
++  gtk_grid_set_row_spacing (GTK_GRID (data->grid), 12);
++  gtk_container_add (GTK_CONTAINER (vbox), data->grid);
++
++  /* Tenant: Representative of an organization in Microsoft 365 */
++  label = gtk_label_new_with_mnemonic (_("Tenant"));
++  context = gtk_widget_get_style_context (label);
++  gtk_style_context_add_class (context, GTK_STYLE_CLASS_DIM_LABEL);
++  gtk_widget_set_halign (label, GTK_ALIGN_END);
++  gtk_grid_attach (GTK_GRID (data->grid), label, 0, 0, 1, 1);
++
++  data->combobox = gtk_combo_box_text_new ();
++  gtk_widget_set_hexpand (data->combobox, TRUE);
++  gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (data->combobox), "common", _("Common"));
++  gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (data->combobox), "organizations", _("Organizations"));
++  gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (data->combobox), "consumers", _("Consumers"));
++  gtk_combo_box_set_active (GTK_COMBO_BOX (data->combobox), 0);
++  gtk_grid_attach (GTK_GRID (data->grid), data->combobox, 1, 0, 1, 1);
++
++  /* Expander */
++  data->expander = gtk_expander_new_with_mnemonic (_("_Custom"));
++  gtk_expander_set_expanded (GTK_EXPANDER (data->expander), FALSE);
++  gtk_expander_set_resize_toplevel (GTK_EXPANDER (data->expander), TRUE);
++  gtk_grid_attach (GTK_GRID (data->grid), data->expander, 0, 1, 2, 1);
++
++  grid1 = gtk_grid_new ();
++  gtk_grid_set_column_spacing (GTK_GRID (grid1), 6);
++  gtk_grid_set_row_spacing (GTK_GRID (grid1), 12);
++  gtk_container_add (GTK_CONTAINER (data->expander), grid1);
++
++  label = gtk_label_new_with_mnemonic ("Client ID");
++  context = gtk_widget_get_style_context (label);
++  gtk_style_context_add_class (context, GTK_STYLE_CLASS_DIM_LABEL);
++  gtk_widget_set_halign (label, GTK_ALIGN_END);
++  gtk_grid_attach (GTK_GRID (grid1), label, 0, 0, 1, 1);
++
++  data->client_id_entry = gtk_entry_new ();
++  gtk_widget_set_hexpand (data->client_id_entry, TRUE);
++  gtk_entry_set_activates_default (GTK_ENTRY (data->client_id_entry), TRUE);
++  gtk_entry_set_text (GTK_ENTRY (data->client_id_entry), get_client_id (GOA_OAUTH2_PROVIDER (provider)));
++  gtk_grid_attach (GTK_GRID (grid1), data->client_id_entry, 1, 0, 1, 1);
++
++  /* Client Secret */
++  label = gtk_label_new_with_mnemonic ("Client Secret");
++  context = gtk_widget_get_style_context (label);
++  gtk_style_context_add_class (context, GTK_STYLE_CLASS_DIM_LABEL);
++  gtk_widget_set_halign (label, GTK_ALIGN_END);
++  gtk_grid_attach (GTK_GRID (grid1), label, 0, 1, 1, 1);
++
++  data->client_secret_entry = gtk_entry_new ();
++  gtk_widget_set_hexpand (data->client_secret_entry, TRUE);
++  gtk_entry_set_activates_default (GTK_ENTRY (data->client_secret_entry), TRUE);
++  gtk_entry_set_text (GTK_ENTRY (data->client_secret_entry), get_client_secret (GOA_OAUTH2_PROVIDER (provider)));
++  gtk_grid_attach (GTK_GRID (grid1), data->client_secret_entry, 1, 1, 1, 1);
++
++  label = gtk_label_new_with_mnemonic ("Redirect URI");
++  context = gtk_widget_get_style_context (label);
++  gtk_style_context_add_class (context, GTK_STYLE_CLASS_DIM_LABEL);
++  gtk_widget_set_halign (label, GTK_ALIGN_END);
++  gtk_grid_attach (GTK_GRID (grid1), label, 0, 2, 1, 1);
++
++  data->redirect_uri_entry = gtk_entry_new ();
++  gtk_widget_set_hexpand (data->redirect_uri_entry, TRUE);
++  gtk_entry_set_activates_default (GTK_ENTRY (data->redirect_uri_entry), TRUE);
++  gtk_entry_set_text (GTK_ENTRY (data->redirect_uri_entry), get_redirect_uri (GOA_OAUTH2_PROVIDER (provider)));
++  gtk_grid_attach (GTK_GRID (grid1), data->redirect_uri_entry, 1, 2, 1, 1);
++
++  gtk_label_set_mnemonic_widget (GTK_LABEL (label), data->redirect_uri_entry);
++  gtk_dialog_add_button (data->dialog, _("_Cancel"), GTK_RESPONSE_CANCEL);
++  data->connect_button = gtk_dialog_add_button (data->dialog, _("C_onnect"), GTK_RESPONSE_OK);
++  gtk_dialog_set_default_response (data->dialog, GTK_RESPONSE_OK);
++  gtk_dialog_set_response_sensitive (data->dialog, GTK_RESPONSE_OK, FALSE);
++
++  gtk_widget_set_sensitive (data->connect_button, TRUE);
++}
++
++static void
++dialog_response_cb (GtkDialog *dialog, gint response_id, gpointer user_data)
++{
++  AddAccountData *data = user_data;
++
++  if (response_id == GTK_RESPONSE_CANCEL || response_id == GTK_RESPONSE_DELETE_EVENT)
++    g_cancellable_cancel (data->cancellable);
++}
++
++static GoaObject *
++add_account (GoaProvider    *provider,
++             GoaClient      *client,
++             GtkDialog      *dialog,
++             GtkBox         *vbox,
++             GError        **error)
++{
++  AddAccountData data;
++  GoaObject *ret = NULL;
++  int response;
++  GoaMsGraphProvider *self = GOA_MS_GRAPH_PROVIDER (provider);
++  const char *client_id = NULL;
++
++  memset (&data, 0, sizeof (AddAccountData));
++  data.cancellable = g_cancellable_new ();
++  data.loop = g_main_loop_new (NULL, FALSE);
++  data.dialog = dialog;
++  data.error = NULL;
++
++  create_account_details_ui (provider, dialog, vbox, TRUE, &data);
++  gtk_widget_show_all (GTK_WIDGET (vbox));
++  g_signal_connect (dialog, "response", G_CALLBACK (dialog_response_cb), &data);
++
++  response = gtk_dialog_run (dialog);
++  if (response != GTK_RESPONSE_OK)
++    {
++      g_set_error (&data.error,
++                   GOA_ERROR,
++                   GOA_ERROR_DIALOG_DISMISSED,
++                   _("Dialog was dismissed"));
++      return ret;
++    }
++
++  self->type = g_strdup (gtk_combo_box_get_active_id (GTK_COMBO_BOX (data.combobox)));
++  update_uri_by_type (self);
++  client_id = gtk_entry_get_text (GTK_ENTRY (data.client_id_entry));
++  if (client_id)
++    self->client_id = g_strdup (client_id);
++
++  self->redirect_uri = g_strdup (gtk_entry_get_text (GTK_ENTRY (data.redirect_uri_entry)));
++  self->client_secret = g_strdup (gtk_entry_get_text (GTK_ENTRY (data.client_secret_entry)));
++
++  gtk_widget_set_visible (data.grid, FALSE);
++  gtk_widget_set_no_show_all (data.grid, TRUE);
++  gtk_widget_set_sensitive (data.connect_button, FALSE);
++
++  return GOA_PROVIDER_CLASS (goa_ms_graph_provider_parent_class)->add_account (provider, client, dialog, vbox, error);
++}
++
++/* -------------------------------------------------------------------------- */
++
++static void
++goa_ms_graph_provider_init (GoaMsGraphProvider *self)
++{
++  /* Initial setup */
++  self->type = g_strdup ("common");
++  self->client_id = g_strdup (GOA_MSGRAPH_CLIENT_ID);
++  self->redirect_uri = g_strdup ("https://login.microsoftonline.com/common/oauth2/nativeclient");
++  self->client_secret = g_strdup ("");
++  update_uri_by_type (self);
++}
++
++static void
++goa_ms_graph_provider_class_init (GoaMsGraphProviderClass *klass)
++{
++  GoaProviderClass *provider_class;
++  GoaOAuth2ProviderClass *oauth2_class;
++
++  provider_class = GOA_PROVIDER_CLASS (klass);
++  provider_class->get_provider_type = get_provider_type;
++  provider_class->get_provider_name = get_provider_name;
++  provider_class->get_provider_icon = get_provider_icon;
++  provider_class->get_provider_group = get_provider_group;
++  provider_class->get_provider_features = get_provider_features;
++  provider_class->build_object = build_object;
++  provider_class->add_account = add_account;
++
++  oauth2_class = GOA_OAUTH2_PROVIDER_CLASS (klass);
++  oauth2_class->get_authorization_uri = get_authorization_uri;
++  oauth2_class->get_client_id = get_client_id;
++  oauth2_class->get_client_secret = get_client_secret;
++  oauth2_class->get_identity_sync = get_identity_sync;
++  oauth2_class->get_redirect_uri = get_redirect_uri;
++  oauth2_class->get_scope = get_scope;
++  oauth2_class->get_token_uri = get_token_uri;
++  oauth2_class->add_account_key_values = add_account_key_values;
++
++  oauth2_class->build_authorization_uri = build_authorization_uri;
++}
+diff --git a/src/goabackend/goamsgraphprovider.h b/src/goabackend/goamsgraphprovider.h
+new file mode 100644
+index 00000000..c3310668
+--- /dev/null
++++ b/src/goabackend/goamsgraphprovider.h
+@@ -0,0 +1,42 @@
++/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
++/*
++ * Copyright Â© 2019 VilÃ©m HoÅ™Ã­nek
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public
++ * License as published by the Free Software Foundation; either
++ * version 2 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General
++ * Public License along with this library; if not, see <http://www.gnu.org/licenses/>.
++ */
++
++#if !defined (__GOA_BACKEND_INSIDE_GOA_BACKEND_H__) && !defined (GOA_BACKEND_COMPILATION)
++#error "Only <goabackend/goabackend.h> can be included directly."
++#endif
++
++#ifndef __GOA_MS_GRAPH_PROVIDER_H__
++#define __GOA_MS_GRAPH_PROVIDER_H__
++
++#include <glib-object.h>
++
++#include "goaoauth2provider.h"
++#include "goaoauth2provider-priv.h"
++
++G_BEGIN_DECLS
++
++#define GOA_TYPE_MS_GRAPH_PROVIDER (goa_ms_graph_provider_get_type ())
++G_DECLARE_FINAL_TYPE (GoaMsGraphProvider,
++                      goa_ms_graph_provider,
++                      GOA,
++                      MS_GRAPH_PROVIDER,
++                      GoaOAuth2Provider);
++
++G_END_DECLS
++
++#endif /* __GOA_MS_GRAPH_PROVIDER_H__ */
+diff --git a/src/goabackend/goaprovider.c b/src/goabackend/goaprovider.c
+index 7996150e..2f5c5fce 100644
+--- a/src/goabackend/goaprovider.c
++++ b/src/goabackend/goaprovider.c
+@@ -29,6 +29,7 @@
+ #include "goawindowsliveprovider.h"
+ #include "goamediaserverprovider.h"
+ #include "goalastfmprovider.h"
++#include "goamsgraphprovider.h"
+ 
+ #ifdef GOA_FEDORA_ENABLED
+ #include "goafedoraprovider.h"
+@@ -958,6 +959,9 @@ static struct
+ #endif
+ #ifdef GOA_MEDIA_SERVER_ENABLED
+   { GOA_MEDIA_SERVER_NAME, goa_media_server_provider_get_type },
++#endif
++#ifdef GOA_MS_GRAPH_ENABLED
++  { GOA_MS_GRAPH_NAME, goa_ms_graph_provider_get_type },
+ #endif
+   { NULL, NULL }
+ };
+diff --git a/src/goabackend/meson.build b/src/goabackend/meson.build
+index f5382b34..af531eb4 100644
+--- a/src/goabackend/meson.build
++++ b/src/goabackend/meson.build
+@@ -15,6 +15,7 @@ libgoa_backend_sources = files(
+   'goamailauth.c',
+   'goamailclient.c',
+   'goamediaserverprovider.c',
++  'goamsgraphprovider.c',
+   'goaobjectskeletonutils.c',
+   'goaowncloudprovider.c',
+   'goaprovider.c',
+-- 
+GitLab
+
+
