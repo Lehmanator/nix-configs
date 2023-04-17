@@ -65,6 +65,7 @@
   };
   programs.git.extraConfig = {
     core.whitespace = "trailing-space,space-before-tab";
+    init.defaultBranch = "main";
     pull.rebase = false;
     url = {
       "git@github.com" = {
