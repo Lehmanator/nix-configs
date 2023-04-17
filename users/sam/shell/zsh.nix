@@ -28,10 +28,12 @@ in
     ./common.nix
   ];
   home.sessionVariables.ZDOTDIR = "${config.xdg.configHome}/zsh";  #"${config.home.homeDirectory}/.config/zsh";
+  programs.zsh.dotDir = "${config.xdg.configHome}/zsh";
+  #programs.zsh.dotDir = config.home.sessionVariables.ZDOTDIR;
+  #programs.zsh.dotDir = if config.xdg.enable then "${config.xdg.configHome}/zsh" else "${config.homeDirectory}/.config/zsh";
+  #programs.zsh.dotDir = if config.xdg.configHome then "${config.xdg.configHome}/zsh" else "${config.homeDirectory}/.config/zsh";
 
   programs.zsh.enable = true;
-  programs.zsh.dotDir = config.home.sessionVariables.ZDOTDIR;
-  #programs.zsh.dotDir = if config.xdg.enable then "${config.xdg.configHome}/zsh" else "${config.homeDirectory}/.config/zsh";
 
   # --- Keybindings ---
   programs.zsh.defaultKeymap = "viins";
