@@ -25,6 +25,7 @@
     flake-compat        = { url = "github:edolstra/flake-compat";                           flake = false; };
 
     android-nixpkgs     = { url = "github:tadfisher/android-nixpkgs";  inputs.nixpkgs.follows = "nixpkgs"; };
+    nixGL               = { url = "github:guibou/nixGL";                                                   };
     nvfetcher           = { url = "github:berberman/nvfetcher";        inputs.nixpkgs.follows = "nixpkgs"; };
 
     rust-overlay = {
@@ -55,39 +56,39 @@
     #networks = import ./networks.nix;
     #machines = import ./machines.nix;
     #users = import ./users.nix;
-  in
-  {
-      nixosConfigurations."fw" = nixpkgs.lib.nixosSystem {
-        inherit system;
-        modules = [
-          ./hosts/fw/configuration.nix
-          inputs.snowflake.nixosModules.snowflake
-          inputs.nix-data.nixosModules.${system}.nix-data
-	  inputs.nixos-hardware.nixosModules.framework-12th-gen-intel
-	  inputs.nur.nixosModules.nur
-          inputs.agenix.nixosModules.default
-          inputs.sops-nix.nixosModules.sops
-	  inputs.home.nixosModules.home-manager {
-            home-manager.sharedModules = [
-              inputs.sops-nix.homeManagerModules.sops
-              inputs.android-nixpkgs.hmModule
+  in {
+    nixosConfigurations."fw" = nixpkgs.lib.nixosSystem {
+      inherit system;
+      modules = [
+        ./hosts/fw/configuration.nix
+        inputs.snowflake.nixosModules.snowflake
+        inputs.nix-data.nixosModules.${system}.nix-data
+        inputs.nixos-hardware.nixosModules.framework-12th-gen-intel
+        inputs.nur.nixosModules.nur
+        inputs.agenix.nixosModules.default
+        inputs.sops-nix.nixosModules.sops
+        inputs.home.nixosModules.home-manager {
+          home-manager = {
+            sharedModules = with inputs; [
+              sops-nix.homeManagerModules.sops
+              android-nixpkgs.hmModule
             ];
-	    home-manager.useGlobalPkgs = false;
-	    home-manager.useUserPackages = true;
-	    home-manager.extraSpecialArgs = {
-	      inherit self;
-	      inherit inputs;
-	      inherit system;
-	    };
-	    home-manager.users.sam = import ./users/sam;
-	  }
-        ];
-        specialArgs = {
-	  inherit self;
-	  inherit inputs;
-	  inherit system;
-	};
+            useGlobalPkgs = false;
+            useUserPackages = true;
+            extraSpecialArgs = { inherit self inputs system; };
+            users.sam = import ./users/sam;   # ./users/sam/home.nix
+          };
+        }
+      ];
+      specialArgs = { inherit self inputs system; };
     };
+
+    #homeConfigurations.sam = inputs.home.lib.homeManagerConfiguration {
+    #  inherit pkgs;
+    #  modules = [
+    #    ./users/sam   #./users/sam/home.nix
+    #  ];
+    #};
 
 
     #modules = flake-utils.lib.eachDefaultSystem (system: let
@@ -100,7 +101,7 @@
       #  nur = import inputs.nur {
       #    inherit pkgs nurpkgs;
       #    repoOverrides = {
-      #      #local     = import inputs.nur-local { inherit pkgs; }; 
+      #      #local     = import inputs.nur-local { inherit pkgs; };
       #      #publicSam = import inputs.nur-repo { inherit pkgs; };
       #    };
       #  }; };
@@ -112,8 +113,8 @@
       #  nur = import inputs.nur {
       #    inherit pkgs nurpkgs;
       #    repoOverrides = {
-      #      #local    = import inputs.nur-local { inherit pkgs; }; 
-      #      #publicSam = import inputs.nur-repo { inherit pkgs; }; 
+      #      #local    = import inputs.nur-local { inherit pkgs; };
+      #      #publicSam = import inputs.nur-repo { inherit pkgs; };
       #    };
       #  };
       #})];
