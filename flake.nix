@@ -27,6 +27,7 @@
     android-nixpkgs     = { url = "github:tadfisher/android-nixpkgs";  inputs.nixpkgs.follows = "nixpkgs"; };
     nixGL               = { url = "github:guibou/nixGL";                                                   };
     nvfetcher           = { url = "github:berberman/nvfetcher";        inputs.nixpkgs.follows = "nixpkgs"; };
+    arkenfox            = { url = "github:dwarfmaster/arkenfox-nixos"; inputs.nixpkgs.follows = "nixpkgs"; };
 
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
@@ -70,8 +71,9 @@
         inputs.home.nixosModules.home-manager {
           home-manager = {
             sharedModules = with inputs; [
-              sops-nix.homeManagerModules.sops
               android-nixpkgs.hmModule
+              arkenfox.hmModules.default
+              sops-nix.homeManagerModules.sops
             ];
             useGlobalPkgs = false;
             useUserPackages = true;
