@@ -1,5 +1,5 @@
 {
-  self, 
+  self,
   modulesPath,
   system,
   inputs, outputs,
@@ -39,6 +39,7 @@ in
     #./view-video.nix
 
     #./apps
+    ./extensions/forge.nix
   ];
 
   home.packages = with pkgs; [
