@@ -74,6 +74,7 @@ in
 
     clapper
     endeavour
+    gimp-with-plugins
     megapixels
     newsflash
   ];
