@@ -1,7 +1,8 @@
-{ self, inputs, system, config, lib, pkgs, ... }: let
-in {
+{ self, inputs, system, config, lib, pkgs, ... }:
+{
   imports = [
     #./gnome-chat.nix
+    ./apps/social.nix
   ];
 
   home.packages = with pkgs; [
