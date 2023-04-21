@@ -30,6 +30,6 @@
     target = "forge/stylesheet/forge/stylesheet.css";
     # Original close button:
     # background-color: #e06666;
-    source = ./force.css;
+    source = ./forge.css;
   };
 }
