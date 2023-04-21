@@ -1,0 +1,17 @@
+
+# --- Social ---------------------------
+
+[chatty]
+#src.git = "https://source.puri.sm/Librem5/chatty"
+#src.branch = "master"
+src.git = "https://source.puri.sm/Librem5/chatty/-/merge_requests/1202.patch"
+fetch.git = "https://source.puri.sm/Librem5/chatty"
+git.fetchSubmodules = true
+
+[fractal-next]
+fetch.git = "https://gitlab.gnome.org/GNOME/fractal"
+src.git = "https://gitlab.gnome.org/GNOME/fractal"
+src.branch = "main"
+git.fetchSubmodules = true
+cargo_locks = [ "Cargo.lock" ]
+

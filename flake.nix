@@ -45,6 +45,8 @@
   };
   outputs = { self, nixpkgs, nur, flake-utils, flake-utils-plus, ... }@inputs: let
 
+    this = import ./pkgs;
+
     #flake-utils.lib.eachDefaultSystem (system:
     #  let pkgs = nixpkgs.legacyPackages.${system}; in {
     #    nurpkgs = import nixpkgs { inherit system; };
@@ -57,7 +59,27 @@
     #networks = import ./networks.nix;
     #machines = import ./machines.nix;
     #users = import ./users.nix;
-  in {
+  in #flake-utils.lib.eachSystem [ "aarch64-linux" "x86_64-linux" ]A (system:
+     #let pkgs = import nixpkgs { inherit system; overlays = [ self.overlays.default ];};)
+    flake-utils.lib.eachDefaultSystem ( system: let pkgs = nixpkgs.legacyPackages.${system} // {
+      overlays = [
+        self.overlays.default
+        #inputs.terrasops.overlay
+      ];
+    };
+    in rec {
+      formatter = pkgs.nixpkgs-fmt;
+      packages = this.packages pkgs; # // { inherit (pkgs) terrasops; };
+      legacyPackages = pkgs;
+      devShells.default = with pkgs; mkShell {
+        nativeBuildInputs = [ colmena mdbook
+          #terrasops
+          nvfetcher
+        ];
+      };
+    }
+  ) // {
+    overlays.default = final: prev: (nixpkgs.lib.composeExtensions this.overlay final prev);
     nixosConfigurations."fw" = nixpkgs.lib.nixosSystem {
       inherit system;
       modules = [
