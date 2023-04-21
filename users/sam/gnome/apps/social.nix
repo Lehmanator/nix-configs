@@ -34,9 +34,10 @@
 
   home.packages = [
     #pkgs.chatty-gtk4
+    pkgs.chatty
     pkgs.dino
     pkgs.fractal-next
-    #pkgs.pidgin
-    #pkgs.flare
+    #pkgs.pidgin     # TODO: Add libpurple/pidgin plugins
+    #pkgs.flare-signal
   ];
 }
