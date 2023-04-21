@@ -72,6 +72,7 @@ in
     gnome-recipes
     gnome-secrets
 
+    blackbox-terminal
     clapper
     endeavour
     gimp-with-plugins
