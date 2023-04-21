@@ -107,7 +107,7 @@
       .window-tabbed-tab {
         background-color: rgba(54, 47, 45, 0.3);
         border-color: #242424;
-        #border-color: rgba(17,199,224,0.4);
+        /* border-color: rgba(17,199,224,0.4); */
         border-width: 1px;
         border-radius: 8px;
         color: white;
