@@ -11,6 +11,12 @@
   # --- Packages -----------------------
   # Use Nix package manager package with builtin flakes support
   nix.package = pkgs.nixFlakes;
+
+  # https://nixos.wiki/wiki/Flakes
+  # Note: channels & nixPath are legacy, but still often used by tooling
+  nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+  #nix.nixPath = let path = toString ./.; in [ "repl=${path}/repl.nix" "nixpkgs=${inputs.nixpkgs}" ];
+
   nix.settings.accept-flake-config = true;
 
   environment.shellAliases.ndoc = "manix \"\" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | fzf --preview=\"manix '{}'\" | xargs manix";
@@ -41,7 +47,7 @@
   # --- Config: nix.conf ---------------
 
   # --- Optimization -------------------
-  nix.gc.automatic = true;                  # Collect garbage 
+  nix.gc.automatic = true;                  # Collect garbage
   nix.optimise.automatic = true;            # Store optimizer
   nix.settings.auto-optimise-store = true;  # Dedup
   nix.settings.min-free = 128000000;
@@ -117,7 +123,7 @@
 
   # --- Overlays -----------------------
   # Nix overlays are used to override packages
-  nixpkgs.overlays = [ 
+  nixpkgs.overlays = [
     inputs.nur.overlay
     (final: prev: { gnome-decoder = prev.gnome-decoder.overrideAttrs (attrs: {
       preBuild = ''

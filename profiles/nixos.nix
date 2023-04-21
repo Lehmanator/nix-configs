@@ -9,9 +9,9 @@
 let
   # TODO: Randomize & actually use
   figs = [
-    "nancyj-underlined" "nvscript" "jazmine" "o8" "ogre"  "puffy" 
-    "rectangles"        "rev"      "roman"   "rowancap" 
-    "rozzo"             "cursive"  "script"  "slant" 
+    "nancyj-underlined" "nvscript" "jazmine" "o8" "ogre"  "puffy"
+    "rectangles"        "rev"      "roman"   "rowancap"
+    "rozzo"             "cursive"  "script"  "slant"
     "standard"          "starwars" "thick"   "univers"  "whimsy"
   ];
 in
@@ -19,6 +19,8 @@ in
   imports = [
     ./nix.nix
   ];
+
+  nix.nixPath = [ "nixos=${inputs.nixos}" ];  #"nixos=${inputs.nixpkgs}"
 
   # TODO: Abstract out sudo program
   environment.shellAliases = {

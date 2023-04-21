@@ -4,6 +4,7 @@
   };
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixos.url = "github:NixOS/nixpkgs/nixos-unstable";
     snowflake           = { url = "github:snowflakelinux/snowflake-modules";                               };
     nix-data            = { url = "github:snowflakelinux/nix-data";                                        };
     nix-software-center = { url = "github:vlinkz/nix-software-center";                                     };
