@@ -25,11 +25,13 @@
 
   # --- Unavailable Apps ---
   # Use flatpak
-  # - List             (https://github.com/mrvladus/List)
-  # - Plannner         (https://github.com/alainm23/planner)
-  # - Punchclock       (https://gitlab.com/floers/punchclock)
-  # - Sticky Notes     (https://github.com/vixalien/sticky)
-  # - ThisWeekInMyLife (https://github.com/zhrexl/ThisWeekInMyLife)
+  # - Done              (https://github.com/done-devs/done)
+  # - List              (https://github.com/mrvladus/List)
+  # - Plannner          (https://github.com/alainm23/planner)
+  # - Punchclock        (https://gitlab.com/floers/punchclock)
+  # - Reminders         (https://github.com/dgsasha/remembrance)
+  # - Sticky Notes      (https://github.com/vixalien/sticky)
+  # - ThisWeekInMyLife  (https://github.com/zhrexl/ThisWeekInMyLife)
   # - vNotes
   #
 }

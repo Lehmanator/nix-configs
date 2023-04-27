@@ -12,8 +12,11 @@
     #./social.nix
     #./settings
 
-    # TODO: Create ./settings/default.nix
-    #./settings/gnome-calculator.nix
+
+    # --- Individual Apps ---
+    ./gnome-calculator.nix
+    ./vaults.nix
+
   ];
 
   home.packages = [
