@@ -20,7 +20,10 @@ in
     ./nix.nix
   ];
 
-  nix.nixPath = [ "nixos=${inputs.nixos}" ];  #"nixos=${inputs.nixpkgs}"
+  environment.etc."nix/inputs/nixos".source = inputs.nixos.outPath;
+  nix.nixPath = ["nixos=/etc/nix/inputs/nixpkgs"];
+  #nix.nixPath = [ "nixos=${inputs.nixos}" ];  #"nixos=${inputs.nixpkgs}"
+  nix.registry.nixos.flake = inputs.nixos;
 
   # TODO: Abstract out sudo program
   environment.shellAliases = {

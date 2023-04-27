@@ -14,7 +14,9 @@
 
   # https://nixos.wiki/wiki/Flakes
   # Note: channels & nixPath are legacy, but still often used by tooling
-  nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+  environment.etc."nix/inputs/nixpkgs".source = inputs.nixpkgs.outPath;
+  nix.nixPath = ["nixpkgs=/etc/nix/inputs/nixpkgs"];
+  #nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
   #nix.nixPath = let path = toString ./.; in [ "repl=${path}/repl.nix" "nixpkgs=${inputs.nixpkgs}" ];
 
   nix.settings.accept-flake-config = true;
