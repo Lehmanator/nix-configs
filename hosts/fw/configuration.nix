@@ -21,12 +21,14 @@
     # Activate profiles
     ../../profiles/activedirectory/admin.nix
     ../../profiles/adb.nix
+    ../../profiles/desktop/default.nix
     ../../profiles/desktop/de/gnome/default.nix
     ../../profiles/desktop/pipewire.nix
     ../../profiles/desktop/flatpak.nix
     ../../profiles/hardware/fprintd.nix
     ../../profiles/hardware/tpm2.nix
     ../../profiles/locale/est.nix
+    ../../profiles/network/tailscale.nix
     ../../profiles/network/wireguard/sea1.nix
     ../../profiles/nixos.nix
     ../../profiles/polkit.nix
@@ -131,8 +133,16 @@
   qt.enable = true;
 
   # --- Nix ---
+  #nixpkgs.overlays = [ self.overlays.default ];
   nix.settings.trusted-public-keys = [
     "hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs="
     "snowflakeos.cachix.org-1:gXb32BL86r9bw1kBiw9AJuIkqN49xBvPd1ZW8YlqO70="
+  ];
+
+  # --- Cross-compilation ---
+  boot.binfmt.emulatedSystems = [
+    "aarch64-linux"
+    #"aarch64-darwin"
+    #"x86_64-darwin"
   ];
 }

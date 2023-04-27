@@ -12,6 +12,8 @@
     snow                = { url = "github:snowflakelinux/snow";                                            };
     icicle              = { url = "github:snowflakelinux/icicle";                                          };
     nixos-hardware      = { url = "github:NixOS/nixos-hardware";                                           };
+    #mobile              = { url = "github:NixOS/mobile-nixos";                              flake = false; };
+    mobile              = { url = "github:vlinkz/mobile-nixos/gnomelatest";                 flake = false; };
     disko               = { url = "github:nix-community/disko";        inputs.nixpkgs.follows = "nixpkgs"; };
 
     home                = { url = "github:nix-community/home-manager"; inputs.nixpkgs.follows = "nixpkgs"; };
@@ -107,6 +109,19 @@
       ];
       specialArgs = { inherit self inputs system; };
     };
+    nixosConfigurations.fajita = nixpkgs.lib.nixosSystem {
+      system = "aarch64-linux";
+      modules = [
+        { _module.args = { inherit inputs; }; }
+        (import "${inputs.mobile}/lib/configuration.nix" { device = "oneplus-fajita"; })
+        ./hosts/fajita/configuration.nix
+        inputs.snowflake.nixosModules.snowflake
+        inputs.nix-data.nixosModules."aarch64-linux".nix-data
+      ];
+      specialArgs = { inherit self inputs system; };
+    };
+    fajita-fastboot-images = inputs.self.nixosConfigurations.fajita.config.mobile.outputs.android.android-fastboot-images;
+    fajita-flashable-zip = inputs.self.nixosConfigurations.fajita.config.mobile.outputs.android.android-flashable-zip;
 
     #homeConfigurations.sam = inputs.home.lib.homeManagerConfiguration {
     #  inherit pkgs;

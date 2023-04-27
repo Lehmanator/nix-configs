@@ -38,7 +38,7 @@ in
     #./view-images.nix
     #./view-video.nix
 
-    #./apps
+    ./apps
     ./extensions/forge.nix
   ];
 
