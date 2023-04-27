@@ -63,19 +63,33 @@
       #whitespace-error-style = "22 reverse";
     };
   };
+  # https://git-scm.com/docs/git-config
   programs.git.extraConfig = {
-    core.whitespace = "trailing-space,space-before-tab";
-    init.defaultBranch = "main";
-    pull.rebase = false;
-    url = {
-      "git@github.com" = {
-        insteadOf = "https://github.com";
-      };
+    core = {
+      #autocrlf = true;  # Fix Windows: CR + LF  ->  LF  (input="fix CRLF on add", true="convert on add/checkout")
+      whitespace = "trailing-space,space-before-tab";
+      #askPass = "";
     };
+    column.ui = "auto,column,dense";
+    init.defaultBranch = "main";
+    #merge.autoStash = true;
+    pull.rebase = false;
+    status = {
+      submoduleSummary = true;
+    };
+    url = {
+      "git@github.com:" = {
+        pushInsteadOf = "https://github.com/";
+      };
+      "git@gitlab.com:".pushInsteadOf = "https://gitlab.com/";
+    };
+    #web.browser = "";
   };
   #programs.git.hooks = {
   #  pre-commit = ./pre-commit-script;
   #}
+
+  # https://git-scm.com/docs/gitignore
   programs.git.ignores = [
     "*~"
     "*.swp" "*.swo"
