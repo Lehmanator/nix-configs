@@ -1,7 +1,4 @@
-{
-  self, modulesPath,
-  inputs, outputs,
-  config, lib, pkgs,
+{ self, modulesPath, inputs, outputs, config, lib, pkgs,
   host, network, repo,
   ...
 }:
@@ -37,8 +34,14 @@ let
       @import "firefox-gnome-theme/userContent.css";
     '';
   };
+
+
 in
 {
+  imports = [
+    #./arkenfox.nix
+  ];
+
   #programs.firefox.profiles.default.settings = {
   #};
 }
