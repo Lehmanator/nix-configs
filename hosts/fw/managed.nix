@@ -5,8 +5,6 @@
   config, lib, pkgs,
   ...
 }:
-let
-in
 {
   imports = [
   ];
@@ -23,6 +21,21 @@ in
   ## - [ ] TODO: Configure NixOS to set 'Configuration file' preference in `pkgs.nix-software-center` using gsettings/dconf
   ## - [ ] TODO: Configure NixOS to set 'Flake file'         preference in `pkgs.nix-software-center` using gsettings/dconf
   ##
+  environment.systemPackages = [
+    pkgs.clapper
+    pkgs.dino
+    pkgs.flare-signal
+    pkgs.gnome-network-displays
+    pkgs.pitivi
+    pkgs.jellyfin-media-player
+    pkgs.teams-for-linux
+    pkgs.paper-note
+    pkgs.megapixels
+    pkgs.inkscape
+    pkgs.gnome-obfuscate
+    pkgs.foliate
+    pkgs.warp
+  ];
 
 
 }
