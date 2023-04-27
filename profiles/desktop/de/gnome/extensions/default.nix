@@ -17,6 +17,7 @@
     #./clock.nix
     ./desktop.nix
     ./gestures.nix
+    ./gsconnect.nix
     ./quicksettings.nix
     ./search.nix
   ];

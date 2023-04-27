@@ -67,6 +67,10 @@
     tracker.enable = true;
     tracker-miners.enable = true;
   };
+  services.gvfs = {
+    enable = true;
+    package = pkgs.gnome.gvfs;
+  };
 
   # Enable automatic login for user
   services.xserver.displayManager.autoLogin.enable = true;
