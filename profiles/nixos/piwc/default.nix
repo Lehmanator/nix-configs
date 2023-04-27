@@ -7,8 +7,6 @@
   host, network,
   ...
 }:
-let
-in
 {
   imports = [
 
@@ -25,4 +23,10 @@ in
     "test.pi.wine"
   ];
 
+  services.onedrive.enable = true;
+
+  # See: https://wiki.generaloutline.com/share/dfa77e56-d4d2-4b51-8ff8-84ea6608faa4
+  #services.outline.azureAuthentication = {};
+
+  #services.davmail.enable = true;
 }
