@@ -10,8 +10,9 @@
     ./phone.nix
     ./productive.nix
     #./office.nix
-    #./social.nix
+    ./security.nix
     #./settings
+    #./social.nix
 
 
     # --- Individual Apps ---

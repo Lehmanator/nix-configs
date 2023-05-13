@@ -8,5 +8,7 @@
   ];
 
   home.packages = [
+    pkgs.cambalache
+    pkgs.gnome-builder
   ];
 }
