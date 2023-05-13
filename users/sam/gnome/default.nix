@@ -29,7 +29,7 @@ in
 
     #./games.nix
 
-    #./mobile.nix
+    ./mobile.nix
 
     #./chat.nix
     ./social.nix
