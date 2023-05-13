@@ -6,6 +6,7 @@
   imports = [
     ./dbus.nix
     ./developer.nix
+    ./multimedia.nix
     ./phone.nix
     ./productive.nix
     #./office.nix
@@ -20,6 +21,8 @@
   ];
 
   home.packages = [
+    pkgs.tangram
+    pkgs.wike
   ];
 
 }
