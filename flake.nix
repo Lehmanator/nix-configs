@@ -31,7 +31,7 @@
     nixGL               = { url = "github:guibou/nixGL";                                                   };
     nvfetcher           = { url = "github:berberman/nvfetcher";        inputs.nixpkgs.follows = "nixpkgs"; };
     arkenfox            = { url = "github:dwarfmaster/arkenfox-nixos"; inputs.nixpkgs.follows = "nixpkgs"; };
-    mozilla             = { url = "github:mozilla/nixpkgs-mozilla";                         flake = false; };
+    mozilla             = { url = "github:mozilla/nixpkgs-mozilla";    inputs.nixpkgs.follows = "nixpkgs"; };
 
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
@@ -68,6 +68,7 @@
     flake-utils.lib.eachDefaultSystem ( system: let pkgs = nixpkgs.legacyPackages.${system} // {
       overlays = [
         self.overlays.default
+        inputs.mozilla.overlay
         #inputs.terrasops.overlay
       ];
     };
