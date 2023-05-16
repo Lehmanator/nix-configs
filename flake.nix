@@ -31,6 +31,7 @@
     nixGL               = { url = "github:guibou/nixGL";                                                   };
     nvfetcher           = { url = "github:berberman/nvfetcher";        inputs.nixpkgs.follows = "nixpkgs"; };
     arkenfox            = { url = "github:dwarfmaster/arkenfox-nixos"; inputs.nixpkgs.follows = "nixpkgs"; };
+    mozilla             = { url = "github:mozilla/nixpkgs-mozilla";                         flake = false; };
 
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
