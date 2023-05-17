@@ -14,6 +14,7 @@
     nixos-hardware      = { url = "github:NixOS/nixos-hardware";                                           };
     #mobile              = { url = "github:NixOS/mobile-nixos";                              flake = false; };
     mobile              = { url = "github:vlinkz/mobile-nixos/gnomelatest";                 flake = false; };
+    gnome-mobile        = { url = "github:chuangzhu/nixpkgs-gnome-mobile";                                 };
     disko               = { url = "github:nix-community/disko";        inputs.nixpkgs.follows = "nixpkgs"; };
 
     home                = { url = "github:nix-community/home-manager"; inputs.nixpkgs.follows = "nixpkgs"; };
@@ -31,7 +32,7 @@
     nixGL               = { url = "github:guibou/nixGL";                                                   };
     nvfetcher           = { url = "github:berberman/nvfetcher";        inputs.nixpkgs.follows = "nixpkgs"; };
     arkenfox            = { url = "github:dwarfmaster/arkenfox-nixos"; inputs.nixpkgs.follows = "nixpkgs"; };
-    mozilla             = { url = "github:mozilla/nixpkgs-mozilla";    inputs.nixpkgs.follows = "nixpkgs"; };
+    mozilla             = { url = "github:mozilla/nixpkgs-mozilla";                                        };
 
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
@@ -119,6 +120,7 @@
         ./hosts/fajita/configuration.nix
         inputs.snowflake.nixosModules.snowflake
         inputs.nix-data.nixosModules."aarch64-linux".nix-data
+        inputs.gnome-mobile.nixosModules.gnome-mobile
       ];
       specialArgs = { inherit self inputs system; };
     };
