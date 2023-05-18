@@ -7,11 +7,12 @@
   ];
 
   home.packages = [
-    pkgs.endeavour    # https://gitlab.gnome.org/World/Endeavour
-    pkgs.furtherance  # https://github.com/lakoliu/Furtherance
-    pkgs.khronos      # https://github.com/lainsce/khronos
+    pkgs.endeavour     # https://gitlab.gnome.org/World/Endeavour
+    pkgs.furtherance   # https://github.com/lakoliu/Furtherance
+    pkgs.khronos       # https://github.com/lainsce/khronos
     #pkgs.paper-note   # https://gitlab.com/posidon_software/paper  (abandoned)
-    pkgs.rnote        # https://github.com/flxzt/rnote
+    pkgs.rnote         # https://github.com/flxzt/rnote
+    pkgs.gnome-solanum # Pomodoro timer
 
     # --- Broken Apps ---
     #pkgs.notejot      # https://github.com/lainsce/notejot
