@@ -43,41 +43,23 @@ in
   ];
 
   home.packages = with pkgs; [
-    gnome.dconf-editor
-    gnome.devhelp
-    gnome.ghex
     gnome.simple-scan
     gnome.totem
     gnome.vinagre
-    gnome.zenity
 
     gnome.gnome-autoar
     gnome.gnome-boxes
     gnome.gnome-dictionary
+    gnome.gnome-font-viewer   # Includes thumbnailer
     gnome.gnome-packagekit
-    gnome.gnome-sound-recorder
     gnome.gnome-tweaks
 
-    gnome-builder
     gnome-connections
     #gnome-decoder
-    gnome-doc-utils
-    gnome-epub-thumbnailer
     gnome-firmware
     gnome-frog
-    gnome-keysign
     gnome-multi-writer
-    gnome-podcasts
-    gnome-obfuscate
     gnome-recipes
-    gnome-secrets
-
-    blackbox-terminal
-    clapper
-    endeavour
-    gimp-with-plugins
-    megapixels
-    newsflash
   ];
 
   programs.rbw.settings.pinentry = "gnome3";
