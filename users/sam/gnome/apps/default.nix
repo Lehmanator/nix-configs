@@ -22,8 +22,7 @@
   ];
 
   home.packages = [
-    pkgs.tangram
-    pkgs.wike
+    pkgs.tangram          # Launcher/browser for web apps
   ];
 
 }
