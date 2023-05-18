@@ -13,8 +13,8 @@
     icicle              = { url = "github:snowflakelinux/icicle";                                          };
     nixos-hardware      = { url = "github:NixOS/nixos-hardware";                                           };
     #mobile              = { url = "github:NixOS/mobile-nixos";                              flake = false; };
-    mobile              = { url = "github:vlinkz/mobile-nixos/gnomelatest";                 flake = false; };
-    gnome-mobile        = { url = "github:chuangzhu/nixpkgs-gnome-mobile";                                 };
+    nixos-mobile        = { url = "github:vlinkz/mobile-nixos/gnomelatest";                 flake = false; };
+    nixpkgs-gnome-mobile = { url = "github:chuangzhu/nixpkgs-gnome-mobile";                                 };
     disko               = { url = "github:nix-community/disko";        inputs.nixpkgs.follows = "nixpkgs"; };
 
     home                = { url = "github:nix-community/home-manager"; inputs.nixpkgs.follows = "nixpkgs"; };
@@ -28,11 +28,11 @@
     flake-utils-plus    = { url = "github:gytis-ivaskevicius/flake-utils-plus";                            };
     flake-compat        = { url = "github:edolstra/flake-compat";                           flake = false; };
 
-    android-nixpkgs     = { url = "github:tadfisher/android-nixpkgs";  inputs.nixpkgs.follows = "nixpkgs"; };
+    nixpkgs-android     = { url = "github:tadfisher/android-nixpkgs";                                      };
     nixGL               = { url = "github:guibou/nixGL";                                                   };
     nvfetcher           = { url = "github:berberman/nvfetcher";        inputs.nixpkgs.follows = "nixpkgs"; };
     arkenfox            = { url = "github:dwarfmaster/arkenfox-nixos"; inputs.nixpkgs.follows = "nixpkgs"; };
-    mozilla             = { url = "github:mozilla/nixpkgs-mozilla";                                        };
+    nixpkgs-mozilla     = { url = "github:mozilla/nixpkgs-mozilla";                                        };
 
     nuenv.url = "github:DeterminateSystems/nuenv";
 
@@ -71,7 +71,7 @@
     flake-utils.lib.eachDefaultSystem ( system: let pkgs = nixpkgs.legacyPackages.${system} // {
       overlays = [
         self.overlays.default
-        inputs.mozilla.overlay
+        inputs.nixpkgs-mozilla.overlay
         inputs.nuenv.overlays.default  # https://determinate.systems/posts/nuenv
         inputs.nur.overlay
         #inputs.terrasops.overlay
@@ -103,7 +103,7 @@
         inputs.home.nixosModules.home-manager {
           home-manager = {
             sharedModules = with inputs; [
-              android-nixpkgs.hmModule
+              nixpkgs-android.hmModule
               arkenfox.hmModules.default
               sops-nix.homeManagerModules.sops
             ];
@@ -120,11 +120,11 @@
       system = "aarch64-linux";
       modules = [
         { _module.args = { inherit inputs; }; }
-        (import "${inputs.mobile}/lib/configuration.nix" { device = "oneplus-fajita"; })
+        (import "${inputs.nixos-mobile}/lib/configuration.nix" { device = "oneplus-fajita"; })
         ./hosts/fajita/configuration.nix
         inputs.snowflake.nixosModules.snowflake
         inputs.nix-data.nixosModules."aarch64-linux".nix-data
-        inputs.gnome-mobile.nixosModules.gnome-mobile
+        inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
       ];
       specialArgs = { inherit self inputs system; };
     };

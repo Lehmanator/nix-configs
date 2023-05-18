@@ -3,7 +3,9 @@
   ...
 }:
 {
-  nixpkgs.overlays = [ inputs.mozilla.overlay ];
+  nixpkgs.overlays = [
+    #inputs.nixpkgs-mozilla.overlay   # Imported in flake
+  ];
 
   home.packages = [
     # https://github.com/mozilla/nixpkgs-mozilla
