@@ -5,15 +5,13 @@
   config, lib, pkgs,
   ...
 }:
-let
   #
   # TODO: https://reddit.com/r/NixOS/comments/ias64k/comment/g1s1fyh
   #
-  # Usage: 
+  # Usage:
   #   adcli       - https://www.freedesktop.org/software/realmd/adcli/adcli.html
   #   SilentHound - https://github.com/layer8secure/SilentHound
   #
-in
 {
   imports = [
     #./ldap-admin.nix
@@ -22,7 +20,7 @@ in
   environment.systemPackages = with pkgs; [
     adcli         # Tools for Active Directory client operations & helper library
     #adtool        # Active Directory administration utility
-    certipy       # Tool to enumerate & abuse misconfigurations in Active Directory Certificate Services
+    #certipy       # Tool to enumerate & abuse misconfigurations in Active Directory Certificate Services (temporarily disabled bc broken)
     silenthound   # Tool to enumerate an Active Directory Domain
     python311Packages.adal                 # Module to authenticate to Azure Active Directory to access AAD protected web resources
     python311Packages.dsinternals          # Module to interact w/ Windows Active Directory
