@@ -34,6 +34,8 @@
     arkenfox            = { url = "github:dwarfmaster/arkenfox-nixos"; inputs.nixpkgs.follows = "nixpkgs"; };
     mozilla             = { url = "github:mozilla/nixpkgs-mozilla";                                        };
 
+    nuenv.url = "github:DeterminateSystems/nuenv";
+
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -70,6 +72,8 @@
       overlays = [
         self.overlays.default
         inputs.mozilla.overlay
+        inputs.nuenv.overlays.default  # https://determinate.systems/posts/nuenv
+        inputs.nur.overlay
         #inputs.terrasops.overlay
       ];
     };
