@@ -29,7 +29,7 @@
     pkgs.pitivi
     pkgs.jellyfin-media-player
     pkgs.teams-for-linux
-    pkgs.paper-note
+    #pkgs.paper-note  (abandoned)
     pkgs.megapixels
     pkgs.inkscape
     pkgs.gnome-obfuscate
