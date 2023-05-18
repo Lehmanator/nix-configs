@@ -1,4 +1,7 @@
 { self, inputs, config, lib, pkgs,
+  profile,
+  useFlake ? true,
+  setDefault ? false,
   ...
 }:
 
@@ -6,7 +9,6 @@
 # https://arkenfox.github.io/gui/
 
 let
-
   arkenfox = {
     base = builtins.readFile ./user.js;  # TODO: Use fetcher
     sections = {
@@ -95,19 +97,29 @@ let
 
     '';
   };
-
 in
 {
   # --- Arkenfox Flake ---
   #https://github.com/dwarfmaster/arkenfox-nixos
   #https://arkenfox.dwarfmaster.net
   #imports = [ inputs.arkenfox.hmModules.default ];
-  programs.firefox.arkenfox = {
-    enable = true;
-    #version = "112.0";
+  imports = lib.mkIf useFlake [ inputs.arkenfox.hmModules.default ];
+  programs.firefox = {
+    arkenfox = lib.mkIf useFlake {
+      enable = true;
+      #version = "113.0";
+    };
+    profiles = {
+      arkenfox = {
+        arkenfox = lib.mkIf useFlake arkenfox.sections;    # arkenfox-nixos    provides option: `<profile>.arkenfox.*`
+        extraConfig = lib.mkIf (!useFlake) arkenfox.base;  # otherwise, configure using option: `<profile>.extraConfig`
+      };
+      default = lib.mkIf setDefault {
+        arkenfox = lib.mkIf useFlake arkenfox.sections;
+        extraConfig = lib.mkIf (!useFlake) arkenfox.base;
+      };
+    };
   };
-  programs.firefox.profiles.arkenfox.arkenfox = arkenfox.sections;
-  programs.firefox.profiles.default.arkenfox = arkenfox.sections;
 
   # --- Manual Config ---
   #programs.firefox.profiles.arkenfox.extraConfig = arkenfox.base;

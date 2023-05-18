@@ -13,7 +13,7 @@ in
     #./browsers-chromium.nix
     #./browsers-epiphany.nix
 
-    ./firefox.nix
+    ./firefox/default.nix
 
     #./browsers-librewolf.nix
     #./browsers-tor.nix
