@@ -24,6 +24,8 @@
   environment.shellAliases.ndoc = "manix \"\" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | fzf --preview=\"manix '{}'\" | xargs manix";
   environment.systemPackages = [
     pkgs.deadnix              # Find dead code in Nix configs
+    pkgs.direnv               # Dir-based shell environment
+    pkgs.lorri                # Speed up shell compilation
     pkgs.manix                # Search documentation
     pkgs.nix-doc              # Search docs & Generate tags + plugin
     pkgs.nix-du               # Show sizes of Nix store paths
