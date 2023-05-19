@@ -26,6 +26,7 @@
     ../../profiles/desktop/pipewire.nix
     ../../profiles/desktop/flatpak.nix
     ../../profiles/hardware/fprintd.nix
+    ../../profiles/hardware/fwupd.nix
     ../../profiles/hardware/tpm2.nix
     ../../profiles/locale/est.nix
     ../../profiles/network/tailscale.nix
