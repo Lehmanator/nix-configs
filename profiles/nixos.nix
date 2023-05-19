@@ -24,6 +24,9 @@ in
   nix.nixPath = ["nixos=/etc/nix/inputs/nixpkgs"];
   #nix.nixPath = [ "nixos=${inputs.nixos}" ];  #"nixos=${inputs.nixpkgs}"
   nix.registry.nixos.flake = inputs.nixos;
+  nixpkgs.overlays = [
+    inputs.nix-alien.overlays.default
+  ];
 
   # TODO: Abstract out sudo program
   environment.shellAliases = {
@@ -56,7 +59,10 @@ in
   };
 
   # --- System Info --------------
-  environment.systemPackages = [ pkgs.figlet ];
+  environment.systemPackages = [
+    pkgs.figlet
+    pkgs.nix-alien
+  ];
   system.activationScripts.hostInfo = {
     # TODO: Change per system type
     text = ''
@@ -65,4 +71,10 @@ in
     '';
     #deps = [ pkgs.figlet ];
   };
+  system.activationScripts.diff = ''
+    if [[ -e /run/current-system ]]; then
+      ${pkgs.nix}/bin/nix --extra-experimental-features nix-command store diff-closures /run/current-system "$systemConfig"
+    fi
+  '';
+  programs.nix-ld.enable = true;
 }
