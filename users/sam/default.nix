@@ -16,6 +16,7 @@
     ./shell/zsh.nix
     ./social/default.nix
     ./xdg.nix
+    ../../profiles/workarounds.nix
   ];
 
   nixpkgs.config.allowBroken = true;
@@ -28,7 +29,7 @@
   home.enableDebugInfo = true;
   home.enableNixpkgsReleaseCheck = true;
   home.extraOutputsToInstall = [ "doc" "info" "devdoc" ];
-  home.sessionPath = [ 
+  home.sessionPath = [
     config.xdg.userDirs.extraConfig.XDG_APPS_DIR
     config.xdg.userDirs.extraConfig.XDG_BIN_DIR
   ];

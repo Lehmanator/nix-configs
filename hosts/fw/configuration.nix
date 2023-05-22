@@ -37,6 +37,7 @@
     ../../profiles/user-defaults.nix
     ../../profiles/virt/vm-host.nix
     ../../profiles/virt/wine.nix
+    ../../profiles/workarounds.nix
 
     # Include configuration managed by apps:
     # - nixos-conf-editor
