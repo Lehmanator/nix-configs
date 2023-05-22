@@ -35,6 +35,6 @@
   # --- Shell: Login ---------
   environment.loginShellInit = ''
     # Show system info on login
-    [ -x "$(command -v neofetch)" ] && neofetch
+    neofetch
   '';
 }

@@ -36,7 +36,7 @@
   # --- Syntax Highlighting ---
   programs.zsh.syntaxHighlighting = {
     enable = true;
-    highlighters = [ 
+    highlighters = [
       # Ordered by priority
       "main"     # Base highlighter (Default)
       "cursor"   # Matches cursor position
@@ -72,8 +72,6 @@
   # --- Login Shells ----------
   # TODO: Put shell-agnostic form in ./shell.nix
   programs.zsh.loginShellInit = ''
-    # Show system info on login
-    (( $+commands[neofetch] )) && neofetch
   '';
 
 }
