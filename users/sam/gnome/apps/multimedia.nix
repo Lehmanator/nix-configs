@@ -18,6 +18,7 @@
 
     # --- Audio Players ------
     pkgs.amberol                     # Local music player
+    pkgs.cavalier                    # Music visualizer
     pkgs.gnome-podcasts              # Listen to podcasts
 
 
