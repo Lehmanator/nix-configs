@@ -4,15 +4,13 @@
 #   - All GNOME packages:  default.nix
 #   - GNOME Installer Env: installer.nix
 #   - Update GNOME:        updater.nix
-
-{
-  self,
-  system,
-  inputs,
-  userPrimary,
-  config, lib, pkgs,
-  ...
-}:
+{ self, inputs
+, config, lib, pkgs
+, options
+, system
+, userPrimary ? "sam"
+, ...
+}: lib.attrsets.recursiveUpdate
 {
   imports = [
     #./common.nix
@@ -23,9 +21,9 @@
     ./extensions/default.nix
   ];
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = [
     # Tool to convert dconf settings to Nix config
-    dconf2nix
+    pkgs.dconf2nix
   ];
 
   # Exclude broken packages
@@ -84,4 +82,12 @@
 
   xdg.portal.enable = true;
   xdg.portal.xdgOpenUsePortal = true;
+
 }
+
+(lib.optionalAttrs (options?services.flatpak.packages) {
+  services.flatpak.packages = [
+    "flathub:org.gnome.Platform"     "flathub:org.gnome.Sdk"
+    "flathub:org.kde.KStyle.Adwaita" "flathub:org.kde.PlatformTheme.QGnomePlatform" "flathub:org.kde.WaylandDecoration.QGnomePlatform-decoration"
+  ];
+})

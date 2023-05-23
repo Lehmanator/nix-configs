@@ -224,7 +224,7 @@
 
 
     flatpaks = {                                       # declarative-flatpaks: Declaratively manage flatpaks
-      url = "github:GermanBread/declarative-flatpaks"; # - Modules for NixOS & HomeManager
+      url = "github:GermanBread/declarative-flatpak";  # - Modules for NixOS & HomeManager
       inputs.nixpkgs.follows = "nixpkgs";              #
     };                                                 #
     nixpak = {                                         # nixpak: Flatpak sandboxing for Nix packages
@@ -397,14 +397,12 @@
         nur.nixosModules.nur
         agenix.nixosModules.default
         sops-nix.nixosModules.sops
-        flatpaks.nixosModules.default
         home.nixosModules.home-manager {
           home-manager = {  #(import ./profiles/home-manager.nix { inherit self inputs system; users.sam = (import ./users/sam {}); });
             sharedModules = [
               #impermanence.nixosModules.home-manager
               #(import ./users/default/nixos {};)
               arkenfox.hmModules.default
-              flatpaks.homeManagerModules.default
               nixpkgs-android.hmModule
               sops-nix.homeManagerModules.sops
             ];
