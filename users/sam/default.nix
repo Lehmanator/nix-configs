@@ -14,6 +14,7 @@
     ./editor/neovim.nix
     ./git
     ./gnome/default.nix
+    ./gpg.nix
     ./languages/nodejs.nix
     ./nix.nix
     ./shell/zsh.nix
