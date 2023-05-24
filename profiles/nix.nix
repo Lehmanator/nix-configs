@@ -28,6 +28,7 @@
     pkgs.lorri                # Speed up shell compilation
     pkgs.manix                # Search documentation
     pkgs.nix-doc              # Search docs & Generate tags + plugin
+    pkgs.nix-plugins          # Misc Nix plugins
     pkgs.nix-du               # Show sizes of Nix store paths
     pkgs.nix-init             # Generate packages from URLs
     pkgs.nix-output-monitor
@@ -43,10 +44,10 @@
     enableZshIntegration = true;
     # lib.mkIf config.programs.zsh.enable true;
   };
-  nix.settings.plugin-files = [
-    "${pkgs.nix-doc}/lib/libnix_doc_plugin.so"
-    "${pkgs.nix-plugins}/lib/nix/plugins"
-  ];
+  #nix.settings.plugin-files = [
+  #  "${pkgs.nix-doc}/lib/libnix_doc_plugin.so"
+  #  "${pkgs.nix-plugins}/lib/nix/plugins/libnix-extra-builtins.so"
+  #];
 
   # --- Config: nix.conf ---------------
 
