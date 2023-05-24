@@ -1,22 +1,26 @@
-{
-  self,
-  system,
-  modulesPath,
-  inputs, outputs,
-  config, lib, pkgs,
-  ...
+{ self
+, system
+, modulesPath
+, inputs
+, outputs
+, config
+, lib
+, pkgs
+, ...
 }:
 {
   imports = [
     ./browsers/default.nix
     ./editor/neovim.nix
-    ./git.nix
+    ./git
     ./gnome/default.nix
     ./languages/nodejs.nix
+    ./nix.nix
     ./shell/zsh.nix
     ./social/default.nix
     ./xdg.nix
     ../../profiles/workarounds.nix
+    # TODO: Conditionally load ./nixos.nix when system is NixOS-based
   ];
 
   nixpkgs.config.allowBroken = true;
