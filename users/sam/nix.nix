@@ -29,9 +29,10 @@
   #  "${pkgs.nix-plugins}/lib/nix/plugins/libnix-extra-builtins.so"
   #];
 
+  nix.package = lib.mkDefault pkgs.nixUnstable; # Needed for use-xdg-base-directories
   nix.settings.accept-flake-config = true;
   nix.extraOptions = ''
-    use-xdg-base-directories = true;
+    use-xdg-base-directories = true
   '';
 
   home.packages = [

@@ -13,7 +13,7 @@
 {
   # --- Packages -----------------------
   # Use Nix package manager package with builtin flakes support
-  nix.package = pkgs.nixFlakes;
+  nix.package = lib.mkDefault pkgs.nixUnstable; #pkgs.nixFlakes; #(nixUnstable for use-xdg-base-directories, nixFlakes for flakes support)
 
   # https://nixos.wiki/wiki/Flakes
   # Note: channels & nixPath are legacy, but still often used by tooling
@@ -22,7 +22,6 @@
   #nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
   #nix.nixPath = let path = toString ./.; in [ "repl=${path}/repl.nix" "nixpkgs=${inputs.nixpkgs}" ];
 
-  nix.settings.accept-flake-config = true;
 
   environment.shellAliases.ndoc = "manix \"\" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | fzf --preview=\"manix '{}'\" | xargs manix";
   environment.systemPackages = [
@@ -57,6 +56,8 @@
   #];
 
   # --- Config: nix.conf ---------------
+  nix.settings.accept-flake-config = true;
+  #nix.settings.use-xdg-base-directories = true;
 
   # --- Optimization -------------------
   nix.gc.automatic = true; # Collect garbage
