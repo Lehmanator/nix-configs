@@ -1,10 +1,11 @@
-{
-  self,
-  system,
-  userPrimary,
-  inputs,
-  config, lib, pkgs,
-  ...
+{ self
+, system
+, userPrimary
+, inputs
+, config
+, lib
+, pkgs
+, ...
 }:
 {
   imports = [
@@ -13,16 +14,17 @@
   ];
 
   # --- Default ---------------
-  programs.zsh.enable = true;         # Enable ZSH
-  users.defaultUserShell = pkgs.zsh;  # ZSH default for users
+  programs.zsh.enable = true; # Enable ZSH
+  users.defaultUserShell = pkgs.zsh; # ZSH default for users
+  environment.shells = [ pkgs.zsh ];
 
   # --- Integration -----------
   programs.zsh.vteIntegration = true;
 
   # --- Completion ------------
-  programs.zsh.enableCompletion = true;        # Enables ZSH completions
-  programs.zsh.enableBashCompletion = true;    # Enables using completions for Bash in ZSH
-  environment.pathsToLink = [ "/share/zsh" ];  # Enables completion for system packages
+  programs.zsh.enableCompletion = true; # Enables ZSH completions
+  programs.zsh.enableBashCompletion = true; # Enables using completions for Bash in ZSH
+  environment.pathsToLink = [ "/share/zsh" ]; # Enables completion for system packages
 
   # --- Autosuggestions -------
   # - completion     - Based on what tab-completion would choose (req: zpty)
@@ -38,13 +40,13 @@
     enable = true;
     highlighters = [
       # Ordered by priority
-      "main"     # Base highlighter (Default)
-      "cursor"   # Matches cursor position
+      "main" # Base highlighter (Default)
+      "cursor" # Matches cursor position
       "brackets" # Matches brackets & paren
-      "regexp"   # Matches user-defined regular expression
-      "pattern"  # Matches user-defined glob pattern
-      "root"     # Matches entire command line if user=root
-      "line"     # Matches entire command line
+      "regexp" # Matches user-defined regular expression
+      "pattern" # Matches user-defined glob pattern
+      "root" # Matches entire command line if user=root
+      "line" # Matches entire command line
     ];
   };
 

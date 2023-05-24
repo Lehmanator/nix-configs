@@ -1,10 +1,12 @@
-{
-  self,
-  inputs,
-  system,
-  hosts, userPrimary,
-  config, lib, pkgs,
-  ...
+{ self
+, inputs
+, system
+, hosts
+, userPrimary
+, config
+, lib
+, pkgs
+, ...
 }:
 let
   zsh-set-tab-title = ''
@@ -27,7 +29,7 @@ in
   imports = [
     ./common.nix
   ];
-  home.sessionVariables.ZDOTDIR = "${config.xdg.configHome}/zsh";  #"${config.home.homeDirectory}/.config/zsh";
+  home.sessionVariables.ZDOTDIR = "${config.xdg.configHome}/zsh"; #"${config.home.homeDirectory}/.config/zsh";
   programs.zsh.dotDir = "${config.xdg.configHome}/zsh";
   #programs.zsh.dotDir = config.home.sessionVariables.ZDOTDIR;
   #programs.zsh.dotDir = if config.xdg.enable then "${config.xdg.configHome}/zsh" else "${config.homeDirectory}/.config/zsh";
@@ -45,27 +47,27 @@ in
   programs.zsh.dirHashes = {
     # TODO: Use XDG User Dirs if graphical environment
     code = "$HOME/Code";
-    dl   = "$HOME/Downloads";
+    dl = "$HOME/Downloads";
     docs = "$HOME/Documents";
     game = "$HOME/Games";
     note = "$HOME/Notes";
     vids = "$HOME/Videos";
 
-    cache  = "$XDG_CACHE_HOME";
+    cache = "$XDG_CACHE_HOME";
     config = "$XDG_CONFIG_HOME";
-    data   = "$XDG_DATA_HOME";
-    state  = "$XDG_STATE_HOME";
+    data = "$XDG_DATA_HOME";
+    state = "$XDG_STATE_HOME";
 
-    nix    = "$XDG_CONFIG_HOME/nixos";
+    nix = "$XDG_CONFIG_HOME/nixos";
 
-    gpg    = "$GNUPGHOME";
-    ssh    = "$HOME/.ssh";
+    gpg = "$GNUPGHOME";
+    ssh = "$HOME/.ssh";
 
-    bin    = "$HOME/.local/bin";
-    repos  = "$HOME/.local/repos";
-    shh    = "$HOME/.local/secrets";
+    bin = "$HOME/.local/bin";
+    repos = "$HOME/.local/repos";
+    shh = "$HOME/.local/secrets";
   };
-  programs.zsh.prezto.editor.dotExpansion = true;  # Auto expand ... to ../..
+  programs.zsh.prezto.editor.dotExpansion = true; # Auto expand ... to ../..
 
   # --- Completion ---
   programs.zsh.enableCompletion = true;
@@ -107,12 +109,17 @@ in
   #};
 
   # --- History ---
+  programs.zsh.history.path = "${config.xdg.dataHome}/zsh/history";
   programs.zsh.history.extended = true;
   programs.zsh.history.ignorePatterns = [
-    "rm -r *"          "rm -rf *"
-    "echo * > *key*"   "echo * > *secret*"
-    "echo \"*\" > *key*" "echo \"*\" > *secret*"
-    "echo '*' > *key*" "echo '*' > *secret*"
+    "rm -r *"
+    "rm -rf *"
+    "echo * > *key*"
+    "echo * > *secret*"
+    "echo \"*\" > *key*"
+    "echo \"*\" > *secret*"
+    "echo '*' > *key*"
+    "echo '*' > *secret*"
     # TODO: LUKS commands w/ key passed in CLI
   ];
   programs.zsh.history.share = true;
@@ -129,17 +136,21 @@ in
   programs.zsh.prezto.enable = true;
   programs.zsh.plugins = [
     # Use ZSH inside nix-shell
-    { name = "zsh-nix-shell"; file = "nix-shell.plugin.zsh";
+    {
+      name = "zsh-nix-shell";
+      file = "nix-shell.plugin.zsh";
       src = pkgs.fetchFromGitHub {
-        owner = "chisui"; repo = "zsh-nix-shell"; rev = "v0.5.0";
+        owner = "chisui";
+        repo = "zsh-nix-shell";
+        rev = "v0.5.0";
         sha256 = "0za4aiwwrlawnia4f29msk822rj9bgcygw6a8a6iikiwzjjz0g91";
       };
     }
   ];
 
   # ---- Extras --------------------------------------------
-  programs.zsh.prezto.extraFunctions = [ "zargs" "zmv"  ];  # Extra ZSH functions to load. See: `$ man zshcontrib`
-  programs.zsh.prezto.extraModules   = [ "attr"  "stat" ];  # Extra ZSH modules to load.   See: `$ man zshmodules`
+  programs.zsh.prezto.extraFunctions = [ "zargs" "zmv" ]; # Extra ZSH functions to load. See: `$ man zshcontrib`
+  programs.zsh.prezto.extraModules = [ "attr" "stat" ]; # Extra ZSH modules to load.   See: `$ man zshmodules`
   programs.zsh.prezto.pmodules = [
     "environment"
     "terminal"
