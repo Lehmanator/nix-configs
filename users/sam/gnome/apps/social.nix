@@ -1,6 +1,13 @@
-{ self, inputs, config, lib, pkgs, ... }:
+{ self
+, inputs
+, config
+, lib
+, pkgs
+, ...
+}:
 {
   imports = [
+    #./chat.nix
   ];
 
   #nixpkgs.overlays = [
@@ -33,11 +40,10 @@
   #];
 
   home.packages = [
-    #pkgs.chatty-gtk4
-    pkgs.chatty
-    pkgs.dino
-    pkgs.fractal-next
-    #pkgs.pidgin     # TODO: Add libpurple/pidgin plugins
-    #pkgs.flare-signal
+    pkgs.chatterino2 # Twitch chat client
+    pkgs.giara # Reddit client
+    pkgs.gtkcord4 # Discord client
+    pkgs.headlines # Reddit client
+    pkgs.tuba # Mastodon / Fediverse client
   ];
 }
