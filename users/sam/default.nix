@@ -10,15 +10,15 @@
 }:
 {
   imports = [
-    ./browsers/default.nix
+    ./browsers
     ./editor/neovim.nix
     ./git
-    ./gnome/default.nix
+    ./gnome
     ./gpg.nix
     ./languages/nodejs.nix
     ./nix.nix
     ./shell/zsh.nix
-    ./social/default.nix
+    ./social
     ./xdg.nix
     ../../profiles/workarounds.nix
     # TODO: Conditionally load ./nixos.nix when system is NixOS-based
