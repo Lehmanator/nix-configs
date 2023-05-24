@@ -1,11 +1,14 @@
-{
-  self,
-  system,
-  inputs,
-  host, network, repo,
-  userPrimary,
-  config, lib, pkgs,
-  ...
+{ self
+, system
+, inputs
+, host
+, network
+, repo
+, userPrimary
+, config
+, lib
+, pkgs
+, ...
 }:
 {
   # --- Packages -----------------------
@@ -15,7 +18,7 @@
   # https://nixos.wiki/wiki/Flakes
   # Note: channels & nixPath are legacy, but still often used by tooling
   environment.etc."nix/inputs/nixpkgs".source = inputs.nixpkgs.outPath;
-  nix.nixPath = ["nixpkgs=/etc/nix/inputs/nixpkgs"];
+  nix.nixPath = [ "nixpkgs=/etc/nix/inputs/nixpkgs" ];
   #nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
   #nix.nixPath = let path = toString ./.; in [ "repl=${path}/repl.nix" "nixpkgs=${inputs.nixpkgs}" ];
 
@@ -23,19 +26,23 @@
 
   environment.shellAliases.ndoc = "manix \"\" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | fzf --preview=\"manix '{}'\" | xargs manix";
   environment.systemPackages = [
-    pkgs.deadnix              # Find dead code in Nix configs
-    pkgs.direnv               # Dir-based shell environment
-    pkgs.lorri                # Speed up shell compilation
-    pkgs.manix                # Search documentation
-    pkgs.nix-doc              # Search docs & Generate tags + plugin
-    pkgs.nix-plugins          # Misc Nix plugins
-    pkgs.nix-du               # Show sizes of Nix store paths
-    pkgs.nix-init             # Generate packages from URLs
+    pkgs.cachix # CLI for cachix binary caches
+    pkgs.deadnix # Find dead code in Nix configs
+    pkgs.direnv # Dir-based shell environment
+    pkgs.lorri # Speed up shell compilation
+    pkgs.manix # Search documentation
+    pkgs.nix-doc # Search docs & Generate tags + plugin
+    pkgs.nix-plugins # Misc Nix plugins
+    pkgs.nix-du # Show sizes of Nix store paths
+    pkgs.nix-init # Generate packages from URLs
     pkgs.nix-output-monitor
-    pkgs.nix-tree             # Interactively view dep graphs of Nix derivations
+    pkgs.nix-tree # Interactively view dep graphs of Nix derivations
+    pkgs.nix-update # Update Nix packages
     #pkgs.nix-query-tree-viewer # GUI to view Nix store path deps
-    pkgs.pre-commit           # Git pre-commit hooks
-    pkgs.vulnix               # Nix(OS) vulnerability scanner
+    pkgs.nurl # Automatically generate fetcher expressions from URLs
+    pkgs.nvfetcher # Update package commits & hashes
+    pkgs.pre-commit # Git pre-commit hooks
+    pkgs.vulnix # Nix(OS) vulnerability scanner
   ];
   services.lorri.enable = true;
   programs.nix-ld.enable = true;
@@ -52,9 +59,9 @@
   # --- Config: nix.conf ---------------
 
   # --- Optimization -------------------
-  nix.gc.automatic = true;                  # Collect garbage
-  nix.optimise.automatic = true;            # Store optimizer
-  nix.settings.auto-optimise-store = true;  # Dedup
+  nix.gc.automatic = true; # Collect garbage
+  nix.optimise.automatic = true; # Store optimizer
+  nix.settings.auto-optimise-store = true; # Dedup
   nix.settings.min-free = 128000000;
   nix.settings.max-free = 1000000000;
   nix.settings.keep-derivations = true;
@@ -69,8 +76,8 @@
   nix.registry.nixpkgs.flake = inputs.nixpkgs;
 
   # --- Sandboxing ---------------------
-  nix.settings.sandbox = true;   # Sandbox Nix builds
-  nix.settings.fallback = true;  # Fallback to local build if substitute fails
+  nix.settings.sandbox = true; # Sandbox Nix builds
+  nix.settings.fallback = true; # Fallback to local build if substitute fails
   # Expose extra system paths to Nix build sandbox
   nix.settings.extra-sandbox-paths = [
   ];
@@ -86,7 +93,7 @@
   nix.settings.build-users-group = "nixbld";
 
   # --- Binary Cache -------------------
-  nix.settings.builders-use-substitutes = true;  # Allow builders to use binary caches
+  nix.settings.builders-use-substitutes = true; # Allow builders to use binary caches
   nix.settings.substituters = [
     "https://cache.nixos.org/"
     "https://nix-community.cachix.org/"
@@ -121,7 +128,7 @@
   # --- Settings -----------------------
   nix.settings.connect-timeout = lib.mkDefault 10;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  nix.settings.warn-dirty = false;  # Warn git unstaged/uncommitted files
+  nix.settings.warn-dirty = false; # Warn git unstaged/uncommitted files
 
   #nix.settings.auto-allocate-uids = true;
   #nix.settings.experimental-features = ["auto-allocate-uids"];
@@ -130,12 +137,14 @@
   # Nix overlays are used to override packages
   nixpkgs.overlays = [
     inputs.nur.overlay
-    (final: prev: { gnome-decoder = prev.gnome-decoder.overrideAttrs (attrs: {
-      preBuild = ''
-        export BINDGEN_EXTRA_CLANG_ARGS="$BINDGEN_EXTRA_CLANG_ARGS -DPW_ENABLE_DEPRECATED"
-      '';
-      meta.broken = false;
-    }); })
+    (final: prev: {
+      gnome-decoder = prev.gnome-decoder.overrideAttrs (attrs: {
+        preBuild = ''
+          export BINDGEN_EXTRA_CLANG_ARGS="$BINDGEN_EXTRA_CLANG_ARGS -DPW_ENABLE_DEPRECATED"
+        '';
+        meta.broken = false;
+      });
+    })
   ];
 
   # --- Package Config -----------------
