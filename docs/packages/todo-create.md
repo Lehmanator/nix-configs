@@ -1,17 +1,29 @@
 # To-Dos: Create Packages
 
+More Packages:
+
+- [`nvfetcher.toml`](../../pkgs/nvfetcher.toml)
+
+See Also:
+
+- [Docs: nix-init]()
+- [Docs: nurl]()
+- [Docs: nvfetcher]()
+
 ## Themes
 
 - [ ] Check if package for `firefox-gnome-theme` exists, else create
 
 ## GNOME Shell Extensions
 
-- [ ] [andyholmes/gnome-shell-extension-valent](https://github.com/andyholmes/gnome-shell-extension-valent)
+- [X] [andyholmes/gnome-shell-extension-valent](https://github.com/andyholmes/gnome-shell-extension-valent)
 
 ## GNOME Apps
 
 - [ ] Flatseal
-- [ ] Gradience
+- [ ] Foliate   (gtk4 branch)
+- [ ] Gradience (latest)
+- [ ] Hackgregator
 
 
 ## Foreign Systems
