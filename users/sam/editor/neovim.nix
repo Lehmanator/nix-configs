@@ -1,13 +1,17 @@
-{
-  self, inputs, system,
-  host, user,
-  config, lib, pkgs,
-  ...
+{ self
+, inputs
+, system
+, host
+, user
+, config
+, lib
+, pkgs
+, ...
 }:
-  # --- NixVim ---
-  # Configures Neovim via Nix modules
-  # https://github.com/pta2002/nixvim
-  # https://pta2002.github.io/nixvim
+# --- NixVim ---
+# Configures Neovim via Nix modules
+# https://github.com/pta2002/nixvim
+# https://pta2002.github.io/nixvim
 let
   style = "rounded";
 in
@@ -15,6 +19,8 @@ in
   imports = [
     inputs.nixvim.homeManagerModules.nixvim
     ./editorconfig.nix
+    ../../../configs/nixvim/common/colorscheme.nix
+    ../../../configs/nixvim/common/statusline.nix
   ];
   home.sessionVariables = {
     EDITOR = "nvim";
@@ -34,18 +40,24 @@ in
 
   programs.nixvim.enable = true;
 
+  # TODO: Fix white '^^^^^^^^' in statusline (set to BG or NONE)
   programs.nixvim.highlight = {
     #IndentBlanklineIndent2.ctermfg = "bg";
     #IndentBlanklineIndent1 = { fg = "NONE"; ctermfg = "NONE"; };
-    lualine_c_active.bg = "NONE"; lualine_c_inactive.bg = "NONE";
-    lualine_x_active.bg = "NONE"; lualine_x_inactive.bg = "NONE";
+    lualine_c_active.bg = "NONE";
+    lualine_c_inactive.bg = "NONE";
+    lualine_x_active.bg = "NONE";
+    lualine_x_inactive.bg = "NONE";
     lualine_x_normal.bg = "NONE"; #lualine_x_normal.bg = "NONE";
     lualine_c_normal.bg = "NONE"; #lualine_c_normal.bg = "NONE";
     lualine_x_insert.bg = "NONE"; #lualine_x_insert.bg = "NONE";
     lualine_c_insert.bg = "NONE"; #lualine_c_insert.bg = "NONE";
-    TabLineFill.bg = "NONE"; TabLineFill.fg = "NONE";
-    StatusLine.bg = "NONE";  StatusLineNC.bg = "NONE";
-    StatusLine.fg = "NONE";  StatusLineNC.fg = "NONE";
+    TabLineFill.bg = "NONE";
+    TabLineFill.fg = "NONE";
+    StatusLine.bg = "NONE";
+    StatusLineNC.bg = "NONE";
+    StatusLine.fg = "NONE";
+    StatusLineNC.fg = "NONE";
   };
   # --- Options ---
   programs.nixvim.options = {
@@ -63,71 +75,18 @@ in
 
     # --- Mouse ---
     mousescroll = "ver:1,hor:2";
-    mouse = "a";  # "nv";
+    mouse = "a"; # "nv";
 
   };
 
 
   # --- Colors -------------------------
-  programs.nixvim.colorschemes = {
-    base16 = {
-      enable      = false;
-      colorscheme = "material";
-    };
-
-    gruvbox = {
-      enable            = false;
-      bold              = true;
-      colorColumn       = "bg";
-      contrastDark      = "medium";
-      contrastLight     = "medium";
-      improvedStrings   = true;
-      improvedWarnings  = true;
-      italicizeComments = false;
-      italicizeStrings  = false;
-      italics           = true;
-      numberColumn      = "bg";
-      signColumn        = "bg";
-      transparentBg     = true;
-      undercurl         = false;
-      underline         = false;
-    };
-
-    nord = {
-      enable = false;
-      enable_sidebar_background = true;
-      borders = true;
-      contrast = false;
-      cursorline_transparent = true;
-      disable_background = true;
-      italic = true;
-    };
-
-    tokyonight = {
-      enable = true;
-      #dayBrightness = 1;
-      dimInactive = true;
-      hideInactiveStatusline = true;
-      lualineBold = true;
-      #onColors = "function(colors) end";
-      #onHighlights = "function(highlights, colors) end";
-      sidebars = [ "qf" "help" ];
-      #style = "storm";
-      styles = {
-        comments.italic = true;
-        floats = "transparent";
-      };
-      terminalColors = true;
-      transparent = true;
-    };
-
-  };
 
   # --- Plugins ---
   programs.nixvim.extraPlugins = with pkgs.vimPlugins; [
     nix-develop-nvim
     statix
-    vim-addon-nix  # TODO: Handled by LSP?
+    vim-addon-nix # TODO: Handled by LSP?
     vim-nix
     vim-nixhash
     vim2nix
@@ -144,44 +103,46 @@ in
     pkgs.maple-mono-NF
     pkgs.meslo-lgs-nf
     pkgs.nerd-font-patcher
-    (pkgs.nerdfonts.override { fonts = [
-      "Agave"
-      "IBMPlexMono"  #"Blex Mono"
-      "CascadiaCode" #"Caskaydia Cove"
-      "CodeNewRoman"
-      "Cousine"
-      "DaddyTimeMono"
-      "DejaVuSansMono"
-      "DroidSansMono"
-      "FantasqueSansMono"
-      "FiraCode"
-      "FiraMono"
-      "Gohu"
-      "Hack"
-      "Hermit"  #"Hurmit"
-      "Inconsolata"
-      "Iosevka"
-      "JetBrainsMono"
-      "LiberationMono" #"LiterationMono"
-      "Lilex"
-      "Meslo" #"MesloLG"
-      "Monofur"
-      "Monoid"
-      "Mononoki"
-      "Noto"
-      "ProFont"
-      "ProggyClean"
-      "OpenDyslexic"
-      "RobotoMono"
-      "ShareTechMono" #"ShureTechMono"
-      "SourceCodePro" #"SauceCodePro"
-      "SpaceMono"
-      "NerdFontsSymbolsOnly"
-      "Terminus" #"Terminess"
-      "Ubuntu"
-      "UbuntuMono"
-      "VictorMono"
-    ];})
+    (pkgs.nerdfonts.override {
+      fonts = [
+        "Agave"
+        "IBMPlexMono" #"Blex Mono"
+        "CascadiaCode" #"Caskaydia Cove"
+        "CodeNewRoman"
+        "Cousine"
+        "DaddyTimeMono"
+        "DejaVuSansMono"
+        "DroidSansMono"
+        "FantasqueSansMono"
+        "FiraCode"
+        "FiraMono"
+        "Gohu"
+        "Hack"
+        "Hermit" #"Hurmit"
+        "Inconsolata"
+        "Iosevka"
+        "JetBrainsMono"
+        "LiberationMono" #"LiterationMono"
+        "Lilex"
+        "Meslo" #"MesloLG"
+        "Monofur"
+        "Monoid"
+        "Mononoki"
+        "Noto"
+        "ProFont"
+        "ProggyClean"
+        "OpenDyslexic"
+        "RobotoMono"
+        "ShareTechMono" #"ShureTechMono"
+        "SourceCodePro" #"SauceCodePro"
+        "SpaceMono"
+        "NerdFontsSymbolsOnly"
+        "Terminus" #"Terminess"
+        "Ubuntu"
+        "UbuntuMono"
+        "VictorMono"
+      ];
+    })
   ];
 
   # --- LaTeX --------------------------
@@ -208,36 +169,36 @@ in
     enable = true;
     currentLineBlame = true;
     currentLineBlameOpts = {
-      virtTextPos = "right_align";      # eol | overlay | right_align
+      virtTextPos = "eol"; # eol | overlay | right_align
     };
-    numhl = false;              # Enable line number highlights
-    showDeleted = false;         # Show old version of hunks inline via virtual lines
+    numhl = false; # Enable line number highlights
+    showDeleted = false; # Show old version of hunks inline via virtual lines
     signcolumn = true;
-    trouble = true;             # Use Trouble instead of QuickFix/LocationList window for setqflist()/setloclist()
+    trouble = true; # Use Trouble instead of QuickFix/LocationList window for setqflist()/setloclist()
     watchGitDir = {
       enable = true;
-      followFiles = true;       # Switch to new location after `git mv`
+      followFiles = true; # Switch to new location after `git mv`
     };
-    wordDiff = true;            # Requires `diff_opts.internal = true`
+    wordDiff = true; # Requires `diff_opts.internal = true`
   };
   programs.nixvim.plugins.gitmessenger = {
     enable = false;
-    dateFormat = "%c";  # :help strftime()
+    dateFormat = "%c"; # :help strftime()
     floatingWinOps = {
       border = "rounded";
     };
-    includeDiff = "none";  # none | current | all
+    includeDiff = "none"; # none | current | all
   };
   programs.nixvim.plugins.neogit = {
-      enable = true;
-      autoRefresh = true;
-      #commitPopup.kind = null;
-      #disableBuiltinNotifications = null; disableCommitConfirmation = null; disableContextHighlighting = null;
-      #disableHint = null;                 disableSigns = null;
-      integrations.diffview = true;
-      #kind = null;
-      #mappings.status = null;
-    };
+    enable = true;
+    autoRefresh = true;
+    #commitPopup.kind = null;
+    #disableBuiltinNotifications = null; disableCommitConfirmation = null; disableContextHighlighting = null;
+    #disableHint = null;                 disableSigns = null;
+    integrations.diffview = true;
+    #kind = null;
+    #mappings.status = null;
+  };
   programs.git.extraConfig.diff.external = false; #extraConfig.diff_opts.internal = true;
 
   programs.nixvim.plugins = {
@@ -255,6 +216,8 @@ in
           gd = "definition";
           gi = "implementation";
           gt = "type_definition";
+          ca = "code_action";
+          ff = "format";
         };
       };
       servers = {
@@ -271,6 +234,7 @@ in
         rnix-lsp.enable = true;
         rust-analyzer.enable = true;
         tailwindcss.enable = true;
+        terraformls.enable = true;
         texlab.enable = true;
         tsserver.enable = true;
         vuels.enable = true;
@@ -281,13 +245,14 @@ in
 
     # lsp-lines - LSP multi-line diagnostics in-editor
     lsp-lines = { enable = true; currentLine = false; };
+    lsp-format.enable = true;
 
     # lspkind.nvim - Entry types for LSP Completions w/ icons
     lspkind = {
       enable = true;
       cmp.enable = true;
-      mode = "symbol_text";  #text,text_symbol,symbol_text*,symbol
-      preset = "codicons";   #codicons,default
+      mode = "symbol"; #text,text_symbol,symbol_text*,symbol
+      preset = "codicons"; #codicons,default
     };
 
     # lspsaga.nvim - LSP enhancements
@@ -298,105 +263,6 @@ in
 
     # inc-rename - Incremental previewing LSP renaming
     inc-rename.enable = true;
-
-    # --- Statuslines ------------------
-    barbar = {
-      enable = false;
-      animation = true;
-      autoHide = false;
-      clickable = true;
-      excludeFileNames = [];
-      excludeFileTypes = [];
-      extraOptions = {};
-      hide.alternate = true;
-      hide.current = false;
-      hide.extensions = false;
-      highlightAlternate = false;
-      highlightInactiveFileIcons = false;
-      highlightVisible = true;
-      icons = {
-        current = {
-          pinned.separator = { left = "▎"; right = ""; };  # TODO: Conditionally use rounded
-          separator = { left = ""; right = ""; };  # TODO: Conditionally use rounded
-        };
-        diagnostics = {
-          error.enable = true;
-          warn.enable = false;
-        };
-      };
-    };
-    lualine = {
-      enable = true;
-      alwaysDivideMiddle = true;
-      extensions = [ "fzf" ];
-      globalstatus = true;
-      sectionSeparators = {
-        left  = "";
-        right = "";
-      };
-      # TODO: Invert highlight
-      componentSeparators = {
-        left  = ""; # "";
-        right = ""; # ";
-      };
-      tabline = {  # Top of editor
-        lualine_a = [ { name = "hostname"; separator = { left = ""; right = ""; }; } ];
-        lualine_b = [ "branch" "diff" ];
-        lualine_x = [ {name="tabs"; extraConfig={use_mode_colors=true;};} ];
-        lualine_z = [ "diagnostics" ];
-      };
-      winbar = {  # Top of splits
-        lualine_a = [ { name="mode"; separator = { left = ""; right = ""; }; } ];
-        lualine_b = [ "diff" ];
-        lualine_c = [ {name="windows"; extraConfig={use_mode_colors=true;}; } ];
-        lualine_x = [ "branch" "diff" ];
-        lualine_y = [ "searchCount" ];
-        lualine_z = [ "selectionCount" ];
-      };
-      sections = {
-        lualine_a = [
-          { name = "mode"; separator = { left = ""; right = ""; }; }
-        ];
-        lualine_b = [
-          #{ name = "branch";
-          #}
-          "branch"
-          "diff"
-        ];
-        lualine_c = [
-          { name="buffers"; extraConfig={use_mode_colors=true; mode=0;}; }
-          #{ name="filetype"; extraConfig={colored=true; icon_only=true; icon.align="left";};}
-          #{ name="filename"; extraConfig={file_status=true; newfile_status=true; shorting_target=45; path = 4;
-          #  symbols={modified="~"; readonly="!"; unnamed="?"; newFile="+";};};
-          #}
-          #"fileformat"
-          #{ name = "fileformat"; extraConfig={symbols={unix=""; dos=""; mac="";}; icon.align="left";};}
-        ];
-        lualine_x = [
-          #{ name="tabs";
-          #  separator = { left = ""; right = ""; };
-          #  extraConfig={mode=2; use_mode_colors=true; tabs_color={active="lualine_a_normal"; inactive="lualine_b_normal";};}; }
-          "diagnostics"
-          #{ name = "diagnostics";
-          #}
-        ];
-        lualine_y = [
-          "searchcount"
-          "progress"
-          #{ name = "progress";
-          #}
-        ];
-        lualine_z = [
-          { name = "location";
-            separator = { left = ""; right = ""; };
-          }
-        ];
-      };
-    };
-    tagbar = {
-      enable = false;
-      extraConfig = { show_tag_count = true; };
-    };
 
     # --- Snippets ---------------------
     luasnip = {
@@ -428,50 +294,87 @@ in
       enable = true;
 
       addBlankLineAtTop = false;
-      autoCleanAfterSessionRestore = false;  # Auto clean up broken neotree buffers saved in sessions
+      autoCleanAfterSessionRestore = false; # Auto clean up broken neotree buffers saved in sessions
       buffers = {
         bindToCwd = true;
         followCurrentFile = true;
         groupEmptyDirs = true;
         window.mappings = { "<bs" = "navigate_up"; "." = "set_root"; bd = "buffer_delete"; };
       };
-      closeFloatsOnEscapeKey = true;     # Close floating window UI on <ESC> press
-      closeIfLastWindow = true;          # Close Neovim if Neo-Tree is last window (*false)
+      closeFloatsOnEscapeKey = true; # Close floating window UI on <ESC> press
+      closeIfLastWindow = true; # Close Neovim if Neo-Tree is last window (*false)
       defaultComponentConfigs.diagnostics.symbols = {
-        error = "✘"; warn = ""; info = ""; hint = "";
+        error = "✘";
+        warn = "";
+        info = "";
+        hint = "";
       }; # vim.fn.sign_define("DiagnosticSignHint", {text = "", texthl = "DiagnosticSignHint"})
       filesystem = {
-        filteredItems.forceVisibleInEmptyFolder = true;                         # Show hidden files in empty dir (*false)
-        filteredItems.hideDotfiles = false;                                     # Hide hidden files              (*true)
+        filteredItems.forceVisibleInEmptyFolder = true; # Show hidden files in empty dir (*false)
+        filteredItems.hideDotfiles = false; # Hide hidden files              (*true)
         findArgs = { fd = [ "--exclude" ".git" "--exclude" "node_modules" ]; }; # Args to pass find commands     (*null)
-        useLibuvFileWatcher = true;          # Detect changes w/ OS-level file watchers, not nvim autocmd events (*false)
-        window.mappings = {           "#"="fuzzy_sorter";    "."="set_root";      "[g"="prev_git_modified";
-          D="fuzzy_finder_directory"; "/"="fuzzy_finder"; "<bs>"="navigate_up";   "]g"="next_git_modified";
-          f="filter_on_submit";   "<C-x>"="clear_filter";      H="toggle_hidden";                            };
+        useLibuvFileWatcher = true; # Detect changes w/ OS-level file watchers, not nvim autocmd events (*false)
+        window.mappings = {
+          "#" = "fuzzy_sorter";
+          "." = "set_root";
+          "[g" = "prev_git_modified";
+          D = "fuzzy_finder_directory";
+          "/" = "fuzzy_finder";
+          "<bs>" = "navigate_up";
+          "]g" = "next_git_modified";
+          f = "filter_on_submit";
+          "<C-x>" = "clear_filter";
+          H = "toggle_hidden";
+        };
       };
-      gitStatus.window.mappings = { A = "git_add_all";      ga = "git_add_file"; gc = "git_commit";
-        gu = "git_unstage_file";   gr = "git_revert_file";  gp = "git_push";     gg = "git_commit_and_push"; };
-      popupBorderStyle = "NC";   # (*NC | double | none | rounded | shallow | single | solid)
+      gitStatus.window.mappings = {
+        A = "git_add_all";
+        ga = "git_add_file";
+        gc = "git_commit";
+        gu = "git_unstage_file";
+        gr = "git_revert_file";
+        gp = "git_push";
+        gg = "git_commit_and_push";
+      };
+      popupBorderStyle = "NC"; # (*NC | double | none | rounded | shallow | single | solid)
       useDefaultMappings = true; # (*true)
       window = {
-        autoExpandWidth = false;  # Expand window width when file exceeds window width. Incompat: position='float' (*false)
-        height = 15;              # (*15)
-        insertAs = "child";       # How to insert files in tree when cursor on dir  (*child | sibling)
+        autoExpandWidth = false; # Expand window width when file exceeds window width. Incompat: position='float' (*false)
+        height = 15; # (*15)
+        insertAs = "child"; # How to insert files in tree when cursor on dir  (*child | sibling)
         # Some commands take optional config options, see :h neo-tree-mappings
-        mappings = { "<2-LeftMouse>"="open";               "<cr>"="open";         "<"="prev_source";
-          S="open_split";          w="open_with_window_picker"; q="close_window"; ">"="next_source";
-          s="open_vsplit";         t="open_tabnew";             C="close_node";     z="close_all_nodes";
-          l="focus_preview"; "<esc>"="revert_preview";          R="refresh";        e="toggle_auto_expand_width";
-          c="copy";                m="move";                    r="rename";         d="delete";
-          y="copy_to_clipboard";   x="cut_to_clipboard";        p="paste_from_clipboard";
-          A="add_directory";     "?"="show_help";
-          "<space>"={command="toggle_node";    config.nowait=true;     }; # `nowait`: Use existing combos w/ begin char
-                  P={command="toggle_preview"; config.use_float=true;  };
-                  a={command="add";            config.show_path="none";}; # show_path = "none|relative|absolute"
+        mappings = {
+          "<2-LeftMouse>" = "open";
+          "<cr>" = "open";
+          "<" = "prev_source";
+          S = "open_split";
+          w = "open_with_window_picker";
+          q = "close_window";
+          ">" = "next_source";
+          s = "open_vsplit";
+          t = "open_tabnew";
+          C = "close_node";
+          z = "close_all_nodes";
+          l = "focus_preview";
+          "<esc>" = "revert_preview";
+          R = "refresh";
+          e = "toggle_auto_expand_width";
+          c = "copy";
+          m = "move";
+          r = "rename";
+          d = "delete";
+          y = "copy_to_clipboard";
+          x = "cut_to_clipboard";
+          p = "paste_from_clipboard";
+          A = "add_directory";
+          "?" = "show_help";
+          "<space>" = { command = "toggle_node"; config.nowait = true; }; # `nowait`: Use existing combos w/ begin char
+          P = { command = "toggle_preview"; config.use_float = true; };
+          a = { command = "add"; config.show_path = "none"; }; # show_path = "none|relative|absolute"
         };
-        popup = {position="80%"; size.height="80%"; size.width="50%";};
-        position = "left";  # left | right | top | bottom | float | current
-        sameLevel = false;  # Create/paste/move files/dirs on same level as dir under cursor (vs w/i dir under cursor)
+        popup = { position = "80%"; size.height = "80%"; size.width = "50%"; };
+        position = "left"; # left | right | top | bottom | float | current
+        sameLevel = false; # Create/paste/move files/dirs on same level as dir under cursor (vs w/i dir under cursor)
         width = 40;
       };
     };
@@ -481,7 +384,7 @@ in
     # https://github.com/nvim-neorg/neorg
     neorg = {
       enable = true;
-      extraOptions = {};
+      extraOptions = { };
       lazyLoading = true;
       modules = {
         # --- Default Modules ---
@@ -499,22 +402,26 @@ in
         };
 
         # --- Other Modules ---
-        "core.norg.dirman".config.workspaces = { # Manage directories of .norg files
-          work="${config.home.homeDirectory}/Notes/Work";
-          home="${config.home.homeDirectory}/Notes/Home";
+        "core.norg.dirman".config.workspaces = {
+          # Manage directories of .norg files
+          work = "${config.home.homeDirectory}/Notes/Work";
+          home = "${config.home.homeDirectory}/Notes/Home";
           #journal="${config.home.homeDirectory}/Notes/Journal";
         };
-        "core.export.markdown".config.extensions = "all";  # Export .norg docs to other supported filetypes
+        "core.export.markdown".config.extensions = "all"; # Export .norg docs to other supported filetypes
         "core.norg.completion".config.engine = "nvim-cmp"; # TODO: Set `sources={ {name="neorg"},},` as source in `nvim-cmp`
-        "core.presenter".config.zen_mode = "zen-mode";     # (zen-mode | truezen)
-        "core.export"={}; "core.norg.concealer"={};
+        "core.presenter".config.zen_mode = "zen-mode"; # (zen-mode | truezen)
+        "core.export" = { };
+        "core.norg.concealer" = { };
 
         # --- Developer Modules ---
         # core: autocommands, clipboard, defaults, fs, highlights, mode, scanner, storage, syntax
         # core.integrations: nvim-cmp, nvim-compe, treesitter, truezen, zen_mode
         # core.neorgcmd: ., commands.module.list, commands.module.load, commands.return
         # core.norg.dirman.utils core.queries.native
-        "core.clipboard"={}; "core.scanner"={}; "core.syntax"={};
+        "core.clipboard" = { };
+        "core.scanner" = { };
+        "core.syntax" = { };
 
         # --- Community Modules ---
         # https://github.com/nvim-neorg/neorg-telescope
@@ -524,29 +431,59 @@ in
 
     # --- Netman -----------------------
     # Access network resources in Neovim
-    netman = { enable = false; neoTreeIntegration = true; };
+    netman = {
+      enable = false;
+      neoTreeIntegration = config.programs.nixvim.plugins.neo-tree.enable; #true;
+    };
 
     # --- Noice.nvim -------------------
     # Alternate UI for Neovim. Completely replaces cmdline, messages, popupmenu
-    #noice = {
-    #  enable = true;
-    #  popupmenu.backend = "nui";  # (nui | cmp)
-    #  notify = { enable = true; stages = "slide"; }; # stages: fade_in_slide_out | fade | slide | static
-    #};
+    noice = {
+      enable = true;
+      popupmenu.backend = "nui"; # (nui | cmp)
+      notify = {
+        enabled = true;
+        #stages = "slide"; # stages: fade_in_slide_out | fade | slide | static
+      };
+      presets = {
+        bottom_search = true;
+        command_palette = true;
+        inc_rename = true;
+        lsp_doc_border = true;
+      };
+    };
 
     # --- null-ls ----------------------
     # Integrate external sources with native nvim LSP
     null-ls = {
       enable = true;
-      border = "rounded";  # none | single | double | rounded | solid | shadow
+      border = "rounded"; # none | single | double | rounded | solid | shadow
       #diagnosticConfig = {};
       #shouldAttach = "";  # User-defined function(buffer_number) that controls whether to enable null-ls for buffer.
       sources = {
-        code_actions = { gitsigns.enable = true; shellcheck.enable = true; };
-        diagnostics = { cppcheck.enable = true; flake8.enable = true; gitlint.enable = true;  shellcheck.enable = true; };
-        formatting = { alejandra.enable = true; black.enable = true; cbfmt.enable = true;
-          fnlfmt.enable = true; fourmolu.enable = true; nixfmt.enable = true; phpcbf.enable = true;
-          prettier.enable = true; shfmt.enable = true; stylua.enable = true; taplo.enable = true; };
+        code_actions = {
+          gitsigns.enable = true;
+          shellcheck.enable = true;
+        };
+        diagnostics = {
+          cppcheck.enable = true;
+          flake8.enable = true;
+          gitlint.enable = true;
+          shellcheck.enable = true;
+        };
+        formatting = {
+          alejandra.enable = true;
+          black.enable = true;
+          cbfmt.enable = true;
+          fnlfmt.enable = true;
+          fourmolu.enable = true;
+          nixfmt.enable = true;
+          phpcbf.enable = true;
+          prettier.enable = true;
+          shfmt.enable = true;
+          stylua.enable = true;
+          taplo.enable = true;
+        };
       };
     };
 
@@ -565,7 +502,7 @@ in
       enable = false;
       checkTs = true;
       disableInMacro = false;
-      mapCW = true;  # Delete pair w/ CTRL-W
+      mapCW = true; # Delete pair w/ CTRL-W
     };
     surround.enable = false;
     endwise.enable = false;
@@ -573,14 +510,14 @@ in
       enable = false;
       enableSurround = true;
       enableTransmute = true;
-      textObj.linewiseOperators = [ "d" "y" ];  # Modify set of operators which may operate line-wise
+      textObj.linewiseOperators = [ "d" "y" ]; # Modify set of operators which may operate line-wise
       treesitterIntegration.enable = true;
-      treesitterIntegration.includeMatchWords = true;  # Include vim regex matches for symbols. e.g. /* */ comments in C++ which are not supported by treesitter matching
+      treesitterIntegration.includeMatchWords = true; # Include vim regex matches for symbols. e.g. /* */ comments in C++ which are not supported by treesitter matching
     };
     emmet = {
       enable = false;
       leader = null;
-      mode = null;     # i | n | v | a
+      mode = null; # i | n | v | a
       settings = null;
     };
 
@@ -588,13 +525,13 @@ in
     # indent-blankline.vim - Show indentation guides
     indent-blankline = {
       enable = true;
-      buftypeExclude = ["terminal" "nofile" "quickfix" "prompt"];
+      buftypeExclude = [ "terminal" "nofile" "quickfix" "prompt" ];
       #contextPatterns = [ "class" "^func" "method" "^if" "while" "for" "with" "try" "except" "arguments" "argument_list" "object" "dictionary" "element" "table" "tuple" "do_block" ];
-      filetypeExclude = ["lspinfo" "packer" "checkhealth" "help" "man"];
+      filetypeExclude = [ "lspinfo" "packer" "checkhealth" "help" "man" ];
       spaceCharBlankline = " ";
       showCurrentContext = true;
-      showCurrentContextStart = true;  # Applies highlight group `hl-IndentBlanklineContextStart` to first line in current context.
-      showCurrentContextStartOnCurrentLine = true;  # Apply ^^ even when cursor on same line
+      showCurrentContextStart = true; # Applies highlight group `hl-IndentBlanklineContextStart` to first line in current context.
+      showCurrentContextStartOnCurrentLine = true; # Apply ^^ even when cursor on same line
       #showFirstIndentLevel = false;
       #showTrailingBlanklineIndent = false;
       #char = "│"; contextChar = "";
@@ -612,7 +549,7 @@ in
     nvim-bqf = {
       enable = true;
       autoResizeHeight = true;
-      extraOptions = {};
+      extraOptions = { };
       magicWindow = true;
       preview = { autoPreview = true; bufLabel = true; showTitle = true; winHeight = 15; winVheight = 15; wrap = false; }; #borderChars = {};
     };
@@ -628,13 +565,25 @@ in
       };
       #confirmation.getCommitCharacters = "function(commit_characters return commit_characters end)";
       experimental = { ghost_text = true; };
-      formatting.fields = ["kind" "abbr" "menu"];
-      mappingPresets = ["insert" "cmdline"];
-      preselect = "Item";                      # Item | None
-      snippet.expand = "luasnip";              # luasnip | snippy | ultisnips | vsnip | function()
+      formatting.fields = [ "kind" "abbr" "menu" ];
+      mappingPresets = [ "insert" "cmdline" ];
+      preselect = "Item"; # Item | None
+      snippet.expand = "luasnip"; # luasnip | snippy | ultisnips | vsnip | function()
+      sources = [
+        { name = "treesitter"; }
+        { name = "nvim_lsp"; }
+        { name = "nvim_lsp_document_symbol"; }
+        { name = "nvim_lsp_signature_help"; }
+        { name = "luasnip"; }
+        { name = "dap"; }
+        { name = "path"; }
+        { name = "buffer"; }
+        { name = "calc"; }
+      ];
       window.completion = {
         colOffset = 0;
-        scrollbar = true; scrolloff = 0;
+        scrollbar = true;
+        scrolloff = 0;
         sidePadding = 1;
         winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None";
       }; #border = ["" "" "" "" "" "" "" ""];
@@ -672,7 +621,7 @@ in
     cmp-snippy.enable = false;
     cmp-spell.enable = false;
     cmp-tabnine.enable = false;
-    cmp-tabnine.extraOptions = {};
+    cmp-tabnine.extraOptions = { };
     cmp-tmux.enable = false;
     cmp-treesitter.enable = true;
     cmp-vim-lsp.enable = false;
@@ -681,13 +630,13 @@ in
     cmp-zsh.enable = true;
     cmp_luasnip.enable = true;
 
-    nvim-jdtls.enable = false;  # Java LSP configuration
+    nvim-jdtls.enable = false; # Java LSP configuration
     #nvim-jdtls.data = "/path/to/your/workspace";
 
 
     # --- Highlighting -----------------
     # Highlight marks on backtick press
-    mark-radar.enable = true;      # TODO: Match highlight group `highlightGroup = "RadarMark"` w/ theme accent
+    mark-radar.enable = true; # TODO: Match highlight group `highlightGroup = "RadarMark"` w/ theme accent
 
     # Highlight colors (names, rgb, hex, etc.)
     #nvim-colorizer.enable = true;
@@ -734,7 +683,7 @@ in
     rust-tools = {
       enable = true;
       crateGraph = {
-        enabledGraphvizBackends = ["dot" "jpg" "json" "pdf" "plain-ext" "png" "svg" "webp" "x11"];
+        enabledGraphvizBackends = [ "dot" "jpg" "json" "pdf" "plain-ext" "png" "svg" "webp" "x11" ];
         backend = "svg";
       };
       server.cargo.features = "all";
@@ -791,9 +740,9 @@ in
       giteditor = true;
       height = 0.6;
       #keymaps = { first=""; hide=""; kill=""; last=""; new=""; next=""; prev=""; show=""; toggle=""; };
-      opener = "split";   # edit | split | vsplit | tabe | drop
-      position = "auto";  # wintype=split: leftabove | aboveleft | rightbelow | belowright | topleft | botright
-                              # wintype=float: top | bottom | left | right | topleft | topright | bottomleft | bottomright | center | auto (at cursor position)
+      opener = "split"; # edit | split | vsplit | tabe | drop
+      position = "auto"; # wintype=split: leftabove | aboveleft | rightbelow | belowright | topleft | botright
+      # wintype=float: top | bottom | left | right | topleft | topright | bottomleft | bottomright | center | auto (at cursor position)
       rootmarkers = [ ".project" ".git" ".hg" ".svn" ".root" "flake.nix" ".github" ];
       wintype = "float";
     };
@@ -816,7 +765,7 @@ in
     # --- Runners ----------------------
     sniprun = {
       enable = true;
-      display = ["VirtualTextOk" "LongTempFloatingWindowOk" "NvimNotifyOk" "TerminalErr" ];
+      display = [ "VirtualTextOk" "LongTempFloatingWindowOk" "NvimNotifyOk" "TerminalErr" ];
       #liveModeToggle = "on";
       #replEnable = [];
     };
@@ -836,6 +785,6 @@ in
 
 
   # --- Aliases ---
-  programs.nixvim.viAlias  = true;
+  programs.nixvim.viAlias = true;
   programs.nixvim.vimAlias = true;
 }
