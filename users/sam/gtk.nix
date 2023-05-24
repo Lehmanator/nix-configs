@@ -1,5 +1,5 @@
 { config, lib, pkgs, ... }: {
-  imports = [];
+  imports = [ ];
 
   # https://nix-community.github.io/home-manager/options.html#opt-gtk.enable
 
@@ -8,6 +8,7 @@
 
   # --- GTK ---
   gtk.enable = true;
+  gtk.gtk2.configLocation = "${config.xdg.configHome}/gtk-2.0/gtkrc"; # Follow XDG spec
   gtk.iconTheme.name = "Adwaita";
   gtk.iconTheme.package = pkgs.gnome.adwaita-icon-theme;
 
