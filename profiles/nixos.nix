@@ -77,4 +77,9 @@ in
     fi
   '';
   programs.nix-ld.enable = true;
+
+  # Place flake source in /etc/nixos
+  # TODO: Convert to divnix/hive first
+  #etc.nixos.source = inputs.self;
+
 }
