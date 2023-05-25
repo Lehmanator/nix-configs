@@ -6,26 +6,34 @@
 , config
 , lib
 , pkgs
+, uiShape ? "rounded"
 , ...
 }:
+
 # --- NixVim ---
 # Configures Neovim via Nix modules
 # https://github.com/pta2002/nixvim
 # https://pta2002.github.io/nixvim
-let
-  style = "rounded";
-in
+
+# TODO: lib.exportNeovimKeybinds <neovimConfig>
+# TODO: lib.exportNixvimKeybinds <nixvimConfig>
+# TODO: lib.exportVimKeybinds       <vimConfig>
 {
   imports = [
     inputs.nixvim.homeManagerModules.nixvim
     ./editorconfig.nix
     ../../../configs/nixvim/common/colorscheme.nix
     ../../../configs/nixvim/common/statusline.nix
+    ../../../configs/nixvim/common/plugins
   ];
   home.sessionVariables = {
     EDITOR = "nvim";
   };
-  programs.git.extraConfig.core.editor = "nvim";
+  home.packages = [
+    pkgs.fd
+  ];
+
+  programs.git.extraConfig.core.editor = "nvim"; # TODO: Replace with pkgs.neovim ?
 
   #programs.neovim.withNodeJs = true;
   #programs.neovim.withPython3 = true;
@@ -40,25 +48,6 @@ in
 
   programs.nixvim.enable = true;
 
-  # TODO: Fix white '^^^^^^^^' in statusline (set to BG or NONE)
-  programs.nixvim.highlight = {
-    #IndentBlanklineIndent2.ctermfg = "bg";
-    #IndentBlanklineIndent1 = { fg = "NONE"; ctermfg = "NONE"; };
-    lualine_c_active.bg = "NONE";
-    lualine_c_inactive.bg = "NONE";
-    lualine_x_active.bg = "NONE";
-    lualine_x_inactive.bg = "NONE";
-    lualine_x_normal.bg = "NONE"; #lualine_x_normal.bg = "NONE";
-    lualine_c_normal.bg = "NONE"; #lualine_c_normal.bg = "NONE";
-    lualine_x_insert.bg = "NONE"; #lualine_x_insert.bg = "NONE";
-    lualine_c_insert.bg = "NONE"; #lualine_c_insert.bg = "NONE";
-    TabLineFill.bg = "NONE";
-    TabLineFill.fg = "NONE";
-    StatusLine.bg = "NONE";
-    StatusLineNC.bg = "NONE";
-    StatusLine.fg = "NONE";
-    StatusLineNC.fg = "NONE";
-  };
   # --- Options ---
   programs.nixvim.options = {
     # --- Lines ---
@@ -90,59 +79,6 @@ in
     vim-nix
     vim-nixhash
     vim2nix
-  ];
-
-  home.packages = [
-    pkgs.fd
-
-
-    pkgs.fira-code
-    pkgs.fira-code-symbols
-    pkgs.hackgen-nf-font
-    pkgs.inconsolata-nerdfont
-    pkgs.maple-mono-NF
-    pkgs.meslo-lgs-nf
-    pkgs.nerd-font-patcher
-    (pkgs.nerdfonts.override {
-      fonts = [
-        "Agave"
-        "IBMPlexMono" #"Blex Mono"
-        "CascadiaCode" #"Caskaydia Cove"
-        "CodeNewRoman"
-        "Cousine"
-        "DaddyTimeMono"
-        "DejaVuSansMono"
-        "DroidSansMono"
-        "FantasqueSansMono"
-        "FiraCode"
-        "FiraMono"
-        "Gohu"
-        "Hack"
-        "Hermit" #"Hurmit"
-        "Inconsolata"
-        "Iosevka"
-        "JetBrainsMono"
-        "LiberationMono" #"LiterationMono"
-        "Lilex"
-        "Meslo" #"MesloLG"
-        "Monofur"
-        "Monoid"
-        "Mononoki"
-        "Noto"
-        "ProFont"
-        "ProggyClean"
-        "OpenDyslexic"
-        "RobotoMono"
-        "ShareTechMono" #"ShureTechMono"
-        "SourceCodePro" #"SauceCodePro"
-        "SpaceMono"
-        "NerdFontsSymbolsOnly"
-        "Terminus" #"Terminess"
-        "Ubuntu"
-        "UbuntuMono"
-        "VictorMono"
-      ];
-    })
   ];
 
   # --- LaTeX --------------------------
@@ -202,6 +138,10 @@ in
   programs.git.extraConfig.diff.external = false; #extraConfig.diff_opts.internal = true;
 
   programs.nixvim.plugins = {
+
+    # Integrate browser textboxes with Neovim config
+    firenvim.enable = true;
+
     # --- Language Server Protocol -----
     lsp = {
       enable = true;
@@ -230,8 +170,8 @@ in
         html.enable = true;
         jsonls.enable = true;
         lua-ls.enable = true;
-        nil_ls.enable = false;
-        rnix-lsp.enable = true;
+        nil_ls.enable = true;
+        rnix-lsp.enable = false;
         rust-analyzer.enable = true;
         tailwindcss.enable = true;
         terraformls.enable = true;
@@ -245,7 +185,10 @@ in
 
     # lsp-lines - LSP multi-line diagnostics in-editor
     lsp-lines = { enable = true; currentLine = false; };
-    lsp-format.enable = true;
+    lsp-format = {
+      enable = true;
+      lspServersToEnable = "all";
+    };
 
     # lspkind.nvim - Entry types for LSP Completions w/ icons
     lspkind = {
@@ -256,6 +199,7 @@ in
     };
 
     # lspsaga.nvim - LSP enhancements
+    # TODO: Compatible with Noice?
     lspsaga = {
       enable = true;
       borderStyle = "rounded";
@@ -288,6 +232,7 @@ in
       enable = false;
       diagnostics.enable = true;
       modified.enable = true;
+      # TODO: Conditionally set NerdFonts icons in Neovim if we have a supported font installed.
     };
 
     neo-tree = {
@@ -379,56 +324,6 @@ in
       };
     };
 
-    # --- Neorg ------------------------
-    # Organization file format: .norg
-    # https://github.com/nvim-neorg/neorg
-    neorg = {
-      enable = true;
-      extraOptions = { };
-      lazyLoading = true;
-      modules = {
-        # --- Default Modules ---
-        #"core.defaults".config.disable = [];
-        #"core.clipboard.code-blocks" = {}; "core.looking-glass" = {}; "core.itero" = {};
-        #"core.keybinds".config.default_keybinds = true; # TODO: Set `localleader` for `.norg` files
-        #"core.norg.esupports.indent".config = {};
-        #"core.norg.esupports.hop".config = { external_filetypes = []; };
-        #"core.norg.news"={}; "core.norg.qol.toc"={}; "core.norg.qol.todo_items"={}; "core.promo"={}; "core.tangle"={}; "core.upgrade" = {};
-        "core.norg.esupports.metagen".config = { type = "auto"; update_date = true; };
-        "core.norg.journal".config = {
-          journal_folder = "${config.home.homeDirectory}/Notes/Journal";
-          strategy = "flat";
-          #workspace = "journal";
-        };
-
-        # --- Other Modules ---
-        "core.norg.dirman".config.workspaces = {
-          # Manage directories of .norg files
-          work = "${config.home.homeDirectory}/Notes/Work";
-          home = "${config.home.homeDirectory}/Notes/Home";
-          #journal="${config.home.homeDirectory}/Notes/Journal";
-        };
-        "core.export.markdown".config.extensions = "all"; # Export .norg docs to other supported filetypes
-        "core.norg.completion".config.engine = "nvim-cmp"; # TODO: Set `sources={ {name="neorg"},},` as source in `nvim-cmp`
-        "core.presenter".config.zen_mode = "zen-mode"; # (zen-mode | truezen)
-        "core.export" = { };
-        "core.norg.concealer" = { };
-
-        # --- Developer Modules ---
-        # core: autocommands, clipboard, defaults, fs, highlights, mode, scanner, storage, syntax
-        # core.integrations: nvim-cmp, nvim-compe, treesitter, truezen, zen_mode
-        # core.neorgcmd: ., commands.module.list, commands.module.load, commands.return
-        # core.norg.dirman.utils core.queries.native
-        "core.clipboard" = { };
-        "core.scanner" = { };
-        "core.syntax" = { };
-
-        # --- Community Modules ---
-        # https://github.com/nvim-neorg/neorg-telescope
-
-      };
-    };
-
     # --- Netman -----------------------
     # Access network resources in Neovim
     netman = {
@@ -437,19 +332,108 @@ in
     };
 
     # --- Noice.nvim -------------------
+    # https://github.com/folke/noice.nvim
+    #
     # Alternate UI for Neovim. Completely replaces cmdline, messages, popupmenu
+    #
+    # - Treesitter requires parsers: vim, regex, lua, bash, markdown, markdown_inline
+    # - Views are combination of: backend + options
+    #
+    # +--View----------+--Backend----+--Like------------------+--Options-|-Description----------------------------+
+    # | notify         | notify      | nvim-notify            | { title, level, replace=false, merge=false }      |
+    # | split          | split       | nui.nvim               | {                                size=auto,       |
+    # | vsplit         | split       | nui.nvim               |                          position=auto,           |
+    # | popup          | popup       | nui.nvim               | win_options.winhighlight.<hl-group>=<hl-group> }  |
+    # | mini           | mini        | notifier/fidget.nvim   | Default position: bottom-right                    |
+    # | cmdline        | popup       | cmdline                | Similar to native cmdline, bottom line            |
+    # | cmdline_popup  | popup       | Fancy cmdline popup    | Diff styles according to cmdline mode             |
+    # | cmdline_output | split       | presets.cmdline_output_to_split |                                          |
+    # | messages       | split       | Split `:messages`      |                                                   |
+    # | confirm        | popup       | Popup: `confirm` event |                                                   |
+    # | hover          | popup       | Popup: LSP Signature   | Popup for help / hover                            |
+    # | popupmenu      | nui.menu    | popupmenu.backend=nui  | Special popupmenu w render options if backend=nui |
+    # |                | virtualtext | Message: virtualtext   | (ex:search_count) {hl_group=<hl-group>}           |
+    # |                | notify_send | Desktop notification   |                                                   |
+    # +---------------------------+-------------------------------------------------------------------------------+
+    # |
+    # +--Formatters--+
+    # | level    | <level>=
+    # | text     |
+    # | message  |
+    # | progress |
+    # | title    |
+    # | event    |
+    # | kind     |
+    # | date     |
+    # | confirm  |
+    # | cmdline  |
+    # | spinner  |
+    # | data     |
     noice = {
       enable = true;
-      popupmenu.backend = "nui"; # (nui | cmp)
+      #extraOptions = {};
+      cmdline = {
+        enabled = true;
+        view = "cmdline"; # cmdline_popup | cmdline
+        #format = {};
+        #opts = {};
+      };
+      #commands = {
+      #};
+      #format = {
+      #};
+      popupmenu = {
+        enabled = true;
+        backend = "nui"; # (nui | cmp)
+      };
       notify = {
         enabled = true;
+        #view = "notify";
         #stages = "slide"; # stages: fade_in_slide_out | fade | slide | static
       };
+
+      lsp = {
+        documentation = {
+          #opts = {};
+          view = "hover";
+        };
+        hover = {
+          enabled = true;
+          silent = false;
+          #opts = {};
+          #view = null;
+        };
+        message = {
+          enabled = true;
+          view = "notify";
+          #opts = {};
+        };
+        progress = {
+          enabled = true;
+          format = "lsp_progress";
+          format_done = "lsp_progress_done";
+          view = "mini";
+        };
+        signature = {
+          enabled = true;
+          auto_open = {
+            enabled = true;
+            trigger = true;
+            luasnip = true;
+          };
+          #view = null;
+          #opts = {};
+        };
+
+        override = { };
+      };
+
       presets = {
-        bottom_search = true;
-        command_palette = true;
+        bottom_search = true; # Puts search in bottom line
+        command_palette = true; # Puts command entry line at top-center
         inc_rename = true;
-        lsp_doc_border = true;
+        long_message_to_split = true; # Open long messages in split instead of notify UI
+        lsp_doc_border = true; # Add border to hover docs & signature help
       };
     };
 
@@ -464,20 +448,26 @@ in
         code_actions = {
           gitsigns.enable = true;
           shellcheck.enable = true;
+          statix.enable = true;
         };
         diagnostics = {
           cppcheck.enable = true;
+          deadnix.enable = true;
           flake8.enable = true;
           gitlint.enable = true;
           shellcheck.enable = true;
+          statix.enable = true;
         };
         formatting = {
+          # Nix
           alejandra.enable = true;
+          nixfmt.enable = false;
+          nixpkgs_fmt.enable = false;
+
           black.enable = true;
           cbfmt.enable = true;
           fnlfmt.enable = true;
           fourmolu.enable = true;
-          nixfmt.enable = true;
           phpcbf.enable = true;
           prettier.enable = true;
           shfmt.enable = true;
@@ -566,7 +556,7 @@ in
       #confirmation.getCommitCharacters = "function(commit_characters return commit_characters end)";
       experimental = { ghost_text = true; };
       formatting.fields = [ "kind" "abbr" "menu" ];
-      mappingPresets = [ "insert" "cmdline" ];
+      #mappingPresets = [ "insert" "cmdline" ];
       preselect = "Item"; # Item | None
       snippet.expand = "luasnip"; # luasnip | snippy | ultisnips | vsnip | function()
       sources = [
@@ -595,7 +585,7 @@ in
     cmp-cmdline.enable = true;
     cmp-cmdline-history.enable = true;
     cmp-conventionalcommits.enable = true;
-    cmp-copilot.enable = true;
+    cmp-copilot.enable = false;
     cmp-dap.enable = true;
     cmp-dictionary.enable = true;
     cmp-digraphs.enable = true;
@@ -718,6 +708,7 @@ in
       };
       indent = true;
       nixGrammars = true;
+      nixvimInjections = true; # Enable Nixvim-specific injections (like Lua highlighting in extraConfigLua)
     };
     treesitter-context.enable = true;
     treesitter-playground.enable = true;
