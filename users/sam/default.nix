@@ -12,6 +12,7 @@
   imports = [
     ./browsers
     ./editor/neovim.nix
+    ./fonts.nix
     ./git
     ./gnome
     ./gpg.nix
