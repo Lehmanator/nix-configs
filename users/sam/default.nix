@@ -17,7 +17,7 @@
     ./gpg.nix
     ./languages/nodejs.nix
     ./nix.nix
-    ./shell/zsh.nix
+    ./shell/zsh
     ./social
     ./xdg.nix
     ../../profiles/workarounds.nix

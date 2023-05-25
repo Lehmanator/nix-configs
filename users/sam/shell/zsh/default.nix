@@ -27,8 +27,11 @@ let
 in
 {
   imports = [
-    ./common.nix
+    ../common
+    ./alias.nix
+    ./history.nix
   ];
+
   home.sessionVariables.ZDOTDIR = "${config.xdg.configHome}/zsh"; #"${config.home.homeDirectory}/.config/zsh";
   programs.zsh.dotDir = "${config.xdg.configHome}/zsh";
   #programs.zsh.dotDir = config.home.sessionVariables.ZDOTDIR;
@@ -38,6 +41,7 @@ in
   programs.zsh.enable = true;
 
   # --- Keybindings ---
+  # TODO: Create global user/system-wide keymap setting & set these options correspondingly
   programs.zsh.defaultKeymap = "viins";
   programs.zsh.prezto.editor.keymap = "vi";
 
@@ -93,6 +97,12 @@ in
     };
   };
 
+  # --- Initialization -------------------------------------
+  programs.zsh.initExtra = ''
+    function cdls() { exa -a --icons --git --group-directories-first }
+    chpwd_functions=(cdls)
+  '';
+
   # --- Integration ---
   programs.zsh.enableVteIntegration = true;
   programs.zsh.prezto.terminal = {
@@ -108,35 +118,12 @@ in
   #  itermIntegration = true;
   #};
 
-  # --- History ---
-  programs.zsh.history.path = "${config.xdg.dataHome}/zsh/history";
-  programs.zsh.history.extended = true;
-  programs.zsh.history.ignorePatterns = [
-    "rm -r *"
-    "rm -rf *"
-    "echo * > *key*"
-    "echo * > *secret*"
-    "echo \"*\" > *key*"
-    "echo \"*\" > *secret*"
-    "echo '*' > *key*"
-    "echo '*' > *secret*"
-    # TODO: LUKS commands w/ key passed in CLI
-  ];
-  programs.zsh.history.share = true;
-  programs.zsh.history.ignoreSpace = true;
-  programs.zsh.historySubstringSearch.enable = true;
-
-  # --- Initialization -------------------------------------
-  programs.zsh.initExtra = ''
-    function cdls() { exa -a --icons --git --group-directories-first }
-    chpwd_functions=(cdls)
-  '';
-
   # --- Plugins --------------------------------------------
   programs.zsh.prezto.enable = true;
   programs.zsh.plugins = [
-    # Use ZSH inside nix-shell
+    # TODO: Use nvfetcher & nixpkgs overlay ?
     {
+      # Use ZSH inside nix-shell
       name = "zsh-nix-shell";
       file = "nix-shell.plugin.zsh";
       src = pkgs.fetchFromGitHub {
