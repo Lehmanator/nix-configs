@@ -30,6 +30,7 @@
 
   services.dbus.packages = [
     pkgs.gcr # Allows gpg-agent & rbw to use pinentry-gnome3
+    pkgs.gcr_4
   ];
 }
 
