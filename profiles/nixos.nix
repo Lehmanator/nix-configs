@@ -1,18 +1,35 @@
-{
-  self,
-  inputs,
-  system,
-  host, userPrimary,
-  config, lib, pkgs,
-  ...
+{ self
+, inputs
+, system
+, host
+, userPrimary
+, config
+, lib
+, pkgs
+, ...
 }:
 let
   # TODO: Randomize & actually use
   figs = [
-    "nancyj-underlined" "nvscript" "jazmine" "o8" "ogre"  "puffy"
-    "rectangles"        "rev"      "roman"   "rowancap"
-    "rozzo"             "cursive"  "script"  "slant"
-    "standard"          "starwars" "thick"   "univers"  "whimsy"
+    "nancyj-underlined"
+    "nvscript"
+    "jazmine"
+    "o8"
+    "ogre"
+    "puffy"
+    "rectangles"
+    "rev"
+    "roman"
+    "rowancap"
+    "rozzo"
+    "cursive"
+    "script"
+    "slant"
+    "standard"
+    "starwars"
+    "thick"
+    "univers"
+    "whimsy"
   ];
 in
 {
@@ -21,7 +38,13 @@ in
   ];
 
   environment.etc."nix/inputs/nixos".source = inputs.nixos.outPath;
-  nix.nixPath = ["nixos=/etc/nix/inputs/nixpkgs"];
+  nix.settings.extra-experimental-features = [
+    "auto-allocate-uids"
+    "cgroups"
+    #"dynamic-derivations" # After Nix v2.16.0
+    "ca-derivations"
+  ];
+  nix.nixPath = [ "nixos=/etc/nix/inputs/nixpkgs" ];
   #nix.nixPath = [ "nixos=${inputs.nixos}" ];  #"nixos=${inputs.nixpkgs}"
   nix.registry.nixos.flake = inputs.nixos;
   nixpkgs.overlays = [

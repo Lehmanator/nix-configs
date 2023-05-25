@@ -130,7 +130,7 @@
 
   # --- Settings -----------------------
   nix.settings.connect-timeout = lib.mkDefault 10;
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [ "nix-command" "flakes" "repl-flake" ];
   nix.settings.warn-dirty = false; # Warn git unstaged/uncommitted files
 
   #nix.settings.auto-allocate-uids = true;
