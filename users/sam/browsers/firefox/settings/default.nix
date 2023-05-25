@@ -5,8 +5,8 @@
 #let
 #  gnome-settings = import ./gnome.nix;
 #in gnome-settings //
-import ./gnome.nix
-//
+import ./gnome.nix //
+import ./privacy.nix //
 {
   #imports = [
   #  ./arkenfox.nix
