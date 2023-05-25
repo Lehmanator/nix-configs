@@ -10,7 +10,8 @@
 , system
 , userPrimary ? "sam"
 , ...
-}: lib.attrsets.recursiveUpdate
+}:
+#lib.attrsets.recursiveUpdate
 {
   imports = [
     #./common.nix
@@ -85,9 +86,9 @@
 
 }
 
-(lib.optionalAttrs (options?services.flatpak.packages) {
-  services.flatpak.packages = [
-    "flathub:org.gnome.Platform"     "flathub:org.gnome.Sdk"
-    "flathub:org.kde.KStyle.Adwaita" "flathub:org.kde.PlatformTheme.QGnomePlatform" "flathub:org.kde.WaylandDecoration.QGnomePlatform-decoration"
-  ];
-})
+#(lib.optionalAttrs (options?services.flatpak.packages) {
+#  services.flatpak.packages = [
+#    "flathub:org.gnome.Platform"     "flathub:org.gnome.Sdk"
+#    "flathub:org.kde.KStyle.Adwaita" "flathub:org.kde.PlatformTheme.QGnomePlatform" "flathub:org.kde.WaylandDecoration.QGnomePlatform-decoration"
+#  ];
+#})

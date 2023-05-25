@@ -2,25 +2,34 @@
 , config, lib, pkgs
 , ...
 }:
+let
+  equivalentApps = {
+    "ca.andyholmes.Valent" = pkgs.valent;
+    "com.belmoussaoui.Decoder" = pkgs.gnome-decoder;
+    "com.belmoussaoui.Authenticator" = pkgs.authenticator;
+    "com.github.belmoussaoui.Authenticator" = pkgs.authenticator;
+    "com.chatterino.chatterino" = pkgs.chatterino2;
+    "com.belmoussaoui.Obfuscate" = pkgs.gnome-obfuscate;
+    "app.drey.Dialect" = pkgs.dialect;
+    "app.drey.EarTag" = pkgs.eartag;
+    "app.drey.Elastic" = pkgs.elastic;
+    "app.drey.Warp" = pkgs.warp;
+    "net.sapples.LiveCaptions" = pkgs.livecaptions;
+  };
+in
 {
   services.flatpak.packages = lib.lists.unique [
     "flathub:app.drey.Blurble"
-    "flathub:app.drey.Dialect"
-    "flathub:app.drey.EarTag"
-    "flathub:app.drey.Elastic"
-    "flathub:app.drey.Warp"
-    #"flathub:ca.andyholmes.Valent"
+    #"flathub:app.drey.EarTag"
+    #"flathub:app.drey.Elastic"
+    #"flathub:net.sapples.LiveCaptions"
+    #"flathub:app.drey.Warp"
     "flathub:chat.schildi.desktop"
     "flathub:codes.loers.Karlender"
     "flathub:codes.loers.Punchclock"
-    #"flathub:com.github.bilelmoussaoui.Authenticator"
-    #"flathub:com.belmoussaoui.Authenticator"
-    #"flathub:com.belmoussaoui.Decoder"
-    "flathub:com.belmoussaoui.Obfuscate"
     "flathub:com.belmoussaoui.ReadItLater"
     "flathub:com.belmoussaoui.ashpd.demo"
     "flathub:com.borgbase.Vorta"
-    #"flathub:com.chatterino.chatterino"
     "flathub:com.github.Darazaki.Spedread"
     "flathub:com.github.Eloston.UngoogledChromium"
     "flathub:com.github.Eloston.UngoogledChromium.Codecs"
@@ -68,7 +77,7 @@
     "flathub:dev.Cogitri.Health"
     "flathub:dev.edfloreshz.Done"
     "flathub:dev.geopjr.Collision"
-    "flathub:dev.geopjr.Tuba"
+    #"flathub:dev.geopjr.Tuba"
     "flathub:dev.jamiethalacker.window_painter"
     "flathub:fr.free.Homebank"
     "flathub:fr.romainvigier.MetadataCleaner"
@@ -122,7 +131,6 @@
     "flathub:net.cozic.joplin_desktop"
     "flathub:net.danigm.timetrack"
     "flathub:net.natesales.Aviator"
-    "flathub:net.sapples.LiveCaptions"
     "flathub:net.scribus.Scribus"
     "flathub:nl.v0yd.Capsule"
     "flathub:org.blackfennec.app"

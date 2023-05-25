@@ -1,20 +1,17 @@
-{
-  self,
-  system,
-  inputs,
-  userPrimary,
-  config, lib, pkgs,
-  ...
+{ self, inputs
+, config, lib, pkgs
+, system
+, userPrimary ? "sam"
+, ...
 }:
-let
-in
 {
   imports = [
     #./default.nix
     #./epiphany.nix
   ];
-  environment.systemPackages = with pkgs; [
-    gnome.gnome-software
+  environment.systemPackages = [
+    pkgs.authenticator          # GTK4 Two-Factor Auth code generator
+    pkgs.gnome.gnome-software
   ];
   programs.evince.enable = true;
   programs.evolution.enable = true;

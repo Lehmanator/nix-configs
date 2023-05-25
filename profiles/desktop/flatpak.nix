@@ -6,7 +6,8 @@
 , userPrimary ? "sam"
 , flatpak-repos ? { flathub = "https://flathub.org/repo/flathub.flatpakrepo"; }
 , ...
-}: lib.attrsets.recursiveUpdate
+}:
+#lib.attrsets.recursiveUpdate
 {
   services.flatpak.enable = true;
   services.packagekit.enable = true;
@@ -34,23 +35,23 @@
   };
 }
 
-(lib.optionalAttrs (options?services.flatpak.packages) {
-  imports = [ ./flatpak-apps.nix ];
-  services.flatpak.remotes = flatpak-repos;
-  services.flatpak.preInitCommand = "";
-  services.flatpak.postInitCommand = "";
-  services.flatpak.packages = [
-    "flathub:org.freedesktop.Sdk"
-    "flathub:org.freedesktop.Platform"
-    "flathub:org.freedesktop.Platform.ffmpeg-full"
-    "flathub:org.freedesktop.Platform.html5-codecs"
-    "flathub:org.freedesktop.Platform.openh264"
-    "flathub:org.freedesktop.Platform.GL.default"     # TODO: Conditional if using OpenGL graphics
-    "flathub:org.freedesktop.Platform.VAAPI.Intel"    # TODO: Conditional if using Intel graphics & VAAPI
-    "flathub:org.freedesktop.LinuxAudio.Plugins.Calf"
-    "flathub:org.freedesktop.LinuxAudio.Plugins.LSP"
-    "flathub:org.freedesktop.LinuxAudio.Plugins.MDA"
-    "flathub:org.freedesktop.LinuxAudio.Plugins.swh"
-    "flathub:org.freedesktop.LinuxAudio.Plugins.ZamPlugins"
-  ];
-})
+#(lib.optionalAttrs (options?services.flatpak.packages) {
+#  imports = [ ./flatpak-apps.nix ];
+#  services.flatpak.remotes = flatpak-repos;
+#  services.flatpak.preInitCommand = "";
+#  services.flatpak.postInitCommand = "";
+#  services.flatpak.packages = [
+#    "flathub:org.freedesktop.Sdk"
+#    "flathub:org.freedesktop.Platform"
+#    "flathub:org.freedesktop.Platform.ffmpeg-full"
+#    "flathub:org.freedesktop.Platform.html5-codecs"
+#    "flathub:org.freedesktop.Platform.openh264"
+#    "flathub:org.freedesktop.Platform.GL.default"     # TODO: Conditional if using OpenGL graphics
+#    "flathub:org.freedesktop.Platform.VAAPI.Intel"    # TODO: Conditional if using Intel graphics & VAAPI
+#    "flathub:org.freedesktop.LinuxAudio.Plugins.Calf"
+#    "flathub:org.freedesktop.LinuxAudio.Plugins.LSP"
+#    "flathub:org.freedesktop.LinuxAudio.Plugins.MDA"
+#    "flathub:org.freedesktop.LinuxAudio.Plugins.swh"
+#    "flathub:org.freedesktop.LinuxAudio.Plugins.ZamPlugins"
+#  ];
+#})
