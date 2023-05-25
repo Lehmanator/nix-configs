@@ -33,7 +33,7 @@
   home.stateVersion = "23.05";
   home.enableDebugInfo = true;
   home.enableNixpkgsReleaseCheck = true;
-  home.extraOutputsToInstall = [ "doc" "info" "devdoc" ];
+  home.extraOutputsToInstall = [ "doc" "info" "devdoc" "dev" "bin" ];
   home.sessionPath = [
     config.xdg.userDirs.extraConfig.XDG_APPS_DIR
     config.xdg.userDirs.extraConfig.XDG_BIN_DIR

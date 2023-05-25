@@ -41,7 +41,7 @@
     ../../profiles/shell/zsh.nix
     ../../profiles/user-defaults.nix
     ../../profiles/virt/vm-host.nix
-    ../../profiles/virt/wine.nix
+    ../../profiles/virt/windows
     ../../profiles/workarounds.nix
 
     # Include configuration managed by apps:

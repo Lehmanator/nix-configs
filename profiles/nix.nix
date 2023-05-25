@@ -15,6 +15,8 @@
   # Use Nix package manager package with builtin flakes support
   nix.package = lib.mkDefault pkgs.nixUnstable; #pkgs.nixFlakes; #(nixUnstable for use-xdg-base-directories, nixFlakes for flakes support)
 
+  environment.extraOutputsToInstall = [ "doc" "info" "devdoc" "dev" "bin" ];
+
   # https://nixos.wiki/wiki/Flakes
   # Note: channels & nixPath are legacy, but still often used by tooling
   environment.etc."nix/inputs/nixpkgs".source = inputs.nixpkgs.outPath;
