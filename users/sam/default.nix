@@ -11,7 +11,7 @@
 {
   imports = [
     ./browsers
-    ./editor/neovim.nix
+    ./editor
     ./fonts.nix
     ./git
     ./gnome

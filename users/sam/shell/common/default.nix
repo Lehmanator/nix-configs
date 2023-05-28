@@ -13,7 +13,7 @@
 {
   imports = [
     ./alias.nix
-    ./pager.nix
+    ../../pager
   ];
 
   programs.bash.enableVteIntegration = true;

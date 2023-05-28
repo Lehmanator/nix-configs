@@ -41,7 +41,7 @@
     };
 
     tokyonight = {
-      enable = true;
+      enable = false;
       #dayBrightness = 1;
       dimInactive = true;
       hideInactiveStatusline = true;

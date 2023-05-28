@@ -18,11 +18,25 @@
 # TODO: lib.exportNeovimKeybinds <neovimConfig>
 # TODO: lib.exportNixvimKeybinds <nixvimConfig>
 # TODO: lib.exportVimKeybinds       <vimConfig>
+let
+  borderStyle = "rounded";
+  borderCharSets = {
+    rounded = [ "" "" "" "" "" "" "" "" ];
+    none = [ "" "" "" "" "" "" "" "" ];
+    square = [ "" "" "" "" "" "" "" "" ];
+    double=["╔" "═" "╗" "║" "╝" "═" "╚" "║"];
+    border=["╭" "─" "╮" "│" "╯" "─" "╰" "│"];
+    single=["┌" "─" "┐" "│" "┘" "─" "└" "│"];
+    #flaoterm="─│─│┌┐┘└";
+  };
+  borderChars = borderCharSets."${borderStyle}";
+in
 {
   imports = [
     inputs.nixvim.homeManagerModules.nixvim
     ./editorconfig.nix
-    ../../../configs/nixvim/common/colorscheme.nix
+    #../../../configs/nixvim/common/colorscheme.nix
+    ../../../configs/nixvim/common/colorschemes/catppuccin.nix
     ../../../configs/nixvim/common/statusline.nix
     ../../../configs/nixvim/common/plugins
   ];
@@ -140,7 +154,7 @@
   programs.nixvim.plugins = {
 
     # Integrate browser textboxes with Neovim config
-    firenvim.enable = true;
+    #firenvim.enable = true;
 
     # --- Language Server Protocol -----
     lsp = {
@@ -194,7 +208,7 @@
     lspkind = {
       enable = true;
       cmp.enable = true;
-      mode = "symbol"; #text,text_symbol,symbol_text*,symbol
+      mode = "symbol_text"; #text,text_symbol,symbol_text*,symbol
       preset = "codicons"; #codicons,default
     };
 
@@ -399,7 +413,6 @@
         };
         hover = {
           enabled = true;
-          silent = false;
           #opts = {};
           #view = null;
         };
@@ -411,12 +424,12 @@
         progress = {
           enabled = true;
           format = "lsp_progress";
-          format_done = "lsp_progress_done";
+          #format_done = "lsp_progress_done";
           view = "mini";
         };
         signature = {
           enabled = true;
-          auto_open = {
+          autoOpen = {
             enabled = true;
             trigger = true;
             luasnip = true;
@@ -553,31 +566,94 @@
         completeopt = "menu,menuone,noselect";
         keywordLength = 1;
       };
+      mapping = {
+
+        # if cmp.visible() then
+        #   cmp.select_next_item(select_opts) -- If menu open, <Tab> moves to next item
+        # elseif col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
+        #   fallback()     -- Insert <Tab> char if line is "empty"
+        # else
+        #   cmp.complete() -- If cursor is inside a word, trigger menu
+        "<CR>" = {
+          modes = ["i" "s" ];
+          action = "cmp.mapping.confirm({ select = true })";
+        };
+        "<Tab>" = {
+          modes = [ "i" "s" ];
+          action = ''
+            function(fallback)
+              if cmp.visible() then
+                cmp.select_next_item()
+              elseif luasnip.expandable() then
+                luasnip.expand()
+              -- expand_or_locally_jumpable() - Only jumps inside snippet region
+              -- expand_or_jumpable()         - Can jump outside snippet region
+              elseif luasnip.expand_or_locally_jumpable() then
+                luasnip.expand_or_jump()
+              elseif has_words_before() then
+                cmp.complete()
+              elseif check_backspace() then
+                fallback()
+              else
+                fallback()
+              end
+            end
+          '';
+        };
+        "<S-Tab>" = {
+          modes = [ "i" "s" ];
+          action = ''
+            function(fallback)
+              if cmp.visible() then
+                cmp.select_prev_item()
+              elseif luasnip.jumpable(-1) then
+                luasnip.jump(-1)
+              else
+                fallback()
+              end
+            end
+          '';
+        };
+      };
       #confirmation.getCommitCharacters = "function(commit_characters return commit_characters end)";
-      experimental = { ghost_text = true; };
-      formatting.fields = [ "kind" "abbr" "menu" ];
-      #mappingPresets = [ "insert" "cmdline" ];
+      experimental = {
+        ghost_text = true;
+        native_menu = false;
+      };
+      formatting = {
+        fields = [ "kind" "abbr" "menu" ];
+        #format = ''
+        #  function(entry, vim_item)
+        #  end
+        #'';
+      };
+
+      #mappingPresets = ["cmdline"]; #"[ \"insert\" \"cmdline\" ]";
       preselect = "Item"; # Item | None
       snippet.expand = "luasnip"; # luasnip | snippy | ultisnips | vsnip | function()
       sources = [
-        { name = "treesitter"; }
         { name = "nvim_lsp"; }
         { name = "nvim_lsp_document_symbol"; }
         { name = "nvim_lsp_signature_help"; }
         { name = "luasnip"; }
+        { name = "omni"; }
+        { name = "treesitter"; }
         { name = "dap"; }
         { name = "path"; }
         { name = "buffer"; }
         { name = "calc"; }
       ];
-      window.completion = {
-        colOffset = 0;
-        scrollbar = true;
-        scrolloff = 0;
-        sidePadding = 1;
-        winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None";
-      }; #border = ["" "" "" "" "" "" "" ""];
-      window.documentation = { winhighlight = "FloatBorder:NormalFloat"; }; #border = ["" "" "" "" "" "" "" ""];
+      window = {
+        completion = {
+          border = borderChars;
+          colOffset = 0;
+          scrollbar = true;
+          scrolloff = 0;
+          sidePadding = 1;
+          winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None";
+        };
+        documentation = { winhighlight = "FloatBorder:NormalFloat"; }; #border = ["" "" "" "" "" "" "" ""];
+      };
     };
     cmp-buffer.enable = true;
     cmp-calc.enable = true;
