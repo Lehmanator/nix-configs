@@ -63,6 +63,7 @@
 
   # --- Optimization -------------------
   nix.gc.automatic = true; # Collect garbage
+  nix.gc.options = "--cores 1 --max-freed 100G --max-jobs 1 --timeout 30"; # Limit garbage collection to 100GB using 1 concurrent job on 1 core, & 30 seconds of runtime
   nix.optimise.automatic = true; # Store optimizer
   nix.settings.auto-optimise-store = true; # Dedup
   nix.settings.min-free = 128000000;
