@@ -1,16 +1,16 @@
 {
   allowAliases                    =  true;
-  allowBroken                     =  false;
+  allowBroken                     =  true;
   allowInsecure                   =  false;
   allowUnfree                     =  true;
-  allowUnsupportedSystem          =  true;
+  allowUnsupportedSystem          =  false;
   checkMeta                       =  true;   # Whether to check derivations' `meta` attr during eval time
-  configurePlatformsByDefault     =  true;   # Warn: May cause mass rebuild upon change
-  contentAddressedByDefault       =  true;   # Warn: May cause mass rebuild upon change
-  doCheckByDefault                =  true;   # Warn: May cause mass rebuild upon change
+  #configurePlatformsByDefault     =  true;   # Warn: May cause mass rebuild upon change
+  #contentAddressedByDefault       =  true;   # Warn: May cause mass rebuild upon change
+  #doCheckByDefault                =  true;   # Warn: May cause mass rebuild upon change
   enableParallelBuildingByDefault =  true;   # Warn: May cause mass rebuild upon change
-  strictDepsByDefault             =  false;  # Warn: May cause mass rebuild upon change
-  structuredAttrsByDefault        =  false;  # Warn: May cause mass rebuild upon change
+  #strictDepsByDefault             =  false;  # Warn: May cause mass rebuild upon change
+  #structuredAttrsByDefault        =  false;  # Warn: May cause mass rebuild upon change
   warnUndeclaredOptions           =  true;
 
   #allowInsecurePredicate = pkg: builtins.elem (lib.getName pkg) [
