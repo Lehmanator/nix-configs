@@ -30,10 +30,9 @@
   #];
 
   nix.package = lib.mkDefault pkgs.nixUnstable; # Needed for use-xdg-base-directories
+  nix.gc.automatic = true;  # Automatically garbage-collect nix-store on interval
+  nix.gc.options = "--cores 1 --max-freed 100G --max-jobs 1 --timeout 30"; # Limit garbage collection to 100GB using 1 concurrent job on 1 core, & 30 seconds of runtime
   nix.settings.accept-flake-config = true;
-  nix.extraOptions = ''
-    use-xdg-base-directories = true
-  '';
 
   home.packages = [
 
