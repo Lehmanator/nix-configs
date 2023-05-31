@@ -3,7 +3,7 @@
 , config
 , lib
 , pkgs
-, useNerdfonts ? true
+  #, useNerdfonts ? true
 , ...
 }:
 # TODO: Convert this file into {nixosModule,homeManagerModule,darwinModule}.nerdfonts
@@ -21,6 +21,7 @@
 # TODO: lib.mkDynamcNerdfontConfig - Bend config to use Nerdfonts when remote client SSH, disable during console access. Set env vars via PAM session login
 
 let
+  useNerdfonts = lib.mkDefault true;
   favorites = {
     overrides = [
       "Agave"
@@ -77,10 +78,19 @@ in
   ];
 
   home.packages =
-    let
-      base = favorites.packages.normal;
-      nerd = [ pkgs.nerd-font-patcher (pkgs.nerdfonts.override { fonts = favorites.overrides; }) ] ++ favorites.packages.nerdfonts;
-    in
-    if useNerdfonts then base ++ nerd else base;
+    #let
+    #  base = favorites.packages.normal;
+    #  nerd = [ pkgs.nerd-font-patcher (pkgs.nerdfonts.override { fonts = favorites.overrides; }) ] ++ favorites.packages.nerdfonts;
+    #in
+    #if useNerdfonts then base ++ nerd else base;
+    [
+      pkgs.nerd-font-patcher
+      (pkgs.nerdfonts.override { fonts = favorites.overrides; })
+      pkgs.fira-code-symbols
+      pkgs.hackgen-nf-font
+      pkgs.inconsolata-nerdfont
+      pkgs.maple-mono-NF
+      pkgs.meslo-lgs-nf
+    ];
 
 }
