@@ -1,7 +1,7 @@
 { self, inputs, config, lib, pkgs, ... }: {
   imports = [
     ./editorconfig.nix
-    ./helix.nix
+    ./helix
     ./neovim.nix
   ];
 }
