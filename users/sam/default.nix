@@ -17,7 +17,7 @@
     ./gnome
     ./gpg.nix
     ./languages/nodejs.nix
-    ./nix.nix
+    ./nix
     ./shell/zsh
     ./social
     ./xdg.nix
@@ -25,8 +25,6 @@
     # TODO: Conditionally load ./nixos.nix when system is NixOS-based
   ];
 
-  nixpkgs.config.allowBroken = true;
-  nixpkgs.config.allowUnfree = true;
   nixpkgs.overlays = [
     inputs.nur.overlay
   ];

@@ -38,7 +38,8 @@ in
     #./view-images.nix
     #./view-video.nix
 
-    ./apps
+    ../apps  # Desktop Environment agnostic apps
+    ./apps   # GNOME-specific apps
     ./extensions/forge.nix
   ];
 

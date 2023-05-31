@@ -1,38 +1,10 @@
-{ self
-, inputs
-, overlays
-, packages
-, modules
-, templates
-, config
-, lib
-, pkgs
-, ...
-}:
-# TODO: Write this config to       /etc/nix/nix.conf
-# TODO: Write this config to  ~/.config/nix/nix.conf
-# TODO: Write nix.registry to ~/.config/nix/registry.json
-# TODO: Merge this config with equivalent from NixOS profile ( ${self}/profiles/nix.nix )
+{ self, inputs, config, lib, pkgs, ... }:
 {
+
   imports = [
   ];
 
-  # Keep legacy nix-channels in sync w/ flake inputs (for tooling compat)
-  # TODO: Same for NixOS, conditionally if system is NixOS
-  xdg.configFile."nix/inputs/nixpkgs".source = inputs.nixpkgs.outPath;
-  home.sessionVariables.NIX_PATH = "nixpkgs=${config.xdg.configHome}/nix/inputs/nixpkgs$\{NIX_PATH:+:$NIX_PATH}";
-
-  nix.registry.nixpkgs.flake = inputs.nixpkgs;
-
-  #nix.settings.plugin-files = [
-  #  "${pkgs.nix-doc}/lib/libnix_doc_plugin.so"
-  #  "${pkgs.nix-plugins}/lib/nix/plugins/libnix-extra-builtins.so"
-  #];
-
-  nix.package = lib.mkDefault pkgs.nixUnstable; # Needed for use-xdg-base-directories
-  nix.gc.automatic = true;  # Automatically garbage-collect nix-store on interval
-  nix.gc.options = "--cores 1 --max-freed 100G --max-jobs 1 --timeout 30"; # Limit garbage collection to 100GB using 1 concurrent job on 1 core, & 30 seconds of runtime
-  nix.settings.accept-flake-config = true;
+  programs.nix-index.enable = true;
 
   home.packages = [
 
