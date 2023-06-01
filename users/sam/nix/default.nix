@@ -72,6 +72,6 @@ with lib;
   xdg.configFile."nix/inputs/nixos".source = inputs.nixos.outPath;
   xdg.configFile."nix/inputs/home".source = inputs.home.outPath;
 
-  #home.sessionVariables.NIX_PATH = "nixpkgs=${config.xdg.configHome}/nix/inputs/nixpkgs$\{NIX_PATH:+:$NIX_PATH}";
+  home.sessionVariables.NIX_PATH = "nixpkgs=${config.xdg.configHome}/nix/inputs/nixpkgs$\{NIX_PATH:+:$NIX_PATH}";
 
 }

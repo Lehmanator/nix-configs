@@ -8,7 +8,7 @@
   #configurePlatformsByDefault     =  true;   # Warn: May cause mass rebuild upon change
   #contentAddressedByDefault       =  true;   # Warn: May cause mass rebuild upon change
   #doCheckByDefault                =  true;   # Warn: May cause mass rebuild upon change
-  enableParallelBuildingByDefault =  true;   # Warn: May cause mass rebuild upon change
+  #enableParallelBuildingByDefault =  true;   # Warn: May cause mass rebuild upon change
   #strictDepsByDefault             =  false;  # Warn: May cause mass rebuild upon change
   #structuredAttrsByDefault        =  false;  # Warn: May cause mass rebuild upon change
   warnUndeclaredOptions           =  true;
