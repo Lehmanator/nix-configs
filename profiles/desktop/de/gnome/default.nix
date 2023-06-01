@@ -18,8 +18,8 @@
     ../../gtk.nix
     ../../wayland.nix
     #../../xwayland.nix
-    ./apps/default.nix
-    ./extensions/default.nix
+    ./apps
+    ./extensions
   ];
 
   environment.systemPackages = [

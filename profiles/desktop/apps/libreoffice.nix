@@ -11,7 +11,8 @@ in
 {
 
   environment.systemPackages = [
-    libreoffice
+    #libreoffice
+    pkgs.libreoffice-fresh
 
     pkgs.hunspell
     pkgs.hunspellDicts.en_US-large

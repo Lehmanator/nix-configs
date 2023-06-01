@@ -8,6 +8,7 @@
 {
   imports = [
     ./apps
+    ./de
   ];
 
   boot.kernelPackages = pkgs.linuxPackages_zen;
