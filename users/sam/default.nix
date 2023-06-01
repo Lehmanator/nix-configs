@@ -18,6 +18,7 @@
     ./gpg.nix
     ./languages/nodejs.nix
     ./nix
+    ./roles/sysadmin
     ./shell/zsh
     ./social
     ./xdg.nix
