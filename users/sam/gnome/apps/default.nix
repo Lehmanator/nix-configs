@@ -138,8 +138,59 @@ in
 
   ];
 
-  home.packages = [
-    pkgs.tangram          # Launcher/browser for web apps
+  home.packages = with pkgs; [
+    authenticator
+    aviator          # Merge JSON/YAML files
+    boatswain        # Control Elgato Stream Deck devices
+    cambalache       # Rapid Application Development for GTK4 / GTK3
+    cavalier         # Audio visualizer
+    cawbird          # Twitter client (deprecated?)
+    curtail          # Compress images
+    denaro           # Personal finance manager
+    dialect          # Translator
+    dino             # Jabber/XMPP client
+    dynamic-wallpaper # Create dynamic wallpapers for GNOME
+    eartag           # Music tag editor
+    elastic          # Design spring animations
+    emblem           # Generate project icons & avatars from a symbolic icon
+    endeavour        # Personal task manager for GNOME
+    flare-signal     # Unofficial Signal client
+    formiko          # reStructuredText editor & live preview
+    fragments        # Torrent client
+    gaphor           # Simple modeling tool
+    gnome-builder    # IDE for GNOME
+    gnome-extension-manager # Manage GNOME Shell extensions w/ search & install functionality
+    gnome-secrets    # Password manager for GNOME using KeePass v4 format
+    gradience        # App to theme GNOME, GTK, & various apps according to palettes or wallpapers
+    halftone         # Give images pixel-art style
+    icon-library     # Symbolic icon catalog
+    identity         # Compare multiple versions of an image or video
+    livecaptions     # Provides live captioning
+      gnomeExtensions.live-captions-assistant  # Extension to provide better desktop integration with GNOME
+    mousai           # Identify playing music
+    pika-backup      # Backup application
+    portfolio-filemanager # Mobile-first file manager
+    rnote            # Handwritten notes
+    schemes          # Create / edit syntax highlighting style-schemes for GtkSourceView
+    symbolic-preview # Create, preview, export symbolic icons easily
+    tagger           # Music tag editor
+    tangram          # Run web apps in tabbed app-like client
+    tuba             # Fediverse / Mastodon client
+    video-trimmer    # Trim videos
+    warp             # QR code file transfer
+    wike             # Wikipedia client
+
+
+    amberol          # Music player
+    celeste          # File synchronization app supporting Google Drive, Dropbox, Nextcloud, OwnCloud, WebDAV. (Future: OneDrive, Amazon S3)
+    contrast         # Check contrast & colorscheme accessibility (WCAG requirements)
+    emulsion-palette # Store color palettes
+    eyedropper       # Color picker & formatter
+    #obs-studio       # Streaming & video recording suite
+    #  obs-studio-plugins.obs-3d-effect wlrobs obs-ndi obs-vaapi obs-nvfbc obs-teleport obs-hyperion droidcam-obs obs-vkcapture obs-gstreamer input-overlay multi-rtmp obs-source-clone obs-shaderfilter obs-source-record obs-livesplit-one looking-glass-obs obs-vintage-filter obs-command-source obs-move-transition obs-backgroundremoval advanced-scene-switcher obs-pipewire-audio-capture
+    paleta           # Generate color paletes
+    pods             # Podman desktop application
+    sticky           # Sticky Notes app
   ];
 
   # Set default apps
