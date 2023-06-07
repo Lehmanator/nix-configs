@@ -8,6 +8,53 @@
 {
   imports = [
     #./chat.nix
+    #../../apps/social.nix
+  ];
+
+  home.packages = [
+    # --- Proprietary --------------------------------------
+    # --- Bumble --------
+
+    # --- Discord -------
+    pkgs.gtkcord4
+    pkgs.gotktrix
+
+    # --- Facebook ------
+    # --- Hacker News ---
+    # --- Instagram -----
+
+    # --- Reddit --------
+    pkgs.giara
+    pkgs.headlines
+
+    # --- Signal --------
+    pkgs.signal-desktop  # TODO: Move to ../../apps/chat.nix
+
+    # --- Snapchat ------
+    # --- Telegram ------
+    # --- Tinder --------
+    # --- Tumblr --------
+
+    # --- Twitch --------
+    pkgs.chatterino2 # TODO: Move to ../../apps/social.nix
+
+    # --- Twitter -------
+    pkgs.cawbird
+
+    # --- Decentralized ------------------------------------
+    # --- Friendica -----
+    # --- Lemmy ---------
+
+    # --- Mastodon ---
+    pkgs.tuba
+    pkgs.tootle
+
+    # --- Matrix --------
+    pkgs.element-desktop  # TODO: Move to ../../apps/social.nix or ../../apps/chat.nix
+    pkgs.fractal-next
+
+    # --- PixelFed ------
+
   ];
 
   #nixpkgs.overlays = [
@@ -39,11 +86,4 @@
   #  })
   #];
 
-  home.packages = [
-    pkgs.chatterino2 # Twitch chat client
-    pkgs.giara # Reddit client
-    pkgs.gtkcord4 # Discord client
-    pkgs.headlines # Reddit client
-    pkgs.tuba # Mastodon / Fediverse client
-  ];
 }

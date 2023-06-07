@@ -10,6 +10,7 @@
 # - Stylesheet: ~/.config/forge/stylesheet/forge/stylesheet.css
 {
   imports = [
+    #./settings.nix
   ];
 
   # TODO: Set accent & background colors with nix-colors / stylix ?
@@ -30,6 +31,6 @@
     target = "forge/stylesheet/forge/stylesheet.css";
     # Original close button:
     # background-color: #e06666;
-    source = ./forge.css;
+    source = ./stylesheet.css;
   };
 }

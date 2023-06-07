@@ -10,11 +10,11 @@
 }:
 {
   imports = [
-    ./browsers
+    ./desktop/apps
+    ./desktop/gnome
     ./editor
     ./fonts.nix
     ./git
-    ./gnome
     ./gpg.nix
     ./languages/nodejs.nix
     ./nix

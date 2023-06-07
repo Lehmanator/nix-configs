@@ -3,6 +3,7 @@
   ...
 }:
 let
+  # --- Libs: setDefault ---
   #setDefaultApp = mimeTypes: appList: lib.lists.foldl (x: y: x // { "${y}" = appList; }) {};
   setDefaultApp = mimeTypes: appList: lib.attrsets.genAttrs mimeTypes (mimeType: appList);
   setDefaultBrowser = setDefaultApp [
@@ -131,30 +132,37 @@ in
     #./settings
     ./social.nix
 
+    # Load distro-independent apps
+    ../../apps
 
     # --- Individual Apps ---
+    # TODO: Eventually move all apps to use dir structure like:
+    # ./<appName>/default.nix
+    # ./<appName>/settings.nix
     ./gnome-calculator.nix
     ./vaults.nix
 
   ];
 
+  # --- Install GTK4 Apps ---
+  # TODO: Figure out apps loaded elsewhere & remove
   home.packages = with pkgs; [
     authenticator
     aviator          # Merge JSON/YAML files
     boatswain        # Control Elgato Stream Deck devices
     cambalache       # Rapid Application Development for GTK4 / GTK3
     cavalier         # Audio visualizer
-    cawbird          # Twitter client (deprecated?)
+    #cawbird          # Twitter client (deprecated?)
     curtail          # Compress images
     denaro           # Personal finance manager
     dialect          # Translator
-    dino             # Jabber/XMPP client
+    #dino             # Jabber/XMPP client
     dynamic-wallpaper # Create dynamic wallpapers for GNOME
     eartag           # Music tag editor
     elastic          # Design spring animations
     emblem           # Generate project icons & avatars from a symbolic icon
     endeavour        # Personal task manager for GNOME
-    flare-signal     # Unofficial Signal client
+    #flare-signal     # Unofficial Signal client
     formiko          # reStructuredText editor & live preview
     fragments        # Torrent client
     gaphor           # Simple modeling tool
@@ -162,7 +170,7 @@ in
     gnome-extension-manager # Manage GNOME Shell extensions w/ search & install functionality
     gnome-secrets    # Password manager for GNOME using KeePass v4 format
     gradience        # App to theme GNOME, GTK, & various apps according to palettes or wallpapers
-    halftone         # Give images pixel-art style
+    #halftone         # Give images pixel-art style
     icon-library     # Symbolic icon catalog
     identity         # Compare multiple versions of an image or video
     livecaptions     # Provides live captioning
@@ -175,7 +183,7 @@ in
     symbolic-preview # Create, preview, export symbolic icons easily
     tagger           # Music tag editor
     tangram          # Run web apps in tabbed app-like client
-    tuba             # Fediverse / Mastodon client
+    #tuba             # Fediverse / Mastodon client
     video-trimmer    # Trim videos
     warp             # QR code file transfer
     wike             # Wikipedia client

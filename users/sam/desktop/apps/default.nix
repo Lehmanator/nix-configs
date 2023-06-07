@@ -2,8 +2,14 @@
 {
 
   imports = [
+    ./browsers.nix
     ./chat.nix
+    #./games.nix
     ./office.nix
+    ./social.nix
+    ./bitwarden
+    #./chromium
+    #./firefox
   ];
 
   home.packages = [

@@ -10,14 +10,12 @@ let
 in
 {
   imports = [
-    #./browsers-chromium.nix
-    #./browsers-epiphany.nix
-
-    ./firefox/default.nix
-
-    #./browsers-librewolf.nix
-    #./browsers-tor.nix
-    #./browsers-ungoogledchromium.nix
+    #./chromium
+    #./chromium-ungoogled
+    ./firefox
+    #./epiphany
+    #./librewolf
+    #./tor-browser
   ];
 
   home.packages = with pkgs; [

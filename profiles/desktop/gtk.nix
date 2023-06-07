@@ -32,6 +32,9 @@
     pkgs.gcr # Allows gpg-agent & rbw to use pinentry-gnome3
     pkgs.gcr_4
   ];
+
+  # Use GTK4 pinentry
+  programs.ssh.askPassword = "${pkgs.gcr_4}/libexec/gcr4-ssh-askpass";
 }
 
 #(lib.optionalAttrs (options?services.flatpak.packages) {

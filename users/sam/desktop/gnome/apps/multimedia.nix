@@ -3,7 +3,7 @@
 }:
 {
   imports = [
-    ../../media.nix
+    ../../../media.nix
   ];
 
   # TODO: Split into media-playback, media-editors, reading

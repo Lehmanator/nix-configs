@@ -10,7 +10,7 @@
     extractor.instagram.previews = true;
     extractor.instagram.videos = true;
     extractor.instagram.api = "rest";
-    extractor.instagram.cookies = [ "firefox" "default" "Social" ];
+    extractor.instagram.cookies = [ "firefox" ]; # "default" "" "Social" ];
     extractor.instagram.cookies-update = true;
   };
 }
