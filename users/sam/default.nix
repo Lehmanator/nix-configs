@@ -19,7 +19,7 @@
     ./languages/nodejs.nix
     ./nix
     ./roles/sysadmin
-    ./shell/zsh
+    ./shell
     ./social
     ./xdg.nix
     ../../profiles/workarounds.nix
@@ -37,11 +37,6 @@
   home.sessionPath = [
     config.xdg.userDirs.extraConfig.XDG_APPS_DIR
     config.xdg.userDirs.extraConfig.XDG_BIN_DIR
-  ];
-
-  home.packages = with pkgs; [
-    bitwarden
-    cmatrix
   ];
 
   programs.home-manager.enable = true;

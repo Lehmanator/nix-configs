@@ -29,6 +29,7 @@ in
   imports = [
     ../common
     ./alias.nix
+    ./highlight.nix
     ./history.nix
   ];
 
@@ -76,32 +77,18 @@ in
   # --- Completion ---
   programs.zsh.enableCompletion = true;
 
-  # --- Colors ---
-  programs.zsh.enableSyntaxHighlighting = true;
-  programs.zsh.prezto.syntaxHighlighting = {
-    highlighters = [
-      "main"
-      "brackets"
-      "pattern"
-      "line"
-      "cursor"
-      "root"
-    ];
-    pattern = {
-      "rm*-rf*" = "fg=white,bold,bg=red";
-    };
-    styles = {
-      builtin = "bg=blue";
-      command = "bg=blue";
-      function = "bg=blue";
-    };
-  };
-
   # --- Initialization -------------------------------------
   programs.zsh.initExtra = ''
-    function cdls() { exa -a --icons --git --group-directories-first }
+    function cdls() {
+      exa -a --icons --git --group-directories-first
+    }
     chpwd_functions=(cdls)
   '';
+  #initExtraBeforeCompInit
+  #initExtraFirst
+  #localVariables
+  #loginExtra
+  #logoutExtra
 
   # --- Integration ---
   programs.zsh.enableVteIntegration = true;
@@ -152,5 +139,6 @@ in
   programs.zsh.prezto.ssh.identities = [
     "id_rsa"
     "id_ed25519"
+    "id_lehmanator_ed25519"
   ];
 }

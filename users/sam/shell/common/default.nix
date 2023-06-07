@@ -77,6 +77,7 @@
 
   # --- Packages -------------
   home.packages = [
+    pkgs.cmatrix # Cool matrix screensaver program
     pkgs.figlet # Print ASCII art text
     pkgs.nix-zsh-completions # Completions for Nix, NixOS, NixOps, & ecosystem
     pkgs.with-shell # Interactive shell where each command starts with cmd prefix

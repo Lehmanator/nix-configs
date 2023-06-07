@@ -7,6 +7,8 @@
 }:
 {
   imports = [
+    ./common
+
     #./bash
     #./fish
     #./nushell
@@ -15,6 +17,7 @@
 
   # TODO: Set in system (NixOS | nix-darwin) config
   #environment.pathsToLink = [
+  #  "/share/zsh"
   #  "/share/bash-completion"
   #];
 }
