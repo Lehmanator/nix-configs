@@ -762,7 +762,7 @@
 
     };
 
-  outputs = { self, nixpkgs, nur, flake-utils, flake-utils-plus, ... }@inputs:
+  outputs = { self, nixpkgs, nur, flake-utils, flake-utils-plus, std, hive, ... }@inputs:
     let
 
       this = import ./pkgs;
@@ -904,8 +904,24 @@
             programs.nixpkgs-fmt.enable = true;
             #programs.alejandra.enable = true;
           };
+        }) // (std.growOn
+        { # --- Declare projects & component types here ---
+          inherit inputs;
+          # blockTypes:
+          # - std:  anything, arion, containers, data, devshells, files, functions, installables, microvms, nixago, nomadJobManifests, pkgs, runnables
+          # - hive: colmenaConfigurations, darwinConfigurations, diskoConfigurations, homeConfigurations, nixosConfigurations
+          cellsFrom = ./cells;
+          cellBlocks = [
+            (std.blockTypes.installables "packages"  {ci.build = true;})
+            (std.blockTypes.devshells    "devshells" {ci.build = true;})
+          ];
         }
-      ) // {
+        { # --- Declare collected output structure here ---
+          # TODO: Create `nixosModules`, `homeManagerModules`, & `flakeModules`
+          devShells = std.harvest self [ "flatpakify" "devshells" ];
+          packages  = std.harvest self [ "flatpakify" "packages"  ];
+        }) //
+      {
       overlays.default = final: prev: (nixpkgs.lib.composeExtensions this.overlay final prev);
 
       #darwinConfigurations."m2" = nixpkgs.lib.darwinSystem {
