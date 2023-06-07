@@ -45,7 +45,7 @@
     pkgs.mix2nix # Generate Nix expressions from mix.lock
     pkgs.nc4nix # Packaging helper for Nextcloud apps
     pkgs.node2nix # Generate Nix expressions to build NPM packages
-    pkgs.pypi2nix # PyPi package to Nix
+    #pkgs.pypi2nix # PyPi package to Nix (removed: unmaintained)
     pkgs.rnix-hashes # Nix hash converter
     pkgs.setupcfg2nix # Python setup.cfg
     pkgs.yarn2nix # Convert packages.json & yarn.lock To Nix expression that downloads all deps
