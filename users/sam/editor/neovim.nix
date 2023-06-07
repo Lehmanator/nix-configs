@@ -232,6 +232,15 @@ in
       ];
     };
 
+    # --- Rendering ---
+    markdown-preview = {
+      enable = true;
+      previewOptions = {
+        content_editable = true;
+      };
+      #theme = "dark";
+    };
+
     # --- Jupyter Notebooks ------------
     # FIX: Missing Python package `kaleido` which is not in `nixpkgs`
     #magma-nvim = { enable = true; automaticallyOpenOutput = true; }; # Call :MagmaShowOutput on cell run
