@@ -5,10 +5,6 @@
 {
 
   imports = [
-    #./android
-    #./linux-phone
-    #./iot
-    #./sbc/rockchip
   ];
 
 }

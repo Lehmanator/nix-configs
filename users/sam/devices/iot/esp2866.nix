@@ -3,12 +3,8 @@
 , ...
 }:
 {
-
   imports = [
-    #./android
-    #./linux-phone
-    #./iot
-    #./sbc/rockchip
+    ../../../../profiles/server/iot/esphome.nix
   ];
 
 }
