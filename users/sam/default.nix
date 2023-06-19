@@ -24,6 +24,12 @@
     ./xdg.nix
     ../../profiles/workarounds.nix
     # TODO: Conditionally load ./nixos.nix when system is NixOS-based
+
+    # --- Devices ---
+    #./devices/flame.nix
+    #./devices/cheetah.nix
+    ./devices/pinetime.nix
+    ./devices/wuawei-watch-2.nix
   ];
 
   nixpkgs.overlays = [
