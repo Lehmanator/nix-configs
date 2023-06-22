@@ -38,6 +38,13 @@
         url = "github:nix-community/home-manager";
         inputs.nixpkgs.follows = "nixpkgs";
       };
+      # Extra home-manager modules:
+      # - console.{fish,less,nano,program-variables}
+      # - desktop.{gnome,fonts}
+      # - languages.{haskell,python,rust}
+      home-extra-xhmm = {
+        url = "github:schuelermine/xhmm";
+      };
 
       darwin = {
         url = "github:LnL7/nix-darwin";
@@ -820,6 +827,7 @@
           hm = [
             agenix.homeManagerModules.default
             arkenfox.hmModules.default
+            home-extra-xhmm.homeManagerModules.all
             nixos-flatpak.homeManagerModules.default
             nixpkgs-android.hmModule
             nixvim.homeManagerModules.nixvim
@@ -963,6 +971,7 @@
                 #impermanence.nixosModules.home-manager
                 #(import ./users/default/nixos {};)
                 arkenfox.hmModules.default
+                home-extra-xhmm.homeManagerModules.all
                 nixpkgs-android.hmModule
                 sops-nix.homeManagerModules.sops
               ];
