@@ -8,8 +8,14 @@
   ];
 
   home.packages = [
-    pkgs.dig
+
+    # --- Samba ---
     pkgs.ksmbd-tools
     pkgs.samba4Full
+
+    # --- Generic Networking ---
+    pkgs.nmap
+    pkgs.dig
+
   ];
 }
