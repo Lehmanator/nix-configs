@@ -38,6 +38,29 @@ in
 #
 {
   imports = [
+    # Extra home-manager modules
+    # Options:
+    #   # inputs.xhmm.homeManagerModules.desktop.gnome
+    #   gnome = {
+    #     font = types.nullOr hm.types.fontType;
+    #     monospaceFont = types.nullOr hm.types.fontType;
+    #     documentFont = types.nullOr hm.types.fontType;
+    #     legacyTitlebarFont = types.nullOr hm.types.fontType;
+    #     shellTheme = {
+    #       package = "pkgs.adwaita";
+    #       name = "Adwaita";
+    #     };
+    #     cursorTheme = {
+    #       package = "pkgs.adwaita-cursor-theme";
+    #       name = "Adwaita";
+    #     };
+    #     extensions = {
+    #       enable = true;
+    #       enabledExtensions = [ types.package ];
+    #       extraExtensions = [ types.package ];
+    #     };
+    #   };
+    inputs.home-extra-xhmm.homeManagerModules.desktop.gnome
     #inputs.nix-software-center.packages.${system}.nix-software-center
     #inputs.nixos-conf-editor.packages.${system}.nixos-conf-editor
     #inputs.snow.packages.${system}.snow

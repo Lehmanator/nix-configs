@@ -75,6 +75,8 @@ let
 in
 {
   imports = [
+    # TODO: Split ./fonts.nix into ./desktop/fonts.nix & ./shell/fonts.nix
+    inputs.home-extra-xhmm.homeManagerModules.desktop.fonts
   ];
 
   home.packages =

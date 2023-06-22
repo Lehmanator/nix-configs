@@ -10,7 +10,11 @@
 }:
 {
   imports = [
+    inputs.home-extra-xhmm.homeManagerModules.console.less
   ];
+
+  #programs.less.options = [ #types.str
+  #];
 
   programs.bat = {
     enable = true;

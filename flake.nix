@@ -971,7 +971,6 @@
                 #impermanence.nixosModules.home-manager
                 #(import ./users/default/nixos {};)
                 arkenfox.hmModules.default
-                home-extra-xhmm.homeManagerModules.all
                 nixpkgs-android.hmModule
                 sops-nix.homeManagerModules.sops
               ];
