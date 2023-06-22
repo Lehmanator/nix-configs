@@ -4442,6 +4442,21 @@
         "type": "github"
       }
     },
+    "home-extra-xhmm": {
+      "locked": {
+        "lastModified": 1681080462,
+        "narHash": "sha256-Na1tl+JTO8e9wZNqXy0WwO0mD4EY7sj7dXYHCaBVstw=",
+        "owner": "schuelermine",
+        "repo": "xhmm",
+        "rev": "98989352c188a2eeda66e7bfa58dc3453044d776",
+        "type": "github"
+      },
+      "original": {
+        "owner": "schuelermine",
+        "repo": "xhmm",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -4900,7 +4915,7 @@
     "liminix": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-Up20XXTF+qJrK1BaaA6+22xCkEK7nk0DKL2o4xqcYtg=",
+        "narHash": "sha256-VhDrgxZuAztNbjUXAEz7u824XDN1Cq4ucX5OpEcHt8A=",
         "type": "file",
         "url": "https://gti.telent.net/dan/liminix"
       },
@@ -7309,11 +7324,11 @@
         "nixpkgs": "nixpkgs_48"
       },
       "locked": {
-        "lastModified": 1687446936,
-        "narHash": "sha256-cEmWbSEYHUDMLH71wTB/WutPIX9qgRkRyPS0+oO0yQM=",
+        "lastModified": 1687457966,
+        "narHash": "sha256-lKWPea8H8uEWybLe/R5+zIQrWAwbi1VktpjU4Y5bFVs=",
         "owner": "nix-community",
         "repo": "nixpkgs-wayland",
-        "rev": "26dee20d3d7faa7d20bbf80d6591a6d12352f83e",
+        "rev": "b86c621ebbc4ea027243bcf4be2bec0ddce68a7d",
         "type": "github"
       },
       "original": {
@@ -9721,6 +9736,7 @@
         "haumea": "haumea",
         "hive": "hive",
         "home": "home",
+        "home-extra-xhmm": "home-extra-xhmm",
         "icicle": "icicle",
         "impermanence": "impermanence",
         "jupyenv": "jupyenv",
