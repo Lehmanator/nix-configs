@@ -29,7 +29,7 @@
     #./devices/flame.nix
     #./devices/cheetah.nix
     ./devices/pinetime.nix
-    ./devices/wuawei-watch-2.nix
+    ./devices/sawfish.nix
   ];
 
   nixpkgs.overlays = [
