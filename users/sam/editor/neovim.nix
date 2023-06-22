@@ -15,6 +15,41 @@
 # https://github.com/pta2002/nixvim
 # https://pta2002.github.io/nixvim
 
+# TODO: Split into:
+# - `nixvimConfigurations`
+# - `nixvimProfiles`
+# - `nixvimSuites`
+
+# TODO: Build final `nixvimConfigurations.<name>` using:
+# - `inputs.nixvim.legacyPackages.${system}.makeNivim`
+# - `inputs.nixvim.legacyPackages.${system}.makeNixvimWithModule`
+
+# TODO: Configure new plugins:
+# - auto-session
+# - indent-blankline
+# - mini
+# - toggleterm
+# - ts-autotag
+# - typst-vim
+# - undotree
+# - which-key
+
+# TODO: plugins.nvim-lsp - Configure new language servers:
+# - ccls
+# - java
+# - kotlin
+# - nixd
+
+# TODO: Global style setting:
+# - borderStyle
+# - colorscheme
+
+# TODO: Fix issues
+# - package rename: nodePackages.vscode-langservers-extracted -> vscode-langservers-extracted
+# - telescope-frecency: Stop asking to remove database entries
+# - nvim-notify: Missing background color for popup UI
+# - Diagnostic inline multiline as concealed / virtual text or popup menu instead of moving contents
+
 # TODO: lib.exportNeovimKeybinds <neovimConfig>
 # TODO: lib.exportNixvimKeybinds <nixvimConfig>
 # TODO: lib.exportVimKeybinds       <vimConfig>
@@ -174,15 +209,16 @@ in
           ff = "format";
         };
       };
+      # TODO: Re-enable commented language servers after `inputs.nixos-unstable.pkgs.vscode-langservers-extracted` build succeeds again.
       servers = {
         bashls.enable = true;
         clangd.enable = true;
-        cssls.enable = true;
+        #cssls.enable = true;
         dartls.enable = true;
-        eslint.enable = true;
+        #eslint.enable = true;
         gopls.enable = true;
-        html.enable = true;
-        jsonls.enable = true;
+        #html.enable = true;
+        #jsonls.enable = true;
         lua-ls.enable = true;
         nil_ls.enable = true;
         rnix-lsp.enable = false;
@@ -670,7 +706,7 @@ in
     cmp-cmdline.enable = true;
     cmp-cmdline-history.enable = true;
     cmp-conventionalcommits.enable = true;
-    cmp-copilot.enable = false;
+    #cmp-copilot.enable = false;
     cmp-dap.enable = true;
     cmp-dictionary.enable = true;
     cmp-digraphs.enable = true;

@@ -854,7 +854,7 @@
             kubenix.overlays.default
             mineflake.overlays.default
             neovim-nightly-overlay.overlay
-            nix-vscode-extensions.overlays.default
+            #nix-vscode-extensions.overlays.default
             nixgl.overlay
             nixpkgs-mozilla.overlay
             nixpkgs-terraform-providers.overlay
