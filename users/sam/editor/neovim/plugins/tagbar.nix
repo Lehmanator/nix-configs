@@ -9,5 +9,7 @@
     enable = lib.mkDefault false;
     extraConfig.show_tag_count = true;
   };
-  home.packages = lib.mkIf config.programs.nixvim.plugins.tagbar.enable [pkgs.universal-ctags];
+  # Note: mkIf on a mkDefault option causes infinite recursion
+  #home.packages = lib.mkIf config.programs.nixvim.plugins.tagbar.enable [pkgs.universal-ctags];
+  home.packages = [pkgs.universal-ctags];
 }

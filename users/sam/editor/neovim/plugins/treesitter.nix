@@ -5,9 +5,9 @@
 {
   # --- Treesitter -------------------
   programs.nixvim.plugins = {
-    cmp-treesitter.enable = config.programs.nixvim.plugins.nvim-cmp.enable;
+    cmp-treesitter.enable = true;
     treesitter = {
-      enable = lib.mkDefault true;
+      enable = true;
       ensureInstalled = "all";
       folding = true;
       incrementalSelection = {
@@ -18,11 +18,11 @@
       nixGrammars = true;
       nixvimInjections = true; # Enable Nixvim-specific injections (like Lua highlighting in extraConfigLua)
     };
-    treesitter-context.enable = lib.mkDefault true;
-    treesitter-playground.enable = lib.mkDefault true;
-    treesitter-rainbow.enable = lib.mkDefault false;
+    treesitter-context.enable = true;
+    treesitter-playground.enable = true;
+    treesitter-rainbow.enable = false;
     treesitter-refactor = {
-      enable = lib.mkDefault true;
+      enable = true;
       highlightCurrentScope.enable = false;
       highlightDefinitions.enable = true;
       navigation.enable = true;

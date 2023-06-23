@@ -97,7 +97,7 @@
     };
 
     # --- Aliases ---
-    viAlias = true;
+    viAlias = false;
     vimAlias = true;
   };
 

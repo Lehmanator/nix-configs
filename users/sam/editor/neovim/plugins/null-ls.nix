@@ -16,7 +16,7 @@
 
     sources = {
       code_actions = {
-        gitsigns.enable = config.programs.nixvim.plugins.gitsigns.enable;
+        gitsigns.enable = true;
         shellcheck.enable = true;
       };
       diagnostics = {

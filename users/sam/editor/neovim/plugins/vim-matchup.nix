@@ -4,7 +4,7 @@
 , ...
 }:
 {
-  programs.nixvim.plugin.vim-matchup = {
+  programs.nixvim.plugins.vim-matchup = {
     enable = lib.mkDefault false;
     enableSurround = lib.mkDefault true;
     enableTransmute = lib.mkDefault true;
