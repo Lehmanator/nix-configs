@@ -1,10 +1,11 @@
-{ self, inputs
+{ inputs
 , config, lib, pkgs
+, style
 , ...
 }:
 let
 
-  borderStyle = if config ? styles.borders then config.styles.borders else "rounded"; # none | rounded | double | single | solid | shadow | NC
+  borderStyle = if config ? styles.borders then config.styles.borders else if style then style else "rounded"; # none | rounded | double | single | solid | shadow | NC
   borderCharSets = {
     rounded = [ "" "" "" "" "" "" "" "" ];
     none = [ "" "" "" "" "" "" "" "" ];
@@ -29,14 +30,8 @@ let
     else "thin";
 in
 {
-  imports = [
-    inputs.nixvim.nixosModules.nixvim
-  ];
-
   programs.nixvim = {
-    colorschemes = {
-      nord.borders = borderStyle != "none";
-    };
+    colorschemes.nord.borders = borderStyle != "none";
     plugins = {
       clangd-extensions.extensions ={
         memoryUsage.border = borderStyle;

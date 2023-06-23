@@ -6,20 +6,17 @@
 , ...
 }:
 {
-  imports = [
-  ];
-
   programs.nixvim.colorschemes.catppuccin = {
-    enable = true;
+    enable = lib.mkDefault true;
     # TODO: All integrations
     integrations = {
       aerial = true;
-      barbar = true;
+      barbar = config.programs.nixvim.plugins.barbar.enable;
       beacon = true;
-      cmp = true;
+      cmp = config.programs.nixvim.plugins.nvim-cmp.enable;
       coc_nvim = true;
       dap.enable_ui = true;
-      dashboard = true;
+      dashboard = config.programs.nixvim.plugins.dashboard.enable;
       fern = true;
       fidget = true;
       gitgutter = true;

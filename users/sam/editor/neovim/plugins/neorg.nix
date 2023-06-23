@@ -1,5 +1,4 @@
-{ self
-, inputs
+{ inputs
 , config
 , lib
 , pkgs
@@ -10,9 +9,12 @@
 # https://github.com/nvim-neorg/neorg
 {
   programs.nixvim.plugins.neorg = {
-    enable = true;
-    extraOptions = { };
+    enable = lib.mkDefault true;
     lazyLoading = true;
+
+    extraOptions = {
+    };
+
     modules = {
       # --- Default Modules ---
       #"core.defaults".config.disable = [];
