@@ -60,7 +60,9 @@ in
     #       extraExtensions = [ types.package ];
     #     };
     #   };
-    inputs.home-extra-xhmm.homeManagerModules.desktop.gnome
+    # TODO: Re-enable this & use to install & enable gnomeExtensions, leaving imported, but unset disables extensions for users.
+    #inputs.home-extra-xhmm.homeManagerModules.desktop.gnome
+
     #inputs.nix-software-center.packages.${system}.nix-software-center
     #inputs.nixos-conf-editor.packages.${system}.nixos-conf-editor
     #inputs.snow.packages.${system}.snow
