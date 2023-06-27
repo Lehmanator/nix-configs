@@ -32,6 +32,7 @@
     ./telescope.nix
     ./treesitter.nix
     ./vim-matchup.nix
+    ./which-key.nix
   ];
 
   # --- Plugins ---
