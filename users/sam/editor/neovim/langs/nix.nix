@@ -5,7 +5,7 @@
   programs.nixvim.plugins = {
     lsp.servers = {
       nixd.enable = true;
-      nil_ls.enable = true;
+      nil_ls.enable = false;
       rnix-lsp.enable = false;
     };
     nix.enable = true;
