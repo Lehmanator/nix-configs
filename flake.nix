@@ -115,10 +115,10 @@
       # -    overlays: liminix.overlays.default
       # - configTypes: liminix-config
       # -   devShells: liminix.devShells.default - (pkgs: tufted, routeros.routeros, routeros.ros-exec-script, mips-vm, borderVm.build.vm, go-l2tp, min-copy-closure)
-      liminix = {
-        url = "https://gti.telent.net/dan/liminix";
-        flake = false;
-      };
+      #liminix = {
+      #  url = "https://gti.telent.net/dan/liminix";
+      #  flake = false;
+      #};
 
       # robotnix: Build Android images using Nix config
       # - nixosModules: robotnix.nixosModules.attestation-server
