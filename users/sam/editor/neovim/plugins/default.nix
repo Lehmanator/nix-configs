@@ -56,7 +56,7 @@
 
     # --- Code Actions -----------------
     nvim-lightbulb = {
-      enable = lib.mkDefault true;
+      enable = lib.mkDefault false;
       float.enabled = true;
       autocmd.enabled = true;
       statusText.enabled = true;
