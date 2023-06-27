@@ -35,6 +35,7 @@
   ];
 
   # --- Plugins ---
+  programs.nixvim.luaLoader.enable = true;  # Experimental lua loader w/ byte-compilation cache
   programs.nixvim.plugins = {
     # Integrate browser textboxes with Neovim config
     #firenvim.enable = lib.mkDefault true;
