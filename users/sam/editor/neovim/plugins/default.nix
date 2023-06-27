@@ -19,6 +19,7 @@
     ./neogit.nix
     ./neorg.nix
     ./noice.nix
+    ./notify.nix
     ./null-ls.nix
     ./nvim-autopairs.nix
     ./nvim-bqf.nix
