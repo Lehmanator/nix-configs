@@ -24,6 +24,7 @@
     ./nvim-autopairs.nix
     ./nvim-bqf.nix
     ./nvim-cmp.nix
+    ./nvim-cursorline.nix
     ./nvim-tree.nix
     ./nvim-ufo.nix
     ./rust-tools.nix

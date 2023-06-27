@@ -64,7 +64,6 @@
     enable = true;
     options = {
       # --- Lines ---
-      cursorline = true;
       number = true;
       relativenumber = true;
       # --- Indentation ---
