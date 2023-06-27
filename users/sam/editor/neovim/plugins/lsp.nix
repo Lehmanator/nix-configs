@@ -50,7 +50,7 @@ in
     # lsp-lines - LSP multi-line diagnostics in-editor
     lsp-lines = {
       enable = lib.mkDefault config.programs.nixvim.plugins.lsp.enable;
-      currentLine = false;
+      currentLine = true;
     };
     lsp-format = {
       enable = lib.mkDefault config.programs.nixvim.plugins.lsp.enable;
