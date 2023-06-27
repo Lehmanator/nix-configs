@@ -25,6 +25,7 @@
     ./nvim-bqf.nix
     ./nvim-cmp.nix
     ./nvim-tree.nix
+    ./nvim-ufo.nix
     ./rust-tools.nix
     ./tagbar.nix
     ./telescope.nix
