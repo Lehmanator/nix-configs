@@ -167,6 +167,7 @@ in
     fragments        # Torrent client
     gaphor           # Simple modeling tool
     gnome-builder    # IDE for GNOME
+    gnome-decoder    # QR code scanner & creator
     gnome-extension-manager # Manage GNOME Shell extensions w/ search & install functionality
     gnome-secrets    # Password manager for GNOME using KeePass v4 format
     gradience        # App to theme GNOME, GTK, & various apps according to palettes or wallpapers
