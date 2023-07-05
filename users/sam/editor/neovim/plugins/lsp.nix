@@ -7,12 +7,12 @@ let
 in
 {
 
+  # --- Language Server Protocol -----
   programs.nixvim.plugins = {
     cmp-nvim-lsp.enable = lib.mkDefault isLspCmp;
     cmp-nvim-lsp-document-symbol.enable = lib.mkDefault isLspCmp;
     cmp-nvim-lsp-signature-help.enable = lib.mkDefault isLspCmp;
-    cmp-vim-lsp.enable = lib.mkDefault isLspCmp;
-    # --- Language Server Protocol -----
+    cmp-vim-lsp.enable = false; #lib.mkDefault isLspCmp;
     lsp = {
       enable = true;
       keymaps.diagnostic = {
@@ -68,7 +68,8 @@ in
     # lspsaga.nvim - LSP enhancements
     # TODO: Compatible with Noice?
     lspsaga = {
-      enable = lib.mkDefault config.programs.nixvim.plugins.lsp.enable;
+      enable = false;
+      #enable = lib.mkDefault config.programs.nixvim.plugins.lsp.enable;
       borderStyle = "rounded";
     };
 
