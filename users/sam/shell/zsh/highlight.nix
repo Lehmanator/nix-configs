@@ -7,7 +7,8 @@
   ];
 
   programs.zsh = let
-    sudoProgram = with config.security; if doas.enable then "doas" else if please.enable then "please" else "sudo";
+    #sudoProgram = if config.security.doas.enable then "doas" else if config.security.please.enable then "please" else "sudo";
+    sudoProgram = "sudo";
     highlightStyles = {
       builtin = "bg=blue";
       command = "bg=blue";

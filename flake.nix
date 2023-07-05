@@ -558,6 +558,10 @@
         inputs.nixpkgs.follows = "nixpkgs";
       }; # TODO: Install pkg
 
+      nix-quick-registry = {
+        url = "github:divnix/quick-nix-registry";
+      };
+
       # namaka: Snapshot testing for Nix # TODO: Install pkg
       namaka = {
         url = "github:nix-community/namaka";
