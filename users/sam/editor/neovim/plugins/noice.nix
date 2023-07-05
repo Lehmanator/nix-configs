@@ -67,6 +67,7 @@
         #opts = {};
       };
       override = { };
+      # Open long messages in split instead of notify UI
     };
   };
 
