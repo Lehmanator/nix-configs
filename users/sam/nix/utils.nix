@@ -72,7 +72,7 @@
     # --- Editors ---
     # TODO: Move to ${self}/users/sam/editors/default.nix
     pkgs.alejandra # Nix code formatter
-    pkgs.nil # Language server
+    #pkgs.nil # Language server
     pkgs.statix # Linting & suggestions
     pkgs.vimPlugins.statix # Use statix in vim
 
