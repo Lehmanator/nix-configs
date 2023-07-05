@@ -115,6 +115,7 @@
   programs.nixvim.extraPlugins = with pkgs.vimPlugins; [
     nix-develop-nvim
     statix
+    telescope-manix  # Nix documentation & option search integration with Telescope.nvim
     vim-addon-nix # TODO: Handled by LSP?
     vim-nix
     vim-nixhash
