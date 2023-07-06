@@ -14,66 +14,73 @@
   ];
 
   # --- Default ---------------
-  programs.zsh.enable = true; # Enable ZSH
   users.defaultUserShell = pkgs.zsh; # ZSH default for users
   environment.shells = [ pkgs.zsh ];
-
-  # --- Integration -----------
-  programs.zsh.vteIntegration = true;
-
-  # --- Completion ------------
-  programs.zsh.enableCompletion = true; # Enables ZSH completions
-  programs.zsh.enableBashCompletion = true; # Enables using completions for Bash in ZSH
   environment.pathsToLink = [ "/share/zsh" ]; # Enables completion for system packages
 
-  # --- Autosuggestions -------
-  # - completion     - Based on what tab-completion would choose (req: zpty)
-  # - history *      - Most recent history match
-  # - match_prev_cmd - Like history, but prefers entry after last cmd
-  programs.zsh.autosuggestions = {
-    enable = true;
-    strategy = [ "match_prev_cmd" "completion" ];
+  programs.zsh = {
+    enable = true; # Enable ZSH
+    # --- History ---------------
+    histFile = "$HOME/.local/share/zsh/history";
+    histSize = 1000000;
+
+    # --- Completion ------------
+    enableCompletion = true; # Enables ZSH completions
+    enableBashCompletion = true; # Enables using completions for Bash in ZSH
+
+    # --- Autosuggestions -------
+    # - completion     - Based on what tab-completion would choose (req: zpty)
+    # - history *      - Most recent history match
+    # - match_prev_cmd - Like history, but prefers entry after last cmd
+    autosuggestions = {
+      enable = true;
+      strategy = [ "match_prev_cmd" "completion" ]; # Default=["history"]
+      #async = true;  # Default=true
+      #extraConfig = {};         # Default={}
+      #highlightStyle = "fg=8";  # Default="fg=8";
+    };
+
+    # --- Syntax Highlighting ---
+    syntaxHighlighting = {
+      enable = true;
+      highlighters = [ # Ordered by priority
+        "main"         # Base highlighter (Default)
+        "cursor"       # Matches cursor position
+        "brackets"     # Matches brackets & paren
+        "regexp"       # Matches user-defined regular expression
+        "pattern"      # Matches user-defined glob pattern
+        "root"         # Matches entire command line if user=root
+        "line"         # Matches entire command line
+      ];
+    };
+
+    # --- Integration -----------
+    vteIntegration = true;
+
+    # --- Initialization -------------------------------------
+    # --- Prompt Init ----------
+    #promptInit = ''
+    #'';
+    # --- All Shells -----------
+    shellInit = ''
+      # Load nearcolor module if we have 256 color support
+      [[ "$COLORTERM" == (24bit|truecolor) || "$terminfo[colors]" -eq '16777216' ]] || zmodload zsh/nearcolor
+    '';
+    # --- Interactive Shells ---
+    interactiveShellInit = ''
+      zmodload zsh/zpty  # Load pseudo-terminal module
+    '';
+    # --- Login Shells ----------
+    # TODO: Put shell-agnostic form in ./shell.nix
+    #loginShellInit = ''
+    #'';
   };
 
-  # --- Syntax Highlighting ---
-  programs.zsh.syntaxHighlighting = {
+  # --- Prompt -------------------------------------------------------
+  programs.starship = { # Prompt for Bash & ZSH
     enable = true;
-    highlighters = [
-      # Ordered by priority
-      "main" # Base highlighter (Default)
-      "cursor" # Matches cursor position
-      "brackets" # Matches brackets & paren
-      "regexp" # Matches user-defined regular expression
-      "pattern" # Matches user-defined glob pattern
-      "root" # Matches entire command line if user=root
-      "line" # Matches entire command line
-    ];
+    interactiveOnly = false;  # Some plugins require this to be set to false to function correctly. Default=true
+    #settings = {};
   };
-
-  # --- Prompt ----------------
-  programs.starship.enable = true; # Prompt for Bash & ZSH
-
-
-  # --- Initialization -------------------------------------
-
-  # --- Prompt Init ----------
-  programs.zsh.promptInit = ''
-  '';
-
-  # --- All Shells -----------
-  programs.zsh.shellInit = ''
-    # Load nearcolor module if we have 256 color support
-    [[ "$COLORTERM" == (24bit|truecolor) || "$terminfo[colors]" -eq '16777216' ]] || zmodload zsh/nearcolor
-  '';
-
-  # --- Interactive Shells ---
-  programs.zsh.interactiveShellInit = ''
-    zmodload zsh/zpty  # Load pseudo-terminal module
-  '';
-
-  # --- Login Shells ----------
-  # TODO: Put shell-agnostic form in ./shell.nix
-  programs.zsh.loginShellInit = ''
-  '';
 
 }
