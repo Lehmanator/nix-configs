@@ -13,6 +13,8 @@
 {
   imports = [
     ./alias.nix
+    ./fzf.nix
+    ./ls.nix
     ../../pager
   ];
 
@@ -23,34 +25,6 @@
   # --- Direnv ----------------
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
-
-  # --- Directory Listing -----
-  programs.exa = {
-    enable = true;
-    enableAliases = true;
-    git = true;
-    icons = true;
-    extraOptions = [ "--group-directories-first" ]; #"--header"
-  };
-  home.shellAliases.l = "exa -a";
-
-  # --- Colors ---------------
-  # TODO: Fix home-manager setting to support XDG spec
-  #   See: https://github.com/nix-community/home-manager/blob/master/modules/programs/dircolors.nix#blob-path
-  #   - home.file.".dir_colors" -> xdg.file.dircolors
-  #   - programs.bash.initExtra
-  #   - programs.fish.shellInit
-  #   - programs.zsh.initExtraBeforeCompInit
-  programs.dircolors.enable = true;
-  programs.dircolors.settings = {
-    # `dircolors --print-database`
-    ".cmd" = "01;32"; # Executabes (bright green) ---
-    ".exe" = "01;32";
-    ".com" = "01;32";
-    ".btm" = "01;32";
-    ".bat" = "01;32";
-    ".msi" = "01;32";
-  };
 
   # --- Prompt ---------------
   programs.starship.enable = true;
@@ -83,17 +57,5 @@
     pkgs.with-shell # Interactive shell where each command starts with cmd prefix
     pkgs.zsh-nix-shell # ZSH plugin that lets you use ZSH in nix-shell
   ];
-
-  programs.fzf = {
-    enable = true;
-    changeDirWidgetCommand = "fd --type d";
-    changeDirWidgetOptions = [ "--previeww 'tree -C {} | head -200'" ];
-    colors = { };
-    #defaultCommand = "fd --type f";
-    defaultOptions = [ "--height 40%" "--border" ];
-    fileWidgetCommand = "fd --type f";
-    fileWidgetOptions = [ "--preview 'head {}'" ];
-    historyWidgetOptions = [ ]; #--sort --exact
-  };
 
 }
