@@ -109,7 +109,7 @@ in
     prezto.enable = true;
     plugins = [
       { name = "zsh-nix-shell"; file = "nix-shell.plugin.zsh";   # Use ZSH inside nix-shell
-        src = pkgs.fetchFromGitHub { owner = "chisui"; repo = "zsh-nix-shell"; rev = "v0.7.0"; sha256 = "00ds69n2v7ikr6kmas7mqxci3vrl3n7531lj2sivvzw1sppy1sjs"; };
+        src = pkgs.fetchFromGitHub { owner = "chisui"; repo = "zsh-nix-shell"; rev = "v0.7.0"; hash = "sha256-oQpYKBt0gmOSBgay2HgbXiDoZo5FoUKwyHSlUrOAP5E="; };
       }
     ];
 
