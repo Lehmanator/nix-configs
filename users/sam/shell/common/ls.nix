@@ -37,8 +37,8 @@ in
 
   # --- Directory Listing -----
   home.shellAliases = {
-    l = prog + " -a";
-    lt = prog + " --tree";
+    l = "${prog} -a";
+    lt = "${prog} --tree";
   };
 
   # Sort Fields:
@@ -60,21 +60,19 @@ in
   # Exa: permissions, size, user, date, name
   # Lsd: permissions, user, group, size, date, name
   # --- exa ---
-  programs.exa = let baseOptions = [
-    "--group-directories-first"
-  ]; in {
+  programs.exa = {
     enable = true;
     enableAliases = prog == "exa";
     git = show.git;
     icons = show.icons;
-    extraOptions = let base = [
-      "--level=${view.depth}"
-    ]; in base
-      + (if show.header   then "--header"                  else null)
-      + (if show.color    then "--color-scale"             else null)
-      + (if show.classify then "--classify"                else null)
-      + (if sort.dirs     then "--group-directories-first" else null)
-      + (if sort.ignored  then "--git-ignore"              else null);
+    extraOptions = [
+      "--level=${builtins.toString view.depth}"
+      (if show.headers  then "--header"                  else " ")
+      (if show.color    then "--color-scale"             else "")
+      (if show.classify then "--classify"                else "")
+      (if sort.ignored  then "--git-ignore"              else "")
+      (if sort.dirs == "first" then "--group-directories-first" else "")
+    ];
   };
 
   # --- lsd ---
@@ -82,7 +80,7 @@ in
     enable = true;
     enableAliases = prog == "lsd";
     settings = {  # See: https://github.com/Peltoche/lsd#config-file-content
-      blocks = let base = [
+      blocks = [
         "permission"
         "user"
         "group"
@@ -92,9 +90,8 @@ in
         #"context"
         #"inode"
         #"links"
-        #"git"
-      ]; in base
-        + (if show.git then "git" else null);
+        (if show.git then "git" else "") #"git"
+      ];
       classic     = false;
       color.theme = "default";                                            # default  | custom (looks for ~/.config/lsd/colors.yaml)
       color.when  = if show.color     then "auto"       else "never";     # always   | auto   | never
@@ -104,12 +101,12 @@ in
       date        = if readable.date  then "relative"   else "date";      # relative | date   | +<date_format>
       permission  = if readable.perms then "rwx"        else "octal";     # octal    | rwx
       size        = if readable.size  then "short"      else "default";   # default  | short  | bytes
+      recursion.enabled    = view.recurse;
+      recursion.depth      = view.depth;
       layout               = view.layout;     # grid  | tree | oneline
       sorting.column       = sort.field;      # name  | time | size    | version
       sorting.dir-grouping = sort.dirs;       # first | last | none
       sorting.reverse      = sort.reverse;
-      recursion.enabled    = sort.recursion;
-      recursion.depth      = sort.depth;
       indicators           = show.classify;
       header               = show.headers;
       total-size           = show.total;  # Show total size of directories. Default=false
