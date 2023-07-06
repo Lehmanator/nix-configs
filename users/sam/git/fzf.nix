@@ -9,7 +9,7 @@ in
   imports = [
   ];
 
-  programs.zsh.plugins = lib.mkIf config.programs.fzf.fuzzyCompletion [
+  programs.zsh.plugins = lib.mkIf config.programs.fzf.enable [
     # Plugin to use FZF to complete git objects.
     { name = "fzf-git.sh"; file = "fzf-git.sh"; src = pkgs.fetchFromGitHub {
         owner = "junegunn"; repo = "fzf-git.sh";
@@ -20,7 +20,7 @@ in
   ];
 
   # Redefining this function to change FZF git completor options
-  programs.zsh.interactiveShellInit = lib.mkIf (config.programs.fzf.fuzzyCompletion && overrideCommand) ''
+  programs.zsh.interactiveShellInit = lib.mkIf (config.programs.fzf.enable && overrideCommand) ''
     _fzf_git_fzf() {
       fzf-tmux -p80%,60% -- \
         --layout=reverse --multi --height=50% --min-height=20 --border \
