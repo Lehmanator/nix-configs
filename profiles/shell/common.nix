@@ -15,12 +15,6 @@
     ./alias.nix
   ];
 
-  # TODO: Find nix-related program from old config that was better
-  # - nix-index
-  programs.command-not-found.enable = false;
-  programs.thefuck.enable = true;
-  programs.thefuck.alias = "fuck";
-
   # --- Shell Initialization -------------------------------
   environment = {
     variables.ZDOTDIR = "$HOME/.config/zsh";  # TODO: Use sessionVariables?
@@ -44,4 +38,25 @@
     systemPackages = [ pkgs.unixODBC ];                           # Package to get CLI clients to connect to ODBC databases.
     unixODBCDrivers = with pkgs.unixODBCDrivers; [ sqlite psql ]; # Unix ODBC drivers to register in /etc/odbcinst.ini
   };
+
+  # --- Shell Utils ----------------------------------------
+
+  # --- fzf: fuzzy searcher ---
+  programs.fzf = {
+    fuzzyCompletion = true;  # Enables completion widgets for bash & zsh
+    keybindings = true;      # Enables shell keybindings to complete with fzf widgets
+  };
+
+  # --- command-not-found ---
+  # TODO: Find nix-related program from old config that was better
+  # - nix-index ?
+  # - manix ?
+  programs.command-not-found.enable = false;
+
+  # --- thefuck: command corrector ---
+  programs.thefuck = {
+    enable = true;
+    alias = "fuck";
+  };
+
 }
