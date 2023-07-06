@@ -6,9 +6,10 @@
 {
   imports = [
     ./aliases.nix
+    ./fzf.nix
     ./hooks.nix
-    ./includes.nix
     ./ignore.nix
+    ./includes.nix
   ];
 
   programs.git = {
@@ -69,4 +70,5 @@
       gui.showIcons = true;
     };
   };
+
 }
