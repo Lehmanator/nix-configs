@@ -22,19 +22,26 @@
   programs.thefuck.alias = "fuck";
 
   # --- Shell Initialization -------------------------------
-  environment.variables.ZDOTDIR = "$HOME/.config/zsh";
+  environment = {
+    variables.ZDOTDIR = "$HOME/.config/zsh";  # TODO: Use sessionVariables?
 
-  # --- Shell: All -----------
-  environment.shellInit = ''
-  '';
+    # --- Shell: All -----------
+    #shellInit = ''
+    #'';
 
-  # --- Shell: Interactive ---
-  environment.interactiveShellInit = ''
-  '';
+    # --- Shell: Interactive ---
+    #interactiveShellInit = ''
+    #'';
 
-  # --- Shell: Login ---------
-  environment.loginShellInit = ''
-    # Show system info on login
-    neofetch
-  '';
+    # --- Shell: Login ---------
+    # TODO: Only perform for first login
+    #loginShellInit = ''
+    #  # Show system info on login
+    #  neofetch
+    #'';
+
+    pathsToLink = [ "/share/bash-completion" ];                   # Always link bash completion. Used directly by bash & ZSH compat.
+    systemPackages = [ pkgs.unixODBC ];                           # Package to get CLI clients to connect to ODBC databases.
+    unixODBCDrivers = with pkgs.unixODBCDrivers; [ sqlite psql ]; # Unix ODBC drivers to register in /etc/odbcinst.ini
+  };
 }
