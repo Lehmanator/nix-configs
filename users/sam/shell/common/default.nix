@@ -15,39 +15,24 @@
     ./alias.nix
     ./fzf.nix
     ./ls.nix
+    ../../docs
     ../../pager
   ];
 
-  programs.bash.enableVteIntegration = true;
-  programs.bash.historyControl = [ "ignorespace" ];
+  programs.bash = {
+    enableVteIntegration = true;
+    historyControl = [ "ignorespace" ];
+  };
 
-
-  # --- Direnv ----------------
-  programs.direnv.enable = true;
-  programs.direnv.nix-direnv.enable = true;
+  # --- Direnv / DevShells ----
+  services.lorri.enable = true;
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
 
   # --- Prompt ---------------
   programs.starship.enable = true;
-
-  # --- Dev Shells -----------
-  services.lorri.enable = true;
-
-  # --- Documentation --------
-  manual = {
-    html.enable = true;
-    json.enable = true;
-    manpages.enable = true;
-  };
-  news.display = "notify";
-  programs.tealdeer = {
-    enable = true;
-    settings = {
-      display.compact = true;
-      display.use_pager = false;
-      updates.auto_update = true;
-      #style.example_variable.foreground = "cyan";
-    };
-  };
 
   # --- Packages -------------
   home.packages = [
