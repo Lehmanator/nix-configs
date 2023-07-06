@@ -39,6 +39,7 @@
     ../../profiles/nixos.nix
     ../../profiles/polkit.nix
     ../../profiles/shell/zsh.nix
+    ../../profiles/sshd.nix
     ../../profiles/user-defaults.nix
     ../../profiles/virt/vm-host.nix
     ../../profiles/virt/windows
@@ -49,6 +50,7 @@
     # - nix-software-center
     ./managed.nix
   ];
+  sops.defaultSopsFile = ./secrets.yaml;
 
   # --- Bootloader ---
   boot.loader.systemd-boot.enable = true;
