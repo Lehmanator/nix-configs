@@ -558,6 +558,13 @@
         inputs.nixpkgs.follows = "nixpkgs";
       }; # TODO: Install pkg
 
+      # nix-index-database: Pre-built database for nix-index. Updated weekly. Import NixOS/hm modules.
+      nix-index-database = {
+        url = "github:Mic92/nix-index-database";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
+
+      # qnr: Local Nix registry
       nix-quick-registry = {
         url = "github:divnix/quick-nix-registry";
       };
@@ -806,6 +813,7 @@
             lanzaboote.nixosModules.lanzaboote
             musnix.nixosModules.musnix
             #nix-data.nixosModules.${system}.nix-data
+            nix-index-database.nixosModules.nix-index { programs.nix-index-database.comma.enable = true; }
             nix-minecraft.nixosModules.minecraft-servers
             nix-netboot-serve.nixosModules.nix-netboot-serve
             nix-serve-ng.nixosModules.default
@@ -832,6 +840,7 @@
             agenix.homeManagerModules.default
             arkenfox.hmModules.default
             home-extra-xhmm.homeManagerModules.all
+            nix-index-database.hmModules.nix-index { programs.nix-index-database.comma.enable = true; }
             nixos-flatpak.homeManagerModules.default
             nixpkgs-android.hmModule
             nixvim.homeManagerModules.nixvim
@@ -861,6 +870,7 @@
           nix = [
             self.overlays.default
             agenix.overlays.default
+            comma.overlays.default
             fenix.overlays.default
             harmonia.overlays
             kubenix.overlays.default
