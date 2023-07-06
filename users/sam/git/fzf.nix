@@ -20,7 +20,7 @@ in
   ];
 
   # Redefining this function to change FZF git completor options
-  programs.zsh.interactiveShellInit = lib.mkIf (config.programs.fzf.enable && overrideCommand) ''
+  programs.zsh.initExtraBeforeCompInit = lib.mkIf (config.programs.fzf.enable && overrideCommand) ''
     _fzf_git_fzf() {
       fzf-tmux -p80%,60% -- \
         --layout=reverse --multi --height=50% --min-height=20 --border \
