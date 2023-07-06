@@ -34,111 +34,103 @@ in
   ];
 
   home.sessionVariables.ZDOTDIR = "${config.xdg.configHome}/zsh"; #"${config.home.homeDirectory}/.config/zsh";
-  programs.zsh.dotDir = "${config.xdg.configHome}/zsh";
-  #programs.zsh.dotDir = config.home.sessionVariables.ZDOTDIR;
-  #programs.zsh.dotDir = if config.xdg.enable then "${config.xdg.configHome}/zsh" else "${config.homeDirectory}/.config/zsh";
-  #programs.zsh.dotDir = if config.xdg.configHome then "${config.xdg.configHome}/zsh" else "${config.homeDirectory}/.config/zsh";
 
-  programs.zsh.enable = true;
+  programs.zsh = {
+    enable = true;
+    dotDir = "${config.xdg.configHome}/zsh"; #config.home.sessionVariables.ZDOTDIR;
 
-  # --- Keybindings ---
-  # TODO: Create global user/system-wide keymap setting & set these options correspondingly
-  programs.zsh.defaultKeymap = "viins";
-  programs.zsh.prezto.editor.keymap = "vi";
+    # --- Keybindings ---
+    # TODO: Create global user/system-wide keymap setting & set these options correspondingly
+    defaultKeymap = "viins";
+    prezto.editor.keymap = "vi";
 
-  # --- Directories ---
-  programs.zsh.autocd = true;
-  #programs.zsh.cdpath = lib. config.programs.zsh.dirHashes  # TODO: Find lib to turn attrset values into list
-  programs.zsh.dirHashes = {
+    # --- Directories ---
     # TODO: Use XDG User Dirs if graphical environment
-    code = "$HOME/Code";
-    dl = "$HOME/Downloads";
-    docs = "$HOME/Documents";
-    game = "$HOME/Games";
-    note = "$HOME/Notes";
-    vids = "$HOME/Videos";
+    autocd = true;             # Auto-cd into directory if command name matches dir & not a command
+    #cdpath = lib. config.programs.zsh.dirHashes  # TODO: Find lib to turn attrset values into list
+    dirHashes = {
+      code = "$HOME/Code";
+      dl = "$HOME/Downloads";
+      docs = "$HOME/Documents";
+      game = "$HOME/Games";
+      note = "$HOME/Notes";
+      vids = "$HOME/Videos";
 
-    cache = "$XDG_CACHE_HOME";
-    config = "$XDG_CONFIG_HOME";
-    data = "$XDG_DATA_HOME";
-    state = "$XDG_STATE_HOME";
+      cache = "$XDG_CACHE_HOME";
+      config = "$XDG_CONFIG_HOME";
+      data = "$XDG_DATA_HOME";
+      state = "$XDG_STATE_HOME";
 
-    nix = "$XDG_CONFIG_HOME/nixos";
+      nix = "$XDG_CONFIG_HOME/nixos";
 
-    gpg = "$GNUPGHOME";
-    ssh = "$HOME/.ssh";
+      gpg = "$GNUPGHOME";
+      ssh = "$HOME/.ssh";
 
-    bin = "$HOME/.local/bin";
-    repos = "$HOME/.local/repos";
-    shh = "$HOME/.local/secrets";
+      bin = "$HOME/.local/bin";
+      repos = "$HOME/.local/repos";
+      shh = "$HOME/.local/secrets";
+    };
+    prezto.editor.dotExpansion = true; # Auto expand ... to ../..
+
+    # --- Completion ---
+    enableCompletion = true;
+
+    # --- Initialization -------------------------------------
+    # TODO: Move cdls to user zsh config
+    #initExtra = ''
+    #  function cdls() {
+    #    ${pkgs.exa}/bin/exa -a --icons --git --group-directories-first
+    #  }
+    #  chpwd_functions=(cdls)
+    #'';
+    #initExtraBeforeCompInit
+    #initExtraFirst
+    #localVariables
+    #loginExtra
+    #logoutExtra
+
+    # --- Integration ---
+    enableVteIntegration = true;
+    prezto.terminal = {
+      autoTitle = true;
+      #multiplexerTitleFormat = "%s";
+      tabTitleFormat = "%m: %s";
+      windowTitleFormat = "%n@%m: %s";
+    };
+    #prezto.tmux = {
+    #  autoStartLocal = true;
+    #  autoStartRemote = true;
+    #  defaultSessionName = "";
+    #  itermIntegration = true;
+    #};
+
+    # --- Plugins --------------------------------------------
+    # TODO: Fetch plugins using nvfetcher & nixpkgs overlay ?
+    prezto.enable = true;
+    plugins = [
+      { name = "zsh-nix-shell"; file = "nix-shell.plugin.zsh";   # Use ZSH inside nix-shell
+        src = pkgs.fetchFromGitHub { owner = "chisui"; repo = "zsh-nix-shell"; rev = "v0.7.0"; sha256 = "00ds69n2v7ikr6kmas7mqxci3vrl3n7531lj2sivvzw1sppy1sjs"; };
+      }
+    ];
+
+    # ---- Extras --------------------------------------------
+    prezto.extraFunctions = [ "zargs" "zmv" ]; # Extra ZSH functions to load. See: `$ man zshcontrib`
+    prezto.extraModules = [ "attr" "stat" ]; # Extra ZSH modules to load.   See: `$ man zshmodules`
+    prezto.pmodules = [
+      "environment"
+      "terminal"
+      "editor"
+      "history"
+      "directory"
+      "spectrum"
+      "utility"
+      "completion"
+      "prompt"
+    ];
+    prezto.ssh.identities = [
+      "id_rsa"
+      "id_ed25519"
+      "id_lehmanator_ed25519"
+    ];
   };
-  programs.zsh.prezto.editor.dotExpansion = true; # Auto expand ... to ../..
-
-  # --- Completion ---
-  programs.zsh.enableCompletion = true;
-
-  # --- Initialization -------------------------------------
-  programs.zsh.initExtra = ''
-    function cdls() {
-      exa -a --icons --git --group-directories-first
-    }
-    chpwd_functions=(cdls)
-  '';
-  #initExtraBeforeCompInit
-  #initExtraFirst
-  #localVariables
-  #loginExtra
-  #logoutExtra
-
-  # --- Integration ---
-  programs.zsh.enableVteIntegration = true;
-  programs.zsh.prezto.terminal = {
-    autoTitle = true;
-    #multiplexerTitleFormat = "%s";
-    tabTitleFormat = "%m: %s";
-    windowTitleFormat = "%n@%m: %s";
-  };
-  #programs.zsh.prezto.tmux = {
-  #  autoStartLocal = true;
-  #  autoStartRemote = true;
-  #  defaultSessionName = "";
-  #  itermIntegration = true;
-  #};
-
-  # --- Plugins --------------------------------------------
-  programs.zsh.prezto.enable = true;
-  programs.zsh.plugins = [
-    # TODO: Use nvfetcher & nixpkgs overlay ?
-    {
-      # Use ZSH inside nix-shell
-      name = "zsh-nix-shell";
-      file = "nix-shell.plugin.zsh";
-      src = pkgs.fetchFromGitHub {
-        owner = "chisui";
-        repo = "zsh-nix-shell";
-        rev = "v0.5.0";
-        sha256 = "0za4aiwwrlawnia4f29msk822rj9bgcygw6a8a6iikiwzjjz0g91";
-      };
-    }
-  ];
-
-  # ---- Extras --------------------------------------------
-  programs.zsh.prezto.extraFunctions = [ "zargs" "zmv" ]; # Extra ZSH functions to load. See: `$ man zshcontrib`
-  programs.zsh.prezto.extraModules = [ "attr" "stat" ]; # Extra ZSH modules to load.   See: `$ man zshmodules`
-  programs.zsh.prezto.pmodules = [
-    "environment"
-    "terminal"
-    "editor"
-    "history"
-    "directory"
-    "spectrum"
-    "utility"
-    "completion"
-    "prompt"
-  ];
-  programs.zsh.prezto.ssh.identities = [
-    "id_rsa"
-    "id_ed25519"
-    "id_lehmanator_ed25519"
-  ];
 }
