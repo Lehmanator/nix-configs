@@ -13,8 +13,9 @@ in
     # Plugin to use FZF to complete git objects.
     { name = "fzf-git.sh"; file = "fzf-git.sh"; src = pkgs.fetchFromGitHub {
         owner = "junegunn"; repo = "fzf-git.sh";
-        sha256 = "02wm7gxb5w40gfzhy34d80hpi1c2brm6nhmy61ln3dyg54ld8wrr";  # Branch: main (7/6/2023)
         rev = "b6192ec86609afea761c7d3954f9b539a512dc80";
+        hash = "sha256-PUVc3nlVeghUbPlkz/mXG+lilbTc5fYkrhWApD7xHqk=";
+        #sha256 = "02wm7gxb5w40gfzhy34d80hpi1c2brm6nhmy61ln3dyg54ld8wrr";  # Branch: main (7/6/2023)
       };
     }
   ];
