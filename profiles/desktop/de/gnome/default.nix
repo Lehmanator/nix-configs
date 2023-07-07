@@ -7,7 +7,6 @@
 { self, inputs
 , config, lib, pkgs
 , options
-, system
 , userPrimary ? "sam"
 , ...
 }:
@@ -15,12 +14,20 @@
 {
   imports = [
     #./common.nix
+    #../../autologin.nix { user = userPrimary; }
     ../../gtk.nix
     ../../wayland.nix
     #../../xwayland.nix
     ./apps
     ./extensions
   ];
+
+  # --- Packages -----------------------------------------------------
+  programs.dconf.enable = true;
+  programs.evince.enable = true;
+  programs.evolution.enable = true;
+  programs.evolution.plugins = [ pkgs.evolution-ews ];
+  programs.firefox.nativeMessagingHosts.gsconnect = true;
 
   environment.systemPackages = [
     # Tool to convert dconf settings to Nix config
@@ -30,21 +37,29 @@
   # Exclude broken packages
   environment.gnome.excludePackages = [];
 
+  # --- Network ------------------------------------------------------
+
   # --- NetworkManager ---
   networking.networkmanager.enable = true;
   users.users."sam".extraGroups = [ "gdm" "netdev" "networkmanager" "nm-openconnect" ];
 
-  programs.dconf.enable = true;
-  programs.evince.enable = true;
-  programs.evolution.enable = true;
-  programs.evolution.plugins = [ pkgs.evolution-ews ];
-  programs.firefox.nativeMessagingHosts.gsconnect = true;
-  programs.gnupg.agent.pinentryFlavor = "gnome3";
+  # --- Styles -------------------------------------------------------
 
   # Qt uses GNOME styles
   qt.platformTheme = "gnome";
   qt.style = "adwaita-dark";
 
+  # Use GNOME-styled pinentry window for GnuPG
+  programs.gnupg.agent.pinentryFlavor = "gnome3";
+
+
+  # --- Services -----------------------------------------------------
+  # --- Desktop --------------
+  # Enable GNOME & GDM
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
+
+  # --- GNOME ----------------
   services.gnome = {
     at-spi2-core.enable = true;
     core-developer-tools.enable = true;
@@ -66,29 +81,22 @@
     tracker.enable = true;
     tracker-miners.enable = true;
   };
+  # --- Filesystems ----------
   services.gvfs = {
     enable = true;
     package = pkgs.gnome.gvfs;
   };
 
-  # Enable automatic login for user
-  services.xserver.displayManager.autoLogin.enable = true;
-  services.xserver.displayManager.autoLogin.user = "sam";
-  systemd.services."autovt@tty1".enable = false;
-  systemd.services."getty@tty1".enable = false; # https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
-
-  # Enable GNOME & GDM
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-
+  # --- Flatpak --------------
   xdg.portal.enable = true;
   xdg.portal.xdgOpenUsePortal = true;
 
+  #(lib.optionalAttrs (options?services.flatpak.packages) {
+  #  services.flatpak.packages = [
+  #    "flathub:org.gnome.Platform"     "flathub:org.gnome.Sdk"
+  #    "flathub:org.kde.KStyle.Adwaita" "flathub:org.kde.PlatformTheme.QGnomePlatform" "flathub:org.kde.WaylandDecoration.QGnomePlatform-decoration"
+  #  ];
+  #})
+
 }
 
-#(lib.optionalAttrs (options?services.flatpak.packages) {
-#  services.flatpak.packages = [
-#    "flathub:org.gnome.Platform"     "flathub:org.gnome.Sdk"
-#    "flathub:org.kde.KStyle.Adwaita" "flathub:org.kde.PlatformTheme.QGnomePlatform" "flathub:org.kde.WaylandDecoration.QGnomePlatform-decoration"
-#  ];
-#})
