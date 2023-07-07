@@ -10,9 +10,11 @@
   imports = [
   ];
 
-  environment.systemPackages = with pkgs; [
-    #gnome-boxes
-    virt-manager
+  environment.systemPackages = [
+    #pkgs.gnome-boxes
+    pkgs.spice-protocol
+    pkgs.virt-manager
+    pkgs.win-spice
   ];
 
 
