@@ -39,6 +39,7 @@
     ../../profiles/nixos.nix
     ../../profiles/polkit.nix
     ../../profiles/shell/zsh.nix
+    ../../profiles/sops.nix
     ../../profiles/sshd.nix
     ../../profiles/user-defaults.nix
     ../../profiles/virt/vm-host.nix
@@ -50,7 +51,6 @@
     # - nix-software-center
     ./managed.nix
   ];
-  sops.defaultSopsFile = ./secrets.yaml;
 
   # --- Bootloader ---
   boot.loader.systemd-boot.enable = true;
@@ -72,10 +72,29 @@
 
   # --- Users ---
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users."sam" = {
-    isNormalUser = true;
-    description = "Sam Lehman";
-    extraGroups = [ "wheel" "users" "dialout" ];
+  users = {
+
+    extraGroups = {
+      # Fix for D-Bus error on missing group: netdev
+      # TODO: Figure out what causes this error (sshd? pkcs? pam? pam-pkcs11?)
+      netdev = { name = "netdev"; };
+    };
+    extraUsers = {
+      # Fix for D-Bus error on missing user: nm-openconnect
+      # TODO: Figure out what causes this error (sshd? pkcs? pam? pam-pkcs11? OpenConnect? NetworkManager?)
+      nm-openconnect = {
+        name = "nm-openconnect";
+        description = "System user to control OpenConnect in NetworkManager";
+        isSystemUser = true;
+        group = "nm-openconnect";
+        extraGroups = [ "netdev" "networkmanager" ];
+      };
+    };
+    users."sam" = {
+      isNormalUser = true;
+      description = "Sam Lehman";
+      extraGroups = [ "wheel" "users" "dialout" "sshd" ];
+    };
   };
   programs.fuse.userAllowOther = true;
 
@@ -107,14 +126,6 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.05"; # Did you read the comment?
-
-  # --- Docs ---
-  documentation.doc.enable = true;
-  documentation.dev.enable = true;
-  documentation.man.generateCaches = true;
-  documentation.info.enable = true;
-  documentation.nixos.enable = true;
-  #documentation.nixos.includeAllModules = true;
 
   #programs.home-manager.enable = true;
 
