@@ -19,35 +19,32 @@
     # --- Basic GnuPG Options ---
     # See: man gpg(1)
     # https://gnupg.org/documentation/manuals/gnupg24/gpg.1.html
-
     enable = true;
     homedir = "${config.xdg.dataHome}/gnupg"; # Set GPGHOME to follow XDG Spec
-
     settings = {
       # TODO: Avoid hard-coding this as string
       default-key = "DC19 62D6 560F F66B B16F  99E0 C47C 1462 4041 0561";
-      enable-large-rsa = true;
       enable-progress-filter = true;
+      list-options = [ "show-uid-validity" "show-photos" "show-keyring" ];
       no-comments = false;
       photo-viewer = "org.gnome.Loupe"; # TODO: Set based on desktop environment or use terminal photo viewer
-      #show-keyring = true;  # deprecated. use: list-options show-keyring
-      #show-keyserver-urls = true; # invalid
-      #show-notations = true; # invalid
-      #show-photos = true;  # deprecated. use: list-options show-photos, verify-options show-photos
-      #show-policy-urls = true; # invalid
-      #show-sig-expire = true; # invalid
-      #show-usage = true; # invalid
       use-agent = true;
       utf8-strings = true;
+      verify-options = [ "show-uid-validity" "show-photos" ];
       with-fingerprint = true;
-      #agent-program = "";   # Agent program for secret key operations
-      #dirmngr-program = ""; # Keyserver access program, default: /usr/local/bin/dirmngr
+      #agent-program = "";         # Agent program for secret key operations
+      #dirmngr-program = "";       # Keyserver access program, default: /usr/local/bin/dirmngr
+      #enable-large-rsa = true;    # TODO: Requires binary built with: large secure memory buffer
+      #show-keyserver-urls = true; # invalid
+      #show-notations = true;      # invalid
+      #show-policy-urls = true;    # invalid
+      #show-sig-expire = true;     # invalid
+      #show-usage = true;          # invalid
     };
 
     #package = pkgs.gnupg
     #mutableKeys = false;  # Default: true
     #mutableTrust = true;  # Default: true
-
 
     # --- Smartcard Daemon ---
     # pkgs.gnupg-pkcs11-scd  # scdaemon that enables use of PKCS#11 tokens w/ GnuPG

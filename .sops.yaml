@@ -1,0 +1,284 @@
+# This example uses YAML anchors which allows reuse of multiple keys
+# without having to repeat yourself.
+# Also see https://github.com/Mic92/dotfiles/blob/master/nixos/.sops.yaml
+# for a more complex example.
+#
+# List GPG key fingerprints: $ gpg --list-secret-keys
+#
+# Setup Process:
+#
+# - Edit secrets using:
+#   - Environments **without** sops installed: `nix-shell -p sops --run "sops <path>/<filename>.yaml"`
+#   - Environments **with**    sops installed: `sops <path>/<filename>.yaml`
+#
+# - Convert SSH keys in format `ed25519` -> `age`:
+#   - `ssh-to-age`
+#   - Generic: `ssh-to-age -o (user(_<role>)?|host)_<name>_age.asc`
+#
+# - Convert SSH keys in format     `rsa` -> `gpg`:
+#   - Generic: `ssh-to-pgp -o (user(_<role>)?|host)_<name>_gpg.asc`
+#
+# - Add new user:
+# - Add new machine:
+#
+# Notes:
+# - **Admin**  user keys should be able to decrypt       **all** systems' secrets
+# - **All**    user keys should be able to decrypt **their own**   user's secrets
+# - **All** machine keys should be able to decrypt **their own** system's secrets
+# - **Dev** machine keys should be able to decrypt    **server** systems' secrets?
+#
+# - [ ] TODO: Consider renaming `machine` to `host` (more descriptive, esp. considering VMs)
+# - [ ] TODO: Create GPG keys for each machine
+#   - [ ] TODO: Create  `ssh-ed25519` keys for each machine
+#   - [ ] TODO: Convert `ssh-ed25519` keys to `pgp` / `gpg` format using `ssh-to-pgp`
+#   - [ ] TODO: Add `gpg` key fingerprints below as: `machine_<hostname>_gpg`
+#
+# - [ ] TODO: Create age keys for each machine
+#   - [ ] TODO: Create  `ssh-rsa` keys for each machine
+#   - [ ] TODO: Convert `ssh-rsa` keys to `age` format using `ssh-to-age`
+#   - [ ] TODO: Add `age` key fingerprints below as: `machine_<hostname>_age`
+#
+# - [ ] TODO: Create `GPG` keys for each user
+#   - [ ] TODO: Create  `ssh-ed25519` keys for each machine
+#   - [ ] TODO: Convert `ssh-ed25519` keys to `pgp` / `gpg` format using `ssh-to-pgp`
+#   - [ ] TODO: Add `gpg` key fingerprints below as: `user_<username>(_<role>)?_gpg`
+#   - [ ] TODO: Rename existing keys to naming scheme above
+#
+# - [ ] TODO: Create `age` keys for each user
+#   - [ ] TODO: Create  `ssh-rsa` keys for each user
+#   - [ ] TODO: Convert `ssh-rsa` keys to `age` format using `ssh-to-age`
+#   - [ ] TODO: Add `age` key fingerprints below as: `user_<username>(_<role>)?_age`
+#
+
+keys:
+# --- User Keys ---
+- &user_slehman_gpg   DC1962D6560FF66BB16F99E0C47C146240410561
+- &user_sam_gpg       5222833B7C18B486CB7146F52D0FBE0203AE5181
+
+# --- Host Keys ---
+- &host_fw_gpg        68ee228d57b5b97c7f88dd33188b0095248cb8a0
+#- &host_wyse_gpg     fff
+#- &host_fajita_gpg   fff
+#- &host_flame_gpg    fff
+#- &host_cheetah_gpg  fff
+#- &host_prodesk0_gpg fff
+#- &host_prodesk1_gpg fff
+#- &host_prodesk2_gpg fff
+#- &host_prodesk3_gpg fff
+#- &host_prodesk4_gpg fff
+#- &host_prodesk5_gpg fff
+#- &host_server0_gpg  fff
+
+# --- Shorthand ---
+# Set to *(user_<username>|host_<hostname>)_(age|gpg) depending on preferred primary key format
+#- &user_sam         *user_sam_gpg
+#- &user_slehman     *user_slehman_gpg
+#- &host_fw          *host_fw_gpg
+
+# --- Secret Files -------------------------------------------------------------
+# TODO: Convert `path_regex` to support `std` & `hive` cell directory structure.
+# TODO: Figure out how to define paths so that:
+# - all users can decrypt their own secrets, but *only* their own & not other users' secrets.
+creation_rules:
+
+  # --- Host Secrets -------------------------------------------------
+  # For host-specific secrets
+
+  # --- current ---
+  # Path: ./hosts/<hostname>/secrets.yaml
+  #- path_regex: hosts/[^/]+/secrets\.yaml$
+  - path_regex: hosts/[:word:]/secrets.yaml$
+    key_groups:
+      - pgp:
+        - *user_sam_gpg
+        - *user_slehman_gpg
+        - *host_fw_gpg
+
+  # --- std ---
+  # Path: ./nix/<cell>/nixosConfigurations/<hostname>/secrets.yaml
+  - path_regex: ^nix/[^/]+/nixosConfigurations/[^/]+/secrets\.yaml$
+    key_groups:
+      - pgp:
+        - *user_sam_gpg
+        - *user_slehman_gpg
+        - *host_fw_gpg
+  # Path: ./nix/<cell>/nixosConfiguration-<hostname>.yaml
+  - path_regex: ^nix/[^/]+/nixosConfiguration-[^/]+\.yaml$
+    key_groups:
+      - pgp:
+        - *user_sam_gpg
+        - *user_slehman_gpg
+        - *host_fw_gpg
+
+  # --- User Secrets -------------------------------------------------
+  # For user-specific secrets
+
+  # --- current ---
+  # Path: ./users/<username>/secrets.yaml
+  - path_regex: users/[^/]+/secrets\.yaml$
+    key_groups:
+      - pgp:
+        - *user_sam_gpg
+        - *user_slehman_gpg
+
+  # --- std ---
+  # Path: ./nix/<cell>/homeConfigurations/<username>/secrets.yaml
+  - path_regex: ^nix/[^/]+/homeConfigurations/[^/]+/secrets\.yaml$
+    key_groups:
+      - pgp:
+        - *user_sam_gpg
+        - *user_slehman_gpg
+  # Path: ./nix/<cell>/homeConfiguration-<username>.yaml
+  - path_regex: ^nix/[^/]+/homeConfiguration-[^/]+\.yaml$
+    key_groups:
+      - pgp:
+        - *user_sam_gpg
+        - *user_slehman_gpg
+
+  ## --- Repo Secrets -------------------------------------------------
+  ## For secrets to be shared repo-wide
+  ## Path: ./secrets.yaml
+  #- path_regex: ^secrets\.yaml$
+  #  key_groups:
+  #  - pgp:
+  #    - *user_sam_gpg
+  #    - *user_slehman_gpg
+  #
+  #    #age:
+  #    #- *user_sam_age
+  #    #- *user_slehman_age
+  #
+  #
+  ## --- Service Secrets ----------------------------------------------
+  ## For secrets to be shared amongst machines running the same service
+  #
+  ## --- current ---
+  ## Path: secrets/services/<service>.yaml
+  #- path_regex: secrets/services/[^/]+\.yaml$
+  #  key_groups:
+  #    - pgp:
+  #      - *user_sam_gpg
+  #      - *user_slehman_gpg
+  #
+  ## --- std ---
+  ## Path: ./nix/<cell>/nixosProfiles/<profile>.yaml
+  #- path_regex: ^nix/[^\]+/nixosProfiles/[^/]+/secrets\.yaml$
+  #  key_groups:
+  #    - pgp:
+  #      - *user_sam_gpg
+  #      - *user_slehman_gpg
+  ## Path: ./nix/<cell>/nixosProfile-<profile>.yaml
+  #- path_regex: ^nix/[^\]+/nixosProfile-[^/]+\.yaml$
+  #  key_groups:
+  #    - pgp:
+  #      - *user_sam_gpg
+  #      - *user_slehman_gpg
+  #
+  #
+  ## --- Network Secrets ----------------------------------------------
+  ## For secrets to be shared amongst machines on the same network
+  #
+  ## --- current ---
+  #- path_regex: ^secrets/networks/[^/]+\.yaml$
+  #  key_groups:
+  #    - pgp:
+  #      - *user_sam_gpg
+  #      - *user_slehman_gpg
+  #
+  ## --- std ---
+  ## Path: ./nix/<cell>/colmenaConfigurations/<network>/secrets.yaml
+  #- path_regex: ^nix/[^/]+/colmenaConfigurations/[^/]+/secrets\.yaml$
+  #  key_groups:
+  #    - pgp:
+  #      - *user_sam_gpg
+  #      - *user_slehman_gpg
+  ## Path: ./nix/<cell>/colmenaConfiguration-<network>.yaml
+  #- path_regex: ^nix/[^/]+/colmenaConfigurations/[^/]+/secrets\.yaml$
+  #  key_groups:
+  #    - pgp:
+  #      - *user_sam_gpg
+  #      - *user_slehman_gpg
+  #
+  ## --- Cluster Secrets ----------------------------------------------
+  ## For secrets to be shared amongst machines in the same Kubernetes cluster
+  #
+  ## --- current ---
+  ## Path: ./secrets/clusters/<clusterName>.yaml
+  #- path_regex: ^secrets/clusters/[^/]+\.yaml$
+  #  key_groups:
+  #    - pgp:
+  #      - *user_sam_gpg
+  #      - *user_slehman_gpg
+  ## --- std ---
+  #- path_regex: ^nix/[^/]+/clusterConfigurations/[^/]+\.yaml$
+  #  key_groups:
+  #    - pgp:
+  #      - *user_sam_gpg
+  #      - *user_slehman_gpg
+  #- path_regex: ^nix/[^/]+/clusterConfiguration-[^/]+\.yaml$
+  #  key_groups:
+  #    - pgp:
+  #      - *user_sam_gpg
+  #      - *user_slehman_gpg
+  #
+  ## --- Group Secrets ------------------------------------------------
+  ## For secrets to be shared amongst groups of users
+  ## --- current ---
+  #- path_regex: secrets/groups/[^/]+\.yaml$
+  #  key_groups:
+  #    - pgp:
+  #      - *user_sam_gpg
+  #      - *user_slehman_gpg
+  ## --- std ---
+  #- path_regex: ^nix/[^/]+/userGroups/[^/]+\.yaml$
+  #  key_groups:
+  #    - pgp:
+  #      - *user_sam_gpg
+  #      - *user_slehman_gpg
+  #- path_regex: ^nix/[^/]+/userGroup-[^/]+\.yaml$
+  #  key_groups:
+  #    - pgp:
+  #      - *user_sam_gpg
+  #      - *user_slehman_gpg
+  #
+  ## --- Role Secrets -------------------------------------------------
+  ## For secrets to be shared amongst groups of users
+  ## --- current ---
+  #- path_regex: secrets/roles/[^/]+\.yaml$
+  #  key_groups:
+  #    - pgp:
+  #      - *user_sam_gpg
+  #      - *user_slehman_gpg
+  ## --- std ---
+  #- path_regex: ^nix/[^/]+/userRoles/[^/]+\.yaml$
+  #  key_groups:
+  #    - pgp:
+  #      - *user_sam_gpg
+  #      - *user_slehman_gpg
+  #- path_regex: ^nix/[^/]+/userRole((s/)|(-))[^/]+\.yaml$
+  #  key_groups:
+  #    - pgp:
+  #      - *user_sam_gpg
+  #      - *user_slehman_gpg
+  #
+  ## --- CI/CD Secrets ------------------------------------------------
+  ## For secrets used by CI/CD pipelines
+  ## --- current ---
+  #- path_regex: secrets/ci/[^/]+\.yaml$
+  #  key_groups:
+  #    - pgp:
+  #      - *user_sam_gpg
+  #      - *user_slehman_gpg
+  #
+  ## --- std ---
+  #- path_regex: ^nix/[^/]+/ci/[^/]+\.yaml$
+  #  key_groups:
+  #    - pgp:
+  #      - *user_sam_gpg
+  #      - *user_slehman_gpg
+  #- path_regex: ^nix/[^/]+/ci[/|-][^/]+\.yaml$
+  #  key_groups:
+  #    - pgp:
+  #      - *user_sam_gpg
+  #      - *user_slehman_gpg
+  #
