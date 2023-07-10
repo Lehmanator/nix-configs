@@ -74,11 +74,15 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users = {
 
-    extraGroups = {
-      # Fix for D-Bus error on missing group: netdev
-      # TODO: Figure out what causes this error (sshd? pkcs? pam? pam-pkcs11?)
-      netdev = { name = "netdev"; };
+    groups = {
+      nm-openconnect = {};
+      netdev = {};
     };
+    #extraGroups = {
+    #  # Fix for D-Bus error on missing group: netdev
+    #  # TODO: Figure out what causes this error (sshd? pkcs? pam? pam-pkcs11?)
+    #  netdev = { name = "netdev"; };
+    #};
     extraUsers = {
       # Fix for D-Bus error on missing user: nm-openconnect
       # TODO: Figure out what causes this error (sshd? pkcs? pam? pam-pkcs11? OpenConnect? NetworkManager?)
