@@ -114,6 +114,8 @@
     # FIXME: nix-index: Locks up whole system while running & takes too long to run on each rebuild.
     # TODO: nix-index: Create systemd service + timer instead?
     update-end.text = let
+      baseDirLog = "/var/log/nixos";
+      diffLog = "${baseDirLog}/latest-package-diff.txt";
       repoHost = "github.com";
       repoUser = "PresqueIsleWineDev";
       repoProj = "nix-configs";
@@ -142,7 +144,7 @@
       if [[ -e /run/current-system ]]; then
       echo '│  ╭───Nix─Closure─Diff─────────────────────────────────────────╮  │'
       echo '│  │  diff-closures = {                                         │  │'
-      ${config.nix.package}/bin/nix --extra-experimental-features nix-command store diff-closures /run/current-system "$systemConfig"
+      ${config.nix.package}/bin/nix --extra-experimental-features nix-command store diff-closures /run/current-system "$systemConfig" #> "${diffLog}"
       echo '│  │  }                                                         │  │'
       echo '│  ╰────────────────────────────────────────────────────────────╯  │'
       fi
@@ -150,7 +152,7 @@
       #${pkgs.nix-index}/bin/nix-index >/dev/null && \
       echo '│  [system] Updated file index.                                    │'
       echo '│  [system] Updating tldr cache...                                 │'
-      ${pkgs.tealdeer}/bin/tldr --update >/dev/null
+      #${pkgs.tealdeer}/bin/tldr --update >/dev/null
       echo '│  [system] Updated tldr cache.                                    │'
       echo "│  [system] Activated ${config.networking.hostName}.                                          │";
       echo '╰──────────────────────────────────────────────────────────────────╯'
