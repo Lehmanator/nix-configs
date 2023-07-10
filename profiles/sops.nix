@@ -2,6 +2,8 @@
 , config, lib, pkgs
 , ...
 }:
+
+# TODO: Make devShell with pkgs.sops installed
 {
   imports = [
     #inputs.sops-nix.nixosModules.sops
