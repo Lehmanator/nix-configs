@@ -10,6 +10,7 @@
     ./hooks.nix
     ./ignore.nix
     ./includes.nix
+    ./sync.nix
     ./tui.nix
   ];
 
