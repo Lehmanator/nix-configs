@@ -11,9 +11,12 @@
 #
 # TODO: Unify all secret-related config
 # TODO: Move all GNOME-related config to ./gnome/default.nix or ./gnome/keys.nix
-# TODO: Conditionally set pinentry program based on default desktop
 # TODO: Figure out how to use pinentry ${pkgs.gcr_4}/libexec/gcr4-ssh-askpass everywhere
-#
+# TODO: Use pkgs.gpg with binary built with "large secure memory buffer" (for option: enable-large-rsa)
+# TODO: Avoid hard-coding default key as string
+# TODO: Set services.gpg-agent.pinentryFlavor conditionally based on default desktop
+# TODO: Set programs.gpg.settings.photo-viewer = "<defaultProgram>" based on desktop environment / terminal photo viewer program
+# TODO: Set programs.gpg.settings.use-agent = true when any GPG agent program is enabled (services.gpg-agent.enable)
 {
   programs.gpg = {
     # --- Basic GnuPG Options ---
@@ -22,19 +25,25 @@
     enable = true;
     homedir = "${config.xdg.dataHome}/gnupg"; # Set GPGHOME to follow XDG Spec
     settings = {
-      # TODO: Avoid hard-coding this as string
       default-key = "DC19 62D6 560F F66B B16F  99E0 C47C 1462 4041 0561";
       enable-progress-filter = true;
-      list-options = [ "show-uid-validity" "show-photos" "show-keyring" ];
+      list-options = [
+        "show-uid-validity"
+        "show-keyring"
+        #"show-photos"
+      ];
       no-comments = false;
-      photo-viewer = "org.gnome.Loupe"; # TODO: Set based on desktop environment or use terminal photo viewer
+      photo-viewer = "org.gnome.Loupe";
       use-agent = true;
       utf8-strings = true;
-      verify-options = [ "show-uid-validity" "show-photos" ];
+      verify-options = [
+        "show-uid-validity"
+        #"show-photos"
+      ];
       with-fingerprint = true;
       #agent-program = "";         # Agent program for secret key operations
       #dirmngr-program = "";       # Keyserver access program, default: /usr/local/bin/dirmngr
-      #enable-large-rsa = true;    # TODO: Requires binary built with: large secure memory buffer
+      #enable-large-rsa = true;    #
       #show-keyserver-urls = true; # invalid
       #show-notations = true;      # invalid
       #show-policy-urls = true;    # invalid
@@ -67,15 +76,24 @@
 
   # --- GnuPG Agent ---
   services.gpg-agent = {
-    enable = true;
-    enableExtraSocket = true; # Enable extra socket of GnuPG key agent, useful for GPG Agent forwarding
-    enableScDaemon = true;    # Enable scdaemon tool, enables ability to do smartcard operations
-    #enableSshSupport = false; # Use GnuPG agent for SSH keys
-    #extraConfig = ''
-    #'';
+    enable            = true;    # Use agent to manage access to GPG keys
+    enableExtraSocket = true;    # Enable extra socket of GnuPG key agent, useful for GPG Agent forwarding
+    enableScDaemon    = true;    # Enable scdaemon tool, enables ability to do smartcard operations
+    enableSshSupport  = lib.mkIf (!config.services.gnome.gnome-keyring.enable) true; # Use GnuPG agent for SSH keys
+
+    #defaultCacheTtl= null;
+    #defaultCacheTtlSsh = null;
+    #grabKeyboardAndMouse = true;
+    #maxCacheTtl = null;
+    #maxCacheTtlSsh = null;
 
     # TODO: Also set services.dbus.packages = [ pkgs.gcr ];
     #pinentryFlavor = "gnome3"; # gtk2 | gnome3 | curses | tty | qt | emacs
+
+    #verbose = false;
+
+    #extraConfig = ''
+    #'';
 
     # Which GPG keys (by keygrip) to expose as SSH keys
     #sshKeys = [

@@ -10,12 +10,12 @@
 }:
 {
   imports = [
+    ./crypto
     ./desktop/apps
     ./desktop/gnome
     ./editor
     ./fonts.nix
     ./git
-    ./gpg.nix
     ./languages/nodejs.nix
     ./nix
     ./roles/dev
