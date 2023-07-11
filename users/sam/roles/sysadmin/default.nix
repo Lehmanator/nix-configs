@@ -5,6 +5,7 @@
 }:
 {
   imports = [
+    ./samba.nix
   ];
 
   home.packages = [
