@@ -67,6 +67,7 @@ in
     #inputs.nixos-conf-editor.packages.${system}.nixos-conf-editor
     #inputs.snow.packages.${system}.snow
 
+    ../audio.nix
     ../gtk.nix
 
     #./admin.nix
