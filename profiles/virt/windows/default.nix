@@ -8,6 +8,7 @@
 {
 
   imports = [
+    ./vm.nix
     ./wine.nix
   ];
 

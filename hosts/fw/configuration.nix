@@ -43,7 +43,7 @@
     ../../profiles/sshd.nix
     ../../profiles/user-defaults.nix
     ../../profiles/virt/vm-host.nix
-    ../../profiles/virt/windows
+    #../../profiles/virt/windows
     ../../profiles/workarounds.nix
 
     # Include configuration managed by apps:
@@ -74,26 +74,29 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users = {
 
-    groups = {
-      nm-openconnect = {};
-      netdev = {};
-    };
-    #extraGroups = {
-    #  # Fix for D-Bus error on missing group: netdev
-    #  # TODO: Figure out what causes this error (sshd? pkcs? pam? pam-pkcs11?)
-    #  netdev = { name = "netdev"; };
+    #groups = {
+    #  nm-openconnect = {};
+    #  #netdev = {};
     #};
-    extraUsers = {
-      # Fix for D-Bus error on missing user: nm-openconnect
-      # TODO: Figure out what causes this error (sshd? pkcs? pam? pam-pkcs11? OpenConnect? NetworkManager?)
-      nm-openconnect = {
-        name = "nm-openconnect";
-        description = "System user to control OpenConnect in NetworkManager";
-        isSystemUser = true;
-        group = "nm-openconnect";
-        extraGroups = [ "netdev" "networkmanager" ];
-      };
-    };
+    ##extraGroups = {
+    ##  # Fix for D-Bus error on missing group: netdev
+    ##  # TODO: Figure out what causes this error (sshd? pkcs? pam? pam-pkcs11?)
+    ##  netdev = { name = "netdev"; };
+    ##};
+    #extraUsers = {
+    #  # Fix for D-Bus error on missing user: nm-openconnect
+    #  # TODO: Figure out what causes this error (sshd? pkcs? pam? pam-pkcs11? OpenConnect? NetworkManager?)
+    #  nm-openconnect = {
+    #    name = "nm-openconnect";
+    #    description = "System user to control OpenConnect in NetworkManager";
+    #    isSystemUser = true;
+    #    group = "nm-openconnect";
+    #    extraGroups = [
+    #      #"netdev"
+    #      "networkmanager"
+    #    ];
+    #  };
+    #};
     users."sam" = {
       isNormalUser = true;
       description = "Sam Lehman";

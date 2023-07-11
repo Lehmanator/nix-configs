@@ -14,9 +14,7 @@
     #pkgs.gnome-boxes
     pkgs.spice-protocol
     pkgs.virt-manager
-    pkgs.win-spice
   ];
-
 
   services.spice-vdagentd.enable = true;
   services.spice-webdavd.enable = true;
