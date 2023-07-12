@@ -4,7 +4,7 @@
 }:
 {
   imports = [
-    ./git.nix
+    ../common
   ];
 
 }

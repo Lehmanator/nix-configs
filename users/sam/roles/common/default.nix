@@ -4,7 +4,7 @@
 }:
 {
   imports = [
-    ./samba-drives.nix  # Samba
+    ./.
   ];
 
 }

@@ -4,7 +4,7 @@
 }:
 {
   imports = [
-    ./git.nix
+    # NOTE: samba.nix passed drives=["Shared"] by default
+    ./.
   ];
-
 }
