@@ -10,11 +10,8 @@ let
   cfg = config.services.xserver;
   gnomeProfile = "default";
 in
-# TODO: Make directory: ../desktop/gnome
 # TODO: Make directory: ../desktop/gnome/profiles
 # TODO: Make directory: ../desktop/gnome/profiles/default
-# TODO: Move this file to: ../desktop/gnome/default.nix
-# TODO: Move ../gtk.nix to: ../desktop/gtk.nix
 # TODO: Create file: ../desktop/gnome/secrets.nix
 # TODO: Create file: ../desktop/gnome/gtk4-force.nix
 
@@ -80,11 +77,12 @@ in
     #./emu-android.nix
     #./emu-windows.nix
 
+    #./chat.nix
     #./games.nix
 
+    ./keyring.nix
     ./mobile.nix
-
-    #./chat.nix
+    ./styles.nix
 
     #./view-audio.nix
     #./view-images.nix
@@ -114,27 +112,6 @@ in
     gnome-multi-writer
     gnome-recipes
   ];
-
-  programs.rbw.settings.pinentry = "gnome3";
-
-  qt.platformTheme = "gnome";
-  qt.style.package = pkgs.adwaita-qt;
-  #qt.style.name = "adwaita-dark";
-
-  services.gnome-keyring.enable = true;
-  services.gnome-keyring.components = [ "pkcs11" "secrets" "ssh" ];
-
-  # Use GTK4 pinentry (requires services.dbus.packages = [ pkgs.gcr_4 ];)
-  #services.gpg-agent.pinentryFlavor = "gnome3";
-  services.gpg-agent.pinentryFlavor = null;
-  services.gpg-agent.extraConfig = ''
-    pinentry-program ${pkgs.gcr_4}/libexec/gcr4-ssh-askpass
-  '';
-
-  # Dunst: Notification Daemon
-  services.dunst.iconTheme.name = "Adwaita";
-  services.dunst.iconTheme.package = pkgs.adwaita-icon-theme;
-
 
   # https://gist.github.com/quidome/4e225db4b1611a9624d3927919f96bc6
   #config = lib.mkIf (cfg.desktopManager.gnome.enable == true) {
