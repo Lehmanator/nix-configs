@@ -11,4 +11,9 @@
   services.gnome.gnome-keyring = {
     enable = true;
   };
+
+  # Enable GNOME keyring PAM module for all services that unlock with password
+  # TODO: See if possible to unlock gnome-keyring with other auth methods like SSH keys & fingerprint.
+  security.pam.services.login.enableGnomeKeyring = true;
+
 }
