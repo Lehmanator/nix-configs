@@ -6,15 +6,17 @@
 #   - Update GNOME:        updater.nix
 { self, inputs
 , config, lib, pkgs
-, options
-, userPrimary ? "sam"
+, user ? "sam"
 , ...
 }:
 #lib.attrsets.recursiveUpdate
 {
   imports = [
     #./common.nix
+    ./keyring.nix
+
     #../../autologin.nix { user = userPrimary; }
+    ../../flatpak.nix
     ../../gtk.nix
     ../../wayland.nix
     #../../xwayland.nix
@@ -23,17 +25,11 @@
   ];
 
   # --- Packages -----------------------------------------------------
-  programs.dconf.enable = true;
   programs.evince.enable = true;
-  #programs.evolution.enable = true;
-  #programs.evolution.plugins = [ pkgs.evolution-ews ];
-  programs.firefox.nativeMessagingHosts.gsconnect = true;
 
-  environment.systemPackages = [
-    # Tool to convert dconf settings to Nix config
-    pkgs.dconf2nix
-    pkgs.thunderbird
-  ];
+  # dconf: Settings configuration for apps
+  programs.dconf.enable = true;
+  environment.systemPackages = lib.mkIf config.programs.dconf.enable [ pkgs.dconf2nix ]; # Convert dconf settings to Nix
 
   # Exclude broken packages
   environment.gnome.excludePackages = [];
@@ -42,7 +38,7 @@
 
   # --- NetworkManager ---
   networking.networkmanager.enable = true;
-  users.users."sam".extraGroups = [ "gdm" "netdev" "networkmanager" "nm-openconnect" ];
+  users.users."${user}".extraGroups = lib.mkIf config.networking.networkmanager.enable ["netdev" "networkmanager" "nm-openconnect"];
 
   # --- Styles -------------------------------------------------------
 
@@ -67,12 +63,7 @@
     core-os-services.enable = true;
     core-shell.enable = true;
     core-utilities.enable = true;
-    #evolution-data-server.enable = true;
-    #evolution-data-server.plugins = [
-    #];
     glib-networking.enable = true;
-    gnome-browser-connector.enable = true;
-    gnome-keyring.enable = true;
     gnome-online-accounts.enable = true;
     gnome-online-miners.enable = true;
     gnome-remote-desktop.enable = true;
@@ -82,15 +73,12 @@
     tracker.enable = true;
     tracker-miners.enable = true;
   };
+
   # --- Filesystems ----------
   services.gvfs = {
     enable = true;
     package = pkgs.gnome.gvfs;
   };
-
-  # --- Flatpak --------------
-  xdg.portal.enable = true;
-  xdg.portal.xdgOpenUsePortal = true;
 
   #(lib.optionalAttrs (options?services.flatpak.packages) {
   #  services.flatpak.packages = [
