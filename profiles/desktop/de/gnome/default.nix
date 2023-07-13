@@ -13,10 +13,11 @@
 {
   imports = [
     #./common.nix
+    ./audio.nix
     ./gdm.nix
     ./keyring.nix
 
-    #../../autologin.nix { user = userPrimary; }
+    #../../autologin.nix { inherit user; }
     ../../flatpak.nix
     ../../gtk.nix
     ../../wayland.nix
