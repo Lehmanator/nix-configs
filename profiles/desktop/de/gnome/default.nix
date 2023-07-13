@@ -6,7 +6,6 @@
 #   - Update GNOME:        updater.nix
 { self, inputs
 , config, lib, pkgs
-, user ? "sam"
 , ...
 }:
 #lib.attrsets.recursiveUpdate
@@ -16,6 +15,7 @@
     ./audio.nix
     ./gdm.nix
     ./keyring.nix
+    ./network.nix
 
     #../../autologin.nix { inherit user; }
     ../../flatpak.nix
@@ -36,12 +36,6 @@
   # Exclude broken packages
   environment.gnome.excludePackages = [];
 
-  # --- Network ------------------------------------------------------
-
-  # --- NetworkManager ---
-  networking.networkmanager.enable = true;
-  users.users."${user}".extraGroups = lib.mkIf config.networking.networkmanager.enable ["netdev" "networkmanager" "nm-openconnect"];
-
   # --- Styles -------------------------------------------------------
   # Qt uses GNOME styles
   qt.platformTheme = "gnome";
@@ -56,12 +50,7 @@
     core-os-services.enable = true;
     core-shell.enable = true;
     core-utilities.enable = true;
-    glib-networking.enable = true;
-    gnome-online-accounts.enable = true;
-    gnome-online-miners.enable = true;
-    gnome-remote-desktop.enable = true;
     gnome-settings-daemon.enable = true;
-    gnome-user-share.enable = true;
     sushi.enable = true;
     tracker.enable = true;
     tracker-miners.enable = true;
