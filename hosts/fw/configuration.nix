@@ -10,7 +10,7 @@
 , lib
 , pkgs
 , system ? "x86_64-linux"
-, userPrimary ? "sam"
+, user ? "sam"
 , ...
 }:
 {
@@ -37,11 +37,12 @@
     ../../profiles/network/tailscale.nix
     ../../profiles/network/wireguard/sea1.nix
     ../../profiles/nixos.nix
+    ../../profiles/nixos/piwc
     ../../profiles/polkit.nix
     ../../profiles/shell/zsh.nix
     ../../profiles/sops.nix
     ../../profiles/sshd.nix
-    ../../profiles/user-defaults.nix
+    ../../profiles/users
     ../../profiles/virt/vm-host.nix
     #../../profiles/virt/windows
     ../../profiles/workarounds.nix
@@ -62,9 +63,6 @@
   # Define your hostname.
   networking.hostName = "fw";
 
-  # --- Mail ---
-  services.davmail.enable = true;
-  services.davmail.url = "https://outlook.office365.com/EWS/Exchange.asmx";
   console.useXkbConfig = true;
 
   # Enable CUPS to print documents.
@@ -100,7 +98,7 @@
     users."sam" = {
       isNormalUser = true;
       description = "Sam Lehman";
-      extraGroups = [ "wheel" "users" "dialout" "sshd" ];
+      extraGroups = ["wheel" "users" "dialout"];
     };
   };
   programs.fuse.userAllowOther = true;
@@ -143,7 +141,6 @@
   programs.fzf.keybindings = true;
   programs.less.enable = true;
   programs.less.lessopen = "|${pkgs.lesspipe}/bin/lesspipe.sh %s";
-  programs.starship.enable = true;
   programs.traceroute.enable = true;
 
   # --- Browsers ---

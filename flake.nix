@@ -799,6 +799,7 @@
       #users = import ./users.nix;
 
       defaults = with inputs; {
+        userPrimary = "sam";
         modules = rec {
           #installer = with nixos-images.nixosModules; [ noninteractive kexec-installer netboot-installer ];
           nixos = [
@@ -990,12 +991,12 @@
               ];
               useGlobalPkgs = false;
               useUserPackages = true;
-              extraSpecialArgs = { inherit self inputs system; };
+              extraSpecialArgs = { inherit self inputs system; user=defaults.userPrimary; };
               users.sam = import ./users/sam; # ./users/sam/home.nix
             };
           }
         ];
-        specialArgs = { inherit self inputs system; };
+        specialArgs = { inherit self inputs system; user=defaults.userPrimary; };
       };
 
       nixosConfigurations.fajita = nixpkgs.lib.nixosSystem {

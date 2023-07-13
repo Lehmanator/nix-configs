@@ -48,9 +48,13 @@ in
   ];
 
   services.onedrive.enable = true;
+  services.davmail = {
+    enable = true;
+    url = "https://outlook.office365.com/EWS/Exchange.asmx";
+  };
+
+  services.printing.enable = true;
 
   # See: https://wiki.generaloutline.com/share/dfa77e56-d4d2-4b51-8ff8-84ea6608faa4
   #services.outline.azureAuthentication = {};
-
-  #services.davmail.enable = true;
 }
