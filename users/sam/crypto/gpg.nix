@@ -79,7 +79,7 @@
     enable            = true;    # Use agent to manage access to GPG keys
     enableExtraSocket = true;    # Enable extra socket of GnuPG key agent, useful for GPG Agent forwarding
     enableScDaemon    = true;    # Enable scdaemon tool, enables ability to do smartcard operations
-    enableSshSupport  = lib.mkIf (!config.services.gnome.gnome-keyring.enable) true; # Use GnuPG agent for SSH keys
+    enableSshSupport  = lib.mkIf (!config.services.gnome-keyring.enable) true; # Use GnuPG agent for SSH keys
 
     #defaultCacheTtl= null;
     #defaultCacheTtlSsh = null;
