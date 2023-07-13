@@ -52,74 +52,6 @@
     ./managed.nix
   ];
 
-  # --- Bootloader ---
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
-
-  # --- Network ---
-  # Define your hostname.
-  networking.hostName = "fw";
-
-  console.useXkbConfig = true;
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
-  # --- Users ---
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users = {
-
-    #groups = {
-    #  nm-openconnect = {};
-    #  #netdev = {};
-    #};
-    ##extraGroups = {
-    ##  # Fix for D-Bus error on missing group: netdev
-    ##  # TODO: Figure out what causes this error (sshd? pkcs? pam? pam-pkcs11?)
-    ##  netdev = { name = "netdev"; };
-    ##};
-    #extraUsers = {
-    #  # Fix for D-Bus error on missing user: nm-openconnect
-    #  # TODO: Figure out what causes this error (sshd? pkcs? pam? pam-pkcs11? OpenConnect? NetworkManager?)
-    #  nm-openconnect = {
-    #    name = "nm-openconnect";
-    #    description = "System user to control OpenConnect in NetworkManager";
-    #    isSystemUser = true;
-    #    group = "nm-openconnect";
-    #    extraGroups = [
-    #      #"netdev"
-    #      "networkmanager"
-    #    ];
-    #  };
-    #};
-    users."sam" = {
-      isNormalUser = true;
-      description = "Sam Lehman";
-      extraGroups = ["wheel" "users" "dialout"];
-    };
-  };
-  programs.fuse.userAllowOther = true;
-
-  hardware.enableAllFirmware = true;
-  hardware.opengl.driSupport32Bit = true;
-
-  # List packages installed in system profile.
-  environment.systemPackages = with pkgs; [
-    bat
-    exa
-    firefox
-    gcc
-    lsd
-    neofetch
-    ripgrep
-    tealdeer
-
-    gnumake
-
-    # --- Security ---
-    lynis
-
-  ];
-
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
@@ -128,13 +60,59 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.05"; # Did you read the comment?
 
+  # --- Cross-compilation ---
+  boot.binfmt.emulatedSystems = [
+    "aarch64-linux"
+    #"aarch64-darwin" "x86_64-darwin"
+  ];
+  boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  console.useXkbConfig = true;
+  hardware.enableAllFirmware = true;
+  hardware.opengl.driSupport32Bit = true;
+  networking.hostName = "fw";
+
+  # --- Users ---
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.users."sam" = {
+    isNormalUser = true;
+    description = "Sam Lehman";
+    extraGroups = ["wheel" "users" "dialout"];
+  };
+
+  #users = {
+  #  groups = {
+  #    nm-openconnect = {};
+  #    #netdev = {};
+  #  };
+  #  #extraGroups = {
+  #  #  # Fix for D-Bus error on missing group: netdev
+  #  #  # TODO: Figure out what causes this error (sshd? pkcs? pam? pam-pkcs11?)
+  #  #  netdev = { name = "netdev"; };
+  #  #};
+  #  extraUsers = {
+  #    # Fix for D-Bus error on missing user: nm-openconnect
+  #    # TODO: Figure out what causes this error (sshd? pkcs? pam? pam-pkcs11? OpenConnect? NetworkManager?)
+  #    nm-openconnect = {
+  #      name = "nm-openconnect";
+  #      description = "System user to control OpenConnect in NetworkManager";
+  #      isSystemUser = true;
+  #      group = "nm-openconnect";
+  #      extraGroups = [
+  #        #"netdev"
+  #        "networkmanager"
+  #      ];
+  #    };
+  #  };
+  #};
+
+  # TODO: Move most of these to home-manager profile (default user?)
+  environment.systemPackages = with pkgs; [ bat exa gcc lsd neofetch ripgrep tealdeer gnumake lynis ];
+
   #programs.home-manager.enable = true;
 
   # --- Shell ---
   programs.git.enable = true;
   programs.git.package = pkgs.gitFull;
-  programs.fzf.fuzzyCompletion = true;
-  programs.fzf.keybindings = true;
   programs.less.enable = true;
   programs.less.lessopen = "|${pkgs.lesspipe}/bin/lesspipe.sh %s";
   programs.traceroute.enable = true;
@@ -160,10 +138,4 @@
     "snowflakeos.cachix.org-1:gXb32BL86r9bw1kBiw9AJuIkqN49xBvPd1ZW8YlqO70="
   ];
 
-  # --- Cross-compilation ---
-  boot.binfmt.emulatedSystems = [
-    "aarch64-linux"
-    #"aarch64-darwin"
-    #"x86_64-darwin"
-  ];
 }

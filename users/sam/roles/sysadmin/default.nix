@@ -4,6 +4,7 @@
 }:
 {
   imports = [
+    ./activedirectory.nix
     ./samba.nix
   ];
 
