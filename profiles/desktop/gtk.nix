@@ -13,7 +13,7 @@
 , machine
 , ...
 }:
-#lib.attrsets.recursiveUpdate
+# Default settings for GTK-based desktops
 {
 
   environment.systemPackages = [

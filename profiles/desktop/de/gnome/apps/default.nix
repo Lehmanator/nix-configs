@@ -2,6 +2,7 @@
 , config, lib, pkgs
 , ...
 }:
+# Default apps for GNOME configuration
 {
   imports = [
     #./default.nix
