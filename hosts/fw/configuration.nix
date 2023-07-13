@@ -26,14 +26,13 @@
     # Activate profiles
     ../../profiles/activedirectory/admin.nix
     ../../profiles/adb.nix
+    ../../profiles/boot
     ../../profiles/desktop
     ../../profiles/desktop/de/gnome
-    ../../profiles/desktop/pipewire.nix
-    ../../profiles/desktop/flatpak.nix
     ../../profiles/hardware/fprintd.nix
     ../../profiles/hardware/fwupd.nix
     ../../profiles/hardware/tpm2.nix
-    ../../profiles/locale/est.nix
+    ../../profiles/locale
     ../../profiles/network/tailscale.nix
     ../../profiles/network/wireguard/sea1.nix
     ../../profiles/nixos.nix
@@ -54,9 +53,6 @@
   ];
 
   # --- Bootloader ---
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.systemd-boot.configurationLimit = 100;
-  boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
   # --- Network ---
