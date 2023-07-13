@@ -8,6 +8,8 @@
     ../common
     ../../sysadmin/azure.nix
     ../../sysadmin/kubernetes.nix
-    ./.
+    ../../../xdg.nix
+    #./git.nix
+    #./.
   ];
 }
