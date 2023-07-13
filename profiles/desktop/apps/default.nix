@@ -11,4 +11,8 @@
     ./libreoffice.nix
   ];
 
+  environment.systemPackages = [
+    pkgs.thunderbird
+  ];
+
 }
