@@ -24,7 +24,6 @@
     ./displays.nix
 
     # Activate profiles
-    ../../profiles/activedirectory/admin.nix
     ../../profiles/adb.nix
     ../../profiles/boot
     ../../profiles/desktop
