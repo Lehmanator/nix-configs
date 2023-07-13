@@ -1,13 +1,9 @@
-# GNOME Shell Extensions
-{
-  self,
-  system,
-  inputs,
-  host, repo, network,
-  userPrimary,
-  config, lib, pkgs,
-  ...
+{ self, inputs
+, user
+, config, lib, pkgs
+, ...
 }:
+# GNOME Shell Extensions default config
 {
   # TODO: Use dconf2nix to create Nix config files for each GNOME extension & place in this dir
 

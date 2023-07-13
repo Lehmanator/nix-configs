@@ -1,8 +1,10 @@
 { self, inputs
 , config, lib, pkgs
-, implementation ? "valent"
 , ...
 }:
+let
+  implementation = "valent";
+in
 {
   imports = [
   ];
