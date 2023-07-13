@@ -120,6 +120,7 @@
     vim-nix
     vim-nixhash
     vim2nix
+    sved          # synctex support b/w Vim/Neovim & Evince # TODO: iff systemConfig.programs.evince.enable=true;
   ];
 
 }
