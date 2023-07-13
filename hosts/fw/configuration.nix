@@ -42,7 +42,7 @@
     ../../profiles/sops.nix
     ../../profiles/sshd.nix
     ../../profiles/users
-    ../../profiles/virt/vm-host.nix
+    ../../profiles/virt
     #../../profiles/virt/windows
     ../../profiles/workarounds.nix
 
