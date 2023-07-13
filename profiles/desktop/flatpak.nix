@@ -1,28 +1,30 @@
 { self, inputs
 , config, lib, pkgs
-, options
-, system
-, host
-, userPrimary ? "sam"
+, user ? "sam"
 , flatpak-repos ? { flathub = "https://flathub.org/repo/flathub.flatpakrepo"; }
 , ...
 }:
-#lib.attrsets.recursiveUpdate
 {
+  # --- Package Info Integration ---
   services.flatpak.enable = true;
   services.packagekit.enable = true;
   appstream.enable = true;
 
+  # --- Fonts ---
   fonts.fontconfig.enable = true;
   fonts.fontDir.enable = true;
-  system.activationScripts.flatpakSystem.text = ''
-  ''; # TODO: Replace with primary user
-    #fc-cache -rf
-    #ln -s /run/current-system/sw/share/X11/fonts /home/sam/.local/share/fonts
 
+  # Rebuild font cache upon system activation
+  #system.activationScripts.flatpakSystem.text = ''
+  #  # TODO: Replace with primary user
+  #  fc-cache -rf
+  #  ln -s /run/current-system/sw/share/X11/fonts /home/sam/.local/share/fonts
+  #'';
 
-  users.users."sam".extraGroups = [ "flatpak" ];
+  # --- Users ---
+  users.users."${user}".extraGroups = ["flatpak"];
 
+  # --- Flatpak CLI ---
   environment.shellAliases = {
     fp = "flatpak";
     fpb = "flatpak build";
@@ -33,6 +35,13 @@
     fpup = "flatpak update";
     fpu = "flatpak update";
   };
+
+  # --- XDG Desktop Portals ---
+  xdg.portal = {
+    enable = true;
+    xdgOpenUsePortal = true;
+  };
+
 }
 
 #(lib.optionalAttrs (options?services.flatpak.packages) {
