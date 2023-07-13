@@ -39,7 +39,7 @@
     ../../profiles/nixos.nix
     ../../profiles/nixos/piwc
     ../../profiles/polkit.nix
-    ../../profiles/shell/zsh.nix
+    ../../profiles/shell
     ../../profiles/sops.nix
     ../../profiles/sshd.nix
     ../../profiles/users

@@ -17,7 +17,7 @@
 
   # --- Shell Initialization -------------------------------
   environment = {
-    variables.ZDOTDIR = "$HOME/.config/zsh";  # TODO: Use sessionVariables?
+    #sessionVariables.ZDOTDIR = "$HOME/.config/zsh";  # TODO: Use sessionVariables?
 
     # --- Shell: All -----------
     #shellInit = ''
