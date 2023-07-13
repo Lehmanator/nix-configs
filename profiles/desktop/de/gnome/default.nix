@@ -13,6 +13,7 @@
 {
   imports = [
     #./common.nix
+    ./gdm.nix
     ./keyring.nix
 
     #../../autologin.nix { user = userPrimary; }
@@ -41,22 +42,13 @@
   users.users."${user}".extraGroups = lib.mkIf config.networking.networkmanager.enable ["netdev" "networkmanager" "nm-openconnect"];
 
   # --- Styles -------------------------------------------------------
-
   # Qt uses GNOME styles
   qt.platformTheme = "gnome";
   qt.style = "adwaita-dark";
 
-  # Use GNOME-styled pinentry window for GnuPG
-  programs.gnupg.agent.pinentryFlavor = "gnome3";
-
-
   # --- Services -----------------------------------------------------
-  # --- Desktop --------------
-  # Enable GNOME & GDM
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-
   # --- GNOME ----------------
+  services.xserver.desktopManager.gnome.enable = true;
   services.gnome = {
     at-spi2-core.enable = true;
     core-developer-tools.enable = true;
