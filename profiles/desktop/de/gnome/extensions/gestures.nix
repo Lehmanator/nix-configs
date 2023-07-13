@@ -1,14 +1,11 @@
-{ self, system, inputs,
-  config, lib, pkgs,
-  host, network, repo,
-  ...
+{ self, inputs
+, config, lib, pkgs
+, user ? "sam"
+, ...
 }:
-let 
-  #user = if ((host ? users) && (host.users ? primary)) then
-  #  host.users.primary else "sam";
-  user = "sam";
-
-in
+#let user = if ((host ? users) && (host.users ? primary)) then
+#  host.users.primary else "sam";
+#in
 {
   imports = [
   ];
@@ -24,11 +21,9 @@ in
     # - Overview/Grid/Desktop: 4-finger-vertical    anywhere
     # - Max/Unmax/Fullscreen:  3-finger-vertical    desktop
     # - Minimize window:       3-finger-vertical    desktop
-    gesture-improvements
-
+    pkgs.gnomeExtensions.gesture-improvements
   ];
 
   # Needed for X11 gesture extension support
   users.users.${user}.extraGroups = [ "input" ];
-
 }

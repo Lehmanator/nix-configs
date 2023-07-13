@@ -14,7 +14,7 @@
   imports = [
     #./animation.nix
     ./appearance.nix
-    #./clock.nix
+    ./clock.nix
     ./desktop.nix
     ./gestures.nix
     ./gsconnect.nix
@@ -22,57 +22,46 @@
     ./search.nix
   ];
 
-  environment.systemPackages = (with pkgs; [
-    gnome-extension-manager
-
-    easyeffects
+  environment.systemPackages = [
+    pkgs.gnome-extension-manager
+    pkgs.easyeffects
     #gnomeExtensions.easyeffects-preset-selector  # environment.systemPackages = [pkgs.easyeffects];
-  ]) ++ (with pkgs.gnomeExtensions; [
     # Display app indicator icons in the top panel
     # TODO: Determine best app indicator extension (DING, base, GTK4-ng, ...)
-    dash-to-panel                 # Taskbar w/ lots of features
-    #dash2dock-lite               # Dock w/ animations, dynamic icons, symbolic icons, & more
-    ddterm                        # Dropdown terminal
-    #pin-app-folders-to-dash       # Pin app folders to dash like app icons (overview)
-    #favourites-in-appgrid        # Keep favorites in the app grid (overview-feature-pack)
-    forge                         # Tile, tab, & stack windows extension like pop-shell
-    #live-captions-assistant       # Better desktop integration w/ Live Captions app
-    #notification-banner-position # Move where notifications show (just-perfection)
-    power-profile-switcher        # Auto switch power profiles based on charge status & battery level
-    #surf                         # <43
+    pkgs.gnomeExtensions.dash-to-panel                 # Taskbar w/ lots of features
+    #pkgs.gnomeExtensions.dash2dock-lite               # Dock w/ animations, dynamic icons, symbolic icons, & more
+    pkgs.gnomeExtensions.ddterm                        # Dropdown terminal
+    #pkgs.gnomeExtensions.pin-app-folders-to-dash       # Pin app folders to dash like app icons (overview)
+    #pkgs.gnomeExtensions.favourites-in-appgrid        # Keep favorites in the app grid (overview-feature-pack)
+    pkgs.gnomeExtensions.forge                         # Tile, tab, & stack windows extension like pop-shell
+    #pkgs.gnomeExtensions.live-captions-assistant       # Better desktop integration w/ Live Captions app
+    #pkgs.gnomeExtensions.notification-banner-position # Move where notifications show (just-perfection)
+    pkgs.gnomeExtensions.power-profile-switcher        # Auto switch power profiles based on charge status & battery level
+    #pkgs.gnomeExtensions.surf                         # <43
 
     # --- Integrations ------------
     # https://github.com/harshadgavali/searchprovider-for-browser-tabs
-    #gsconnect                     # Connect your phone
-    #notifications-to-file        # Append notifications to a file in $HOME/.notifications
-    pano                          # Clipboard manager
-    #shortcuts                     # Overlay to show keyboard shortcuts
-    #window-calls-extended         # D-Bus call for getting windows & their properties
+    #pkgs.gnomeExtensions.notifications-to-file        # Append notifications to a file in $HOME/.notifications
+    pkgs.gnomeExtensions.pano                          # Clipboard manager
+    #pkgs.gnomeExtensions.shortcuts                     # Overlay to show keyboard shortcuts
+    #pkgs.gnomeExtensions.window-calls-extended         # D-Bus call for getting windows & their properties
 
     # --- Indicators & Menus ------
-    #appindicator
-    media-controls                # Display info & controls for playing media
-    #top-bar-organizer             # Reorder items in the top bar
-    #vitals                        # Show performance/load/sensor info in panel
-    weather-or-not                # Display clickable weather status panel button next to clock
+    #pkgs.gnomeExtensions.appindicator
+    pkgs.gnomeExtensions.media-controls                # Display info & controls for playing media
+    #pkgs.gnomeExtensions.top-bar-organizer             # Reorder items in the top bar
+    #pkgs.gnomeExtensions.vitals                        # Show performance/load/sensor info in panel
 
     # --- Workspaces & Overview ---
-    #ofp-overview-feature-pack     # Lots of useful features for overview & dash, incl. window search provider
-    #worksets                      # Custom workspaces each w/ favorites, wallpaper, & more
-    #workspace-scroll             # Scroll on top panel to switch workspaces (<43)
+    #pkgs.gnomeExtensions.ofp-overview-feature-pack     # Lots of useful features for overview & dash, incl. window search provider
+    #pkgs.gnomeExtensions.worksets                      # Custom workspaces each w/ favorites, wallpaper, & more
+    #pkgs.gnomeExtensions.workspace-scroll             # Scroll on top panel to switch workspaces (<43)
 
     # --- Collections -------------
-    #just-perfection               # Lots of tweaks
+    #pkgs.gnomeExtensions.just-perfection               # Lots of tweaks
 
-  ]);
+  ];
 
-  # GUI to configure application settings
-  programs.dconf.enable = true;
-
-  # --- Native Messaging Host Connectors ---
-  # Firefox: GSConnect
-  programs.firefox.nativeMessagingHosts.gsconnect = true;
-
-  # GNOME Extensions connector
+  # GNOME Extensions browser connector
   services.gnome.gnome-browser-connector.enable = true;
 }

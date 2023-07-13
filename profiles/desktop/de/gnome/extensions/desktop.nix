@@ -1,7 +1,8 @@
-{ 
+{
   config, lib, pkgs,
   ...
 }:
+# GNOME Shell Extensions for the desktop & widgets
 
 {
   imports = [

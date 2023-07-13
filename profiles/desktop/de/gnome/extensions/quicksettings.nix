@@ -1,6 +1,6 @@
-{
-  config, lib, pkgs,
-  ...
+{ self, inputs
+, config, lib, pkgs
+, ...
 }:
 {
   imports = [
