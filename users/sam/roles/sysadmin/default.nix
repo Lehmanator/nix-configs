@@ -13,8 +13,9 @@
     pkgs.dig
   ];
 
-  xdg.userDirs.extraConfig = {
-    XDG_WORK_DIR = lib.mkIf config.xdg.userDirs.enable "${config.xdg.userDirs.XDG_CODE_DIR}/work}";
-  };
+  # Causes infinite recursion
+  #xdg.userDirs.extraConfig = lib.mkIf config.xdg.userDirs.enable {
+  #  XDG_WORK_DIR = "${config.xdg.userDirs.extraConfig.XDG_CODE_DIR}/work}";
+  #};
 
 }
