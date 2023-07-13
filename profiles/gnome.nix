@@ -28,6 +28,8 @@
     #gnomeExtensions.surf            # <43
 
     gnome.gnome-software
+
+    thunderbird
   ];
 
   # Exclude broken packages
@@ -39,8 +41,8 @@
 
   programs.dconf.enable = true;
   programs.evince.enable = true;
-  programs.evolution.enable = true;
-  programs.evolution.plugins = [ pkgs.evolution-ews ];
+  #programs.evolution.enable = true;
+  #programs.evolution.plugins = [ pkgs.evolution-ews ];
   programs.firefox.nativeMessagingHosts.gsconnect = true;
   programs.geary.enable = true;
   programs.gnupg.agent.pinentryFlavor = "gnome3";
@@ -48,8 +50,8 @@
 
   # --- GSConnect ---
   networking.firewall.enable = true;
-  networking.firewall.allowedTCPPortRanges = [ { from = 1714; to = 1764; } ];  
-  networking.firewall.allowedUDPPortRanges = [ { from = 1714; to = 1764; } ];  
+  networking.firewall.allowedTCPPortRanges = [ { from = 1714; to = 1764; } ];
+  networking.firewall.allowedUDPPortRanges = [ { from = 1714; to = 1764; } ];
 
   # Qt uses GNOME styles
   qt.platformTheme = "gnome";
@@ -63,7 +65,7 @@
     core-shell.enable = true;
     core-utilities.enable = true;
 
-    evolution-data-server.enable = true;
+    #evolution-data-server.enable = true;
     #evolution-data-server.plugins = [
     #];
 

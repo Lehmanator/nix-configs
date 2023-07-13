@@ -25,13 +25,14 @@
   # --- Packages -----------------------------------------------------
   programs.dconf.enable = true;
   programs.evince.enable = true;
-  programs.evolution.enable = true;
-  programs.evolution.plugins = [ pkgs.evolution-ews ];
+  #programs.evolution.enable = true;
+  #programs.evolution.plugins = [ pkgs.evolution-ews ];
   programs.firefox.nativeMessagingHosts.gsconnect = true;
 
   environment.systemPackages = [
     # Tool to convert dconf settings to Nix config
     pkgs.dconf2nix
+    pkgs.thunderbird
   ];
 
   # Exclude broken packages
@@ -66,7 +67,7 @@
     core-os-services.enable = true;
     core-shell.enable = true;
     core-utilities.enable = true;
-    evolution-data-server.enable = true;
+    #evolution-data-server.enable = true;
     #evolution-data-server.plugins = [
     #];
     glib-networking.enable = true;
