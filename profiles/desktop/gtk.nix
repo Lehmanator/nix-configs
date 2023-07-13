@@ -24,7 +24,7 @@
   gtk.iconCache.enable = true;
 
   # GTK3 plugin to show popup to search compatible application's menus
-  programs.plotinus.enable = lib.mkDefault true;
+  programs.plotinus.enable = true;  #lib.mkDefault true;
   programs.sway.wrapperFeatures.gtk = true;
   #services.xserver.displayManager.lightdm.greeters.gtk.enable = lib.mkDefault true;
 
