@@ -24,8 +24,6 @@
 
   environment.systemPackages = [
     pkgs.gnome-extension-manager
-    pkgs.easyeffects
-    #gnomeExtensions.easyeffects-preset-selector  # environment.systemPackages = [pkgs.easyeffects];
     # Display app indicator icons in the top panel
     # TODO: Determine best app indicator extension (DING, base, GTK4-ng, ...)
     pkgs.gnomeExtensions.dash-to-panel                 # Taskbar w/ lots of features
@@ -43,11 +41,11 @@
     # https://github.com/harshadgavali/searchprovider-for-browser-tabs
     #pkgs.gnomeExtensions.notifications-to-file        # Append notifications to a file in $HOME/.notifications
     pkgs.gnomeExtensions.pano                          # Clipboard manager
-    #pkgs.gnomeExtensions.shortcuts                     # Overlay to show keyboard shortcuts
+    pkgs.gnomeExtensions.shortcuts                     # Overlay to show keyboard shortcuts
     #pkgs.gnomeExtensions.window-calls-extended         # D-Bus call for getting windows & their properties
 
     # --- Indicators & Menus ------
-    #pkgs.gnomeExtensions.appindicator
+    pkgs.gnomeExtensions.appindicator
     pkgs.gnomeExtensions.media-controls                # Display info & controls for playing media
     #pkgs.gnomeExtensions.top-bar-organizer             # Reorder items in the top bar
     #pkgs.gnomeExtensions.vitals                        # Show performance/load/sensor info in panel
