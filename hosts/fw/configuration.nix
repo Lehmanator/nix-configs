@@ -1,34 +1,26 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-{ self
-, inputs
-, host
-, network
-, repo
-, config
-, lib
-, pkgs
-, system ? "x86_64-linux"
+{ self, inputs
+, config, lib, pkgs
 , user ? "sam"
 , ...
 }:
 {
   imports = [
     # Include SnowflakeOS config
-    ./snowflake.nix
+    #./snowflake.nix
 
     # Include the results of the hardware scan.
-    ./hardware-configuration.nix
+    #./hardware-configuration.nix
 
-    ./displays.nix
+    #./displays.nix
 
     # Activate profiles
     ../../profiles/adb.nix
     ../../profiles/boot
     ../../profiles/desktop
     ../../profiles/desktop/de/gnome
-    ../../profiles/hardware/fprintd.nix
     ../../profiles/hardware/fwupd.nix
     ../../profiles/hardware/tpm2.nix
     ../../profiles/locale
@@ -45,10 +37,6 @@
     #../../profiles/virt/windows
     ../../profiles/workarounds.nix
 
-    # Include configuration managed by apps:
-    # - nixos-conf-editor
-    # - nix-software-center
-    ./managed.nix
   ];
 
   # This value determines the NixOS release from which the default
@@ -127,14 +115,7 @@
   programs.gnupg.agent.enableBrowserSocket = true;
 
 
-  # --- Theme ---
   qt.enable = true;
-
-  # --- Nix ---
-  #nixpkgs.overlays = [ self.overlays.default ];
-  nix.settings.trusted-public-keys = [
-    "hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs="
-    "snowflakeos.cachix.org-1:gXb32BL86r9bw1kBiw9AJuIkqN49xBvPd1ZW8YlqO70="
-  ];
+  nix.settings.trusted-public-keys = [ "hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs=" ];
 
 }

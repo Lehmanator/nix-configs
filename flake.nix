@@ -223,6 +223,7 @@
       nixos-hardware = {
         url = "github:NixOS/nixos-hardware";
       };
+      fprint-clear.url = "github:nixvital/fprint-clear";
 
       # nixos-mobile: NixOS module to configure NixOS for mobile devices
       nixos-mobile = {
@@ -970,10 +971,8 @@
       nixosConfigurations."fw" = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = with inputs; [
-          ./hosts/fw/configuration.nix
-          snowflake.nixosModules.snowflake
+          ./hosts/fw
           nix-data.nixosModules.${system}.nix-data
-          nixos-hardware.nixosModules.framework-12th-gen-intel
           nixvim.nixosModules.nixvim
           nur.nixosModules.nur
           agenix.nixosModules.default
