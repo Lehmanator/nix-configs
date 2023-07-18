@@ -10,7 +10,7 @@
   programs.geary.enable = true;
 
   # --- Evolution ---
-  programs.evolution.enable = true;
+  #programs.evolution.enable = true;
   #programs.evolution.plugins = [
   #  pkgs.evolution-ews
   #];
