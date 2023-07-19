@@ -44,45 +44,55 @@ in
     prezto.editor.keymap = "vi";
 
     # --- Directories ---
-    # TODO: Use XDG User Dirs if graphical environment
+    # TODO: Use XDG User Dirs if graphical environment (only?)
+    # TODO: Use lib to turn dirHashes attrset into equivalent list
+    #cdpath = lib. config.programs.zsh.dirHashes
     autocd = true;             # Auto-cd into directory if command name matches dir & not a command
-    #cdpath = lib. config.programs.zsh.dirHashes  # TODO: Find lib to turn attrset values into list
-    dirHashes = {
-      audio= "${config.home.homeDirectory}/Audio";
-      back = "${config.home.homeDirectory}/Backup";
-      book = "${config.home.homeDirectory}/Books";
-      code = "${config.home.homeDirectory}/Code";
-      desk = "${config.home.homeDirectory}/Desktop";
-      dl   = "${config.home.homeDirectory}/Downloads";
-      docs = "${config.home.homeDirectory}/Documents";
-      game = "${config.home.homeDirectory}/Games";
-      note = "${config.home.homeDirectory}/Notes";
-      music= "${config.home.homeDirectory}/Music";
-      pics = "${config.home.homeDirectory}/Pictures";
-      pub  = "${config.home.homeDirectory}/Public";
-      templ= "${config.home.homeDirectory}/Templates";
-      vault= "${config.home.homeDirectory}/Vaults";
-      vids = "${config.home.homeDirectory}/Videos";
+    dirHashes = with config.xdg; {
+      # --- Base Dirs ---
+      cache  = cacheHome;  #XDG_CACHE_HOME";
+      config = configHome; #XDG_CONFIG_HOME";
+      data   = dataHome;   #XDG_DATA_HOME";
+      state  = stateHome;  #XDG_STATE_HOME";
 
-      cache  = config.xdg.cacheHome;  #XDG_CACHE_HOME";
-      config = config.xdg.configHome; #XDG_CONFIG_HOME";
-      data   = config.xdg.dataHome;   #XDG_DATA_HOME";
-      state  = config.xdg.stateHome;  #XDG_STATE_HOME";
+      # --- User Dirs ---
+      desk = userDirs.desktop;
+      dl   = userDirs.download;
+      docs = userDirs.documents;
+      music= userDirs.music;
+      pics = userDirs.pictures;
+      pub  = userDirs.publicShare;
+      templ= userDirs.templates;
+      vids = userDirs.videos;
 
-      nix    = "${config.xdg.configHome}/nixos"; #XDG_CONFIG_HOME/nixos";
+      # --- Extra User Dirs ---
+      audio  = userDirs.extraConfig.XDG_AUDIO_DIR;
+      back   = userDirs.extraConfig.XDG_BACKUP_DIR;
+      book   = userDirs.extraConfig.XDG_BOOKS_DIR;
+      code   = userDirs.extraConfig.XDG_CODE_DIR;
+      game   = userDirs.extraConfig.XDG_GAMES_DIR;
+      note   = userDirs.extraConfig.XDG_NOTES_DIR;
+      script = userDirs.extraConfig.XDG_SCRIPTS_DIR;
+      vault  = "${config.home.homeDirectory}/Vaults"; #vault= userDirs.extraConfig.XDG_VAULT_DIR;
 
+      # --- Configs ---
+      nix    = "${configHome}/nixos"; #XDG_CONFIG_HOME/nixos";
+
+      # --- Keys & Secrets ---
       gpg    = "${config.programs.gpg.homedir}"; #"${config.xdg.dataHome}/gnupg";   #GNUPGHOME";
       ssh    = "${config.home.homeDirectory}/.ssh";       #HOME/.ssh";
       pki    = "${config.home.homeDirectory}/.pki";       #HOME/.pki";
+      shh    = "${config.home.homeDirectory}/.local/secrets"; #HOME/.local/secrets";
 
+      # --- Executables ---
       bin    = "${config.home.homeDirectory}/.local/bin"; #HOME/.local/bin";
       repos  = "${config.home.homeDirectory}/.local/repos"; #HOME/.local/repos";
-      shh    = "${config.home.homeDirectory}/.local/secrets"; #HOME/.local/secrets";
+      flatpak= "${config.home.homeDirectory}/.var/app";
     };
-    prezto.editor.dotExpansion = true; # Auto expand ... to ../..
 
     # --- Completion ---
     enableCompletion = true;
+    prezto.editor.dotExpansion = true; # Auto expand ... to ../..
 
     # --- Initialization -------------------------------------
     # TODO: Move cdls to user zsh config
@@ -101,10 +111,10 @@ in
     # --- Integration ---
     enableVteIntegration = true;
     prezto.terminal = {
-      autoTitle = true;
-      #multiplexerTitleFormat = "%s";
-      tabTitleFormat = "%m: %s";
-      windowTitleFormat = "%n@%m: %s";
+      autoTitle = true;                      # Issue w/ Blackbox terminal or all iTerm-based?
+      #multiplexerTitleFormat = "%s";        # TODO: Test tmux
+               tabTitleFormat = "%m: %s";    # TODO: Fix tab titles missing
+            windowTitleFormat = "%n@%m: %s"; # TODO: Only user@host if remote host or other user
     };
     #prezto.tmux = {
     #  autoStartLocal = true;
@@ -136,10 +146,15 @@ in
       "completion"
       "prompt"
     ];
+
+    # TODO: Separate personal keys from profile-related config.
+    # TODO: mkSshIdentities = name: [ "id_${name}_rsa" "id_${name}_ed25519" ];
     prezto.ssh.identities = [
       "id_rsa"
       "id_ed25519"
       "id_lehmanator_ed25519"
+      "id_slehman_ed25519"
+      "id_slehman_rsa"
     ];
   };
 
