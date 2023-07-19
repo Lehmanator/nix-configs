@@ -33,11 +33,10 @@ in
     ./history.nix
   ];
 
-  home.sessionVariables.ZDOTDIR = "${config.xdg.configHome}/zsh"; #"${config.home.homeDirectory}/.config/zsh";
 
   programs.zsh = {
     enable = true;
-    dotDir = "${config.xdg.configHome}/zsh"; #config.home.sessionVariables.ZDOTDIR;
+    dotDir = ".config/zsh"; # Relative to $HOME. #dotDir = "${config.xdg.configHome}/zsh"; #config.home.sessionVariables.ZDOTDIR;
 
     # --- Keybindings ---
     # TODO: Create global user/system-wide keymap setting & set these options correspondingly
@@ -49,26 +48,36 @@ in
     autocd = true;             # Auto-cd into directory if command name matches dir & not a command
     #cdpath = lib. config.programs.zsh.dirHashes  # TODO: Find lib to turn attrset values into list
     dirHashes = {
-      code = "$HOME/Code";
-      dl = "$HOME/Downloads";
-      docs = "$HOME/Documents";
-      game = "$HOME/Games";
-      note = "$HOME/Notes";
-      vids = "$HOME/Videos";
+      audio= "${config.home.homeDirectory}/Audio";
+      back = "${config.home.homeDirectory}/Backup";
+      book = "${config.home.homeDirectory}/Books";
+      code = "${config.home.homeDirectory}/Code";
+      desk = "${config.home.homeDirectory}/Desktop";
+      dl   = "${config.home.homeDirectory}/Downloads";
+      docs = "${config.home.homeDirectory}/Documents";
+      game = "${config.home.homeDirectory}/Games";
+      note = "${config.home.homeDirectory}/Notes";
+      music= "${config.home.homeDirectory}/Music";
+      pics = "${config.home.homeDirectory}/Pictures";
+      pub  = "${config.home.homeDirectory}/Public";
+      templ= "${config.home.homeDirectory}/Templates";
+      vault= "${config.home.homeDirectory}/Vaults";
+      vids = "${config.home.homeDirectory}/Videos";
 
-      cache = "$XDG_CACHE_HOME";
-      config = "$XDG_CONFIG_HOME";
-      data = "$XDG_DATA_HOME";
-      state = "$XDG_STATE_HOME";
+      cache  = config.xdg.cacheHome;  #XDG_CACHE_HOME";
+      config = config.xdg.configHome; #XDG_CONFIG_HOME";
+      data   = config.xdg.dataHome;   #XDG_DATA_HOME";
+      state  = config.xdg.stateHome;  #XDG_STATE_HOME";
 
-      nix = "$XDG_CONFIG_HOME/nixos";
+      nix    = "${config.xdg.configHome}/nixos"; #XDG_CONFIG_HOME/nixos";
 
-      gpg = "$GNUPGHOME";
-      ssh = "$HOME/.ssh";
+      gpg    = "${config.programs.gpg.homedir}"; #"${config.xdg.dataHome}/gnupg";   #GNUPGHOME";
+      ssh    = "${config.home.homeDirectory}/.ssh";       #HOME/.ssh";
+      pki    = "${config.home.homeDirectory}/.pki";       #HOME/.pki";
 
-      bin = "$HOME/.local/bin";
-      repos = "$HOME/.local/repos";
-      shh = "$HOME/.local/secrets";
+      bin    = "${config.home.homeDirectory}/.local/bin"; #HOME/.local/bin";
+      repos  = "${config.home.homeDirectory}/.local/repos"; #HOME/.local/repos";
+      shh    = "${config.home.homeDirectory}/.local/secrets"; #HOME/.local/secrets";
     };
     prezto.editor.dotExpansion = true; # Auto expand ... to ../..
 
@@ -133,4 +142,7 @@ in
       "id_lehmanator_ed25519"
     ];
   };
+
+  home.sessionVariables.ZDOTDIR = "${config.home.homeDirectory}/${config.programs.zsh.dotDir}";
+
 }
