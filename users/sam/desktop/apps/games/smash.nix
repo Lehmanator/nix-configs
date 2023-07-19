@@ -22,7 +22,7 @@
     pkgs.ffmpeg_6-full
 
     # --- Chat -----------------------------------
-    pkgs.gtkcord
+    pkgs.gtkcord4
     #pkgs.chatterino
 
     # --- Emulators ------------------------------
