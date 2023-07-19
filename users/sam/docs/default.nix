@@ -18,7 +18,7 @@
     manpages.enable = true;
   };
 
-  news.display = "notify";  # silent | notify | show
+  news.display = "show";  # silent | notify | show
 
   # See: https://dbrgn.github.io/tealdeer/config.html
   programs.tealdeer = {
