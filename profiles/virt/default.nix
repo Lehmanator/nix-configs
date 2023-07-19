@@ -5,6 +5,7 @@
 }:
 {
   imports = [
+    ./android
     ./containers.nix
     ./vm-host.nix
   ];

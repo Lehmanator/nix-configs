@@ -13,6 +13,10 @@
 
   environment.systemPackages = [
     pkgs.genymotion       # Fast and easy Android emulation
+    pkgs.wl-clipboard     # Needed to share wayland clipboard with waydroid
   ];
 
+  # --- Waydroid -------------------------------------------
+  virtualisation.waydroid.enable = true;
+  virtualisation.lxd.enable = true;
 }
