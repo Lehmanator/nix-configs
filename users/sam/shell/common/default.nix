@@ -12,6 +12,7 @@
 }:
 {
   imports = [
+    ./abook.nix
     ./alias.nix
     ./fzf.nix
     ./ls.nix
