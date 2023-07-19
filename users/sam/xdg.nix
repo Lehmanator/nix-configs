@@ -1,52 +1,46 @@
-{ self
-, inputs
-, system
-, host
-, network
-, repo
-, config
-, lib
-, pkgs
+{ self, inputs
+, config, lib, pkgs
 , ...
 }:
 let
   homedir = config.home.homeDirectory;
-
-  #cachedir = config.xdg.cacheHome;
-  #confdir = config.xdg.configHome;
-  #datadir = config.xdg.dataHome;
-  #statedir = config.xdg.stateHome;
-  #userdirs = config.xdg.userDirs;
-  #extradirs = config.xdg.userDirs.extraConfig;
-
-  #xdg.userDirs.extraConfig."XDG_${name}_DIR" = dir;
 in
+  # TODO: Only define directories here & prevent pollution of $HOME
+  # TODO: Set program data dirs, etc. in their own Nix configs if they respect XDG Base Directories spec.
+  # TODO: Split into directory w/ {default,mime,basedirs,userDirs,paths,etc}.nix  ???
 {
   imports = [
   ];
 
   xdg = {
     enable = true;
-    cacheHome = "${homedir}/.cache";
+
+    # --- Base Dirs ---
+     cacheHome = "${homedir}/.cache";
     configHome = "${homedir}/.config";
-    dataHome = "${homedir}/.local/share";
-    stateHome = "${homedir}/.local/state";
+      dataHome = "${homedir}/.local/share";
+     stateHome = "${homedir}/.local/state";
 
     # --- MIME Type Handling ---
     mime.enable = true;
-    mimeApps.enable = true;
-    #mimeApps.associations.added = {
-    #};
-    #mimeApps.associations.removed = {
-    #};
-    #mimeApps.defaultApplications = {
-    #};
+    mimeApps = {
+      enable = true;
+      #associations.added = {
+      #};
+      #associations.removed = {
+      #};
+      #defaultApplications = {
+      #};
+    };
+
+    systemDirs.config = [ "/etc/xdg" ];
+    systemDirs.data   = [ "/usr/share" "/usr/local/share" ];
 
     userDirs.enable = true;
     userDirs.createDirectories = true;
-    userDirs.extraConfig = {
+    userDirs.extraConfig = with config.xdg; {
       XDG_BOOKS_DIR = "${homedir}/Books";
-      XDG_CODE_DIR = "${homedir}/Code";
+      XDG_CODE_DIR  = "${homedir}/Code";
       XDG_GAMES_DIR = "${homedir}/Games";
       XDG_NOTES_DIR = "${homedir}/Notes";
 
@@ -65,29 +59,40 @@ in
       #XDG_TV_DIR = "${userdirs.videos}/TV";
       #XDG_YOUTUBE_DIR = "${userdirs.videos}/YouTube";
 
-      XDG_APPS_DIR = "${homedir}/.local/apps";
-      XDG_BIN_DIR = "${homedir}/.local/bin";
-      XDG_REPOS_DIR = "${homedir}/.local/repos";
-      XDG_SCRIPTS_DIR = "${homedir}/.local/scripts";
-      XDG_SECRETS_DIR = "${homedir}/.local/secrets";
-      XDG_SYNC_DIR = "${homedir}/.local/sync";
+      XDG_APPS_DIR      = "${homedir}/.local/apps";
+      XDG_BIN_DIR       = "${homedir}/.local/bin";
+      XDG_REPOS_DIR     = "${homedir}/.local/repos";
+      XDG_SCRIPTS_DIR   = "${homedir}/.local/scripts";
+      XDG_SECRETS_DIR   = "${homedir}/.local/secrets";
+      XDG_SYNC_DIR      = "${homedir}/.local/sync";
 
-      XDG_ICONS_DIR = "${config.xdg.dataHome}/icons";
-      XDG_THEMES_DIR = "${config.xdg.dataHome}/themes";
+      XDG_ICONS_DIR     = "${dataHome}/icons";
+      XDG_THEMES_DIR    = "${dataHome}/themes";
 
-      XDG_LAUNCHERS_DIR = "${config.xdg.dataHome}/applications";
-      XDG_AUTOSTART_DIR = "${config.xdg.dataHome}/autostart";
+      XDG_LAUNCHERS_DIR = "${dataHome}/applications";
+      XDG_AUTOSTART_DIR = "${dataHome}/autostart";
 
-      XDG_UNITS_DIR = "${config.xdg.configHome}/systemd";
+      XDG_UNITS_DIR     = "${configHome}/systemd";
     };
   };
 
   # --- XDG Base Dirs: Force respect ---------------------------------
-  home.sessionPath = [
-    config.xdg.userDirs.extraConfig.XDG_APPS_DIR
-    config.xdg.userDirs.extraConfig.XDG_BIN_DIR
-    config.xdg.userDirs.extraConfig.XDG_SCRIPTS_DIR
-    #"\${xdg.configHome}/emacs/bin"
+  home.sessionPath = with config.xdg.userDirs.extraConfig; [
+    # --- Custom Executables ---
+    XDG_APPS_DIR
+    XDG_BIN_DIR
+    XDG_SCRIPTS_DIR
+
+    # --- Package Managers ---
+    config.programs.go.goBin
+    # TODO: CARGO_HOME/bin?
+    # TODO: NPM bin dir
+    # TODO: Other package managers?
+
+    # --- Editor Executables ---
+    #"\${config.xdg.configHome}/emacs/bin"
+
+    # --- Repo Executables ---
     #".git/safe/../../bin"
   ];
 
@@ -97,57 +102,74 @@ in
   #  - "/etc/profiles/per-user/${home.username}"
   #home.profileDirectory = "${dataDir}/nix/profiles";
   nix.extraOptions = ''
-    use-xdg-base-directories = true
+    use-xdg-base-directories = ${config.xdg.enable}
   '';
 
   # --- System -----------------------------------
   gtk.gtk2.configLocation = "${config.xdg.configHome}/gtk-2.0/gtkrc";
   pam.yubico.authorizedYubiKeys.path = "${config.xdg.dataHome}/yubico/authorized_yubikeys";
-  services.dropbox.path = "${config.xdg.userDirs.extraConfig.XDG_SYNC_DIR}/dropbox";
-  #programs.home-manager.path = pkgs.home-manager;
-  #programs.home-manager.path = null;  # Default (ordered): $HOME/{.config/nixpkgs, .nixpkgs}/home-manager
 
   # --- Programming Languages --------------------
-  programs.go.goPath = ".local/go";
+  programs = with config.xdg; with config.xdg.userDirs.extraConfig; {
+
+    #home-manager.path = pkgs.home-manager;
+    #home-manager.path = null;  # Default (ordered): $HOME/{.config/nixpkgs, .nixpkgs}/home-manager
+
+    go.goPath = ".local/go";
+    go.goBin  = ".local/bin.go";
+    go.extraGoPaths = [ "${dataHome}/go" "${config.home.homeDirectory}/.go" ];
 
   # --- Shells -----------------------------------
-  programs.bash.historyFile = "${config.xdg.dataHome}/bash/history";
-  programs.zsh.history.path = "${config.xdg.dataHome}/zsh/history";
-  programs.nushell = {
-    configFile.source = "${config.xdg.configHome}/nushell/config.nu";
-    envFile.source = "${config.xdg.configHome}/nushell/env.nu";
-  };
+    bash.historyFile = "${dataHome}/bash/history";
+    zsh.history.path = "${dataHome}/zsh/history";
+    nushell = {
+      configFile.source = "${configHome}/nushell/config.nu";
+      envFile.source    = "${configHome}/nushell/env.nu";
+    };
 
 
   # --- CLI Programs -----------------------------
-  programs.gpg.homedir = "${config.xdg.dataHome}/gnupg";
-  programs.script-directory.settings.SD_ROOT = "${config.xdg.userDirs.extraConfig.XDG_SCRIPTS_DIR}";
-  programs.navi.settings.cheats.paths = [ "${config.xdg.dataHome}/cheats" "${config.xdg.configHome}/navi/cheats" ];
-  programs.kodi.datadir = "${config.xdg.dataHome}/kodi";
-  #programs.kodi = {
-  #  datadir = "${config.xdg.dataHome}/kodi";
-  #  sources = {
-  #    video = {
-  #      default = "movies";
-  #      source = [
-  #        { name = "videos"; path="${userdirs.videos}";               allowsharing="true"; }
-  #        { name = "movies"; path="${extradirs.XDG_MOVIES_DIR}";      allowsharing="true"; }
-  #        { name = "tv";     path="${extradirs.XDG_TV_DIR}";          allowsharing="true"; }
-  #        { name = "songs";  path="${extradirs.XDG_MUSICVIDEOS_DIR}"; allowsharing="true"; }
-  #        { name = "clips";  path="${extradirs.XDG_CLIPS_DIR}";       allowsharing="true"; }
-  #      ];
-  #    };
-  #    audio = {
-  #      default = "music";
-  #      source = [
-  #        { name = "music";       path="${userdirs.music}";                allowsharing="true"; }
-  #        { name = "audiobooks";  path="${userdirs.music}";                allowsharing="true"; }
-  #        { name = "musicvideos"; path="${extradirs.XDG_MUSICVIDEOS_DIR}"; allowsharing="true"; }
-  #      ];
-  #    };
-  #  };
-  #};
+    gpg.homedir                       = "${dataHome}/gnupg";
+    navi.settings.cheats.paths        = [ "${dataHome}/cheats" "${configHome}/navi/cheats" ];
+    script-directory.settings.SD_ROOT = XDG_SCRIPTS_DIR;
+    kodi.datadir                      = "${dataHome}/kodi";
+    #kodi = {
+    #  datadir = "${dataHome}/kodi";
+    #  sources = {
+    #    video = {
+    #      default = "movies";
+    #      source = [
+    #        { name = "videos"; path=userdirs.videos;     allowsharing="true"; }
+    #        { name = "movies"; path=XDG_MOVIES_DIR;      allowsharing="true"; }
+    #        { name = "tv";     path=XDG_TV_DIR;          allowsharing="true"; }
+    #        { name = "songs";  path=XDG_MUSICVIDEOS_DIR; allowsharing="true"; }
+    #        { name = "clips";  path=XDG_CLIPS_DIR;       allowsharing="true"; }
+    #      ];
+    #    };
+    #    audio = {
+    #      default = "music";
+    #      source = [
+    #        { name = "music";       path=userdirs.music;      allowsharing="true"; }
+    #        { name = "audiobooks";  path=userdirs.music;      allowsharing="true"; }
+    #        { name = "musicvideos"; path=XDG_MUSICVIDEOS_DIR; allowsharing="true"; }
+    #      ];
+    #    };
+    #  };
+    #};
+  };
 
   # --- GUI Programs -----------------------------
-  services.recoll.configDir = "${config.xdg.configHome}/recoll";
+  services = with config.xdg.userDirs.extraConfig; with config.xdg; {
+    dropbox.path     = "${XDG_SYNC_DIR}/dropbox";
+    recoll = {  # File indexer
+      configDir = "${configHome}/recoll";
+      settings = {
+        dbdir = "${dataHome}/recoll";
+        mboxcachedir = "${cacheHome}/recoll/mbox";
+        webcachedir = "${cacheHome}/recoll/web";
+        #iconsdir = "${dataHome}/icons";
+        #filtersdir = "${XDG_SCRIPTS_DIR}";
+      };
+    };
+  };
 }
