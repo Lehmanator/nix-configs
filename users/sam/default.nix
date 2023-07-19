@@ -1,11 +1,5 @@
-{ self
-, system
-, modulesPath
-, inputs
-, outputs
-, config
-, lib
-, pkgs
+{ self , inputs
+, config , lib , pkgs
 , ...
 }:
 {
@@ -20,6 +14,7 @@
     ./nix
     ./roles/dev
     ./roles/sysadmin
+    ./search
     ./shell
     ./social
     ./xdg.nix
