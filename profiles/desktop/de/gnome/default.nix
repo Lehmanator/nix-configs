@@ -39,7 +39,7 @@
   # --- Styles -------------------------------------------------------
   # Qt uses GNOME styles
   qt.platformTheme = "gnome";
-  qt.style = "adwaita-dark";
+  #qt.style = "adwaita-dark";
 
   # --- Services -----------------------------------------------------
   # --- GNOME ----------------
