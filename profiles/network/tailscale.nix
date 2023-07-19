@@ -1,17 +1,16 @@
-{
-  self,
-  system,
-  inputs,
-  host, network, repo,
-  config, lib, pkgs,
-  ...
+{ inputs, self
+, config, lib, pkgs
+, user ? "sam"
+, ...
 }:
 {
   imports = [
   ];
 
   # Make the Tailscale command usable to users
-  environment.systemPackages = [ pkgs.tailscale ];
+  environment.systemPackages = if config.services.xserver.desktopManager.gnome.enable
+    then [ pkgs.tailscale pkgs.gnomeExtensions.tailscale-status pkgs.gnomeExtensions.taildrop-send ] #pkgs.trayscale
+    else [ pkgs.tailscale ];
 
   # Enable service: tailscaled
   services.tailscale = {
