@@ -4,7 +4,7 @@
 }:
 {
   imports = [
-    ../vm-host.nix
+    ./host.nix
   ];
 
   environment.systemPackages = [

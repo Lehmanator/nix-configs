@@ -1,13 +1,14 @@
 { inputs, self
 , config, lib, pkgs
-, user
+, user ? "sam"
 , ...
 }:
 {
   imports = [
     ./android
     ./containers.nix
-    ./vm-host.nix
+    ./vm
+    ./wine.nix
   ];
 
 }
