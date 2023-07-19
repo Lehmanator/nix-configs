@@ -5,6 +5,7 @@
 }:
 {
   imports = [
+    ./containers.nix
     ./vm-host.nix
   ];
 
