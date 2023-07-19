@@ -1,8 +1,5 @@
-{ self
-, inputs
-, config
-, lib
-, pkgs
+{ inputs, self
+, config , lib , pkgs
 , ...
 }:
 #
