@@ -7,10 +7,12 @@
   imports = [
   ];
 
+  home.packages = [ pkgs.adwaita-qt ];
+
   # --- Qt Applications ---
   qt = {
     platformTheme = "gnome";
-    style.package = pkgs.adwaita-qt;
+    #style.package = pkgs.adwaita-qt;
     #name = "adwaita-dark";
   };
 
