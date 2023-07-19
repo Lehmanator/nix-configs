@@ -4,7 +4,7 @@
   imports = [
     ./browsers.nix
     ./chat.nix
-    #./games.nix
+    ./games
     ./office.nix
     ./social.nix
     ./bitwarden
