@@ -39,6 +39,7 @@ in
     userDirs.enable = true;
     userDirs.createDirectories = true;
     userDirs.extraConfig = with config.xdg; {
+      XDG_BACKUP_DIR = "${homedir}/Backup";
       XDG_BOOKS_DIR = "${homedir}/Books";
       XDG_CODE_DIR  = "${homedir}/Code";
       XDG_GAMES_DIR = "${homedir}/Games";
