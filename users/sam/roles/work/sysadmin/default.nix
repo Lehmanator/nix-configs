@@ -9,6 +9,7 @@
     ../../sysadmin/azure.nix
     ../../sysadmin/kubernetes.nix
     ../../../xdg.nix
+    ./bitwarden.nix
     #./git.nix
     #./.
   ];
