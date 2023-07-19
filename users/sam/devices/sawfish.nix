@@ -39,6 +39,8 @@
     pkgs.yarn
     pkgs.dhcp  # Provides dhclient?
     pkgs.dialog
+    pkgs.connmanFull
+    pkgs.connman-gtk
   ];
 
   # TODO: Build fastboot image: [asteriod-image-sawfish.ext4](https://release.asteroidos.org/nightlies/sawfish/asteroid-image-sawfish.ext4)
