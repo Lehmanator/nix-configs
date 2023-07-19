@@ -1,27 +1,27 @@
-{ self
-, system
-, userPrimary
-, inputs
-, config
-, lib
-, pkgs
+{ self, inputs
+, config, lib, pkgs
+, user ? "sam"
 , ...
 }:
+#
+# TODO: Consider scrapping most of this config in favor of home-manager.
+#  - NixOS options differ significantly from home-manager
+#  - Something is breaking aliases & more.
+#
 {
   imports = [
-    # TODO: Move any generic shell-agnostic settings here
     ./common.nix
   ];
 
   # --- Default ---------------
-  users.defaultUserShell = pkgs.zsh; # ZSH default for users
-  environment.shells = [ pkgs.zsh ];
+  users.defaultUserShell  =   pkgs.zsh;       # ZSH default for users
+  environment.shells      = [ pkgs.zsh ];     # Add ZSH to list of available shells
   environment.pathsToLink = [ "/share/zsh" ]; # Enables completion for system packages
 
   programs.zsh = {
     enable = true; # Enable ZSH
     # --- History ---------------
-    histFile = "$HOME/.local/share/zsh/history";
+    histFile = with config.xdg; (if enable then dataHome else "${config.home.homeDirectory}/.local/share")+"/zsh/history"; # "$HOME/.local/share/zsh/history";
     histSize = 1000000;
 
     # --- Completion ------------
@@ -61,15 +61,18 @@
     # --- Prompt Init ----------
     #promptInit = ''
     #'';
+
     # --- All Shells -----------
     shellInit = ''
       # Load nearcolor module if we have 256 color support
       [[ "$COLORTERM" == (24bit|truecolor) || "$terminfo[colors]" -eq '16777216' ]] || zmodload zsh/nearcolor
     '';
+
     # --- Interactive Shells ---
     interactiveShellInit = ''
       zmodload zsh/zpty  # Load pseudo-terminal module
     '';
+
     # --- Login Shells ----------
     # TODO: Put shell-agnostic form in ./shell.nix
     #loginShellInit = ''
