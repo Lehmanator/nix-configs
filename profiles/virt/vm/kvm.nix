@@ -1,11 +1,13 @@
 { inputs, self
 , config, lib, pkgs
 , user ? "sam"
-, isCpuOld   ? false
-, isCpuIntel ? true
+#, isCpuOld   ? false
+#, isCpuIntel ? true
 , ...
 }:
 let
+  isCpuIntel = true;
+  isCpuOld = false;
   isCpuIntelOld = isCpuIntel && isCpuOld;
 in
 {

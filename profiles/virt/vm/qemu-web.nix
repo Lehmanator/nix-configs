@@ -14,7 +14,7 @@
   # Access QEMU VMs thru web browser
   # Since libvirt doesn't support websockets on its own, we'll need to add websockify to your configuration.nix
   services.networking.websockify = {
-    enable = true;
+    enable = false;
     sslCert = "/https-cert.pem";
     sslKey = "/https-key.pem";
     portMap = {
@@ -23,7 +23,7 @@
   };
 
   services.nginx = {
-    enable = true;
+    enable = config.services.networking.websockify.enable;
     virtualHosts."qemu-web-client.fw.local" = {
       forceSSL = true;
       root = "/var/www/";

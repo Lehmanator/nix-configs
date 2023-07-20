@@ -1,9 +1,9 @@
 { inputs, self
 , config, lib, pkgs
 , user ? "sam"
-, root ? true
+#, root ? true
 , ...
-}:
+}: let root = true; in
 {
   imports = [
   ];

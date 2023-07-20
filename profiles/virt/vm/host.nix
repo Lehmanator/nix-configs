@@ -39,12 +39,12 @@ in
   services.spice-webdavd.enable = true;              # Share files between host & guest via WebDAV
   virtualisation.spiceUSBRedirection.enable = true;  # USB device access in guest VM
 
-  virtualisation.sharedDirectories = {
-    windows   = { source = "/mnt/share/windows";   target = "C:/host-share/windows";   };
-    windows10 = { source = "/mnt/share/windows10"; target = "C:/host-share/windows10"; };
-    windows11 = { source = "/mnt/share/windows11"; target = "C:/host-share/windows11"; };
-    general   = { source = "/mnt/share/general";   target = "C:/host-share/general";   };
-  };
+  #virtualisation.sharedDirectories = {   # nixos-rebuild says this option doesnt exist
+  #  windows   = { source = "/mnt/share/windows";   target = "C:/host-share/windows";   };
+  #  windows10 = { source = "/mnt/share/windows10"; target = "C:/host-share/windows10"; };
+  #  windows11 = { source = "/mnt/share/windows11"; target = "C:/host-share/windows11"; };
+  #  general   = { source = "/mnt/share/general";   target = "C:/host-share/general";   };
+  #};
 
   #virtualisation.forwardPorts = [
   #  { from = "host"; host.port = 2222; guest.port = 22; }
