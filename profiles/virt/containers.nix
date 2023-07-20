@@ -34,7 +34,7 @@
     #};
   };
   virtualisation.oci-containers.backend = "podman";
-  users.users."${user}".extraGroups = ["docker"];
+  users.users."${user}".extraGroups = ["docker" "podman"];
   virtualisation.containerd = {
     enable = true;
     #configFile = null;
