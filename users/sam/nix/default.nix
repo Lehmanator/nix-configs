@@ -29,7 +29,6 @@ with lib;
 {
   imports = [
     ./utils
-    ./utils.nix
   ];
   nix.package = mkDefault pkgs.nixUnstable; # Needed for use-xdg-base-directories
 
