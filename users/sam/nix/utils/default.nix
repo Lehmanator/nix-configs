@@ -8,7 +8,7 @@
     ./converters.nix
     ./direnv.nix
     ./nix-alien.nix
-    ./nix-index.nix
+    #./nix-index.nix
     ./updaters.nix
   ];
   home.packages = [
