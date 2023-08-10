@@ -1,0 +1,70 @@
+:root {
+  transition: background-color 0.2s !important;
+}
+
+/*----- Tab ----------------------------------------------*/
+/* TODO: Hovered tab removes border of adjacent tabs */
+/* TODO: Active  tab removes border of adjacent tabs */
+.window-tabbed-tab {
+  background-color: var(--tab-inactive) !important;
+  /*border-color: transparent !important;*/
+
+  border-radius:       6px !important;
+  border-left-width:   1px !important;
+  border-right-width:  0px !important;
+  border-top-width:    0px !important;
+  border-bottom-width: 0px !important;
+  border-style:      solid !important;
+
+  position: relative !important;
+  margin-block: 0 !important;
+  padding: 5px 2px 6px !important;
+
+  box-shadow: none !important;
+}
+.window-tabbed-tab:hover {
+  background-color: var(--tab-inactive-hover) !important;
+  border-left-width: 0px !important;
+}
+.window-tabbed-tab-active {
+  background-color: var(--tab-active) !important;
+  border-left-width: 0px !important;
+}
+.window-tabbed-tab-active:hover {
+  background-color: var(--tab-active-hover) !important;
+}
+
+/*----- App Icon -----------------------------------------*/
+.window-tabbed-tab-icon {
+  background-color: transparent !important;                 /* App Icon: bg=transparent always             */
+  border-radius: 50% !important;
+}
+
+/*----- Close Icon ---------------------------------------*/
+.window-tabbed-tab-close                                 { /* bg=transparent by default                   */
+  color: transparent !important;                           /* fg=transparent unless icon hovered          */
+  background-color: transparent !important;                /* bg=transparent unless tab  hovered/active   */
+
+  margin-left: auto !important;
+  margin-right: 4px !important;
+  margin-top: 4px !important;
+  margin-bottom: 4px !important;
+  min-width: 16px !important;
+  border-radius: 50% !important;
+}
+
+/* Conditions where icon is visible */
+.window-tabbed-tab-close:hover { color: var(--fg) !important; } /* Whenever close icon is hovered           */
+.window-tabbed-tab-active .window-tabbed-tab-close            {
+  color: var(--fg) !important;                                } /* Whenever tab is active                   */
+.window-tabbed-tab:hover  .window-tabbed-tab-close            {
+  color: var(--fg) !important;                                } /* Whenever tab is hovered                  */
+
+/* Conditions where icon has background */
+.window-tabbed-tab        .window-tabbed-tab-close:hover      {
+  background-color: var(--close-inactive-hover) !important;   } /* Tab = inactive, Icon = hover => bg=lighter  */
+.window-tabbed-tab-active .window-tabbed-tab-close:hover      {
+  background-color: var(--close-active-hover)   !important;   } /* Tab =   active, Icon = hover => bg=lightest */
+
+@import url("gnome-dark.css")  (prefers-color-scheme: dark);
+@import url("gnome-light.css") (prefers-color-scheme: light);

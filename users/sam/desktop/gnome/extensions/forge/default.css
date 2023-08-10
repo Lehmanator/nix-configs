@@ -3,145 +3,130 @@
   opacity: 1;
   border-width: 3px;
 }
+
 .split {
   color: rgba(255, 246, 108, 1);
   opacity: 1;
   border-width: 3px;
 }
+
 .stacked {
   color: rgba(247, 162, 43, 1);
   opacity: 1;
   border-width: 3px;
 }
+
 .tabbed {
   color: rgba(17, 199, 224, 1);
   opacity: 1;
   border-width: 3px;
 }
+
 .floated {
   color: rgba(180, 167, 214, 1);
   border-width: 3px;
   opacity: 1;
 }
+
 .window-tiled-border {
   border-width: 3px;
-  /*border-color: rgba(191,64,64,0);*/
+  border-color: rgba(236, 94, 94, 1);
   border-style: solid;
   border-radius: 14px;
 }
+
 .window-split-border {
   border-width: 3px;
-  /*border-color: rgba(255, 246, 108, 1);*/
+  border-color: rgba(255, 246, 108, 1);
   border-style: solid;
   border-radius: 14px;
 }
+
 .window-split-horizontal {
   border-left-width: 0;
   border-top-width: 0;
   border-bottom-width: 0;
 }
+
 .window-split-vertical {
   border-left-width: 0;
   border-top-width: 0;
   border-right-width: 0;
 }
+
 .window-stacked-border {
-  border-width: 2px;
-  /*border-color: rgb(247,162,43);*/
+  border-width: 3px;
+  border-color: rgba(247, 162, 43, 1);
   border-style: solid;
   border-radius: 14px;
 }
+
 .window-tabbed-border {
-  border-width: 1px;
-  /*border-color: rgb(17,199,224);*/
+  border-width: 3px;
+  border-color: rgba(17, 199, 224, 1);
   border-style: solid;
   border-radius: 14px;
-  padding: 0 !important;
-  margin: 0 !important;
 }
+
 .window-tabbed-bg {
   border-radius: 8px;
-  /*background-color: #FF0000AA;*/
-  padding: 0 !important;
-  margin: 0 !important;
 }
-.window-tabbed-tab:first-of-type {
-  margin-left: 0 !important;
-}
-.window-tabbed-tab:last-of-type {
-  margin-right: 0 !important;
-}
+
 .window-tabbed-tab {
-  /*background-color: rgba(54, 47, 45, 0.3);*/
-  /*border-color: #242424;*/
-  /* border-color: rgba(17,199,224,0.4); */
+  background-color: rgba(54, 47, 45, 1);
+  border-color: rgba(17, 199, 224, 0.6);
   border-width: 1px;
   border-radius: 8px;
   color: white;
-  margin-top: 1px;
-  margin-right: 2px;
-  margin-bottom: 0px;
-  margin-left: 2px;
+  margin: 1px;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
-  padding: 0 !important;
-  /* margin: 0 !important; */
 }
-.window-tabbed-tab:hover {
-  /*background-color: #3F3F3F;*/
-}
+
 .window-tabbed-tab-active {
-  /*color: black;*/
-  /*background-color: #444444;*/
+  background-color: rgba(17, 199, 224, 1);
+  color: black;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
-  margin-bottom: 0 !important;
-  border-radius: 8px 8px 0 0;
-  border-bottom-width: 0 !important;
-  padding: 0 !important;
 }
+
 .window-tabbed-tab-close {
-  margin: 4px;
-  width: 16px;
   padding: 3px;
-
+  margin: 4px;
   border-radius: 16px;
-  /*background-color: #FFFFFF77;*/
-  opacity: 0;
-  color: transparent;
+  width: 16px;
+  background-color: #e06666;
 }
 
-.window-tabbed-tab-close:hover {
-  opacity: 1 !important;
-  /*color: white !important;*/
-}
 .window-tabbed-tab-icon {
-  margin: 5px;
+  margin: 3px;
 }
+
 .window-floated-border {
-  border-width: 1px;
+  border-width: 3px;
   border-color: rgba(180, 167, 214, 1);
   border-style: solid;
   border-radius: 14px;
 }
+
 .window-tilepreview-tiled {
   border-width: 1px;
-  border-color: rgba(191,64,64,0.3);
+  border-color: rgba(236, 94, 94, 0.4);
   border-style: solid;
   border-radius: 14px;
-  background-color: rgba(191,64,64,0.2);
-}
-.window-tilepreview-stacked {
-  border-width: 1px;
-  border-color: rgba(247,162,43,0.3);
-  border-style: solid;
-  border-radius: 14px;
-  background-color: rgba(247,162,43,0.2);
-}
-.window-tilepreview-tabbed {
-  border-width: 1px;
-  border-color: rgba(17,199,224,0.3);
-  border-style: solid;
-  border-radius: 14px;
-  background-color: rgba(17,199,224,0.2);
+  background-color: rgba(236, 94, 94, 0.3);
 }
 
-@import url("gnome-base.css");
+.window-tilepreview-stacked {
+  border-width: 1px;
+  border-color: rgba(247, 162, 43, 0.4);
+  border-style: solid;
+  border-radius: 14px;
+  background-color: rgba(247, 162, 43, 0.3);
+}
+
+.window-tilepreview-tabbed {
+  border-width: 1px;
+  border-color: rgba(18, 199, 224, 0.4);
+  border-style: solid;
+  border-radius: 14px;
+  background-color: rgba(17, 199, 224, 0.3);
+}

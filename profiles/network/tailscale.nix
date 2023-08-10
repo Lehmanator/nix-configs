@@ -5,6 +5,8 @@
 }:
 {
   imports = [
+    #./tailscale-personal.nix
+    ./tailscale-work.nix
   ];
 
   # Make the Tailscale command usable to users

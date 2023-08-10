@@ -1,0 +1,12 @@
+:root {
+  --fg: black;
+  --tab-active: #444444;
+  --tab-active-hover: #4B4B4B;
+  --tab-inactive: #E3E3E3;
+  --tab-inactive-hover: #3F3F3F;
+  --close-active: transparent;
+  --close-active-hover: #585858;
+  --close-inactive: transparent;
+  --close-inactive-hover: #4C4C4C;
+  --icon: transparent;
+}
