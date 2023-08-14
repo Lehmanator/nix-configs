@@ -5,9 +5,7 @@
   config, lib, pkgs,
   ...
 }:
-let
-  # See: https://nixos.wiki/wiki/Samba
-in
+# See: https://nixos.wiki/wiki/Samba
 {
   imports = [
     #./ldap-admin.nix
@@ -22,14 +20,14 @@ in
   ];
   services.samba = {
     enable = true;
-    package = pkgs.sambaFull;
+    package = pkgs.samba4Full;
     openFirewall = true;
     securityType = "user";
     extraConfig = ''
       workgroup = WORKGROUP
       server string = smbnix
       netbios name = smbnix
-      security = user 
+      security = user
       #use sendfile = yes
       #max protocol = smb2
       # note: localhost is the ipv6 localhost ::1
