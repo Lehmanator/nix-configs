@@ -21,6 +21,8 @@
     ../../profiles/boot
     ../../profiles/desktop
     ../../profiles/desktop/de/gnome
+    ../../profiles/hardware/displaylink.nix
+    #../../profiles/hardware/fprintd.nix
     ../../profiles/hardware/fwupd.nix
     ../../profiles/hardware/tpm2.nix
     ../../profiles/locale
