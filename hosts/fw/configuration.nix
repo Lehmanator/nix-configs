@@ -1,12 +1,15 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-{ self, inputs
-, config, lib, pkgs
-, user ? "sam"
-, ...
-}:
 {
+  self,
+  inputs,
+  config,
+  lib,
+  pkgs,
+  user ? "sam",
+  ...
+}: {
   imports = [
     # Include SnowflakeOS config
     #./snowflake.nix
@@ -24,6 +27,7 @@
     ../../profiles/hardware/displaylink.nix
     #../../profiles/hardware/fprintd.nix
     ../../profiles/hardware/fwupd.nix
+    ../../profiles/hardware/logitech.nix
     ../../profiles/hardware/tpm2.nix
     ../../profiles/hardware/usb.nix
     ../../profiles/locale
@@ -39,7 +43,6 @@
     ../../profiles/virt
     #../../profiles/virt/windows
     ../../profiles/workarounds.nix
-
   ];
 
   # This value determines the NixOS release from which the default
@@ -96,7 +99,7 @@
   #};
 
   # TODO: Move most of these to home-manager profile (default user?)
-  environment.systemPackages = with pkgs; [ bat exa gcc lsd neofetch ripgrep tealdeer gnumake lynis ];
+  environment.systemPackages = with pkgs; [bat exa gcc lsd neofetch ripgrep tealdeer gnumake lynis];
 
   #programs.home-manager.enable = true;
 
@@ -117,8 +120,6 @@
   programs.gnupg.agent.enableExtraSocket = true;
   programs.gnupg.agent.enableBrowserSocket = true;
 
-
   qt.enable = true;
-  nix.settings.trusted-public-keys = [ "hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs=" ];
-
+  nix.settings.trusted-public-keys = ["hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs="];
 }
