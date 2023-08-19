@@ -1,20 +1,62 @@
-{ self
-, system
-, inputs
-, host
-, network
-, repo
-, userPrimary
-, config
-, lib
-, pkgs
+{ self , inputs
+, config , lib , pkgs
+, user ? "sam"
 , ...
 }:
+# TODO: Split config into:
+# - [ ] TODO: Nix Build - Cross Compilation
+# - [ ] TODO: Nix Build - Settings
+# - [ ] TODO: Nix Flakes
+# - [ ] TODO: Nix Git API access-tokens
+# - [ ] TODO: Nix Logging
+# - [ ] TODO: Nix Registry
+# - [ ] TODO: Nix Shell Aliases
+# - [ ] TODO: Nix Shell Utils
+# - [ ] TODO: Nix Store Optimization / Garbage Collection
+# - [ ] TODO: Nix Cache - Binary cache + Trusted Keys
+# - [ ] TODO: Nix Cache - Cachix
+# - [ ] TODO: Nix Cache - Local cache
+# - [ ] TODO: Nixpkgs config
+let
+  primaryUser = "sam";
+in
 {
+  imports = [
+    inputs.nix-quick-registry.nixosModules.local-registry
+    ./documentation.nix
+    #./nix/access-tokens.nix
+    #./nix/cache.nix
+    #./nix/flakes.nix
+    #./nix/nixpkgs.nix
+    #./nix/optimize.nix
+    #./nix/registry.nix
+    #./nix/sandbox.nix
+    #./nix/shell.nix
+  ];
+
+  # --- Nix Registry ---------------------------------------
+  # User: ~/.config/nix/registry.json
+  # Create Nix registry from nixpkgs
+  # TODO: Select input based on system type
+  #nix.registry.nixpkgs.flake = inputs.nixpkgs;
+  nix.registry = {
+    nixos.flake = inputs.nixos;
+    darwin.flake = inputs.darwin;
+    #repo = {
+    #  to = { type = "github"; owner = "PresqueIsleWineDev"; repo = "nix-configs"; };
+    #};
+  };
+  nix.localRegistry = {
+    enable = true;
+    cacheGlobalRegistry = true;
+    noGlobalRegistry = false;
+  };
+  nix.settings.use-registries = true;
+  nix.settings.flake-registry = true;
+
   # --- Packages -----------------------
   # Use Nix package manager package with builtin flakes support
   nix.package = lib.mkDefault pkgs.nixUnstable; #pkgs.nixFlakes; #(nixUnstable for use-xdg-base-directories, nixFlakes for flakes support)
-
   environment.extraOutputsToInstall = [ "doc" "info" "devdoc" "dev" "bin" ];
 
   # https://nixos.wiki/wiki/Flakes
@@ -24,34 +66,6 @@
   #nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
   #nix.nixPath = let path = toString ./.; in [ "repl=${path}/repl.nix" "nixpkgs=${inputs.nixpkgs}" ];
 
-
-  environment.shellAliases.ndoc = "manix \"\" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | fzf --preview=\"manix '{}'\" | xargs manix";
-  environment.systemPackages = [
-    pkgs.cachix # CLI for cachix binary caches
-    pkgs.deadnix # Find dead code in Nix configs
-    pkgs.direnv # Dir-based shell environment
-    pkgs.lorri # Speed up shell compilation
-    pkgs.manix # Search documentation
-    pkgs.nix-doc # Search docs & Generate tags + plugin
-    pkgs.nix-plugins # Misc Nix plugins
-    pkgs.nix-du # Show sizes of Nix store paths
-    pkgs.nix-init # Generate packages from URLs
-    pkgs.nix-output-monitor
-    pkgs.nix-tree # Interactively view dep graphs of Nix derivations
-    pkgs.nix-update # Update Nix packages
-    #pkgs.nix-query-tree-viewer # GUI to view Nix store path deps
-    pkgs.nurl # Automatically generate fetcher expressions from URLs
-    pkgs.nvfetcher # Update package commits & hashes
-    pkgs.pre-commit # Git pre-commit hooks
-    pkgs.vulnix # Nix(OS) vulnerability scanner
-  ];
-  services.lorri.enable = true;
-  programs.nix-ld.enable = true;
-  programs.nix-index = {
-    enable = true;
-    enableZshIntegration = true;
-    # lib.mkIf config.programs.zsh.enable true;
-  };
   #nix.settings.plugin-files = [
   #  "${pkgs.nix-doc}/lib/libnix_doc_plugin.so"
   #  "${pkgs.nix-plugins}/lib/nix/plugins/libnix-extra-builtins.so"
@@ -59,11 +73,14 @@
 
   # --- Config: nix.conf ---------------
   nix.settings.accept-flake-config = true;
-  #nix.settings.use-xdg-base-directories = true;
+  nix.settings.use-xdg-base-directories = true;
 
   # --- Optimization -------------------
-  nix.gc.automatic = true; # Collect garbage
-  nix.gc.options = "--cores 1 --max-freed 100G --max-jobs 1 --timeout 30"; # Limit garbage collection to 100GB using 1 concurrent job on 1 core, & 30 seconds of runtime
+  nix.gc = {
+    automatic = true; # Collect garbage
+    options = "--cores 1 --max-freed 100G --max-jobs 1 --timeout 30 --delete-older-than 30d"; # Limit garbage collection to 100GB using 1 concurrent job on 1 core, & 30 seconds of runtime
+    dates = "weekly";
+  };
   nix.optimise.automatic = true; # Store optimizer
   nix.settings.auto-optimise-store = true; # Dedup
   nix.settings.min-free = 128000000;
@@ -74,11 +91,6 @@
   nix.settings.keep-outputs = lib.mkDefault true;
   nix.settings.preallocate-contents = lib.mkDefault true;
 
-  # --- Registry -----------------------
-  # Create Nix registry from nixpkgs
-  # TODO: Select input based on system type
-  nix.registry.nixpkgs.flake = inputs.nixpkgs;
-
   # --- Sandboxing ---------------------
   nix.settings.sandbox = true; # Sandbox Nix builds
   nix.settings.fallback = true; # Fallback to local build if substitute fails
@@ -88,12 +100,7 @@
 
   # --- Users --------------------------
   nix.settings.allowed-users = [ "*" ];
-  nix.settings.trusted-users = [
-    "root"
-    "@wheel"
-    "@builders"
-    "sam"
-  ];
+  nix.settings.trusted-users = [ "root" "@wheel" "@builders" primaryUser ];
   nix.settings.build-users-group = "nixbld";
 
   # --- Binary Cache -------------------
@@ -123,8 +130,6 @@
     "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
   ];
 
-
-
   # --- Logging ------------------------
   nix.settings.keep-build-log = true;
   nix.settings.log-lines = 25;
@@ -137,25 +142,76 @@
   #nix.settings.auto-allocate-uids = true;
   #nix.settings.experimental-features = ["auto-allocate-uids"];
 
-  # --- Overlays -----------------------
-  # Nix overlays are used to override packages
-  nixpkgs.overlays = [
-    inputs.nur.overlay
-    (final: prev: {
-      gnome-decoder = prev.gnome-decoder.overrideAttrs (attrs: {
-        preBuild = ''
-          export BINDGEN_EXTRA_CLANG_ARGS="$BINDGEN_EXTRA_CLANG_ARGS -DPW_ENABLE_DEPRECATED"
-        '';
-        meta.broken = false;
-      });
-    })
+  # TODO: Make secret via agenix / sops-nix
+  # TODO: Replace after making secret
+  nix.settings.access-tokens = [
+    "github.com=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"
   ];
 
-  # --- Package Config -----------------
-  nixpkgs.config.allowBroken = false;
-  nixpkgs.config.allowUnfree = true;
 
-  # --- Environment Variables ----------
-  environment.sessionVariables.NIXPKGS_ALLOW_UNFREE = "1";
+  # --- Nixpkgs --------------------------------------------
+  nixpkgs = {
+    # --- Overlays -----------------------
+    # Nix overlays are used to override packages
+    overlays = [
+      inputs.nur.overlay
+      #(final: prev: {
+      #  gnome-decoder = prev.gnome-decoder.overrideAttrs (attrs: {
+      #    preBuild = ''
+      #      export BINDGEN_EXTRA_CLANG_ARGS="$BINDGEN_EXTRA_CLANG_ARGS -DPW_ENABLE_DEPRECATED"
+      #    '';
+      #    meta.broken = false;
+      #  });
+      #})
+    ];
 
+    # --- Package Config -----------------
+    config = {
+      allowBroken = false;
+      allowUnfree = true;
+    };
+  };
+
+  # --- Environment --------------------
+  environment = {
+    sessionVariables.NIXPKGS_ALLOW_UNFREE = lib.mkIf config.nixpkgs.config.allowUnfree "1";
+
+    # --- Utils ----------------------------------------------
+    # TODO: Remove pkgs that are imported elsewhere
+    shellAliases = let
+      flakeDir = "~/.config/nixos";
+    in rec {
+      cfgd     = "cd ${flakeDir}";
+      ndoc = "manix \"\" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | fzf --preview=\"manix '{}'\" | xargs manix";
+      n        = "nix";
+      nb       = "${n} build";
+      build    = "${n} build";
+      develop  = "${n} develop";
+      registry = "${n} registry";
+      neval    = "${n} eval";
+      flake    = "${n} flake";    nf = "${n} flake";
+      profile  = "${n} profile";
+      repl     = "${n} repl";
+      run      = "${n} run";
+      store    = "${n} store";
+    };
+    systemPackages = [
+      pkgs.cachix # CLI for cachix binary caches
+      pkgs.deadnix # Find dead code in Nix configs
+      pkgs.manix # Search documentation
+      pkgs.nix-doc # Search docs & Generate tags + plugin
+      pkgs.nix-plugins # Misc Nix plugins
+      pkgs.nix-du # Show sizes of Nix store paths
+      pkgs.nix-init # Generate packages from URLs
+      pkgs.nix-output-monitor
+      pkgs.nix-tree # Interactively view dep graphs of Nix derivations
+      pkgs.nix-update # Update Nix packages
+      #pkgs.nix-query-tree-viewer # GUI to view Nix store path deps
+      pkgs.nurl # Automatically generate fetcher expressions from URLs
+      pkgs.nvfetcher # Update package commits & hashes
+      pkgs.pre-commit # Git pre-commit hooks
+      pkgs.vulnix # Nix(OS) vulnerability scanner
+    ];
+
+  };
 }

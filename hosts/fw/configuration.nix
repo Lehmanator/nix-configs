@@ -33,8 +33,8 @@
     ../../profiles/locale
     ../../profiles/network/tailscale.nix
     ../../profiles/network/wireguard/sea1.nix
-    ../../profiles/nixos.nix
-    ../../profiles/nixos/piwc
+    ../../profiles/nixos
+    ../../profiles/piwc
     ../../profiles/polkit.nix
     ../../profiles/shell
     ../../profiles/sops.nix

@@ -6,7 +6,7 @@
 {
   imports = [
     ./android
-    ./containers.nix
+    ./containers
     ./vm
     ./wine.nix
   ];

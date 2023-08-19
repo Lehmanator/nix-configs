@@ -1,4 +1,4 @@
-{ 
+{
   config, lib, pkgs,
   networkSettings,
   ...
@@ -35,10 +35,15 @@ in {
       enableMDNS = true;
       enableDomainController = true;
     };
+    samba4Full = super.samba4Full.override {
+      enableLDAP = true;
+      enableMDNS = true;
+      enableDomainController = true;
+    };
   } ) ];
 
   # Disable default Samba `smbd` service, we will be using the `samba` server binary
-  systemd.services.samba-smbd.enable = false;  
+  systemd.services.samba-smbd.enable = false;
   systemd.services.samba = {
     description = "Samba Service Daemon";
 
@@ -77,5 +82,5 @@ in {
           path = /var/lib/samba/sysvol/${adDomain}/scripts
           read only = No
     '';
-  };  
+  };
 }

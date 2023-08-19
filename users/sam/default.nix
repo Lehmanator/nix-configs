@@ -17,6 +17,7 @@
     ./search
     ./shell
     ./social
+    ./vm.nix
     ./xdg.nix
     ../../profiles/workarounds.nix
     # TODO: Conditionally load ./nixos.nix when system is NixOS-based
@@ -44,4 +45,17 @@
   programs.home-manager.enable = true;
   services.home-manager.autoUpgrade.enable = true;
   services.home-manager.autoUpgrade.frequency = "weekly";
+
+  home.packages = [
+    pkgs.ripgrep-all   # Fast grep w/ ability to search in PDFs, eBooks, Office docs, archives, & more
+    pkgs.repgrep       # Interactive replacer for ripgrep
+
+    #pkgs.python311Full
+    #pkgs.python312
+    #pkgs.python311
+    #pkgs.python310
+
+    pkgs.ntfs3g
+    pkgs.rustup
+  ];
 }
