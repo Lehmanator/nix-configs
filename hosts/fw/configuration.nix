@@ -31,7 +31,8 @@
     ../../profiles/hardware/tpm2.nix
     ../../profiles/hardware/usb.nix
     ../../profiles/locale
-    ../../profiles/network/tailscale.nix
+    ../../profiles/network/dns/resolved.nix
+    ../../profiles/network/tailscale
     ../../profiles/network/wireguard/sea1.nix
     ../../profiles/nixos
     ../../profiles/piwc

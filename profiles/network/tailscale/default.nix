@@ -5,8 +5,8 @@
 }:
 {
   imports = [
-    #./tailscale-personal.nix
-    ./tailscale-work.nix
+    ./personal.nix
+    ./work.nix
   ];
 
   # Make the Tailscale command usable to users
@@ -29,9 +29,6 @@
   networking.nameservers = [
     "100.100.100.100"
     "1.1.1.1"
-  ];
-  networking.search = [
-    "tail6a8f8.ts.net"
   ];
 
   # Always allow traffic from Tailscale network
