@@ -39,7 +39,7 @@ in
       };
       floaterm.borderchars = floatermConvert borderChars;
       gitsigns.previewConfig.border = borderStyle;
-      lspsaga.borderStyle = styleLspsaga;
+      #lspsaga.borderStyle = styleLspsaga;   # Deprecated
       magma-nvim.outputWindowBorders = borderStyle == "rounded";
       noice.presets.lsp_doc_border = borderStyle != "none";
       null-ls.border = borderChars;
