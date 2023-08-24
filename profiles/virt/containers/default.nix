@@ -10,8 +10,7 @@
     ./cri-o.nix
     ./lxc.nix
     ./lxd.nix
-    ./lxd-image-server.nix
-    ./lxd.nix
+    #./lxd-image-server.nix
     ./podman.nix
   ];
 
@@ -149,4 +148,7 @@
 
   # In containers, whether to use the resolv.conf supplied by the host. (only in containers?)
   #networking.useHostResolvConf = true;
+
+  # https://github.com/checkpoint-restore/criu
+  programs.criu.enable = true;
 }
