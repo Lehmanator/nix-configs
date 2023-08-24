@@ -100,7 +100,11 @@
   #};
 
   # TODO: Move most of these to home-manager profile (default user?)
-  environment.systemPackages = with pkgs; [bat exa gcc lsd neofetch ripgrep tealdeer gnumake lynis];
+  environment.systemPackages = with pkgs; [
+    bat exa gcc lsd neofetch
+    #ripgrep
+    tealdeer gnumake lynis
+  ];
 
   #programs.home-manager.enable = true;
 

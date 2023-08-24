@@ -46,8 +46,9 @@
   services.home-manager.autoUpgrade.enable = true;
   services.home-manager.autoUpgrade.frequency = "weekly";
 
+  programs.ripgrep.enable = true;
   home.packages = [
-    pkgs.ripgrep-all   # Fast grep w/ ability to search in PDFs, eBooks, Office docs, archives, & more
+    #pkgs.ripgrep-all   # Fast grep w/ ability to search in PDFs, eBooks, Office docs, archives, & more
     pkgs.repgrep       # Interactive replacer for ripgrep
 
     #pkgs.python311Full
