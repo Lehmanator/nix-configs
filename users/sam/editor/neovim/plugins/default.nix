@@ -4,8 +4,10 @@
 }:
 {
   imports = [
+    ./auto-session.nix
     ./barbar.nix
     ./comment-nvim.nix
+    ./dap.nix
     ./dashboard.nix
     ./emmet.nix
     ./floaterm.nix
@@ -30,6 +32,8 @@
     ./rust-tools.nix
     ./tagbar.nix
     ./telescope.nix
+    ./todo-comments.nix
+
     ./treesitter.nix
     ./vim-matchup.nix
     ./which-key.nix
