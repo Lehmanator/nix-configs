@@ -10,6 +10,7 @@
     ../nix
     ./activate.nix
     ./alias.nix
+    ./homed.nix
     ./normalize.nix
   ];
 
