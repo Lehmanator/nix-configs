@@ -20,6 +20,8 @@ in
   ];
 
   programs.nixvim.plugins = {
+    #dap.extensions.dap-ui.floating.border = "single";  # Accepts same border values as nvim_open_win()
+
     floaterm.borderchars = "─│─│┌┐┘└";
 
     nvim-cmp = {

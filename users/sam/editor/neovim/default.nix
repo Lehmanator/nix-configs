@@ -53,6 +53,7 @@
   imports = [
     inputs.nixvim.homeManagerModules.nixvim
     ../editorconfig.nix
+    ../nixvim/keymaps.nix
     ./colorschemes
     ./langs
     ./plugins

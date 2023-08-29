@@ -52,7 +52,7 @@ in
       nvim-tree.view.float.openWinConfig.border = borderStyle;
       #rust-tools.hoverActions.border = [];  # TODO: Append <HighlightGroupName> string to array with char.
       sniprun.borders = if borderStyle == "NC" then "single" else if borderStyle == "rounded" then "single" else if borderStyle == "solid" then "single" else borderStyle;
-      which-key.borders = if borderStyle == "NC" then "single" else if borderStyle == "rounded" then "single" else if borderStyle == "solid" then "single" else borderStyle;
+      #which-key.borders = if borderStyle == "NC" then "single" else if borderStyle == "rounded" then "single" else if borderStyle == "solid" then "single" else borderStyle;
     };
   };
 }

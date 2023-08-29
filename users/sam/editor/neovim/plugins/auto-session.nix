@@ -13,9 +13,9 @@
     #bypassSessionSaveFileTypes = [];
     #extraOptions = {};
     #logLevel = "error";
-    cwdChangeHandling = true;
-    autoSave = true;
-    autoRestore = true;
+    #cwdChangeHandling = true;
+    #autoSave = true;
+    autoRestore.enabled = true;
     autoSession = {
       enabled = true;
       enableLastSession = true;

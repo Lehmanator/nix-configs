@@ -7,5 +7,6 @@
     cursorline.timeout = 200;
     cursorword.enable = true;
     #cursorword.hl = "{underline = true;}";
+    cursorword.minLength = 3;
   };
 }

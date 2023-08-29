@@ -1,5 +1,5 @@
 { inputs
-, pkgs, config
+, lib, pkgs, config
 , ...
 }:
 {
@@ -7,7 +7,7 @@
   # Integrate external sources with native nvim LSP
   programs.nixvim.plugins.null-ls = {
     enable = true;
-    border = "rounded"; # none|single|double|rounded|solid|shadow
+    border = lib.mkDefault "rounded"; # none|single|double|rounded|solid|shadow
 
     #diagnosticConfig = {};
 

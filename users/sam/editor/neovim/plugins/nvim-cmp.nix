@@ -1,5 +1,5 @@
 { inputs
-, config
+, config, lib, pkgs
 , ...
 }:
 # TODO: Enable nvim-cmp sources based on if relevant language / tool is enabled in NixOS / home-manager config.
@@ -52,9 +52,11 @@
     cmp-tmux.enable = config.programs.tmux.enable;  # Tmux words
     cmp-vimwiki-tags.enable = false;                # VimWiki tags
     cmp-zsh.enable = config.programs.zsh.enable;    # Zsh keywords
+    cmp_luasnip.enable = config.programs.nixvim.plugins.luasnip.enable;
 
     nvim-jdtls.enable = false;               # Java LSP configuration
     #nvim-jdtls.data = "/path/to/your/workspace";
+
 
     nvim-cmp = {
       enable = true;
@@ -85,20 +87,36 @@
       # --- Entry Sorting ----------------------------------
       # Function to  customize sorting behavior. You can use built-in comparators via `cmp.config.compare.*`
       #   Fn Signature: (fun(entry1:cmp.Entry, entry2:cmp.Entry): boolean | nil)[]
-      sorting.comparators = ["offset" "exact" "score" "recently_used" "locality" "kind" "length" "order"];
+      #sorting.comparators = ["offset" "exact" "score" "recently_used" "locality" "kind" "length" "order"];
+
       # Each item's original priority (given by its source) will be...
       # - Increased by: (sources_total - (source_index - 1)) * priorityWeight
       # - Final Score:  final_score = orig_score + ((sources_total - (source_index - 1)) * priorityWeight)
       #   Default: 2
       #   Options: null | <int>
-      sorting.priorityWeight = 2;
+      #sorting.priorityWeight = 2;
 
       # TODO: Move to ../../nixvim/keymaps.nix
       # TODO: Move to ../../nixvim/styles/menus.nix
       experimental.native_menu = false;
+
       formatting = {
-        fields = [ "kind" "abbr" "menu" ];
-        #expandableIndicator = true;
+        expandableIndicator = true;
+        fields = ["kind" "abbr" "menu"]; #["menu" "abbr" "kind"];
+
+
+
+        #format = ''
+        #  function(entry, vim_item)
+        #    local kind = require("lspkind").cmp_format({ mode = "symbol_text", maxwidth = 50 })(entry, vim_item)
+        #    local strings = vim.split(kind.kind, "%s", { trimempty = true })
+        #    kind.kind = " " .. (strings[1] or "") .. " "
+        #    kind.menu = "    (" .. (strings[2] or "") .. ")"
+        #    return kind
+        #  end,
+        #'';
+
+        #fields = [ "kind" "abbr" "menu" ];
         # Function used to customize appearance of completion menu. fun(entry:cmp.Entry, vim_item:vim.CompletedItem)
         #   Note: Value can be used to modify the `dup` property.
         #   Note: The `vim.CompletedItem` can contain the special properties `abbr_hl_group`, `kind_hl_group`, & `menu_hl_group`
@@ -113,10 +131,10 @@
         { name = "nvim_lsp"; }
         { name = "nvim_lsp_document_symbol"; }
         { name = "nvim_lsp_signature_help"; }
-        { name = "luasnip"; }
-        { name = "omni"; }
         { name = "treesitter"; }
         { name = "dap"; }
+        { name = "luasnip"; }
+        { name = "omni"; }
         { name = "path"; }
         { name = "buffer"; }
         { name = "calc"; }
@@ -137,29 +155,31 @@
         #}
       ];
 
-      #view = {
-      #  entries = { name = "custom"; selection_order = "top_down"; };
-      #  docs.autoOpen = true;
-      #};
+      view = {
+        #entries = { name = "custom"; selection_order = "top_down"; };
+        docs.autoOpen = true;
+      };
 
       #TODO: Move to ../../nixvim/styles/spacing.nix
       #TODO: Move to ../../nixvim/styles/windows.nix
       window.completion = {  # Completion menu window
-        colOffset = 0;       # Offsets the completion window relative to the cursor.                 Default: null => 0
+        border = lib.mkDefault "rounded";
+        colOffset = -4;       # Offsets the completion window relative to the cursor.                 Default: null => 0
+
         scrollbar = true;    # Whether scrollbar should be enabled if there are more items that fit. Default: null => true
         scrolloff = 0;       # Window scrolloff option. See: |'scrolloff'|.                          Default: null => 0
-        sidePadding = 1;     # Amount of padding to add on completion window sides.                  Default: null => 1
+        sidePadding = 0;     # Amount of padding to add on completion window sides.                  Default: null => 1
         winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None"; # Window highlight option. See: |nvim_open_win|. Default = null => "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None"
         zindex = null;       # Window zindex. See |nvim_open_win|
       };
 
-      #window.documentation = {                     # Documentation window
-      #  maxHeight = null;                          # Window's max height.  Default: null => math.floor(40*(40/vim.o.lines))
-      #  maxWidth  = null;                          # Window's max width.   Default: null => math.floor((40*2)*(vim.o.columns/(40*2*16/9)))
-      #  #border = ["" "" "" "" "" "" "" ""];
-      #  winhighlight = "FloatBorder:NormalFloat";  # Window's highlight option.  See: |nvim_open_win|. Default: null => "FloatBorder:NormalFloat"
-      #  zindex = null;                             # Window's zindex. See: |nvim_open_win|. Default: null
-      #};
+      window.documentation = {                      # Documentation window
+        border = lib.mkDefault "rounded";           # ["" "" "" "" "" "" "" ""];
+        #maxHeight = null;                          # Window's max height.  Default: null => math.floor(40*(40/vim.o.lines))
+        #maxWidth  = null;                          # Window's max width.   Default: null => math.floor((40*2)*(vim.o.columns/(40*2*16/9)))
+        #winhighlight = "FloatBorder:NormalFloat";  # Window's highlight option.  See: |nvim_open_win|. Default: null => "FloatBorder:NormalFloat"
+        #zindex = null;                             # Window's zindex. See: |nvim_open_win|. Default: null
+      };
 
     };
   };

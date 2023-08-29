@@ -83,14 +83,27 @@ in
     # lspkind.nvim - Entry types for LSP Completions w/ icons
     lspkind = {
       enable = lib.mkDefault config.programs.nixvim.plugins.lsp.enable;
-      mode = "symbol_text";  # text|text_symbol|symbol_text*|symbol
+      mode = "symbol_text";  #"symbol_text";  # text|text_symbol|symbol_text*|symbol
       preset = "codicons";   # codicons|default   # TODO: Conditional based on style/theme icon type preference
       cmp = {
         enable = lib.mkDefault isLspCmp;  # Integrate with nvim-cmp
-        after = null;                     # Function to run after calculating the formatting. function(entry,vim_item,kind)
-        ellipsisChar = null;              # Char to show when popup exceeds maxWidth. Options: null | str
-        maxWidth = null;                  # Max chars to show in the popup.           Options: null | int
-        menu = null;                      # Show source names in popup.               Options: null | attrs<str>
+        after = ''
+          function(entry, vim_item, kind)
+            local strings = vim.split(kind.kind, "%s", { trimempty = true })
+            kind.kind = " " .. (strings[1] or "") .. " "
+            kind.menu = "    (" .. (strings[2] or "") .. ")"
+            return kind
+          end
+        '';
+        ellipsisChar = "...";
+        #after = null;                     # Function to run after calculating the formatting. function(entry,vim_item,kind)
+        #ellipsisChar = null;              # Char to show when popup exceeds maxWidth. Options: null | str
+        #maxWidth = null;                  # Max chars to show in the popup.           Options: null | int
+        #menu = null;                      # Show source names in popup.               Options: null | attrs<str>
+      };
+      symbolMap = {
+        Comment = "󰉿";
+        String = "󰉿";
       };
     };
 

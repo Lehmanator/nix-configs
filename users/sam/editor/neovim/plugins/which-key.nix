@@ -1,7 +1,14 @@
-{ inputs, ... }:
+{ inputs, self
+, config, lib, pkgs
+, ... }:
 {
   programs.nixvim.plugins.which-key = {
     enable = true;
-    #window.border = [""];
+    icons.separator = lib.mkDefault " ➜  ";
+    icons.group     = lib.mkDefault "󰙅 ";
+    layout.align    = lib.mkDefault "left";
+    layout.spacing  = lib.mkDefault 3;
+    window.border   = lib.mkDefault "rounded";
+    window.winblend = lib.mkDefault 40;
   };
 }

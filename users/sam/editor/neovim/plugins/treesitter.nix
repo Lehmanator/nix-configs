@@ -45,7 +45,16 @@
       #updateTime = 25;        # Debounced time for highlighting nodes in the playground from source code
     };
 
-    treesitter-rainbow = {
+    treesitter-refactor = {
+      enable = true;
+      highlightCurrentScope.enable = false;
+      highlightDefinitions.enable = true;
+      highlightDefinitions.clearOnCursorMove = true;
+      navigation.enable = true;
+      smartRename.enable = true;
+    };
+
+    rainbow-delimiters = {
       enable = false;
       #package = pkgs.vimPlugins.nvim-ts-rainbow2;
       #disable = [];                                                             # Language list to disable plugin for.
@@ -54,15 +63,6 @@
       #strategy = "require('ts-rainbow').strategy.global";                       # Query for finding delimiters. Direct lua code in str
       #extraOptions = {                                                          # Attrs added to the setup function's table parameter
       #};                                                                        #   (Can override other attributes set by nixvim)
-    };
-
-    treesitter-refactor = {
-      enable = true;
-      highlightCurrentScope.enable = false;
-      highlightDefinitions.enable = true;
-      highlightDefinitions.clearOnCursorMove = true;
-      navigation.enable = true;
-      smartRename.enable = true;
     };
 
   };

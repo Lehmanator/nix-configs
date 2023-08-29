@@ -11,6 +11,26 @@
 
   programs.nixvim.plugins = with config.programs.nixvim.plugins; {
 
+    #dap.extensions.dap-ui = {
+    #  elementMappings.<name> = {
+    #    edit = "e";
+    #    expand = ["<CR>" "<2-LeftMouse>"];
+    #    open = "o";
+    #    remove = "d";
+    #    repl = "r";
+    #    toggle = "t";
+    #  };
+    #  floating.mappings.close = ["<ESC>" "q"];
+    #  mappings = {
+    #    edit = "e";
+    #    expand = ["<CR>" "<2-LeftMouse>"];
+    #    open = "o";
+    #    remove = "d";
+    #    repl = "r";
+    #    toggle = "t";
+    #  };
+    #};
+
     #floaterm.keymaps = {
     #  first="";
     #  hide="";
@@ -107,12 +127,12 @@
       mapCH = false; # Map <C-h> key to delete pair
       mapCW = false; # Map <C-w> key to delete pair if possible
       mapCr = true;  # Map <CR>  key to confirm the completion
-      pairs = null;
-      checkTs = config.programs.nixvim.plugins.treesitter.enable;
+      #pairs = null;
       disableInMacro = false;
       disableInReplaceMode = true;
       disableInVisualblock = false;  # Disable when insert after visual block mode
     };
+
     nvim-cmp = {
       confirmation.getCommitCharacters = "function(commit_characters) return commit_characters end";  # You can append or exclude commitCharacters via this config option function. commitCharacters are defined by the LSP spec. Options: null | "<str>"
       preselect = "Item"; # Item | None
@@ -178,6 +198,13 @@
 
     };
 
+    nvim-osc52.keymaps = {
+      enable = true;
+      copy = "<leader>y";
+      copyLine = "<leader>yy";
+      copyVisual = "<leader>y";
+    };
+
     telescope.keymapsSilent = false;
     telescope.keymaps = {
       "<leader>fg" = "live_grep";
@@ -224,5 +251,26 @@
     #  listDefinitionsToc = "g0";          # List all definitions from current file like table of contents
     #};
     #treesitter-refactor.smartRename.keymaps.smartRename = "grr";  # Keymap to rename symbol under cursor
+
+    trouble.actionKeys = {
+      cancel        = "<esc>";
+      close         = "q";
+      closeFolds    = ["zM" "zm"];
+      hover         = "K";
+      jump          = ["<cr>" "<tab>"];
+      jumpClose     = ["o"];
+      next          = "j";
+      openFolds     = ["zR" "zr"];
+      openSplit     = ["<c-x>"];
+      openTab       = ["<c-t>"];
+      openVsplit    = ["<c-v>"];
+      preview       = "p";
+      previous      = "k";
+      refresh       = "r";
+      toggleFold    = ["zA" "za"];
+      toggleMode    = "m";                 # Toggle b/w modes: `workspace` & `document`
+      togglePreview = "P";                 # Toggle auto-preview
+    };
+
   };
 }
