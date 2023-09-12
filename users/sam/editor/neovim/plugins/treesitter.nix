@@ -37,13 +37,13 @@
       #trimScope = "outer";     # Which context lines to discard if `maxLines` exceeded. Options: outer | inner
     };
 
-    treesitter-playground = {
-      enable = true;           # Enable nvim-treesitter-playground
-      #disabledLanguages = []; # List of languages where this module should be disabled.
-      #package = pkgs.vimPlugins.playground; # ???
-      #persistQueries = null;  # Whether query persists across vim sessions. Options: null | <bool>
-      #updateTime = 25;        # Debounced time for highlighting nodes in the playground from source code
-    };
+    #treesitter-playground = {
+    #  enable = true;           # Enable nvim-treesitter-playground
+    #  #disabledLanguages = []; # List of languages where this module should be disabled.
+    #  #package = pkgs.vimPlugins.playground; # ???
+    #  #persistQueries = null;  # Whether query persists across vim sessions. Options: null | <bool>
+    #  #updateTime = 25;        # Debounced time for highlighting nodes in the playground from source code
+    #};
 
     treesitter-refactor = {
       enable = true;
