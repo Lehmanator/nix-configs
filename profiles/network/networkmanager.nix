@@ -11,6 +11,8 @@
   ];
 
   networking.networkManager = {
+    enable = true;
+    enableFccUnlock = true;
     enableStrongSwan = true;
 
     #appendNammeservers = [
@@ -19,6 +21,18 @@
     # Configuration for [connection] section of NetworkManager.conf
     # See: https://developer.gnome.org/NetworkManager/stable/NetworkManager.conf.html
     #connectionConfig = {
+    #  #802-1x.auth-timeout =
+    #  #cdma.mtu =
+    #  #connection.auth-retries = 3;
+    #  #autoconnect-slaves =
+    #  #mud-url = "none";
+    #  lldp = "yes";
+    #  llmnr = if config.services.resolved.enable then "yes" else "no";
+    #  mdns = "yes";
+    #  mptcp-flags = "0x22";  # "enabled,subflow";
+    #  dns-over-tls = "yes";
+    #  #stable-id = "";
+    #  ethernet.cloned-mac-address = "preserved";
     #};
 
     #dhcp = "internal";  # dhcpcd | internal
@@ -45,7 +59,6 @@
     #extraConfig = ''
     #'';
 
-
     # List of name servers that should be inserted before the ones configured in NetworkManager or received by DHCP
     #insertNameservers = [
     #];
@@ -53,6 +66,10 @@
     #logLevel = "WARN";
 
     #plugins = [
+    #];
+
+    # List of interfaces that will not be managed by NetworkManager
+    #unmanaged = [
     #];
 
   };

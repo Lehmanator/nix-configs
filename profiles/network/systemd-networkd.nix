@@ -1,8 +1,5 @@
-{ inputs
-, self
-, config
-, lib
-, pkgs
+{ inputs, self
+, config, lib, pkgs
 , ...
 }:
 # See:
@@ -34,18 +31,29 @@
   imports = [
   ];
 
+  networking.useNetworkd = true;
   networking.useDHCP = true;
-  networking.useNetworkd = true; # Use systemd-networkd as network config backend or legacy script based system
 
   systemd.network = {
     enable = true;
 
-    # Network Devices
-    netdevs = { };
+    # Links - Reconfigures existing network Devices
+    # - Note: Actually implemented by udev, not systemd-networkd
+    # - Note: Executed by udev & only applied on boot
+    # - Docs: https://www.freedesktop.org/software/systemd/man/systemd.link.html
+    #links = {
+    #};
 
-    # Networks
-    networks = { };
+    # Network Devices - Creates virtual network devices
+    # - Note: Doesnt modify properties (e.g. MTU, VLAN ID, VXLAN ID, Wireguard Peers) of existing netdevs
+    # - Docs: https://www.freedesktop.org/software/systemd/man/systemd.netdev.html
+    #netdevs = {
+    #};
+
+    # Networks - Configures network devices
+    # - Docs: https://www.freedesktop.org/software/systemd/man/systemd.network.html
+    #networks = {
+    #};
 
   };
-
 }
