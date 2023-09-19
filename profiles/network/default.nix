@@ -1,7 +1,10 @@
-{ inputs, self
-, config, lib, pkgs
-, ...
-}:
+q: { inputs
+   , self
+   , config
+   , lib
+   , pkgs
+   , ...
+   }:
 {
   networking.rxe = {
     enable = true;
@@ -27,42 +30,40 @@
     #./resolvconf.nix
     #./rxe.nix
     #./sits.nix
-    #./adblock.nix
+    ./adblock.nix
     #./ucarp.nix
+    ./networkmanager.nix
     #./vlans.nix
     #./vswitches.nix
   ];
 
   networking = {
-    search = [ config.networking.domain
-      "samlehman.me" "samlehman.dev"
+    search = [
+      config.networking.domain
+      "samlehman.me"
+      "samlehman.dev"
       "lehman.run"
       "home.local"
     ];
 
     resolvconf = {
       package = pkgs.openresolv;
-      dnsExtensionMechanism = true;  # Enable edns0 option in resolv.conf. When set, glibc supports extension machanisms for DNS (EDNS) specified in RFC 2671. (e.g. DNSSEC is extension & requires true)
+      dnsExtensionMechanism = true; # Enable edns0 option in resolv.conf. When set, glibc supports extension machanisms for DNS (EDNS) specified in RFC 2671. (e.g. DNSSEC is extension & requires true)
       dnsSingleRequest = false;
       #extraConfig = ''
       #'';
-      extraOptions = [];
-      useLocalResolver = false;
+      #extraOptions = [];
+      #useLocalResolver = false;
     };
 
-    stevenblack = {    # Host-based ad-block
-      enable = true;
-      block = [];      # fakenews | gambling | porn | social
-    };
-
-    tcpcrypt.enable = true;   # Enable opportunistic TCP encryption. If other end supports, then encrypt traffic, else cleartext.
-    tempAddresses = "default";  # default=gen temp ipv6 addrs & use as source addrs in routing. enabled=gen temp ipv6 addrs, but still use EUI-64 addresses as source addresses
+    tcpcrypt.enable = true; # Enable opportunistic TCP encryption. If other end supports, then encrypt traffic, else cleartext.
+    tempAddresses = "default"; # default=gen temp ipv6 addrs & use as source addrs in routing. enabled=gen temp ipv6 addrs, but still use EUI-64 addresses as source addresses
 
     #timeServers = [ "0.nixos.pool.ntp.org" "1.nixos.pool.ntp.org" "2.nixos.pool.ntp.org" "3.nixos.pool.ntp.org" ];
 
     useDHCP = true;
-    useHostResolvConf = true;  # In containers, whether to use the resolv.conf supplied by the host
-    useNetworkd = true;        # Whether to use networkd as network config backend or the legacy script based system.
+    useHostResolvConf = true; # In containers, whether to use the resolv.conf supplied by the host
+    useNetworkd = true; # Whether to use networkd as network config backend or the legacy script based system.
     usePredictableInterfaceNames = true;
 
   };
