@@ -1,5 +1,9 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, self
+, config
+, lib
+, pkgs
+, user ? "sam"
 , ...
 }:
 {
@@ -8,7 +12,9 @@
 
   networking.networkManager = {
     enableStrongSwan = true;
-    #appendNammeservers = [];
+
+    #appendNammeservers = [
+    #];
 
     # Configuration for [connection] section of NetworkManager.conf
     # See: https://developer.gnome.org/NetworkManager/stable/NetworkManager.conf.html
@@ -17,7 +23,8 @@
 
     #dhcp = "internal";  # dhcpcd | internal
     dispatcherScripts = [
-      { type = "basic";
+      {
+        type = "basic";
         source = pkgs.writeText "upHook" ''
           if [ "$2" != "up" ]; then
             logger "exit: event $2 != up"
@@ -32,27 +39,24 @@
     # See:
     # - https://developer.gnome.org/NetworkManager/stable/NetworkManager.conf.html
     # - man NetworkManager.conf(5)
-    dns = "default";  # default | dnsmasq | unbound | systemd-resolved | none
+    #dns = "default"; # default | dnsmasq | unbound | systemd-resolved | none
 
     # Append config to NetworkManager.conf
     #extraConfig = ''
     #'';
 
-    firewallBackend = "iptables";  # iptables | nftables | none
 
     # List of name servers that should be inserted before the ones configured in NetworkManager or received by DHCP
-    insertNameservers = [];
+    #insertNameservers = [
+    #];
 
-    logLevel = "WARN";
+    #logLevel = "WARN";
 
     #plugins = [
     #];
 
-    wifi = {
-      backend = "wpa_supplicant";  # wpa_supplicant | iwd
-      macAddress = "preserve";     # permanent | preserve | random | stable | <MACAddress>
-      scanRandMacAddress = true;   # MAC addr randomization during scanning
-    };
   };
+
+  users.users."${user}".extraGroups = [ "networkmanager" ];
 
 }

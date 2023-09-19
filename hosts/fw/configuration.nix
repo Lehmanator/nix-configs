@@ -1,14 +1,13 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-{
-  self,
-  inputs,
-  config,
-  lib,
-  pkgs,
-  user ? "sam",
-  ...
+{ self
+, inputs
+, config
+, lib
+, pkgs
+, user ? "sam"
+, ...
 }: {
   imports = [
     # Include SnowflakeOS config
@@ -32,8 +31,8 @@
     ../../profiles/hardware/tpm2.nix
     ../../profiles/hardware/usb.nix
     ../../profiles/locale
-    ../../profiles/network/dns/resolved.nix
-    ../../profiles/network/tailscale
+    ../../profiles/network
+    ../../profiles/network/wireguard/mullvad.nix
     ../../profiles/network/wireguard/sea1.nix
     ../../profiles/nixos
     ../../profiles/piwc
@@ -72,7 +71,7 @@
   users.users."sam" = {
     isNormalUser = true;
     description = "Sam Lehman";
-    extraGroups = ["wheel" "users" "dialout"];
+    extraGroups = [ "wheel" "users" "dialout" ];
   };
 
   #users = {
@@ -103,30 +102,54 @@
 
   # TODO: Move most of these to home-manager profile (default user?)
   environment.systemPackages = with pkgs; [
-    bat eza gcc lsd neofetch
+    bat
+    eza
+    gcc
+    lsd
+    neofetch
     #ripgrep
-    tealdeer gnumake lynis
+    tealdeer
+    gnumake
+    lynis
   ];
 
   #programs.home-manager.enable = true;
 
   # --- Shell ---
-  programs.git.enable = true;
-  programs.git.package = pkgs.gitFull;
-  programs.less.enable = true;
-  programs.less.lessopen = "|${pkgs.lesspipe}/bin/lesspipe.sh %s";
-  programs.traceroute.enable = true;
+  programs = {
 
-  # --- Browsers ---
-  programs.chromium.enable = true;
-  programs.chromium.defaultSearchProviderEnabled = true;
-  programs.firefox.enable = true;
+    git = {
+      enable = true;
+      package = pkgs.gitFull;
+    };
 
-  # --- Keys ---
-  programs.gnupg.dirmngr.enable = true;
-  programs.gnupg.agent.enableExtraSocket = true;
-  programs.gnupg.agent.enableBrowserSocket = true;
+    less = {
+      enable = true;
+      lessopen = "|${pkgs.lesspipe}/bin/lesspipe.sh %s";
+    };
+
+    traceroute.enable = true;
+
+    # --- Browsers ---
+    chromium = {
+      enable = true;
+      defaultSearchProviderEnabled = true;
+    };
+    firefox.enable = true;
+
+    # --- Keys ---
+    gnupg = {
+      dirmngr.enable = true;
+      agent.enableExtraSocket = true;
+      agent.enableBrowserSocket = true;
+    };
+
+  };
 
   qt.enable = true;
-  nix.settings.trusted-public-keys = ["hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs="];
+
+  nix.settings.trusted-public-keys = [
+    "hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs="
+  ];
+
 }

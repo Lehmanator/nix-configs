@@ -1,9 +1,16 @@
-{ self, inputs, config, lib, pkgs,
-  host, network, repo,
-  allHosts, allNetworks,
-  system      ? "x86_64-linux",
-  userPrimary ? "sam",
-  ...
+{ self
+, inputs
+, config
+, lib
+, pkgs
+, host
+, network
+, repo
+, allHosts
+, allNetworks
+, system ? "x86_64-linux"
+, userPrimary ? "sam"
+, ...
 }:
 let
   secretsDir = "/etc/wireguard";
@@ -16,8 +23,10 @@ let
     name = "sea1";
     domain = "samlehman.me";
     ip = {
-      addr4 = "45.42.244.62";    mask4 = 32;
-      addr6 = "2602:fcc3::c00b"; mask6 = 128;
+      addr4 = "45.42.244.62";
+      mask4 = 32;
+      addr6 = "2602:fcc3::c00b";
+      mask6 = 128;
     };
     services.kubernetes-api = {
       subdomain = "ing.kubernetes.sea1.617a.net";
@@ -38,8 +47,8 @@ let
 
   peer-admin = {
     allowedIPs = [ "45.42.244.62/32" "2602:fcc3::c00b/128" ];
-    endpoint = "45.42.244.130:51420";  #
-    persistentKeepalive = 10;          # 25
+    endpoint = "45.42.244.130:51420"; #
+    persistentKeepalive = 10; # 25
     publicKey = "xTIBA5rboUvnH4htodjb6e697QjLERt1NAB4mZqp8Dg=";
   };
   peer-ingress = {
@@ -53,14 +62,14 @@ let
   settings-admin = settings-default // {
     generatePrivateKey = false;
     privateKeyFile = "${secretsDir}/sea1-admin.privkey";
-    ips = ["192.168.123.1/24"];
+    ips = [ "192.168.123.1/24" ];
     listenPort = 42270;
-    peers = [peer-admin];
+    peers = [ peer-admin ];
   };
   settings-ingress = settings-default // {
-    ips = ["192.168.124.1/24"];
+    ips = [ "192.168.124.1/24" ];
     privateKeyFile = "${secretsDir}/sea1-ingress.privkey";
-    peers = [];
+    peers = [ ];
     #peers = [peer-ingress];
   };
 
@@ -88,12 +97,12 @@ in
 
     # Seattle Cluster Services
     wg-sea1-ingress = {
-      allowedIPsAsRoutes     = true;       # default: true
+      allowedIPsAsRoutes = true; # default: true
       generatePrivateKeyFile = true;
       privateKeyFile = "${secretsDir}/sea1-ingress.privkey";
       ips = [ "192.168.124.1/24" ];
       listenPort = null; # default: null  (51820)
-      mtu = 1420;                      # default: null
+      mtu = 1420; # default: null
       peers = [
         #{ allowedIPs = [ "45.42.244.62/32" "2602:fcc3::c00b/128" ];
         #  endpoint = "${sea1.services.wireguard-ingress.subdomain}:${sea1.services.wireguard-ingress.port}";
@@ -105,15 +114,15 @@ in
 
     # Seattle Cluster Administration
     wg-sea1-admin = {
-      allowedIPsAsRoutes     = true;   # default: true
-      generatePrivateKeyFile = false;  # default:
+      allowedIPsAsRoutes = true; # default: true
+      generatePrivateKeyFile = false; # default:
       privateKeyFile = "${secretsDir}/sea1-admin.privkey";
       ips = [ "192.168.123.1/24" ];
-      listenPort = 42270;              # default: null  (51820)
+      listenPort = 42270; # default: null  (51820)
       peers = [{
         allowedIPs = [ "45.42.244.62/32" "2602:fcc3::c00b/128" ];
-        endpoint = "45.42.244.130:51420";  #
-        persistentKeepalive = 10;          # 25
+        endpoint = "45.42.244.130:51420"; #
+        persistentKeepalive = 10; # 25
         publicKey = "/XgG41yW5zjQvLJl3D6LKVx5UGMb5vmvQc5GHeW/oFc=";
         #publicKey = "xTIBA5rboUvnH4htodjb6e697QjLERt1NAB4mZqp8Dg=";
       }];
