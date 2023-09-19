@@ -1,0 +1,92 @@
+/*
+*
+* Extension:
+* - [Repo](https://github.com/YS-Wong/Adaptive-Tab-Bar-Color)
+* - [Firefox Addons](https://addons.mozilla.org/en-US/firefox/addon/adaptive-tab-bar-color)
+*
+* File Location:
+* - `~/.mozilla/firefox/<PROFILE>/chrome/firefox-gnome-theme/theme/extensions/adaptive-tab-color.css`
+*
+* Links:
+* - [Firefox GNOME Theme](https://github.com/rafaelmardojai/firefox-gnome-theme)
+* - [Issue for Adaptive-Tab-Bar-Color](https://github.com/rafaelmardojai/firefox-gnome-theme/issues/412)
+* - [Gist w/ Adaptive-Tab-Bar-Color CSS](https://gist.github.com/eilx/2e1346472598ddac5e2ec20f40695dfe)
+*
+*/
+
+/*
+  PROBLEMS
+  1 - URL text's 'https://www.' and such appear as a darker shade of the main color.
+      I don't know how to change the shade of those parts to how it would be on a light theme,
+      so on a 'light' background the URL is currently just all black :(
+  2 - There's no way to view a tab's container without being on that tab. I'm using
+      simple tab groups for my containers which 'fixes' this, but that's not really a solution :/
+*/
+
+:root {
+  --gnome-toolbar-color: var(--lwt-text-color);
+
+  /* I think it makes sense with the adaptive colors to 'blend'
+   * in by hiding these borders? Otherwise the alternative works decently
+   * enough but kinda falls apart with high color e.g. npmjs.com
+   */
+/*   --gnome-toolbar-border-color: rgb(125 125 125 / .3); */
+  --gnome-toolbar-border-color: transparent;
+
+  --gnome-toolbar-background: var(--lwt-accent-color-inactive);
+  --gnome-toolbar-icon-fill: var(--toolbarbutton-icon-fill);
+  --gnome-inactive-toolbar-icon-fill: var(--toolbarbutton-icon-fill);
+
+  --gnome-menu-background: var(--gnome-toolbar-background);
+  --gnome-menu-button-hover-background: var(--gnome-button-hover-background);
+
+  --gnome-headerbar-background: var(--lwt-accent-color);
+
+  --gnome-button-hover-background: var(--toolbarbutton-hover-background);
+  --gnome-button-active-background: var(--toolbarbutton-active-background);
+  --gnome-button-flat-hover-background: var(--gnome-button-hover-background);
+  --gnome-button-flat-active-background: var(--gnome-button-active-background);
+
+  /* See problem 1 */
+  --gnome-entry-color: var(--lwt-text-color);
+  --gnome-inactive-entry-color: var(--gnome-entry-color);
+
+  --gnome-tabbar-tab-hover-background: var(--toolbarbutton-hover-background);
+  --gnome-tabbar-tab-active-background: var(--toolbarbutton-active-background);
+  /* Maybe there's a better option for this? */
+   --gnome-tabbar-tab-active-hover-background: var(--toolbarbutton-hover-background);
+
+  --gnome-tabbar-fade-background: var(--lwt-accent-color);
+}
+
+/* Gives the tabbar a transition matching the headerbar */
+#TabsToolbar {
+  transition: var(--ext-theme-background-transition);
+}
+
+/* == Container tab text readability issues (see issue #464) ==
+ * Naturally this issue is 1000% worse with coloured backgrounds,
+ * Can't think of a way to keep the nice-looking tab text color and have any contrast
+ * so decided instead to make the url bar container identifier way more visible as a compromise
+ */
+
+.tab-text {
+  color: var(--lwt-text-color);
+  transition: color 100ms;
+}
+
+#userContext-icons {
+  margin: .4em 0;
+  border-radius: 1em;
+  padding: 0 .5em;
+  background-color: var(--identity-tab-color);
+}
+
+#userContext-indicator {
+  fill: var(--lwt-text-color) !important;
+}
+
+#userContext-label {
+  color: var(--lwt-text-color) !important;
+  filter: contrast(140%);
+}

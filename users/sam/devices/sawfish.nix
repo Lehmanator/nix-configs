@@ -30,14 +30,14 @@
 
   home.packages = [
     pkgs.android-tools  # Android SDK platform tools (ADB / fastboot)
-    #pkgs.python311Packages.mpd2    # Python MPD lib
+    pkgs.python311Packages.mpd2    # Python MPD lib
     #pkgs.python311Packages.pydbus  # Python D-Bus lib | dbus-python dbus-fast
-    #pkgs.python311Packages.pyowm   # Python wrapper around OpenWeatherMap web API
-    pkgs.python310Packages.mpd2    # Python MPD lib
-    pkgs.python310Packages.pydbus  # Python D-Bus lib | dbus-python dbus-fast
-    pkgs.python310Packages.pyowm   # Python wrapper around OpenWeatherMap web API
+    pkgs.python311Packages.pyowm   # Python wrapper around OpenWeatherMap web API
+    #pkgs.python310Packages.mpd2    # Python MPD lib
+    #pkgs.python310Packages.pydbus  # Python D-Bus lib | dbus-python dbus-fast
+    #pkgs.python310Packages.pyowm   # Python wrapper around OpenWeatherMap web API
     pkgs.yarn
-    pkgs.dhcp  # Provides dhclient?
+    #pkgs.dhcp  # Provides dhclient?  # Removed: end-of-life (2023-08-08)
     pkgs.dialog
     pkgs.connmanFull
     pkgs.connman-gtk

@@ -5,6 +5,7 @@
 {
   imports = [
     ./activedirectory.nix
+    ./redis.nix
     ./samba.nix
   ];
 

@@ -3,7 +3,7 @@
 , ...
 }:
 let
-  prog = "exa";
+  program = "eza";
   readable = {
     size  = true;
     date  = true;
@@ -37,8 +37,8 @@ in
 
   # --- Directory Listing -----
   home.shellAliases = {
-    l = "${prog} -a";
-    lt = "${prog} --tree";
+    l = "${program} -a";
+    lt = "${program} --tree";
   };
 
   # Sort Fields:
@@ -59,17 +59,17 @@ in
   # Blocks:
   # Exa: permissions, size, user, date, name
   # Lsd: permissions, user, group, size, date, name
-  # --- exa ---
-  programs.exa = {
+  # --- eza ---
+  programs.eza = {
     enable = true;
-    enableAliases = prog == "exa";
+    enableAliases = program == "eza";
     git = show.git;
     icons = show.icons;
     extraOptions = [
       "--level=${builtins.toString view.depth}"
       (if show.headers  then "--header"                  else " ")
       (if show.color    then "--color-scale"             else "")
-      (if show.classify then "--classify"                else "")
+      #(if show.classify then "--classify"                else "")
       (if sort.ignored  then "--git-ignore"              else "")
       (if sort.dirs == "first" then "--group-directories-first" else "")
     ];
@@ -78,7 +78,7 @@ in
   # --- lsd ---
   programs.lsd = {
     enable = true;
-    enableAliases = prog == "lsd";
+    enableAliases = program == "lsd";
     settings = {  # See: https://github.com/Peltoche/lsd#config-file-content
       blocks = [
         "permission"

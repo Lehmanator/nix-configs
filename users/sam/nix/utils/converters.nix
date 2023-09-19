@@ -1,5 +1,11 @@
-{ inputs, pkgs, ... }:
+{ inputs
+, config, lib, pkgs
+, ...
+}:
 {
+  imports = [
+  ];
+
   home.packages = [
     # --- Package Converters ---
     pkgs.bundix # Ruby gemfile bundler
@@ -19,6 +25,7 @@
     pkgs.rnix-hashes # Nix hash converter
     pkgs.setupcfg2nix # Python setup.cfg
     pkgs.yarn2nix # Convert packages.json & yarn.lock To Nix expression that downloads all deps
+    pkgs.nur.repos.ethancedwards8.firefox-addons-generator
 
     # --- Config Converters ---
     pkgs.terranix # NixOS-like Terraform JSON generator
@@ -28,4 +35,5 @@
     pkgs.iconConvTools # Tools for icon conversion specific to Nix package manager
 
   ];
+
 }

@@ -14,6 +14,8 @@
     ./normalize.nix
   ];
 
+  appstream.enable = true;
+
   # --- Nix CLI Settings -----------------------------------
   nix.settings.extra-experimental-features = [
     "auto-allocate-uids"

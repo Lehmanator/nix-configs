@@ -7,8 +7,8 @@
 }:
 {
   imports = [
-    inputs.home-extra-xhmm.homeManagerModules.console.program-variables
-    inputs.home-extra-xhmm.homeManagerModules.console.fish
+    #inputs.home-extra-xhmm.homeManagerModules.console.program-variables
+    #inputs.home-extra-xhmm.homeManagerModules.console.fish
     ./common
 
     #./bash

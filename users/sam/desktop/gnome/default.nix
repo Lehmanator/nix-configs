@@ -66,6 +66,8 @@ in
 
     ../audio.nix
     ../gtk.nix
+    ../wayland.nix
+
 
     #./admin.nix
     #./dev.nix
@@ -111,6 +113,7 @@ in
     gnome-frog
     gnome-multi-writer
     gnome-recipes
+    gtklp
   ];
 
   # https://gist.github.com/quidome/4e225db4b1611a9624d3927919f96bc6

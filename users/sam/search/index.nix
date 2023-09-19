@@ -15,7 +15,7 @@
       nocjk = false;
       loglevel = 5;
       topdirs = with config.xdg.userDirs.extraConfig; [ config.xdg.configHome  config.xdg.dataHome
-        desktop            downloads      documents
+        desktop            download       documents
         publicShare        templates
         XDG_AUTOSTART_DIR  XDG_BOOKS_DIR  XDG_CODE_DIR
         XDG_LAUNCHERS_DIR  XDG_NOTES_DIR  XDG_REPOS_DIR
@@ -24,13 +24,13 @@
         "/usr/share/doc"         # Package-installed documentation
         "/usr/local/share/doc"   # User-installed documentation
       ];
-      "${downloads}" = {
+      "${download}" = {
         "skippedNames+" = [ "*.iso" "*.nsp" "*.bin" "*.exe" "*.msi" ];
       };
-      "${XDG_CODE_DIR}" = {
+      "${extraConfig.XDG_CODE_DIR}" = {
         "skippedNames+" = [ "node_modules" "target" "result" ".git" ".svn" ".cvs" ];
       };
-      "${XDG_REPOS_DIR}" = {
+      "${extraConfig.XDG_REPOS_DIR}" = {
         "skippedNames+" = [ "node_modules" "target" "result" ".git" ".svn" ".cvs" ];
       };
     };

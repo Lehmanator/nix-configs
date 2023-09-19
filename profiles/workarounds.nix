@@ -3,7 +3,7 @@
 , ...
 }:
 {
-  nixpkgs.config.permittedInsecurePackages = [
-    "nodejs-16.20.0"
-  ];
+  #nixpkgs.config.permittedInsecurePackages = [
+  #  "nodejs-16.20.0"
+  #];
 }

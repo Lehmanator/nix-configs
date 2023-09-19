@@ -3,7 +3,10 @@
 , ...
 }:
 # Note: Must run the following to download unfree blobs for DisplayLink
-#  nix-prefetch-url --name displaylink.zip https://www.synaptics.com/sites/default/files/exe_files/2023-04/DisplayLink%20USB%20Graphics%20Software%20for%20Ubuntu5.7-EXE.zip
+# $ nix-prefetch-url --name displaylink-<VersionNoSpecialChars>.zip https://www.synaptics.com/sites/default/files/exe_files/2023-04/DisplayLink%20USB%20Graphics%20Software%20for%20Ubuntu5.7-EXE.zip
+#   Old: nix-prefetch-url --name displaylink.zip https://www.synaptics.com/sites/default/files/exe_files/2023-04/DisplayLink%20USB%20Graphics%20Software%20for%20Ubuntu5.7-EXE.zip
+#   Note: NixOS expects filename=displaylink-570.zip, not displaylink.zip
+#     nix-prefetch-url --name displaylink-570.zip https://www.synaptics.com/sites/default/files/exe_files/2023-04/DisplayLink%20USB%20Graphics%20Software%20for%20Ubuntu5.7-EXE.zip
 {
   imports = [
   ];

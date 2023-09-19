@@ -1,0 +1,55 @@
+/*
+* userChrome.css for firefox-gnome-theme compatibility with extension: `tabcenter-reborn`
+*
+* Extension:
+* - https://framagit.org/ariasuni/tabcenter-reborn (current)
+* - https://github.com/eoger/tabcenter-redux       (archived)
+*
+* Setup:
+*
+* 1. Go to `about:config`
+* 2. Set `toolkit.legacyUserProfileCustomizations.stylesheets = true`
+* 3. Install extension: tab-center-reborn
+* 4. Go to `about:addons` then click the overflow menu for `Tab Center Reborn` & select `Preferences`
+* 5. Insert this CSS into `Custom Stylesheet` field.
+*
+* Links:
+*
+* - https://framagit.org/ariasuni/tabcenter-reborn/-/wikis/home
+*
+*/
+
+/* Hide sidebar w/ only one tab open */
+#main-window[titlepreface^="[1] "] #sidebar-box[sidebarcommand="tabcenter-reborn_ariasuni-sidebar-action"] {
+  visibility: collapse;
+}
+
+/* Hide sidebar header */
+#sidebar-box #sidebar-header {
+  visibility: collapse;
+}
+
+/* Hide sidebar header for Tab-Center-Reborn only */
+#sidebar-box[sidebarcommand="tabcenter-reborn_ariasuni-sidebar-action"] #sidebar-header {
+  visibility: collapse;
+}
+
+/* Reduce height of sidebar header
+#sidebar-box #sidebar-header * {
+  margin-top: -3px !important;
+  margin-bottom: -3px !important;
+}
+
+/* Move sidebar header to bottom */
+#sidebar-box {
+  -moz-box-direction: reverse;
+}
+#sidebar-switcher-arrow {
+  transform: rotate(180deg);
+}
+
+/* Set max width of sidebar */
+#sidebar-box {
+  max-width: 192px;
+}
+

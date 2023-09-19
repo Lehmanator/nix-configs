@@ -64,25 +64,25 @@ in
         terraformls.enable = true;
         tsserver.enable = true;
         vuels.enable = true;
-        zls.enable = true;
+        #zls.enable = true;
       };
     };
 
     # lsp-lines - LSP multi-line diagnostics in-editor
     lsp-lines = {
-      enable = lib.mkDefault config.programs.nixvim.plugins.lsp.enable;
+      enable = true;       #lib.mkDefault config.programs.nixvim.plugins.lsp.enable;
       currentLine = true;  # Only show diagnostics on current line
     };
 
     # lsp-format - LSP file formatting
     lsp-format = {
-      enable = lib.mkDefault config.programs.nixvim.plugins.lsp.enable;
+      enable = true;               #lib.mkDefault config.programs.nixvim.plugins.lsp.enable;
       lspServersToEnable = "all";
     };
 
     # lspkind.nvim - Entry types for LSP Completions w/ icons
     lspkind = {
-      enable = lib.mkDefault config.programs.nixvim.plugins.lsp.enable;
+      enable = true;         #lib.mkDefault config.programs.nixvim.plugins.lsp.enable;
       mode = "symbol_text";  #"symbol_text";  # text|text_symbol|symbol_text*|symbol
       preset = "codicons";   # codicons|default   # TODO: Conditional based on style/theme icon type preference
       cmp = {

@@ -1,10 +1,7 @@
-{
-  self, inputs,
-  system,
-  host, network, repo,
-  userPrimary,
-  config, lib, pkgs,
-  ...
+{ inputs, self
+, config, lib, pkgs
+, user
+, ...
 }:
 {
   imports = [
@@ -18,6 +15,6 @@
     s = if config.security.doas.enable then "doas" else if config.security.please.enable then "please" else "sudo";
 
     # Reload the shell
-    she = "$SHELL";
+    #she = "$SHELL";
   };
 }

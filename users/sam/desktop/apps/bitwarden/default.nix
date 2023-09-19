@@ -1,14 +1,18 @@
-{
-  config, lib, pkgs,
-  host,
-  ...
+{ inputs, self
+, config, lib, pkgs
+, host
+, ...
 }:
 {
+  # TODO: Build https://github.com/Bitsteward/bitsteward
+
+
   imports = [
   ];
 
   home.packages = [
     pkgs.bitwarden
+    pkgs.nur.repos.ambroisie.bw-pass
   ];
 
   #programs.rbw.enable = true;

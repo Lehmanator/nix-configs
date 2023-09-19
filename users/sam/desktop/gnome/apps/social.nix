@@ -39,11 +39,12 @@
     pkgs.chatterino2 # TODO: Move to ../../apps/social.nix
 
     # --- Twitter -------
-    pkgs.cawbird
+    #pkgs.cawbird    # Deprecated
 
     # --- Decentralized ------------------------------------
     # --- Friendica -----
     # --- Lemmy ---------
+    #pkgs.nur.repos.colinsane.lemoa   # Broken 7/25/2023
 
     # --- Mastodon ---
     pkgs.tuba
@@ -51,7 +52,7 @@
 
     # --- Matrix --------
     pkgs.element-desktop  # TODO: Move to ../../apps/social.nix or ../../apps/chat.nix
-    pkgs.fractal-next
+    #pkgs.fractal-next
 
     # --- PixelFed ------
 

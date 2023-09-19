@@ -1,16 +1,10 @@
-{ self
-, inputs
-, host
-, network
-, repo
-, config
-, lib
-, pkgs
+{ self, inputs
+, config, lib, pkgs
 , ...
 }:
 {
   imports = [
-    inputs.home-extra-xhmm.homeManagerModules.console.less
+    #inputs.home-extra-xhmm.homeManagerModules.console.less
   ];
 
   #programs.less.options = [ #types.str

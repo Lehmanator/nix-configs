@@ -65,5 +65,14 @@
       #};                                                                        #   (Can override other attributes set by nixvim)
     };
 
+    # Note: Unnecessary because functionality now standard in Neovim.
+    #treesitter-playground = {
+    #  enable = true;           # Enable nvim-treesitter-playground
+    #  #disabledLanguages = []; # List of languages where this module should be disabled.
+    #  #package = pkgs.vimPlugins.playground; # ???
+    #  #persistQueries = null;  # Whether query persists across vim sessions. Options: null | <bool>
+    #  #updateTime = 25;        # Debounced time for highlighting nodes in the playground from source code
+    #};
+
   };
 }

@@ -30,7 +30,7 @@
         #"show-photos"
       ];
       no-comments = false;
-      photo-viewer = "org.gnome.Loupe";
+      photo-viewer = "${pkgs.lsix}/bin/lsix"; #"org.gnome.Loupe";
       use-agent = true;
       utf8-strings = true;
       verify-options = [
@@ -78,19 +78,20 @@
     enableScDaemon    = true;    # Enable scdaemon tool, enables ability to do smartcard operations
     enableSshSupport  = lib.mkIf (!config.services.gnome-keyring.enable) true; # Use GnuPG agent for SSH keys
 
-    #defaultCacheTtl= null;
-    #defaultCacheTtlSsh = null;
+    defaultCacheTtl    = 1800;
+    defaultCacheTtlSsh = 1800;
     #grabKeyboardAndMouse = true;
     #maxCacheTtl = null;
     #maxCacheTtlSsh = null;
 
     # TODO: Also set services.dbus.packages = [ pkgs.gcr ];
-    #pinentryFlavor = "gnome3"; # gtk2 | gnome3 | curses | tty | qt | emacs
+    pinentryFlavor = "tty"; #"gnome3"; # gtk2 | gnome3 | curses | tty | qt | emacs
 
-    #verbose = false;
+    verbose = true;
 
-    #extraConfig = ''
-    #'';
+    extraConfig = ''
+      allow-loopback-pinentry
+    '';
 
     # Which GPG keys (by keygrip) to expose as SSH keys
     #sshKeys = [

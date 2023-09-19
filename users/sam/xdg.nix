@@ -103,7 +103,7 @@ in
   #  - "/etc/profiles/per-user/${home.username}"
   #home.profileDirectory = "${dataDir}/nix/profiles";
   nix.extraOptions = ''
-    use-xdg-base-directories = ${config.xdg.enable}
+    use-xdg-base-directories = ${if config.xdg.enable then "true" else "false"}
   '';
 
   # --- System -----------------------------------

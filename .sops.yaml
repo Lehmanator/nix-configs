@@ -52,11 +52,12 @@
 
 keys:
 # --- User Keys ---
-- &user_slehman_gpg   DC1962D6560FF66BB16F99E0C47C146240410561
-- &user_sam_gpg       5222833B7C18B486CB7146F52D0FBE0203AE5181
+- &user_sam_gpg 5222833B7C18B486CB7146F52D0FBE0203AE5181
+- &user_slehman_gpg DC1962D6560FF66BB16F99E0C47C146240410561
+- &user_slehman_age age18990pmghcx8a7ggwwcgyu0rh97xxec3u42ardvr66an69f9v5agsrgucqu
 
 # --- Host Keys ---
-- &host_fw_gpg        68ee228d57b5b97c7f88dd33188b0095248cb8a0
+- &host_fw_gpg 68ee228d57b5b97c7f88dd33188b0095248cb8a0
 #- &host_wyse_gpg     fff
 #- &host_fajita_gpg   fff
 #- &host_flame_gpg    fff
@@ -85,200 +86,73 @@ creation_rules:
   # For host-specific secrets
 
   # --- current ---
-  # Path: ./hosts/<hostname>/secrets.yaml
-  #- path_regex: hosts/[^/]+/secrets\.yaml$
-  - path_regex: hosts/[:word:]/secrets.yaml$
-    key_groups:
+  # Path: ./secrets/hosts/<hostname>/*.(yaml|json|ini|env)
+  - path_regex: secrets/hosts?/[^/]+/[^/]+\.(ya?ml|json|ini|env)$
+    key_groups: &default
       - pgp:
         - *user_sam_gpg
         - *user_slehman_gpg
         - *host_fw_gpg
+        age:
+        - *user_slehman_age
+        #- *user_sam_age
+        #- *host_fw_age
 
-  # --- std ---
-  # Path: ./nix/<cell>/nixosConfigurations/<hostname>/secrets.yaml
-  - path_regex: ^nix/[^/]+/nixosConfigurations/[^/]+/secrets\.yaml$
-    key_groups:
+  - path_regex: secrets/hosts?/fw(/[^/]+)?\.(ya?ml|json|ini|env)$
+    key_groups: &host_fw
       - pgp:
-        - *user_sam_gpg
-        - *user_slehman_gpg
         - *host_fw_gpg
-  # Path: ./nix/<cell>/nixosConfiguration-<hostname>.yaml
-  - path_regex: ^nix/[^/]+/nixosConfiguration-[^/]+\.yaml$
-    key_groups:
-      - pgp:
-        - *user_sam_gpg
-        - *user_slehman_gpg
-        - *host_fw_gpg
+        #age:
+        #- *host_fw_age
 
   # --- User Secrets -------------------------------------------------
   # For user-specific secrets
-
-  # --- current ---
-  # Path: ./users/<username>/secrets.yaml
-  - path_regex: users/[^/]+/secrets\.yaml$
-    key_groups:
+  # Path: ./secrets/user/<username>/secrets.yaml
+  - path_regex: secrets/users?/(default|root|adm|admin|sam|s?lehman)/[^/]+\.(ya?ml|json|ini|env)$
+    key_groups: &sam_keys
       - pgp:
         - *user_sam_gpg
         - *user_slehman_gpg
+        #- *host_fw_gpg
+        age:
+        - *user_slehman_age
+        #- *user_sam_age
+        #- *host_fw_age
 
-  # --- std ---
-  # Path: ./nix/<cell>/homeConfigurations/<username>/secrets.yaml
-  - path_regex: ^nix/[^/]+/homeConfigurations/[^/]+/secrets\.yaml$
-    key_groups:
-      - pgp:
-        - *user_sam_gpg
-        - *user_slehman_gpg
-  # Path: ./nix/<cell>/homeConfiguration-<username>.yaml
-  - path_regex: ^nix/[^/]+/homeConfiguration-[^/]+\.yaml$
-    key_groups:
-      - pgp:
-        - *user_sam_gpg
-        - *user_slehman_gpg
+  # --- Repo Secrets -------------------------------------------------
+  # For secrets to be shared repo-wide
+  # Path: ./secrets/*.yaml
+  - path_regex: secrets/[^/]+\.(ya?ml|json|ini|env)$
+    key_groups: *default
 
-  ## --- Repo Secrets -------------------------------------------------
-  ## For secrets to be shared repo-wide
-  ## Path: ./secrets.yaml
-  #- path_regex: ^secrets\.yaml$
-  #  key_groups:
-  #  - pgp:
-  #    - *user_sam_gpg
-  #    - *user_slehman_gpg
+  # --- Service Secrets ----------------------------------------------
+  # For secrets to be shared amongst machines running the same service
+  # Path: ./secrets/service/<service>.yaml
+  - path_regex: secrets/services?/[^/]+\.(ya?ml|json|ini|env)$
+    key_groups: *default
+
+  # --- Network Secrets ----------------------------------------------
+  # For secrets to be shared amongst machines on the same network
+  - path_regex: secrets/networks?/[^/]+\.(ya?ml|json|ini|env)$
+    key_groups: *default
+
+  # --- Cluster Secrets ----------------------------------------------
+  # For secrets to be shared amongst machines in the same Kubernetes cluster
+  # Path: ./secrets/clusters/<clusterName>.yaml
+  - path_regex: ^secrets/clusters?/[^/]+\.(ya?ml|json|ini|env)$
+    key_groups: *default
+
+  # --- Group Secrets ------------------------------------------------
+  # For secrets to be shared amongst groups of users
+  - path_regex: secrets/groups?/[^/]+\.(ya?ml|json|ini|env)$
+    key_groups: *default
+
+  # --- Role Secrets -------------------------------------------------
+  # For secrets to be shared amongst groups of users
+  - path_regex: secrets/roles?/[^/]+\.(ya?ml|json|ini|env)$
+    key_groups: *default
   #
-  #    #age:
-  #    #- *user_sam_age
-  #    #- *user_slehman_age
-  #
-  #
-  ## --- Service Secrets ----------------------------------------------
-  ## For secrets to be shared amongst machines running the same service
-  #
-  ## --- current ---
-  ## Path: secrets/services/<service>.yaml
-  #- path_regex: secrets/services/[^/]+\.yaml$
-  #  key_groups:
-  #    - pgp:
-  #      - *user_sam_gpg
-  #      - *user_slehman_gpg
-  #
-  ## --- std ---
-  ## Path: ./nix/<cell>/nixosProfiles/<profile>.yaml
-  #- path_regex: ^nix/[^\]+/nixosProfiles/[^/]+/secrets\.yaml$
-  #  key_groups:
-  #    - pgp:
-  #      - *user_sam_gpg
-  #      - *user_slehman_gpg
-  ## Path: ./nix/<cell>/nixosProfile-<profile>.yaml
-  #- path_regex: ^nix/[^\]+/nixosProfile-[^/]+\.yaml$
-  #  key_groups:
-  #    - pgp:
-  #      - *user_sam_gpg
-  #      - *user_slehman_gpg
-  #
-  #
-  ## --- Network Secrets ----------------------------------------------
-  ## For secrets to be shared amongst machines on the same network
-  #
-  ## --- current ---
-  #- path_regex: ^secrets/networks/[^/]+\.yaml$
-  #  key_groups:
-  #    - pgp:
-  #      - *user_sam_gpg
-  #      - *user_slehman_gpg
-  #
-  ## --- std ---
-  ## Path: ./nix/<cell>/colmenaConfigurations/<network>/secrets.yaml
-  #- path_regex: ^nix/[^/]+/colmenaConfigurations/[^/]+/secrets\.yaml$
-  #  key_groups:
-  #    - pgp:
-  #      - *user_sam_gpg
-  #      - *user_slehman_gpg
-  ## Path: ./nix/<cell>/colmenaConfiguration-<network>.yaml
-  #- path_regex: ^nix/[^/]+/colmenaConfigurations/[^/]+/secrets\.yaml$
-  #  key_groups:
-  #    - pgp:
-  #      - *user_sam_gpg
-  #      - *user_slehman_gpg
-  #
-  ## --- Cluster Secrets ----------------------------------------------
-  ## For secrets to be shared amongst machines in the same Kubernetes cluster
-  #
-  ## --- current ---
-  ## Path: ./secrets/clusters/<clusterName>.yaml
-  #- path_regex: ^secrets/clusters/[^/]+\.yaml$
-  #  key_groups:
-  #    - pgp:
-  #      - *user_sam_gpg
-  #      - *user_slehman_gpg
-  ## --- std ---
-  #- path_regex: ^nix/[^/]+/clusterConfigurations/[^/]+\.yaml$
-  #  key_groups:
-  #    - pgp:
-  #      - *user_sam_gpg
-  #      - *user_slehman_gpg
-  #- path_regex: ^nix/[^/]+/clusterConfiguration-[^/]+\.yaml$
-  #  key_groups:
-  #    - pgp:
-  #      - *user_sam_gpg
-  #      - *user_slehman_gpg
-  #
-  ## --- Group Secrets ------------------------------------------------
-  ## For secrets to be shared amongst groups of users
-  ## --- current ---
-  #- path_regex: secrets/groups/[^/]+\.yaml$
-  #  key_groups:
-  #    - pgp:
-  #      - *user_sam_gpg
-  #      - *user_slehman_gpg
-  ## --- std ---
-  #- path_regex: ^nix/[^/]+/userGroups/[^/]+\.yaml$
-  #  key_groups:
-  #    - pgp:
-  #      - *user_sam_gpg
-  #      - *user_slehman_gpg
-  #- path_regex: ^nix/[^/]+/userGroup-[^/]+\.yaml$
-  #  key_groups:
-  #    - pgp:
-  #      - *user_sam_gpg
-  #      - *user_slehman_gpg
-  #
-  ## --- Role Secrets -------------------------------------------------
-  ## For secrets to be shared amongst groups of users
-  ## --- current ---
-  #- path_regex: secrets/roles/[^/]+\.yaml$
-  #  key_groups:
-  #    - pgp:
-  #      - *user_sam_gpg
-  #      - *user_slehman_gpg
-  ## --- std ---
-  #- path_regex: ^nix/[^/]+/userRoles/[^/]+\.yaml$
-  #  key_groups:
-  #    - pgp:
-  #      - *user_sam_gpg
-  #      - *user_slehman_gpg
-  #- path_regex: ^nix/[^/]+/userRole((s/)|(-))[^/]+\.yaml$
-  #  key_groups:
-  #    - pgp:
-  #      - *user_sam_gpg
-  #      - *user_slehman_gpg
-  #
-  ## --- CI/CD Secrets ------------------------------------------------
-  ## For secrets used by CI/CD pipelines
-  ## --- current ---
-  #- path_regex: secrets/ci/[^/]+\.yaml$
-  #  key_groups:
-  #    - pgp:
-  #      - *user_sam_gpg
-  #      - *user_slehman_gpg
-  #
-  ## --- std ---
-  #- path_regex: ^nix/[^/]+/ci/[^/]+\.yaml$
-  #  key_groups:
-  #    - pgp:
-  #      - *user_sam_gpg
-  #      - *user_slehman_gpg
-  #- path_regex: ^nix/[^/]+/ci[/|-][^/]+\.yaml$
-  #  key_groups:
-  #    - pgp:
-  #      - *user_sam_gpg
-  #      - *user_slehman_gpg
-  #
+  # --- CI/CD Secrets ------------------------------------------------
+  # For secrets used by CI/CD pipelines
+  - path_regex: secrets/ci/[^/]+\.(ya?ml|json|ini|env)$
+    key_groups: *default

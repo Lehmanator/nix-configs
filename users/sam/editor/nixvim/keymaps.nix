@@ -9,7 +9,7 @@
   imports = [
   ];
 
-  programs.nixvim.plugins = with config.programs.nixvim.plugins; {
+  programs.nixvim.plugins = {
 
     #dap.extensions.dap-ui = {
     #  elementMappings.<name> = {

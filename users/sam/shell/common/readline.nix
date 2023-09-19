@@ -31,8 +31,8 @@
   programs.readline = {
     enable = true;
 
-    #bindings = {
-    #};
+    bindings = {
+    };
 
     includeSystemConfig = true;
 

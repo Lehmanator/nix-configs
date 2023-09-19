@@ -1,7 +1,7 @@
 {
   allowAliases                    =  true;
   allowBroken                     =  true;
-  allowInsecure                   =  false;
+  #allowInsecure                   =  false;
   allowUnfree                     =  true;
   allowUnsupportedSystem          =  false;
   checkMeta                       =  true;   # Whether to check derivations' `meta` attr during eval time

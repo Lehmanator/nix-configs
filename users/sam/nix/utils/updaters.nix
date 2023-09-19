@@ -4,6 +4,7 @@
 }:
 {
 
+  nixpkgs.overlays = [ inputs.nvfetcher.overlays.default ];
   home.packages = [
     # --- Package Updaters ---
     pkgs.niv        # Nix project dependency management

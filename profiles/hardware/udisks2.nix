@@ -23,5 +23,11 @@
     mountOnMedia = false;  # Mount to /media instead of /run/user/${uid}
   };
   #programs.gnome-disks.enable = true;
+
+  # Mount NTFS filesystems
+  environment.systemPackages = [ pkgs.ntfs3g ];
+
+  # Mount NTFS filesystems during boot process
+  #boot.supportedFilesystems = ["ntfs"];
 }
 

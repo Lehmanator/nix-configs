@@ -11,6 +11,7 @@
     ./fonts.nix
     ./git
     ./languages/nodejs.nix
+    ./languages/python.nix
     ./nix
     ./roles/dev
     ./roles/sysadmin

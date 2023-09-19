@@ -1,36 +1,103 @@
-{ config, lib, pkgs
+{ inputs, self
+, config, lib, pkgs
+, user
+, sshguard ? true
 , ...
 }:
+let
+  internal-tlds = ["local" "lan" "wan" ]; # [ "work" "home" ];
+  keyFormats = [ "rsa" "ed25519" ];       # [ "3des" ]; # etc...
+
+  # Creates a list of FQDNs for a host given a list of domain names.
+  # TODO: Mechanism for storing network details as secrets
+  # TODO: Mechanism for collecting publicKeys & network details from a colemena swarm
+  # TODO: Add local  IP addresses (per network w/ static DNS)
+  # TODO: Add public IP addresses (per network w/ static DNS?)
+  mkListFQQN = lib.lists.map (domainName: "${config.networking.hostName}.${domainName}");
+
+  # Creates a list of FQDNs (including internal network TLDs)
+  mkListHosts = domains: ipAddrs: (mkListFQQN (domains ++ internal-tlds)) ++ ipAddrs ++ [ config.networking.hostName "localhost"];
+
+
+  mkHostKeys = with config.sops.secrets; [
+    { path = ssh-host-rsa-privkey.path;     type = "rsa";     bits = 4096; openSSHFormat = true; rounds = 100; }
+    { path = ssh-host-ed25519-privkey.path; type = "ed25519"; openSSHFormat = true; }
+  ];
+  mkKnownHostSelf = with config.sops.secrets; keyType: {
+    publicKeyFile = ssh-host-"${keyType}"-pubkey.path;
+    hostNames = mkListHosts domainNames [
+      network-home-internal-ipv4 network-home-external-ipv4 network-home-ipv6
+      network-home-internal-ipv4 network-work-external-ipv4 network-work-ipv6
+    ];
+  };
+  #mkKnownHostsSelf = lib.lists.fold (keyType: kh: { "${config.networking.hostName}-${keyType}" = mkKnownHostSelf keyType; });
+  mkKnownHostsSelf = lib.lists.fold (a: b: lib.attrsets.recursiveUpdate a (mkKnownHostsSelf b)) {} keyFormats;
+    #{ "${config.networking.hostName}-rsa" = mkKnownHostSelf "rsa";
+    #  "${config.networking.hostName}-ed25519" = mkKnownHostSelf "ed25519"; };
+  mkConfigSSH = lib.attrsets.recursiveUpdate { hostKeys = mkHostKeys []; knownHosts = mkKnownHostsSelf; };
+
+in
 {
   imports = [
+    #./server/sshguard.nix
+    #./server/fail2ban.nix
   ];
 
+  # --- Secrets ------------------------------------------------------
+  #sops.secrets.ssh-host-rsa-privkey     = { owner = "root"; group = "root"; mode = "0600"; };
+  #sops.secrets.ssh-host-rsa-pubkey      = { owner = "root"; group = "root"; mode = "0644"; };
+  #sops.secrets.ssh-host-ed25519-privkey = { owner = "root"; group = "root"; mode = "0600"; };
+  #sops.secrets.ssh-host-ed25519-pubkey  = { owner = "root"; group = "root"; mode = "0644"; };
+
   # --- SSHD ---------------------------------------------------------
+  users.users."${user}".extraGroups = ["sshd"];
   services.openssh = {
     enable = true;
-    startWhenNeeded = true;   # If set, SSHD is socket-activated, w/ systemd starting an instance for each incoming connection instead of running permanently as a daemon.
+
+    # If set, SSHD is socket-activated, w/ systemd starting an instance for each incoming connection instead of running permanently as a daemon.
+    # TODO: Enable to save CPU cycles
+    startWhenNeeded = false;
 
     # --- Host Keys ---
-    hostKeys = [ { type = "rsa";     bits = 4096; path = "/etc/ssh/ssh_host_rsa_key";     openSSHFormat = true; rounds = 100; }
-                 { type = "ed25519";              path = "/etc/ssh/ssh_host_ed25519_key";                                     }
+    hostKeys = [
+      { type = "rsa"; bits = 4096; openSSHFormat = true; rounds = 100;
+        path = "/etc/ssh/ssh_host_rsa_key";
+      }
+      { type = "ed25519";
+        path = "/etc/ssh/ssh_host_ed25519_key";
+      }
     ];
+
     # --- Remote Hosts ---
-    knownHosts = {
-      wyse = { publicKeyFile = "/etc/ssh/hosts/wyse.pub";
-               hostNames = [ "wyse" "192.168.1.2" "wyse.local" "wyse.lan" "wyse.wan" "wyse.home"
-                "wyse.piwine.com" "wyse.lehman.run"                                                   ];
-      };
-      cheetah = { publicKeyFile = "/etc/ssh/hosts/cheetah.pub";
+    # User Key: sam@wyse  = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP9rUBBvT6h8/IZVsaXbh5uOcuhnd66t+wI505S5RMUI sam@wyse";
+    # User Key: sam@flame = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCXZ0IrztYHWnKNnvhHdBd/hnVea21ZrTRLSCNurEx9jTpIa2Zll2mC+GzO4HJvp/e+s+A2rDlyUbrZCdChC96UhlDK9auhHUW+Ot2SWRiGrn3IUHXU/Gpo9737BIYq3t4te2nVMJwcJ9AutOgabJvaUGz1rjNgpwBwBAMT8Yf1Ub9NGxJDSS6TjER2Po7NymxvyDA4PiTRkNNN66ALg/Soi6YsdjczgXc/07NGA7uKuZ/xX+mSUfkI+su/R7o5az7EmAMWgfrZq3UGkxQLPNCpEANhSLMyiOyS69ni07u81VCroMvcJMqqjJxb8KLSqBimv57ev8deQzD8WmqFphm1Gfb/RUU4tKdRMXpD4YoeqAJASlDp2lehvtlc7z4iGDt/sEVE5ix+92q5paca80ZSJvP6R4lcYAOkh9hzSNOwMrbL5HhBDkdNvPj3WuwYQ11P38ambXlZ0czg7aY4Q/gxjWD0kPWhyLZhtIi3l44wxzNhjXPVrO+hMMp/g+aT9Yn57I4/TQVeB39wN/oxVMsxX+fu3Ozhe4VYJpfS2lCRZIvD05PvVJISdGEJAHWxVfAIfROBsSZuOUFj3N2hh2Z7T2Vi8fhT1f/TIWAmvNfMxJLqxE5IgKl7N5DfUHCuGU5Eyn69e4wCQJyFbv9FXG5YUECy/Qn7BZPQTbEP8aZsiw== sam@flame";
+    knownHosts = with config.networking; {
+
+      # Dynamic host to match the current config.
+      #"${hostName}" = mkKnownHostsSelf;
+
+      cheetah = { publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHr+t441NIoYT5PkWy3UXpp9aGLowvYICUPE77yupNIE u0_a263@localhost"; #publicKeyFile = "/etc/ssh/hosts/cheetah.pub";
         hostNames = [ "cheetah"            "192.168.1.101"      "10.17.1.201"
                       "cheetah.local"      "cheetah.lan"        "cheetah.wan"          "cheetah.home"
                       "cheetah.piwine.com" "cheetah.lehman.run" "cheetah.samlehman.me"                ];
       };
+      cheetah-rsa = { publicKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCn5m9GuM7DgUwKEienhfXC38a2UTWCCHsXwJSeOeXaNegYeHcPMp1NTwJ04CV6YwXUzVjehyOtDFVQ7XvnwsjOYAK1suYIw5tt2LeejTk4cYnnplHEmoxvQuc6tLK62w3/ar+Ba6OEJdf+9Mv0uJSEYliX9sF/PPce3YrdMKYesn75qyU0xvnfDTsEyXh6ldwMUfLiviY/yfYWAyOPX2LoBWskpLtsPNVQm5Fyjqzm/CjKlv2ILZm5BH6PjLb+wa1bgk0aSFcx82CNVgY7Bh9aWnN+yzbIIzn4VSHOVV/RWQk8OfIZ3F2HBJ+OPZq3fEa9PVIGNCBmzjUxlTcofcNAeVc0LAbqV5PUwhKayCS1Lh3ehUNf83+L0hle4FYtvWu84GoQRf/0OmhOiVeaK6xmvNL7zSoWurTWlMCs9FZxPGMRb5KdmOqhHjGNd82tyGYGNkykzAgs14BZvmd4h0w7J98k5UOsF0a6fZnA3AQQwfQdrB4fKsuxGoWt4pD47UQ3KjO71OwYsVREvkkeRKnYMbV3zJ2SPRU1NoL2ZgptRdRjyFu5HqXndUwoEcgWT1FC5NQqj+r0PYyRzS7qMyHG9T2KvYd3jDXZNDYUvTGJfKvf2TDJ2m2Ix001go/68EdbdpRkVRMPoi2gg/K/WbvOwhDAaRh8a+A/0JfMNoo3vQ== u0_a263@localhost";
+      };
+
+      #wyse = { publicKey = ""; #publicKeyFile = "/etc/ssh/hosts/wyse.pub";
+      #         hostNames = [ "wyse" "192.168.1.2" "wyse.local" "wyse.lan" "wyse.wan" "wyse.home"
+      #          "wyse.piwine.com" "wyse.lehman.run"                                                   ];
+      #};
+      #flame = { publicKey = ""; #publicKeyFile = "/etc/ssh/hosts/flame.pub";
+      #         hostNames = [ "flame" "192.168.1.100" "flame.local" "flame.lan" "flame.wan" "flame.home"
+      #          "flame.piwine.com" "flame.lehman.run"                                                   ];
+      #};
     };
     # --- Networking ---
-    listenAddresses = [ { addr = "192.168.3.1"; port = 22;   }
+    listenAddresses = [ #{ addr = "192.168.3.1"; port = 22;   }
                         { addr = "0.0.0.0";     port = 2223; } ];
     openFirewall = true;
-    ports = [ 2223 ];
+    ports = [ 2224 2223 ];
 
     settings = {
       GatewayPorts = "no";                 # Whether remote hosts allowed to connect to ports forwarded for client. sshd_config(5)
@@ -59,6 +126,16 @@
     #extraConfig = ''
     #'';
   };
+  #services.openssh = {
+  #  knownHosts = with config.networking; {
+  #    "${hostName}" = mkKnownHostsSelf;
+  #  };
+  #  hostKeys = mkHostKeys;
+  #  hostKeys = with config.sops.secrets; [
+  #   {path=ssh-host-privkey-rsa.path; type="rsa"; openSSHFormat=true; bits=4096; rounds=100;}
+  #   {path=ssh-host-privkey-ed25519.path; type="ed25519"; openSSHFormat=true;}
+  #  ];
+  #};
   networking.dhcpcd.persistent = true;  # Set true if machine accepts SSH connections thru DHCP interfaces & clients should be notified when it shuts down.
 
   # --- SSH Security -------------------------------------------------
@@ -91,8 +168,8 @@
   #};
 
   # --- PAM ----------------------------------------------------------
-  security.pam.enableSSHAgentAuth = true;  # Enable sudo logins if user's SSH agent provides a key present in ~/.ssh/authorized_keys. Allows machines to exclusively use SSH keys instead of passwords.
-  security.pam.p11.enable = true;          # Enables P11 PAM (pam_p11) module. If set, users can login w/ SSH keys & PKCS#11 tokens. See: https://github.com/OpenSC/pam_p11
+  #security.pam.enableSSHAgentAuth = true;  # Enable sudo logins if user's SSH agent provides a key present in ~/.ssh/authorized_keys. Allows machines to exclusively use SSH keys instead of passwords.
+  #security.pam.p11.enable = true;          # Enables P11 PAM (pam_p11) module. If set, users can login w/ SSH keys & PKCS#11 tokens. See: https://github.com/OpenSC/pam_p11
   #security.pam.services.<name>.sshAgentAuth = false; # If set, calling user's SSH agent is used to authenticate against the keys in their ~/.ssh/authorized_keys. Useful for sudo on password-less remote systems.
 
   # --- ussh ---

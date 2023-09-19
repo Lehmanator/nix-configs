@@ -1,30 +1,25 @@
-{ self
-, inputs
-, system
-, hosts
-, userPrimary
-, config
-, lib
-, pkgs
+{ self, inputs
+, user ? "sam"
+, config, lib, pkgs
 , ...
 }:
-let
-  zsh-set-tab-title = ''
-    autoload -Uz add-zsh-hook
-    function xterm_title_precmd() {
-      print -Pn -- '\e]2;%n@%m %~\a'
-      [[ "$TERM" == 'screen'* ]] && print -Pn -- '\e_\005{g}%n\005{-}@\005{m}%m\005{-} \005{B}%~\005{-}\e\\'
-    }
-    function xterm_title_preexec () {
-      print -Pn -- '\e]2;%n@%m %~ %# ' && print -n -- "${"{(q)1}"}\a"
-     [[ "$TERM" == 'screen'* ]] && { print -Pn -- '\e_\005{g}%n\005{-}@\005{m}%m\005{-} \005{B}%~\005{-} %# ' && print -n -- "${"{(q)1}"}\e\\"; }
-    }
-    if [[ "$TERM" == (Eterm*|alacritty*|aterm*|foot*|gnome*|konsole*|kterm*|putty*|rxvt*|screen*|wezterm*|tmux*|xterm*) ]]; then
-      add-zsh-hook -Uz precmd  xterm_title_precmd
-      add-zsh-hook -Uz preexec xterm_title_preexec
-    fi
-  '';
-in
+#let
+#  zsh-set-tab-title = ''
+#    autoload -Uz add-zsh-hook
+#    function xterm_title_precmd() {
+#      print -Pn -- '\e]2;%n@%m %~\a'
+#      [[ "$TERM" == 'screen'* ]] && print -Pn -- '\e_\005{g}%n\005{-}@\005{m}%m\005{-} \005{B}%~\005{-}\e\\'
+#    }
+#    function xterm_title_preexec () {
+#      print -Pn -- '\e]2;%n@%m %~ %# ' && print -n -- "${"{(q)1}"}\a"
+#     [[ "$TERM" == 'screen'* ]] && { print -Pn -- '\e_\005{g}%n\005{-}@\005{m}%m\005{-} \005{B}%~\005{-} %# ' && print -n -- "${"{(q)1}"}\e\\"; }
+#    }
+#    if [[ "$TERM" == (Eterm*|alacritty*|aterm*|foot*|gnome*|konsole*|kterm*|putty*|rxvt*|screen*|wezterm*|tmux*|xterm*) ]]; then
+#      add-zsh-hook -Uz precmd  xterm_title_precmd
+#      add-zsh-hook -Uz preexec xterm_title_preexec
+#    fi
+#  '';
+#in
 {
   imports = [
     ../common
@@ -41,7 +36,7 @@ in
     # --- Keybindings ---
     # TODO: Create global user/system-wide keymap setting & set these options correspondingly
     defaultKeymap = "viins";
-    prezto.editor.keymap = "vi";
+    #prezto.editor.keymap = "vi";
 
     # --- Directories ---
     # TODO: Use XDG User Dirs if graphical environment (only?)
@@ -91,14 +86,19 @@ in
     };
 
     # --- Completion ---
+    enableAutosuggestions = true;
     enableCompletion = true;
+    completionInit = ''
+      autoload -U compinit && compinit
+      autoload -U bashcompinit && bashcompinit
+    '';
     prezto.editor.dotExpansion = true; # Auto expand ... to ../..
 
     # --- Initialization -------------------------------------
     # TODO: Move cdls to user zsh config
     #initExtra = ''
     #  function cdls() {
-    #    ${pkgs.exa}/bin/exa -a --icons --git --group-directories-first
+    #    ${pkgs.eza}/bin/eza -a --icons --git --group-directories-first
     #  }
     #  chpwd_functions=(cdls)
     #'';
@@ -125,16 +125,29 @@ in
 
     # --- Plugins --------------------------------------------
     # TODO: Fetch plugins using nvfetcher & nixpkgs overlay ?
-    prezto.enable = true;
+    prezto.enable = false;
     plugins = [
-      { name = "zsh-nix-shell"; file = "nix-shell.plugin.zsh";   # Use ZSH inside nix-shell
-        src = pkgs.fetchFromGitHub { owner = "chisui"; repo = "zsh-nix-shell"; rev = "v0.7.0"; hash = "sha256-oQpYKBt0gmOSBgay2HgbXiDoZo5FoUKwyHSlUrOAP5E="; };
-      }
+      #{ name = "zsh-nix-shell"; file = "nix-shell.plugin.zsh";   # Use ZSH inside nix-shell
+      #  src = pkgs.fetchFromGitHub { owner = "chisui"; repo = "zsh-nix-shell"; rev = "v0.7.0"; hash = "sha256-oQpYKBt0gmOSBgay2HgbXiDoZo5FoUKwyHSlUrOAP5E="; };
+      #}
     ];
 
     # ---- Extras --------------------------------------------
     prezto.extraFunctions = [ "zargs" "zmv" ]; # Extra ZSH functions to load. See: `$ man zshcontrib`
-    prezto.extraModules = [ "attr" "stat" ]; # Extra ZSH modules to load.   See: `$ man zshmodules`
+    initExtra = ''
+      autoload -Uz zargs zcp zln zmv
+      zmodload zsh/attr
+      zmodload zsh/computil
+      zmodload zsh/mathfunc
+      zmodload zsh/parameter
+      zmodload zsh/nearcolor
+      zmodload zsh/stat
+      zmodload zsh/termcap
+      zmodload zsh/terminfo
+      zmodload zsh/watch
+      zmodload zsh/zpty
+    '';
+    #prezto.extraModules = [ "attr" "stat" ]; # Extra ZSH modules to load.   See: `$ man zshmodules`
     prezto.pmodules = [
       "environment"
       "terminal"
@@ -158,6 +171,11 @@ in
     ];
   };
 
-  home.sessionVariables.ZDOTDIR = "${config.home.homeDirectory}/${config.programs.zsh.dotDir}";
+  #home.sessionVariables.ZDOTDIR = "${config.home.homeDirectory}/${config.programs.zsh.dotDir}";
 
+  home.packages = [
+    pkgs.zsh-nix-shell
+    pkgs.any-nix-shell
+    pkgs.nix-zsh-completions
+  ];
 }

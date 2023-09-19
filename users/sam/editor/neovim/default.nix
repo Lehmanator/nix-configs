@@ -63,6 +63,7 @@
   # --- Nixvim ---------------------------------------------
   programs.nixvim = {
     enable = true;
+    defaultEditor = true;
     options = {
       # --- Lines ---
       number = true;
@@ -115,9 +116,10 @@
   };
 
   # TODO: Replace with `inputs.home-extra-xhmm.homeManagerModules.console.program-variables`
-  home.sessionVariables = {
-    EDITOR = "nvim";
-  };
+  #home.sessionVariables = {
+  #  EDITOR = "nvim";
+  #};
+
   home.packages = [
     pkgs.fd
     #pkgs.mercurial  # Fixes VCS healthcheck

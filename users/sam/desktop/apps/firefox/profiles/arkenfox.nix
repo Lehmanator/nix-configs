@@ -1,8 +1,9 @@
-{ self, inputs, config, lib, pkgs,
-  profile,
-  useFlake ? true,
-  setDefault ? false,
-  ...
+{ self, inputs
+, config, lib, pkgs
+, profile
+, useFlake ? true
+, setDefault ? false
+, ...
 }:
 
 # https://github.com/arkenfox/user.js
@@ -103,7 +104,11 @@ in
   #https://github.com/dwarfmaster/arkenfox-nixos
   #https://arkenfox.dwarfmaster.net
   #imports = [ inputs.arkenfox.hmModules.default ];
-  imports = lib.mkIf useFlake [ inputs.arkenfox.hmModules.default ];
+  imports = [
+    lib.lists.optional useFlake    inputs.arkenfox.hmModules.default
+    lib.lists.optional (!useFlake) inputs.nur.repos.ataraxiasjel.arkenfox-userjs
+  ];
+
   programs.firefox = {
     arkenfox = lib.mkIf useFlake {
       enable = true;

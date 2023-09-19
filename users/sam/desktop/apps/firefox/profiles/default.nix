@@ -1,6 +1,9 @@
-{ self, inputs,
-  config, lib, pkgs,
-  ...
+{ self
+, inputs
+, config
+, lib
+, pkgs
+, ...
 }:
 #let
 #  #foldImport = with lib.lists; t: (fold (x: y: unique (x ++ import "../${t}/${y}.nix")) "default");
@@ -34,6 +37,11 @@
 #    userContent    = foldImportStr "content" imports;
 #  } // overrides;
 #in
+let
+  ff-extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+    #bitwarden
+  ];
+in
 {
   # TODO: `../styles/chrome/gnome.nix`        # firefox-gnome-theme port to Nix
   # TODO: `../styles/chrome/mobile.nix`       # firefox-mobile-css  port to Nix, read global option
@@ -51,7 +59,8 @@
     name = "Default";
 
     #bookmarks      = import ../bookmarks;
-    extensions     = import ../extensions { inherit pkgs; };
+    #extensions     = import ../extensions { inherit inputs pkgs; };
+    extensions = ff-extensions;
     #search.default = "DuckDuckGo";
     #settings       = import ../settings;
   };
@@ -61,12 +70,14 @@
     id = 1;
     name = "Testing";
 
-    bookmarks      = import ../bookmarks;
-    extensions     = import ../extensions { inherit pkgs; };
+    bookmarks = import ../bookmarks;
+    #extensions     = import ../extensions { inherit inputs pkgs; };
+    extensions = ff-extensions;
     search.default = "DuckDuckGo";
-    search.engines = import ../search     { inherit pkgs; };
-    settings       = import ../settings;
-    userChrome     = import ../styles/chrome ;
-    userContent    = import ../styles/content;
+    search.engines = import ../search { inherit inputs pkgs; };
+    settings = import ../settings;
+    userChrome = import ../styles/chrome;
+    userContent = import ../styles/content;
   };
+
 }

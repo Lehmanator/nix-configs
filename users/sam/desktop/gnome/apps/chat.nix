@@ -20,7 +20,7 @@
     #pkgs.pidgin       # TODO: Add libpurple/pidgin plugins
 
     # --- Matrix -------------
-    pkgs.fractal-next
+    #pkgs.fractal-next
 
     # --- Signal -------------
     pkgs.flare-signal

@@ -1,14 +1,17 @@
-{ inputs, config, lib, pkgs, ... }: {
+{ inputs
+, config, lib, pkgs
+, ...
+}: {
   imports = [
     inputs.nixvim.nixosModules.nixvim
     #inputs.neovim-nightly.nixosModules.
   ];
 
-  nixpkgs.overlays = [ 
+  nixpkgs.overlays = [
     #inputs.neovim-nightly.overlays.default
   ];
 
-  environment.sessionVariables."EDITOR" = "nvim";
+  #environment.sessionVariables."EDITOR" = "nvim";
 
   programs.neovim.withNodeJs = true;
   programs.neovim.withPython3 = true;

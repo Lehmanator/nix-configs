@@ -4,7 +4,7 @@
 }:
 {
   imports = [
-    ./borders.nix
+    ./border.nix
     ./symbols.nix
     ./windows.nix
   ];

@@ -13,7 +13,7 @@
     settings = {
       accept-flake-config = true;
       experimental-features = [ "nix-command" "flakes" "repl-flake" ];
-      use-flake-registry = true; #config.nix.settings.use-registries;
+      #use-flake-registry = true; #config.nix.settings.use-registries;
     };
   };
 

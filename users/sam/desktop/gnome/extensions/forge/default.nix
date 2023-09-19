@@ -39,7 +39,7 @@
     #  #  @import url("gnome.css");
     #  #'';
     #};
-    forge-style = { target = "forge/stylesheet/forge/stylesheet.css"; source = ./testing.css; };
+    forge-style = { target = "forge/stylesheet/forge/stylesheet.css"; source = ./testing2.css; };
     #forge-style-gnome = {
     #  target = "forge/stylesheet/forge/gnome.css";
     #  source = ./gnome.css;

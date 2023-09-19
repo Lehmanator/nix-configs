@@ -284,7 +284,9 @@
       # - packages: nixvim.${system}.?
       # -     libs: nixvim.lib.mkNixvim?
       nixvim = {
-        url = "github:pta2002/nixvim";
+        #url = "github:pta2002/nixvim";
+        #url = "github:NixNeovim/NixNeovim";
+        url = "github:nix-community/nixvim";
         inputs.nixpkgs.follows = "nixpkgs";
       };
 
@@ -325,6 +327,9 @@
       #  url = "github:misterio77/nix-colors";
       #};
 
+      wirenix = {
+        url = "sourcehut:~msalerno/wirenix";
+      };
 
       # --- Modules: Secrets -----------------------------------------
 
@@ -814,6 +819,7 @@
             nix-netboot-serve.nixosModules.nix-netboot-serve
             nix-serve-ng.nixosModules.default
             nixvim.nixosModules.nixvim
+            #nixvim.nixosModules.nixos
             nur.nixosModules.nur
             robotnix.nixosModule
             robotnix.nixosModules.attestation-server
@@ -825,6 +831,7 @@
             systemd-vaultd.nixosModules.systemdVaultd
             vaultModule.nixosModule
             vscode-server.nixosModule
+            wirenix.nixosModules.default
           ];
           darwin = [
             agenix.nixDarwinModules.default
@@ -842,6 +849,7 @@
             nix-index-database.hmModules.nix-index { programs.nix-index-database.comma.enable = true; }
             nixos-flatpak.homeManagerModules.default
             nixpkgs-android.hmModule
+            #nixvim.nixosModules.home-manager
             nixvim.homeManagerModules.nixvim
             sops-nix.homeManagerModules.sops
             #stylix.homeManagerModules.stylix
@@ -870,7 +878,6 @@
           nix = [
             self.overlays.default
             agenix.overlays.default
-            comma.overlays.default
             fenix.overlays.default
             harmonia.overlays
             kubenix.overlays.default
@@ -968,9 +975,12 @@
           nix-data.nixosModules.${system}.nix-data
           nix-index.nixosModules.nix-index {programs.nix-index-database.comma.enable=true;}
           nixvim.nixosModules.nixvim
+          #nixvim.nixosModules.nixos
           nur.nixosModules.nur
           agenix.nixosModules.default
           sops-nix.nixosModules.sops
+          #disko.nixosModules.disko
+          #{ disko.enableConfig = false; }
           home.nixosModules.home-manager { home-manager = {
             #(import ./profiles/home-manager.nix { inherit self inputs system; users.sam = (import ./users/sam {}); });
             sharedModules = [

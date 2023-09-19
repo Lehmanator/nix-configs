@@ -9,7 +9,9 @@
     ./styles
   ];
 
+  # --- Nixvim Default Config ---
   programs.nixvim = {
+    defaultEditor = true;
     luaLoader.enable = true;
   };
 }

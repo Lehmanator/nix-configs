@@ -2,6 +2,12 @@
 , config, lib, pkgs
 , ...
 }:
+# Clear fprint storage
+# - https://github.com/nixvital/fprint-clear
+#
+# $ sudo nix develop "github:nixvital/fprint-clear
+# $ fprint-clear
+#
 {
   imports = [
   ];

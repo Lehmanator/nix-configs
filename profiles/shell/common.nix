@@ -1,14 +1,10 @@
 ## Shell-agnostic configuration
 ##
 ##
-{
-  self,
-  inputs,
-  system,
-  host, network, repo,
-  userPrimary,
-  config, lib, pkgs,
-  ...
+{ inputs, self
+, config, lib, pkgs
+, user
+, ...
 }:
 {
   imports = [
@@ -49,14 +45,13 @@
 
   # --- command-not-found ---
   # TODO: Find nix-related program from old config that was better
-  # - nix-index ?
   # - manix ?
   programs.command-not-found.enable = false;
 
   # --- thefuck: command corrector ---
-  programs.thefuck = {
-    enable = true;
-    alias = "fuck";
-  };
+  #programs.thefuck = {
+  #  enable = true;
+  #  alias = "fuck";
+  #};
 
 }

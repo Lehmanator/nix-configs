@@ -14,7 +14,11 @@
   home.packages = [
 
     # --- Documentation ------
-    pkgs.manix # Nix documentation CLI
+    pkgs.manix # Fast documentation searcher for Nix
+    pkgs.vimPlugins.telescope-manix   # Manix Telescope plugin
+    pkgs.nur.repos.mrcpkgs.manix-fzf  # Manix FZF interface
+    #(lib.lists.optional config.programs.neovim.enable pkgs.vimPlugins.telescope-manix)   # Manix Telescope plugin
+    #(lib.lists.optional config.programs.fzf.enable    pkgs.nur.repos.mrcpkgs.manix-fzf)  # Manix FZF interface
     pkgs.nix-doc # Nix documentation CLI
 
     # --- Diffs ---

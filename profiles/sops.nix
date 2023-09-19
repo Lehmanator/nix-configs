@@ -11,6 +11,8 @@
 
   # --- Packages ---------------------------------------------------------------
   environment.systemPackages = [
+    pkgs.age
+    pkgs.rage
     pkgs.sops
     pkgs.kustomize-sops
     pkgs.terraform-providers.sops

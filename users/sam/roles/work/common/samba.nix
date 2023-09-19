@@ -21,7 +21,7 @@ in {
   ];
 
   home.packages = [
-    pkgs.cifs-utils
+    #pkgs.cifs-utils
   ];
 
   systemd.user.automounts = lib.attrsets.recursiveMerge lib.lists.map (name: {
@@ -48,7 +48,8 @@ in {
         Where = "/run/media/${config.home.username}/PIWC-${name}";
         Options = [
           "rw"
-          "uid=${config.home.username}"
+          #"uid=${config.home.username}"
+          "uid=1000"
           "gid=100"
           "credentials=${credsDir}/samba-piwc-${name}.cred" #"/etc/samba/private/piwc-public.cred"
           "iocharset=utf8"

@@ -93,6 +93,11 @@ in
       pkgs.inconsolata-nerdfont
       pkgs.maple-mono-NF
       pkgs.meslo-lgs-nf
+
+      #pkgs.nur.repos.instantos.firacodenerd
+      #pkgs.nur.repos.meain.victor-mono-nf
+      pkgs.nur.repos.minion3665.monocraft
+      pkgs.nur.repos.sigprof.cosevka
     ];
 
 }

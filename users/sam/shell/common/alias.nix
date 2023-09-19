@@ -49,6 +49,9 @@ in
     # --- Home-Manager -----------
     hm = mkIf config.programs.home-manager.enable "home-manager";
 
+    # --- Network ----------------
+    ip-address = "curl ipconfig.me";
+
     # --- Development ------------
   };
 

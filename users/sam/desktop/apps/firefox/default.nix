@@ -30,11 +30,17 @@
     #./settings/arkenfox.nix                 # Security/privacy enhanced Firefox distro
   ];
 
-  programs.firefox.enable = true;
+  programs.firefox = {
+    enable = true;
 
-  #programs.firefox.enableGnomeExtensions = true;
-  programs.firefox.package = pkgs.firefox.override {
-    cfg.enableGnomeExtensions = config.gtk.enable;  #config.services.xserver.desktopManager.gnome.enable;
-    cfg.enableTridactylNative = true;
+    #enableGnomeExtensions = true;
+    package = pkgs.firefox.override {
+      cfg.enableGnomeExtensions = config.gtk.enable;  #config.services.xserver.desktopManager.gnome.enable;
+      cfg.enableTridactylNative = true;
+    };
   };
+
+  home.packages = lib.mkIf config.gtk.enable [
+    pkgs.nur.repos.federicoschonborn.firefox-gnome-theme
+  ];
 }

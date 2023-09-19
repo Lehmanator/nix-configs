@@ -25,6 +25,8 @@
   ];
 
   home.packages = [
+    pkgs.nur.repos.xddxdd.space-cadet-pinball-full-tilt
+
     #pkgs.goldberg-emu     # Program that emulates steam online features TODO: Move to ./steam.nix
   ];
 

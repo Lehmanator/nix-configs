@@ -7,12 +7,21 @@
 # TODO: `./pass.nix`                   # Pass password manager
 # TODO: `./keepass.nix`                # Pass password manager
 
-{ #self, inputs,
-  #config, lib,
-  pkgs,
-  ...
-}: with pkgs.nur.repos.rycee.firefox-addons;
+{ inputs
+, pkgs
+#, config, lib, pkgs
+, ...
+}:
+with pkgs.nur.repos.rycee.firefox-addons;
+#with inputs.nur.repos.rycee.firefox-addons;
 [
+  #inputs.nur.repos.bandithedoge.firefoxAddons.downthemall
+  #inputs.nur.repos.bandithedoge.firefoxAddons.sponsorblock
+  #inputs.nur.repos.colinsane.firefox-extensions.bypass-paywalls-clean
+  #pkgs.nur.repos.bandithedoge.firefoxAddons.downthemall
+  #pkgs.nur.repos.bandithedoge.firefoxAddons.sponsorblock
+  #pkgs.nur.repos.colinsane.firefox-extensions.bypass-paywalls-clean  # Error: Invalid meta attrset
+
   # --- User Scripts/Styles ---
   firemonkey   #greasemonkey tampermonkey violentmonkey
   #stylus
@@ -37,7 +46,7 @@
   localcdn  #localcdn-fork-of-decentraleyes  #localcdn
   multi-account-containers
   noscript
-  pay-by-privacy-com  # Generate virtual card number in 1 click at checkout
+  #pay-by-privacy-com  # Generate virtual card number in 1 click at checkout
   privacy-badger  #privacy-badger17  # Block trackers
   privacy-pass     # Skip captchas/etc. in privacy-respecting way
   #privacy-possum  # falsify tracking data (pair w/ adnauseam)

@@ -53,4 +53,10 @@
 
   # Sensors
   hardware.sensor.iio.enable = true;
+
+  # Peripherals
+  hardware.logitech.wireless = {
+    enable = true;
+    enableGraphical = true;
+  };
 }

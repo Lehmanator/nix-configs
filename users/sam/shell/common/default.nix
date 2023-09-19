@@ -1,13 +1,6 @@
-{ self
-, inputs
-, system
-, host
-, network
-, repo
-, userPrimary
-, config
-, lib
-, pkgs
+{ self, inputs
+, user ? "sam"
+, config, lib, pkgs
 , ...
 }:
 {
@@ -26,14 +19,18 @@
   };
 
   # --- Direnv / DevShells ----
-  services.lorri.enable = true;
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
   };
+  programs.command-not-found.enable = !config.programs.direnv.enable;
+  services.lorri.enable = !config.programs.direnv.nix-direnv.enable;
 
   # --- Prompt ---------------
-  programs.starship.enable = true;
+  programs.starship = {
+    enable = true;
+    enableTransience = true;
+  };
 
   # --- Packages -------------
   home.packages = [

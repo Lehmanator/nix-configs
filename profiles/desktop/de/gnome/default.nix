@@ -38,8 +38,11 @@
 
   # --- Styles -------------------------------------------------------
   # Qt uses GNOME styles
-  qt.platformTheme = "gnome";
-  #qt.style = "adwaita-dark";
+  qt = {
+    enable = true;
+    platformTheme = "gnome";
+    style = "adwaita-dark";
+  };
 
   # --- Services -----------------------------------------------------
   # --- GNOME ----------------

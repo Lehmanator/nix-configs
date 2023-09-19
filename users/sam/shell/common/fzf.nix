@@ -21,9 +21,9 @@ in
     #};
 
     #defaultCommand = "fd --type f";
-    defaultOptions = [
-      "--height ${height}" "--border"
-    ];
+    #defaultOptions = [
+    #  "--height ${height}" "--border"
+    #];
 
     changeDirWidgetCommand = "fd --type d";
     changeDirWidgetOptions = [
@@ -58,5 +58,7 @@ in
 
   home.packages = [
     pkgs.sysz  # systemd fzf UI  # TODO: Conditionally load for Linux systems
+    pkgs.ytfzf     # FZF UI to search & watch YouTube videos
+    #pkgs.fzf-obc  # Completion script adding FZF over all known bash completion functions
   ];
 }
