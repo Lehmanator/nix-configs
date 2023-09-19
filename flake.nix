@@ -797,6 +797,7 @@
       #networks = import ./networks.nix;
       #machines = import ./machines.nix;
       #users = import ./users.nix;
+      testingvar = false;
 
       defaults = with inputs; {
         userPrimary = "sam";
@@ -818,8 +819,7 @@
             nix-minecraft.nixosModules.minecraft-servers
             nix-netboot-serve.nixosModules.nix-netboot-serve
             nix-serve-ng.nixosModules.default
-            nixvim.nixosModules.nixvim
-            #nixvim.nixosModules.nixos
+            nixvim.nixosModules.nixvim  # nix-community/nixvim
             nur.nixosModules.nur
             robotnix.nixosModule
             robotnix.nixosModules.attestation-server
@@ -837,7 +837,7 @@
             agenix.nixDarwinModules.default
             home.darwinModule
             nix-index-database.darwinModules.nix-index { programs.nix-index-database.comma.enable = true; }
-            nixvim.nixDarwinModules.default
+            nixvim.nixDarwinModules.nixvim
             #stylix.darwinModules.stylix
           ];
           hm-only   = [];
@@ -849,7 +849,6 @@
             nix-index-database.hmModules.nix-index { programs.nix-index-database.comma.enable = true; }
             nixos-flatpak.homeManagerModules.default
             nixpkgs-android.hmModule
-            #nixvim.nixosModules.home-manager
             nixvim.homeManagerModules.nixvim
             sops-nix.homeManagerModules.sops
             #stylix.homeManagerModules.stylix
@@ -974,8 +973,7 @@
           ./hosts/fw
           nix-data.nixosModules.${system}.nix-data
           nix-index.nixosModules.nix-index {programs.nix-index-database.comma.enable=true;}
-          nixvim.nixosModules.nixvim
-          #nixvim.nixosModules.nixos
+          #nixvim.nixosModules.nixvim  # nix-community/nixvim
           nur.nixosModules.nur
           agenix.nixosModules.default
           sops-nix.nixosModules.sops
@@ -989,6 +987,7 @@
               arkenfox.hmModules.default
               nix-index.hmModules.nix-index {programs.nix-index-database.comma.enable=true;}
               nixpkgs-android.hmModule
+              #nixvim.homeManagerModules.nixvim
               sops-nix.homeManagerModules.sops
             ];
             useGlobalPkgs = false;

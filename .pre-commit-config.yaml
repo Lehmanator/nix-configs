@@ -1,0 +1,19 @@
+# https://pre-commit.com
+repos:
+  # Find dead Nix code
+  # https://github.com/astro/deadnix
+  - repo: https://github.com/astro/deadnix
+    rev: v1.0.0
+    #frozen: v1.0.0
+    #rev: ID # frozen: VERSION
+    hooks:
+      - id: deadnix
+        #args: [--edit] # Uncomment to automatically modify files
+        stages: [commit]
+
+  -   repo: https://github.com/pre-commit/pre-commit-hooks
+      rev: v2.3.0
+      hooks:
+      -   id: check-yaml
+      -   id: end-of-file-fixer
+      -   id: trailing-whitespace

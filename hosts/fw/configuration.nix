@@ -24,6 +24,7 @@
     ../../profiles/boot
     ../../profiles/desktop
     ../../profiles/desktop/de/gnome
+    #../../profiles/editor
     ../../profiles/hardware/displaylink.nix
     #../../profiles/hardware/fprintd.nix
     ../../profiles/hardware/fwupd.nix
@@ -52,6 +53,7 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+  #system.stateVersion = "23.11"; # Did you read the comment?
   system.stateVersion = "23.05"; # Did you read the comment?
 
   # --- Cross-compilation ---
@@ -101,7 +103,7 @@
 
   # TODO: Move most of these to home-manager profile (default user?)
   environment.systemPackages = with pkgs; [
-    bat exa gcc lsd neofetch
+    bat eza gcc lsd neofetch
     #ripgrep
     tealdeer gnumake lynis
   ];
