@@ -13,7 +13,7 @@
   imports = [
   ];
 
-  networking.networkManager.dns = lib.mkDefault "systemd-resolved"; # man NetworkManager.conf(5)
+  networking.networkmanager.dns = lib.mkDefault "systemd-resolved"; # man NetworkManager.conf(5)
 
   services.resolved = {
     enable = true;
@@ -30,6 +30,9 @@
       "1.1.1.1#one.one.one.one"
       "1.0.0.1#one.one.one.one" # TODO: IPv6 of Cloudflare DNS
       #"9.9.9.9"                # TODO: IPv6 of Cloud9     DNS
+      "192.168.1.1"
+      "10.17.1.81"
+      "127.0.0.1"
     ];
 
     # Extra config to append to resolved.conf

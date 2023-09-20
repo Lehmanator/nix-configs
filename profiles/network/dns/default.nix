@@ -6,7 +6,8 @@
 }:
 {
   imports = [
-    ./adblock.nix
+    #./adblock.nix
+    #./encrypted.nix
     #./avahi.nix     # Incompatible w/ systemd-resolved
     ./resolvconf.nix
     ./resolved.nix

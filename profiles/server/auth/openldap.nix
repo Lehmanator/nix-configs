@@ -1,7 +1,12 @@
-{ self, inputs,
-  config, lib, pkgs,
-  host, network, repo,
-  ...
+{ self
+, inputs
+, config
+, lib
+, pkgs
+, host
+, network
+, repo
+, ...
 }:
 let
   tld = "me";
@@ -16,6 +21,7 @@ in
   services.openldap = {
     enable = true;
     package = pkgs.openldap;
+    #configDir = "/var/lib/openldap/slapd.d";  # Overrides all NixOS settings
 
     user = "openldap";
     group = "openldap";
@@ -24,12 +30,12 @@ in
 
     settings = {
       attrs.olcLogLevel = [ "stats" ];
-      includes = [];  # LDIF files to include after the parent's attributes but before its children
+      includes = [ ]; # LDIF files to include after the parent's attributes but before its children
       children = {
         "cn=schema".includes = [
-           "${pkgs.openldap}/etc/schema/core.ldif"
-           "${pkgs.openldap}/etc/schema/cosine.ldif"
-           "${pkgs.openldap}/etc/schema/inetorgperson.ldif"
+          "${pkgs.openldap}/etc/schema/core.ldif"
+          "${pkgs.openldap}/etc/schema/cosine.ldif"
+          "${pkgs.openldap}/etc/schema/inetorgperson.ldif"
         ];
         "olcDatabase={-1}frontend" = {
           attrs = {
@@ -63,6 +69,7 @@ in
       };
     };
 
+    # LDAP Directory Contents - LDIFs, but in Nix config!
     declarativeContents = {
       "dc=${domainPrefix},dc=${tld}" = ''
         dn= dn: dc=${domainPrefix},dc=${tld}

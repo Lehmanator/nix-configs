@@ -13,8 +13,7 @@
   ];
 
   # Make the Tailscale command usable to users
-  environment.systemPackages = [ pkgs.tailscale ]
-    ++ lib.optionals config.services.xserver.desktopManager.gnome.enable [
+  environment.systemPackages = lib.mkIf config.services.xserver.desktopManager.gnome.enable [
     pkgs.gnomeExtensions.tailscale-status
     pkgs.gnomeExtensions.taildrop-send
     #pkgs.trayscale
@@ -41,4 +40,5 @@
     # Allow Tailscale ports through the firewall
     firewall.allowedUDPPorts = [ config.services.tailscale.port ];
   };
+
 }

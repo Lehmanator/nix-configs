@@ -1,11 +1,20 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, self
+, config
+, lib
+, pkgs
 , ...
 }:
 {
+  imports = [
+  ];
+
   networking.rxe = {
     enable = true;
-    interfaces = [ "eth0" ];
+    interfaces = [
+      "wlp166s0"
+      #"eth0"
+    ];
   };
 
 }

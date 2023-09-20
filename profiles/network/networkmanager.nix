@@ -10,9 +10,8 @@
   imports = [
   ];
 
-  networking.networkManager = {
+  networking.networkmanager = {
     enable = true;
-    enableFccUnlock = true;
     enableStrongSwan = true;
 
     #appendNammeservers = [

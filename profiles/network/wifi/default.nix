@@ -11,7 +11,7 @@
     #./backends/iwd.nix
     #./backends/wpa_supplicant.nix
     #./hotspot.nix
-    ./networks
+    #./networks
   ];
 
   hardware.wirelessRegulatoryDatabase = true; # Load regulatory DB at boot
@@ -22,7 +22,7 @@
       dbusControlled = true; # Use D-Bous interface to control wifi netowrks. Only needed when using NetworkManager / connman
 
       # TODO: Create agenix / sops-nix config for Wi-Fi SSIDs & PSKs
-      environmentFile = "/run/secrets/wireless.env"; # Path to file containing environment vars referenced in config (wrap vars in @ signs)
+      #environmentFile = "/run/secrets/wireless.env"; # Path to file containing environment vars referenced in config (wrap vars in @ signs)
       fallbackToWPA2 = true;
       scanOnLowSignal = true; # Scan for better networks on low signal on current SSID. Better connection, worse battery
       userControlled = {
@@ -31,7 +31,7 @@
       };
     };
 
-    networkManager.wifi = {
+    networkmanager.wifi = {
       backend = lib.mkDefault "wpa_supplicant"; # wpa_supplicant | iwd
       macAddress = lib.mkDefault "preserve"; # stable | preserve | permanent | random | <MAC_address>
       #powersave = lib.mkDefault null;
@@ -54,5 +54,6 @@
 
   # Allow primary user to control networking without privilege escalation
   users.users."${user}".extraGroups = [ config.networking.wireless.userControlled.group ];
+  #users.users."${user}".extraGroups = ["network"];
 
 }

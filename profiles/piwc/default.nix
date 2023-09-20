@@ -19,33 +19,35 @@ in
     #./wireguard.nix
   ];
 
-  networking.hosts = {
-    "${extern-ipv4}"     = [ "PIWC"                           "PIWC.wan"                  "PI.wan" ];
-    "${prefix-ipv4}.80"  = [ "TEMPDC"                       "TEMPDC.lan"            "TEMPDC.local" ];
-    "${prefix-ipv4}.81"  = [ "PIW-DC01"                   "PIW-DC01.lan"          "PIW-DC01.local"
-                             "PI"                               "PI.lan"                "PI.local"
-                             "dc01"                           "dc01.lan"              "dc01.local"
-                             "ds01"                           "ds01.lan"              "ds01.local" ];
-    "${prefix-ipv4}.1"   = [ "switch-creekside0" "switch-creekside0.lan" "switch-creekside0.local" ];
-    "${prefix-ipv4}.2"   = [ "switch-creekside1" "switch-creekside1.lan" "switch-creekside1.local" ];
-    "${prefix-ipv4}.4"   = [ "router-creekside"   "router-creekside.lan"  "router-creekside.local" ];
-    "${prefix-ipv4}.101" = [ "router-islehouse"   "router-islehouse.lan"  "router-islehouse.local" ];
-    "${prefix-ipv4}.136" = [ "router-bottling"     "router-bottling.lan"   "router-bottling.local" ];
-    "${prefix-ipv4}.248" = [ "PIWINE-FACTS"           "PIWINE-FACTS.lan"      "PIWINE-FACTS.local" ];
-    "${prefix-ipv4}.115" = [ "DESKTOP-SALES"         "DESKTOP-SALES.lan"     "DESKTOP-SALES.local" ];
-    "${prefix-ipv4}.111" = [ "DESKTOP-R8NO4AD"     "DESKTOP-R8NO4AD.lan"   "DESKTOP-R8NO4AD.local"
-                             "DESKTOP-COUNTER"     "DESKTOP-COUNTER.lan"   "DESKTOP-COUNTER.local" ];
+  networking = {
+    hosts = {
+      "${extern-ipv4}"     = [ "PIWC"                           "PIWC.wan"                  "PI.wan" ];
+      "${prefix-ipv4}.80"  = [ "TEMPDC"                       "TEMPDC.lan"            "TEMPDC.local" ];
+      "${prefix-ipv4}.81"  = [ "PIW-DC01"                   "PIW-DC01.lan"          "PIW-DC01.local"
+                               "PI"                               "PI.lan"                "PI.local"
+                               "dc01"                           "dc01.lan"              "dc01.local"
+                               "ds01"                           "ds01.lan"              "ds01.local" ];
+      "${prefix-ipv4}.1"   = [ "switch-creekside0" "switch-creekside0.lan" "switch-creekside0.local" ];
+      "${prefix-ipv4}.2"   = [ "switch-creekside1" "switch-creekside1.lan" "switch-creekside1.local" ];
+      "${prefix-ipv4}.4"   = [ "router-creekside"   "router-creekside.lan"  "router-creekside.local" ];
+      "${prefix-ipv4}.101" = [ "router-islehouse"   "router-islehouse.lan"  "router-islehouse.local" ];
+      "${prefix-ipv4}.136" = [ "router-bottling"     "router-bottling.lan"   "router-bottling.local" ];
+      "${prefix-ipv4}.248" = [ "PIWINE-FACTS"           "PIWINE-FACTS.lan"      "PIWINE-FACTS.local" ];
+      "${prefix-ipv4}.115" = [ "DESKTOP-SALES"         "DESKTOP-SALES.lan"     "DESKTOP-SALES.local" ];
+      "${prefix-ipv4}.111" = [ "DESKTOP-R8NO4AD"     "DESKTOP-R8NO4AD.lan"   "DESKTOP-R8NO4AD.local"
+                               "DESKTOP-COUNTER"     "DESKTOP-COUNTER.lan"   "DESKTOP-COUNTER.local" ];
+    };
+    domain = "pi.wine";
+    search = [
+      "piwine.com"
+      "pi.wine"
+      "pi.local"
+      "dev.pi.wine"
+      "beta.pi.wine"
+      "prod.pi.wine"
+      "test.pi.wine"
+    ];
   };
-  networking.domain = "pi.wine";
-  networking.search = [
-    "piwine.com"
-    "pi.wine"
-    "pi.local"
-    "dev.pi.wine"
-    "beta.pi.wine"
-    "prod.pi.wine"
-    "test.pi.wine"
-  ];
 
   services.onedrive.enable = true;
   services.davmail = {

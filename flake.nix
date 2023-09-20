@@ -809,17 +809,19 @@
             disko.nixosModules.disko
             nixos-flatpak.nixosModules.default
             harmonia.nixosModules.harmonia
-            home.nixosModules.home-manager { home-manager.sharedModules = hm-nixos ++ hm-always; }
+            home.nixosModules.home-manager
+            { home-manager.sharedModules = hm-nixos ++ hm-always; }
             impermanence.nixosModules.impermanence
             kubenix.nixosModules.kubenix
             lanzaboote.nixosModules.lanzaboote
             musnix.nixosModules.musnix
             #nix-data.nixosModules.${system}.nix-data
-            nix-index-database.nixosModules.nix-index { programs.nix-index-database.comma.enable = true; }
+            nix-index-database.nixosModules.nix-index
+            { programs.nix-index-database.comma.enable = true; }
             nix-minecraft.nixosModules.minecraft-servers
             nix-netboot-serve.nixosModules.nix-netboot-serve
             nix-serve-ng.nixosModules.default
-            nixvim.nixosModules.nixvim  # nix-community/nixvim
+            nixvim.nixosModules.nixvim # nix-community/nixvim
             nur.nixosModules.nur
             robotnix.nixosModule
             robotnix.nixosModules.attestation-server
@@ -836,17 +838,19 @@
           darwin = [
             agenix.nixDarwinModules.default
             home.darwinModule
-            nix-index-database.darwinModules.nix-index { programs.nix-index-database.comma.enable = true; }
+            nix-index-database.darwinModules.nix-index
+            { programs.nix-index-database.comma.enable = true; }
             nixvim.nixDarwinModules.nixvim
             #stylix.darwinModules.stylix
           ];
-          hm-only   = [];
-          hm-nixos  = [];
+          hm-only = [ ];
+          hm-nixos = [ ];
           hm-always = [
             agenix.homeManagerModules.default
             arkenfox.hmModules.default
             home-extra-xhmm.homeManagerModules.all
-            nix-index-database.hmModules.nix-index { programs.nix-index-database.comma.enable = true; }
+            nix-index-database.hmModules.nix-index
+            { programs.nix-index-database.comma.enable = true; }
             nixos-flatpak.homeManagerModules.default
             nixpkgs-android.hmModule
             nixvim.homeManagerModules.nixvim
@@ -894,7 +898,7 @@
             patchelf.overlays.default
             rnix-parser.overlay
             #terrasops.overlay
-            { devour-flake = self.callPackage inputs.flake-devour {}; }
+            { devour-flake = self.callPackage inputs.flake-devour { }; }
           ];
         };
       };
@@ -903,17 +907,18 @@
       #let pkgs = import nixpkgs { inherit system; overlays = [ self.overlays.default ];};)
     flake-utils.lib.eachDefaultSystem
       (system:
-        let pkgs = nixpkgs.legacyPackages.${system} // {
-          overlays = [
-            self.overlays.default
-            inputs.nixpkgs-mozilla.overlay
-            inputs.nuenv.overlays.default # https://determinate.systems/posts/nuenv
-            inputs.nur.overlay
-            inputs.nurl.overlay
-            inputs.nix-alien.overlays.default
-            #inputs.terrasops.overlay
-          ];
-        };
+        let
+          pkgs = nixpkgs.legacyPackages.${system} // {
+            overlays = [
+              self.overlays.default
+              inputs.nixpkgs-mozilla.overlay
+              inputs.nuenv.overlays.default # https://determinate.systems/posts/nuenv
+              inputs.nur.overlay
+              inputs.nurl.overlay
+              inputs.nix-alien.overlays.default
+              #inputs.terrasops.overlay
+            ];
+          };
         in
         rec {
           packages = this.packages pkgs; # // { inherit (pkgs) terrasops; };
@@ -933,23 +938,25 @@
             #programs.alejandra.enable = true;
           };
         }) // (std.growOn
-        { # --- Declare projects & component types here ---
-          inherit inputs;
-          # blockTypes:
-          # - std:  anything, arion, containers, data, devshells, files, functions, installables, microvms, nixago, nomadJobManifests, pkgs, runnables
-          # - hive: colmenaConfigurations, darwinConfigurations, diskoConfigurations, homeConfigurations, nixosConfigurations
-          cellsFrom = ./cells;
-          cellBlocks = [
-            (std.blockTypes.installables "packages"  {ci.build = true;})
-            (std.blockTypes.devshells    "devshells" {ci.build = true;})
-          ];
-        }
-        { # --- Declare collected output structure here ---
-          # TODO: Create `nixosModules`, `homeManagerModules`, & `flakeModules`
-          devShells = std.harvest self [ "flatpakify" "devshells" ];
-          packages  = std.harvest self [ "flatpakify" "packages"  ];
-        }) //
       {
+        # --- Declare projects & component types here ---
+        inherit inputs;
+        # blockTypes:
+        # - std:  anything, arion, containers, data, devshells, files, functions, installables, microvms, nixago, nomadJobManifests, pkgs, runnables
+        # - hive: colmenaConfigurations, darwinConfigurations, diskoConfigurations, homeConfigurations, nixosConfigurations
+        cellsFrom = ./cells;
+        cellBlocks = [
+          (std.blockTypes.installables "packages" { ci.build = true; })
+          (std.blockTypes.devshells "devshells" { ci.build = true; })
+        ];
+      }
+      {
+        # --- Declare collected output structure here ---
+        # TODO: Create `nixosModules`, `homeManagerModules`, & `flakeModules`
+        devShells = std.harvest self [ "flatpakify" "devshells" ];
+        packages = std.harvest self [ "flatpakify" "packages" ];
+      }) //
+    {
       overlays.default = final: prev: (nixpkgs.lib.composeExtensions this.overlay final prev);
 
       #darwinConfigurations.m2 = nixpkgs.lib.darwinSystem {
@@ -967,53 +974,73 @@
       #  ];
       #};
 
-      nixosConfigurations.fw = nixpkgs.lib.nixosSystem {
-        inherit system;
-        modules = with inputs; [
-          ./hosts/fw
-          nix-data.nixosModules.${system}.nix-data
-          nix-index.nixosModules.nix-index {programs.nix-index-database.comma.enable=true;}
-          #nixvim.nixosModules.nixvim  # nix-community/nixvim
-          nur.nixosModules.nur
-          agenix.nixosModules.default
-          sops-nix.nixosModules.sops
-          #disko.nixosModules.disko
-          #{ disko.enableConfig = false; }
-          home.nixosModules.home-manager { home-manager = {
-            #(import ./profiles/home-manager.nix { inherit self inputs system; users.sam = (import ./users/sam {}); });
-            sharedModules = [
-              #impermanence.nixosModules.home-manager
-              #(import ./users/default/nixos {};)
-              arkenfox.hmModules.default
-              nix-index.hmModules.nix-index {programs.nix-index-database.comma.enable=true;}
-              nixpkgs-android.hmModule
-              #nixvim.homeManagerModules.nixvim
-              sops-nix.homeManagerModules.sops
-            ];
-            useGlobalPkgs = false;
-            useUserPackages = true;
-            extraSpecialArgs = { inherit self inputs system; user=defaults.userPrimary; };
-            users.sam = import ./users/sam; # ./users/sam/home.nix
-          }; }
-        ];
-        specialArgs = { inherit self inputs system; user=defaults.userPrimary; };
+      nixosConfigurations = {
+        fw = nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = with inputs; [
+            ./hosts/fw
+            nix-data.nixosModules.${system}.nix-data
+            nix-index.nixosModules.nix-index
+            { programs.nix-index-database.comma.enable = true; }
+            #nixvim.nixosModules.nixvim  # nix-community/nixvim
+            nur.nixosModules.nur
+            agenix.nixosModules.default
+            sops-nix.nixosModules.sops
+            #disko.nixosModules.disko
+            #{ disko.enableConfig = false; }
+            home.nixosModules.home-manager
+            {
+              home-manager = {
+                #(import ./profiles/home-manager.nix { inherit self inputs system; users.sam = (import ./users/sam {}); });
+                sharedModules = [
+                  #impermanence.nixosModules.home-manager
+                  #(import ./users/default/nixos {};)
+                  arkenfox.hmModules.default
+                  nix-index.hmModules.nix-index
+                  { programs.nix-index-database.comma.enable = true; }
+                  nixpkgs-android.hmModule
+                  #nixvim.homeManagerModules.nixvim
+                  sops-nix.homeManagerModules.sops
+                ];
+                useGlobalPkgs = false;
+                useUserPackages = true;
+                extraSpecialArgs = { inherit self inputs system; user = defaults.userPrimary; };
+                users.sam = import ./users/sam; # ./users/sam/home.nix
+              };
+            }
+          ];
+          specialArgs = { inherit self inputs system; user = defaults.userPrimary; };
+        };
+
+        fajita = nixpkgs.lib.nixosSystem {
+          system = "aarch64-linux";
+          modules = with inputs; [
+            { _module.args = { inherit inputs; }; }
+            (import "${inputs.nixos-mobile}/lib/configuration.nix" { device = "oneplus-fajita"; })
+            ./hosts/fajita/configuration.nix
+            snowflake.nixosModules.snowflake
+            nix-data.nixosModules."aarch64-linux".nix-data
+            nix-index.nixosModules.nix-index
+            { programs.nix-index-database.comma.enable = true; }
+            nixpkgs-gnome-mobile.nixosModules.gnome-mobile
+          ];
+          specialArgs = { inherit self inputs system; user = defaults.userPrimary; };
+        };
+
+        srl-dc01 = nixpkgs.lib.nixosSystem {
+          system = "aarch64-linux";
+          modules = with inputs; [
+            #{ _module.args = { inherit inputs; }; }
+            agenix.nixosModules.default
+            ./hosts/srl-dc01
+          ];
+          specialArgs = { inherit self inputs system; user = defaults.userPrimary; };
+        };
       };
 
-      nixosConfigurations.fajita = nixpkgs.lib.nixosSystem {
-        system = "aarch64-linux";
-        modules = with inputs; [
-          { _module.args = { inherit inputs; }; }
-          (import "${inputs.nixos-mobile}/lib/configuration.nix" { device = "oneplus-fajita"; })
-          ./hosts/fajita/configuration.nix
-          snowflake.nixosModules.snowflake
-          nix-data.nixosModules."aarch64-linux".nix-data
-          nix-index.nixosModules.nix-index {programs.nix-index-database.comma.enable=true;}
-          nixpkgs-gnome-mobile.nixosModules.gnome-mobile
-        ];
-        specialArgs = { inherit self inputs system; user=defaults.userPrimary;  };
-      };
+
       fajita-fastboot-images = inputs.self.nixosConfigurations.fajita.config.mobile.outputs.android.android-fastboot-images;
-      fajita-flashable-zip   = inputs.self.nixosConfigurations.fajita.config.mobile.outputs.android.android-flashable-zip;
+      fajita-flashable-zip = inputs.self.nixosConfigurations.fajita.config.mobile.outputs.android.android-flashable-zip;
 
       #homeConfigurations = with inputs; {
       #  sam = home.lib.homeManagerConfiguration {

@@ -32,8 +32,6 @@
     ../../profiles/hardware/usb.nix
     ../../profiles/locale
     ../../profiles/network
-    ../../profiles/network/wireguard/mullvad.nix
-    ../../profiles/network/wireguard/sea1.nix
     ../../profiles/nixos
     ../../profiles/piwc
     ../../profiles/polkit.nix

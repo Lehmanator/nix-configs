@@ -8,6 +8,5 @@
   imports = [
   ];
 
-  networking.networkManager.firewallBackend = "nftables"; # iptables | nftables | none
 
 }

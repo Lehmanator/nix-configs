@@ -14,7 +14,6 @@
   };
   services.resolved.enable = false;
 
-
   services.dnscrypt-proxy2 = {
     enable = true;
     settings = {

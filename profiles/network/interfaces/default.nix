@@ -4,7 +4,7 @@
 {
   imports = [
     ./eth0.nix
-    ./wlan0.nix
+    #./wlan0.nix
   ];
 
   # Config for each network interface
