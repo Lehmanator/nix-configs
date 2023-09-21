@@ -3,12 +3,13 @@
 , config
 , lib
 , pkgs
+, user ? "sam"
 , ...
 }:
 {
   imports = [
     ./dns
-    ./firewall
+    ./firewall.nix
     ./networkmanager.nix
     ./rxe.nix
     ./systemd-networkd.nix
@@ -35,25 +36,42 @@
   ];
 
   networking = {
-    tcpcrypt.enable = true; # Enable opportunistic TCP encryption. If other end supports, then encrypt traffic, else cleartext.
-    tempAddresses = "default"; # default=gen temp ipv6 addrs & use as source addrs in routing. enabled=gen temp ipv6 addrs, but still use EUI-64 addresses as source addresses
+    # IPv6 <-> IPv4 address generation & translation
+    # default=gen temp ipv6 addrs & use as source addrs in routing.
+    # enabled=gen temp ipv6 addrs, but still use EUI-64 addresses as source addresses
+    tempAddresses = lib.mkDefault "default";
 
     #timeServers = [ "0.nixos.pool.ntp.org" "1.nixos.pool.ntp.org" "2.nixos.pool.ntp.org" "3.nixos.pool.ntp.org" ];
-
+    # DHCP - Dynamically assign IP addresses
     useDHCP = lib.mkDefault true;
-    useHostResolvConf = !config.services.resolved.enable; # In containers, whether to use the resolv.conf supplied by the host
-    usePredictableInterfaceNames = lib.mkDefault false; # Guarantees unique interface names like using `enp0s13f0u4u4u3` or `wlp166s0` instead of `wlan0` or `enp0s1` instead of `eth0`. Benefit is that unique names means that if devices are detected/added in inconsistent order, interface names don't get assigned to a different device between boots/rebuilds.
+
+    # In containers, whether to use the `/etc/resolv.conf` supplied by the host
+    #  Note: Some reason why you may want to disable this, but cant remember why
+    useHostResolvConf = !config.services.resolved.enable;
+
+    # Guarantees unique interface names.
+    #  e.g. naming `eth0` -> `enp0s13f0u4u4u3` or `wlan0` -> `wlp166s0` instead of `wlan0` / `enp0s1` instead of `eth0`.
+    #  Benefit is that unique names means that if devices are detected/added in inconsistent order,
+    #   interface names don't get assigned to a different device between boots/rebuilds.
+    usePredictableInterfaceNames = lib.mkDefault false;
 
   };
 
+  # NetworkManager GTK4 lib
   # TODO: Conditional based on system desktop environment
-  environment.systemPackages = lib.mkIf (config.services.xserver.desktopManager.gnome.enable || config.services.xserver.displayManager.gdm.enable) [
+  environment.systemPackages = with config.services.xserver; lib.mkIf (desktopManager.gnome.enable || displayManager.gdm.enable) [
     pkgs.libnma-gtk4
   ];
 
+  # Enable opportunistic TCP encryption.
+  #  If other end supports, then encrypt traffic, else cleartext.
+  #  Note: Not reliable to ensure TCP encryption, but upgrades some insecure TCP
+  networking.tcpcrypt.enable = true;
   users = lib.mkIf config.networking.tcpcrypt.enable {
-    users.tcpcryptd.group = "tcpcryptd";
+    # Also create group
     groups.tcpcryptd = { };
+    users.tcpcryptd.group = "tcpcryptd";
+    users.${user}.extraGroups = [ "tcpcryptd" ];
   };
 
 }

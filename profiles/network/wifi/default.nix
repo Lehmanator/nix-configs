@@ -14,8 +14,6 @@
     #./networks
   ];
 
-  hardware.wirelessRegulatoryDatabase = true; # Load regulatory DB at boot
-
   networking = {
     # Wi-Fi networking config to apply to all connectino managers (NetworkManager, Conman, networkd, etc.)
     wireless = {
@@ -51,9 +49,5 @@
     #};
 
   };
-
-  # Allow primary user to control networking without privilege escalation
-  users.users."${user}".extraGroups = [ config.networking.wireless.userControlled.group ];
-  #users.users."${user}".extraGroups = ["network"];
 
 }

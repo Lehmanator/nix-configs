@@ -1,5 +1,8 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, self
+, config
+, lib
+, pkgs
 , ...
 }:
 {
@@ -36,27 +39,39 @@
   networking.useNetworkd = true;
   networking.useDHCP = lib.mkDefault true;
 
-  #systemd.network = {
-  #  enable = true;
-  #
-  #  # Links - Reconfigures existing network Devices
-  #  # - Note: Actually implemented by udev, not systemd-networkd
-  #  # - Note: Executed by udev & only applied on boot
-  #  # - Docs: https://www.freedesktop.org/software/systemd/man/systemd.link.html
-  #  #links = {
-  #  #};
-  #
-  #  # Network Devices - Creates virtual network devices
-  #  # - Note: Doesnt modify properties (e.g. MTU, VLAN ID, VXLAN ID, Wireguard Peers) of existing netdevs
-  #  # - Docs: https://www.freedesktop.org/software/systemd/man/systemd.netdev.html
-  #  #netdevs = {
-  #  #};
-  #
-  #  # Networks - Configures network devices
-  #  # - Docs: https://www.freedesktop.org/software/systemd/man/systemd.network.html
-  #  #networks = {
-  #  #};
-  #
-  #};
+  services.networkd-dispatcher.enable = true;
+
+  systemd.network = {
+    enable = true;
+    config = {
+      networkConfig = {
+        SpeedMeter = true;
+        ManageForeignRoutes = false;
+        ManageForeignRoutesPolicyRules = false;
+      };
+      #dhcpV4Config = {};
+      #dhcpV6Config = {};
+      #routeTables = {};
+    };
+    wait-online.enable = !config.networking.networkmanager.enable;
+
+    # Links - Reconfigures existing network Devices
+    # - Note: Actually implemented by udev, not systemd-networkd
+    # - Note: Executed by udev & only applied on boot
+    # - Docs: https://www.freedesktop.org/software/systemd/man/systemd.link.html
+    #links = {
+    #};
+
+    # Network Devices - Creates virtual network devices
+    # - Note: Doesnt modify properties (e.g. MTU, VLAN ID, VXLAN ID, Wireguard Peers) of existing netdevs
+    # - Docs: https://www.freedesktop.org/software/systemd/man/systemd.netdev.html
+    #netdevs = {
+    #};
+
+    # Networks - Configures network devices
+    # - Docs: https://www.freedesktop.org/software/systemd/man/systemd.network.html
+    #networks = {
+    #};
+  };
 
 }
