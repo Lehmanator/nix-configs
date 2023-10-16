@@ -7,11 +7,14 @@
     ./crypto
     ./desktop/apps
     ./desktop/gnome
+    ./devices
+    ./devices/android/samsung.nix
     ./editor
     ./fonts.nix
     ./git
     ./languages/nodejs.nix
     ./languages/python.nix
+    ./languages/rust.nix
     ./nix
     ./roles/dev
     ./roles/sysadmin
