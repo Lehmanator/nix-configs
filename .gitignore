@@ -6,16 +6,33 @@ result
 .nur/
 
 # --- Keys ---
+*.cacert
+*.cert
+*.crt
 *.key
+*.keyfile
 *.luks
 *.lukskey
 *.privkey
 *.pubkey
 *.pub
+*.p7
 *.p11
+*.pem
 *.pks
 *.pkcs
-*.p7
+*.secret
+id_rsa
+id_ed25519
+id_rsa_*
+id_ed25519_*
+id_*_rsa*
+id_*_ed25519*
+ssh_*_key
+**/private-keys*.d/
+**/pubring.kbx
+**/random_seed
+**/trustdb.gpg
 
 # --- Private Info ---
 hosts.nix
