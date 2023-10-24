@@ -26,8 +26,15 @@
   imports = [
     #inputs.agenix.nixosModules.age
     #inputs.sops-nix.nixosModules.sops
-    ./mullvad.nix
+    #./backends/generic.nix
+    #./backends/networkmanager.nix
+    #./backends/systemd-networkd.nix
+    #./peers/mullvad.nix
+    #./peers/mullvad-ashburn-adblock.nix
+    #./peers/sea1.nix
     ./sea1.nix
+    #./services/wgautomesh.nix
+    #./services/wg-netmanager.nix
   ];
 
   # Fixes IPv6-based exit node servers
