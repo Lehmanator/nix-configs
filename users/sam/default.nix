@@ -1,5 +1,8 @@
-{ self , inputs
-, config , lib , pkgs
+{ self
+, inputs
+, config
+, lib
+, pkgs
 , ...
 }:
 {
@@ -7,8 +10,6 @@
     ./crypto
     ./desktop/apps
     ./desktop/gnome
-    ./devices
-    ./devices/android/samsung.nix
     ./editor
     ./fonts.nix
     ./git
@@ -27,8 +28,10 @@
     # TODO: Conditionally load ./nixos.nix when system is NixOS-based
 
     # --- Devices ---
+    ./devices
     #./devices/flame.nix
     #./devices/cheetah.nix
+    #./devices/fajita.nix
     ./devices/pinetime.nix
     ./devices/sawfish.nix
   ];
@@ -54,7 +57,7 @@
   programs.ripgrep.enable = true;
   home.packages = [
     #pkgs.ripgrep-all   # Fast grep w/ ability to search in PDFs, eBooks, Office docs, archives, & more
-    pkgs.repgrep       # Interactive replacer for ripgrep
+    pkgs.repgrep # Interactive replacer for ripgrep
 
     #pkgs.python311Full
     #pkgs.python312
@@ -62,6 +65,6 @@
     #pkgs.python310
 
     pkgs.ntfs3g
-    pkgs.rustup
+    #pkgs.rustup
   ];
 }

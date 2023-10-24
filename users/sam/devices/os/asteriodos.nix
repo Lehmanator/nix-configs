@@ -6,31 +6,9 @@
 , ...
 }:
 {
-  # --- Huawei Watch 2 (sawfish) ---
-  # https://asteroidos.org/watches/sawfish
-  #
-  # echo "1. Navigate to: Settings -> System -> About -> Build number"
-  # echo "2. Tap 'Build number' 7 times"
-  # echo "3. Navigate to: Settings -> Developer options -> ADB debugging"
-  # echo "4. Enable ADB debugging"
-  #
-  # read -p "Press any [ENTER] to continue" varname
-  #
-  # adb reboot bootloader
-  # fastboot oem unlock
-  #
-  # echo "5. Hold button to select 'yes'"
-  #
-  # read -p "Press any [ENTER] to continue" varname
-  #
-  # fastboot flash userdata ~/Downloads/asteroid-image-sawfish.ext4
-  # fastboot flash boot ~/Downloads/zImage-dtb-sawfish.fastboot
-  # fastboot continue
-  #
-
+  # https://asteroidos.org
+  # https://wiki.asteroidos.org
   imports = [
-    #./os/android-wear.nix
-    #./os/asteriodos.nix
   ];
 
   home.packages = [
