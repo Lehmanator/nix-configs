@@ -12,7 +12,7 @@
 
   boot.loader.systemd-boot = {
     enable = true;
-    configurationLimit = 100;  # Max generations in boot menu. Prevent boot partition from running out of space
+    configurationLimit = 50;  # Max generations in boot menu. Prevent boot partition from running out of space
     consoleMode = "keep";      # keep (keep mode selected by firmware) | max (pick highest-numbered available mode) | auto (auto-pick using heuristics) | "2" (1st non-standard mode provided by firmware if any) | "1" (80x50) | "0" (UEFI 80x25)
     #editor = !harden;          # Allow editing bootloader entries. Recommended to disable. Default=true for compat. Hardening: disable
     editor = false;          # Allow editing bootloader entries. Recommended to disable. Default=true for compat. Hardening: disable
