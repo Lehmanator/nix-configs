@@ -26,3 +26,6 @@ users.nix
 # --- Logging ---
 **/logs
 *.log
+
+# --- Cache ---
+.*.cache
