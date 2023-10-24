@@ -1,5 +1,8 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, self
+, config
+, lib
+, pkgs
 , ...
 }:
 {
@@ -10,19 +13,24 @@
   programs.geary.enable = true;
 
   # --- Evolution ---
-  #programs.evolution.enable = true;
-  #programs.evolution.plugins = [
-  #  pkgs.evolution-ews
-  #];
+  # TODO: Fix EWS support for Microsoft Exchange & Microsoft Graph API
+  #programs.evolution = {
+  #  enable = true;
+  #  plugins = [pkgs.evolution-ews];
+  #};
   #services.gnome.evolution-data-server = {
   #  enable = true;
-  #  plugins = [
-  #    pkgs.evolution-ews
-  #  ];
+  #  plugins = [pkgs.evolution-ews];
   #};
 
-  # --- Thunderbird ---
   environment.systemPackages = [
-    pkgs.thunderbird
+    # TODO: Package erooster-mail/email-client
+    # https://github.com/erooster-mail/email-client
+
+    # --- Thunderbird ---
+    # TODO: Package thunderbird-gnome-theme (a la firefox-gnome-theme)
+    pkgs.thunderbird # TODO: Move to desktop-agnostic config file for adding apps
+
   ];
+
 }

@@ -4,8 +4,11 @@
 #   - All GNOME packages:  default.nix
 #   - GNOME Installer Env: installer.nix
 #   - Update GNOME:        updater.nix
-{ self, inputs
-, config, lib, pkgs
+{ self
+, inputs
+, config
+, lib
+, pkgs
 , ...
 }:
 #lib.attrsets.recursiveUpdate
@@ -34,7 +37,7 @@
   environment.systemPackages = lib.mkIf config.programs.dconf.enable [ pkgs.dconf2nix ]; # Convert dconf settings to Nix
 
   # Exclude broken packages
-  environment.gnome.excludePackages = [];
+  environment.gnome.excludePackages = [ ];
 
   # --- Styles -------------------------------------------------------
   # Qt uses GNOME styles
@@ -46,17 +49,26 @@
 
   # --- Services -----------------------------------------------------
   # --- GNOME ----------------
-  services.xserver.desktopManager.gnome.enable = true;
+  services.xserver.desktopManager.gnome = {
+    # Enable GNOME Shell
+    enable = true;
+
+    # Override timeout before showing app's '<App> is not responding' dialog (5s -> 20s)
+    extraGSettingsOverrides = ''
+      [org.gnome.mutter]
+      check-alive-timeout=20000
+    '';
+  };
   services.gnome = {
-    at-spi2-core.enable = true;
+    at-spi2-core.enable = true; # Accessibility services / assistive technologies for GNOME platform
     core-developer-tools.enable = true;
     core-os-services.enable = true;
     core-shell.enable = true;
     core-utilities.enable = true;
-    gnome-settings-daemon.enable = true;
-    sushi.enable = true;
-    tracker.enable = true;
-    tracker-miners.enable = true;
+    gnome-settings-daemon.enable = true; # Settings storage daemon (for gsettings & programs/apps being able to react to settings changes)
+    sushi.enable = true; # Nautilus file-manager file quick previewer
+    tracker.enable = true; # Local search engine & metadata storage
+    tracker-miners.enable = true; # Indexing services for tracker search engine & metadata storage
   };
 
   # --- Filesystems ----------

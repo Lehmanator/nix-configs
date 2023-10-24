@@ -9,7 +9,10 @@
   imports = [
   ];
 
+  services.gnome.gnome-remote-desktop.enable = true;
+
   environment.systemPackages = [
+    #pkgs.gnome-connections
     pkgs.remmina
     pkgs.gnomeExtensions.remmina-search-provider
   ];
@@ -19,5 +22,4 @@
     [org.gnome.mutter.wayland]
     xwayland-grab-access-rules "['Remmina', 'xfreerdp']"
   '';
-
 }

@@ -1,22 +1,29 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, self
+, config
+, lib
+, pkgs
 , user ? "sam"
 , ...
 }:
 {
   imports = [
+    #./rygel.nix
   ];
 
   # --- NetworkManager ---
   networking.networkmanager.enable = true;
-  users.users."${user}".extraGroups = lib.mkIf config.networking.networkmanager.enable ["netdev" "networkmanager" "nm-openconnect"];
+  users.users."${user}".extraGroups = [ "netdev" ] ++ lib.optionals config.networking.networkmanager.enable [
+    "networkmanager"
+    "nm-openconnect"
+  ];
 
-  services.gnome.glib-networking.enable = true;
-  services.gnome.gnome-online-accounts.enable = true;
-  services.gnome.gnome-online-miners.enable = config.services.gnome.gnome-online-accounts.enable && config.services.gnome.tracker-miners.enable;
-
-  # Remote Desktop
-  services.gnome.gnome-remote-desktop.enable = true;
-  services.gnome.gnome-user-share.enable = true;
+  services.gnome = {
+    glib-networking.enable = true; # GLib network extensions
+    gnome-online-accounts.enable = true; # Daemon providing single-sign-on framework for GNOME desktop.
+    gnome-online-miners.enable = with config.services.gnome; gnome-online-accounts.enable && tracker-miners.enable; # Index content from remote account services
+    gnome-remote-desktop.enable = true; # Remote Desktop
+    gnome-user-share.enable = true; # User-level file-sharing service for GNOME.
+  };
 
 }
