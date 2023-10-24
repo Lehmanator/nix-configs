@@ -1,5 +1,8 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, self
+, config
+, lib
+, pkgs
 , ...
 }:
 {
@@ -17,5 +20,19 @@
       nvram = [ "/run/libvirt/nix-ovmf/AAVMF_CODE.fd:/run/libvirt/nix-ovmf/AAVMF_VARS.fd", "/run/libvirt/nix-ovmf/OVMF_CODE.fd:/run/libvirt/nix-ovmf/OVMF_VARS.fd" ]
     '';
   };
+
+  # TODO: Move distrobox / chroot stuff to a different file (./virt/chroot.nix)
+  # TODO: Add Atoms when nixpkg available. https://github.com/AtomsDevs/Atoms
+  # TODO: Set flatpak permissions for Atoms: talk to `org.freedesktop.Flatpak`
+  home.packages = [
+    pkgs.distrobox
+  ];
+
+  # TODO: Podman
+  # TODO: DistroBox
+  # TODO: Bottles
+  # TODO: WINE
+  # TODO: VMs
+  # TODO: Remote desktop protocol & VNC
 
 }

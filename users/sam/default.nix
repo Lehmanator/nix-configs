@@ -22,7 +22,7 @@
     ./search
     ./shell
     ./social
-    ./vm.nix
+    ./virt
     ./xdg.nix
     ../../profiles/workarounds.nix
     # TODO: Conditionally load ./nixos.nix when system is NixOS-based
