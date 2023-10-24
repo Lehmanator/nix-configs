@@ -30,8 +30,8 @@
 
     # Packages providing Plymouth themes
     themePackages = [
-      pkgs.catppuccin-plymouth
-      pkgs.adi1090x-plymouth-themes
+      #pkgs.catppuccin-plymouth
+      #pkgs.adi1090x-plymouth-themes
       pkgs.nixos-bgrt-plymouth
       pkgs.libsForQt5.breeze-plymouth
     ];
