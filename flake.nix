@@ -127,11 +127,12 @@
       # -    templates: robotnix.defaultTemplate - Basic robotnix configuration
       # -         libs: robotnix.lib
       robotnix = {
-        url = "github:danielfullmer/robotnix";
+        url = "github:nix-community/robotnix";
         inputs.nixpkgs.follows = "nixpkgs";
       };
 
       # --- Extra Package Sets ---------------------------------------
+      nixpkgs-gnome = { url = "github:NixOS/nixpkgs/gnome"; };
       nixpkgs-gnome-mobile = { url = "github:chuangzhu/nixpkgs-gnome-mobile"; };
       nixpkgs-wayland = { url = "github:nix-community/nixpkgs-wayland"; };
       nixpkgs-terraform-providers = { url = "github:nix-community/nixpkgs-terraform-providers-bin"; inputs.nixpkgs.follows = "nixpkgs"; };
@@ -184,6 +185,11 @@
         url = "github:srid/check-flake";
       };
 
+      # --- Libs: Misc -----------------------------------------------
+      dns = {
+        url = "github:kirelagin/dns.nix";
+        inputs.nixpkgs.follows = "nixpkgs"; # (optionally)
+      };
       # https://github.com/juspay/cachix-push
 
       # --- Modules: Flake-parts -------------------------------------
@@ -665,10 +671,10 @@
       # -  overlays: nix-policy.overlays.default
       # - devShells: nix-policy.${system}.{default,ci}
       # -      libs: nix-policy.lib.?
-      nix-policy = {
-        url = "github:DeterminateSystems/nix-policy";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
+      #nix-policy = {
+      #  url = "github:DeterminateSystems/nix-policy";
+      #  inputs.nixpkgs.follows = "nixpkgs";
+      #};
 
       # nix-installer: Improved version of Nix/NixOS installer
       # - devShells: nix-installer.${system}.default (nix-install-shell)
@@ -682,10 +688,10 @@
       # asset-tagger: Print asset tags
       # - devShells: asset-tagger.devShells.x86_64-linux.{default,asset}
       # -  packages: asset-tagger.packages.x86_64-linux.{default,asset-label-printer-main}
-      asset-tagger = {
-        url = "github:DeterminateSystems/asset-tagger";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
+      #asset-tagger = {
+      #  url = "github:DeterminateSystems/asset-tagger";
+      #  inputs.nixpkgs.follows = "nixpkgs";
+      #};
 
       # --- DevShells ------------------------------------------------
 
@@ -988,6 +994,7 @@
             sops-nix.nixosModules.sops
             #disko.nixosModules.disko
             #{ disko.enableConfig = false; }
+            #{ nixpkgs.overlays = [(self: super: { gnome = nixpkgs-gnome.legacyPackages.x86_64-linux.gnome; })]; }
             home.nixosModules.home-manager
             {
               home-manager = {
@@ -998,9 +1005,22 @@
                   arkenfox.hmModules.default
                   nix-index.hmModules.nix-index
                   { programs.nix-index-database.comma.enable = true; }
-                  nixpkgs-android.hmModule
+                  #nixpkgs-android.hmModule
+                  #{
+                  #  #inherit config lib pkgs;
+                  #  android-sdk.enable = true;
+                  #  android-sdk.packages = sdk: with sdk; [
+                  #    build-tools-34-0-0
+                  #    cmdline-tools-latest
+                  #    emulator
+                  #    platform-tools
+                  #    platforms-android-34
+                  #    sources-android-34
+                  #  ];
+                  #}
                   #nixvim.homeManagerModules.nixvim
                   sops-nix.homeManagerModules.sops
+                  #{ nixpkgs.overlays = [(self: super: { gnome = nixpkgs-gnome.legacyPackages.x86_64-linux.gnome; })]; }
                 ];
                 useGlobalPkgs = false;
                 useUserPackages = true;
