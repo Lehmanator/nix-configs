@@ -8,13 +8,14 @@
 }:
 {
   imports = [
-    ./dns
+    #./dns
+    ./dns/resolvconf.nix
     ./firewall.nix
     ./networkmanager.nix
-    ./rxe.nix
-    ./systemd-networkd.nix
+    #./rxe.nix
+    #./systemd-networkd.nix
     ./tailscale
-    ./wifi
+    #./wifi
     ./wireguard
     #./sits.nix
     #./ucarp.nix
@@ -34,6 +35,9 @@
     #./vlans.nix
     #./vswitches.nix
   ];
+
+  # Load regulatory DB at boot
+  hardware.wirelessRegulatoryDatabase = true;
 
   networking = {
     # IPv6 <-> IPv4 address generation & translation
@@ -67,11 +71,15 @@
   #  If other end supports, then encrypt traffic, else cleartext.
   #  Note: Not reliable to ensure TCP encryption, but upgrades some insecure TCP
   networking.tcpcrypt.enable = true;
-  users = lib.mkIf config.networking.tcpcrypt.enable {
+  #users = lib.mkIf config.networking.tcpcrypt.enable {
     # Also create group
-    groups.tcpcryptd = { };
-    users.tcpcryptd.group = "tcpcryptd";
-    users.${user}.extraGroups = [ "tcpcryptd" ];
-  };
+    users.groups.tcpcryptd = { };
+    users.users.tcpcryptd.group = "tcpcryptd";
+    #users.users.${user}.extraGroups = [ "tcpcryptd" ];
+  #};
 
+  # Allow primary user to control networking without privilege escalation
+  users.users."${user}".extraGroups = [ "network" ]
+    ++ lib.optional config.networking.tcpcrypt.enable "tcpcryptd"
+    ++ lib.optional config.networking.wireless.enable config.networking.wireless.userControlled.group;
 }
