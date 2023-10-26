@@ -42,7 +42,7 @@ in
       #lspsaga.borderStyle = styleLspsaga;   # Deprecated
       magma-nvim.outputWindowBorders = borderStyle == "rounded";
       noice.presets.lsp_doc_border = borderStyle != "none";
-      null-ls.border = borderChars;
+      none-ls.border = borderChars;
       #nvim-bqf = borderChars;
       nvim-cmp.window = {
         completion.border = borderChars;

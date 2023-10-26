@@ -22,7 +22,7 @@
     ./neorg.nix             # Organization notes
     ./noice.nix             # Experimental UI
     ./notify.nix            # Notification UI
-    ./null-ls.nix           # Integration w/ LSP
+    ./none-ls.nix           # Integration w/ LSP
     ./nvim-autopairs.nix    # Pair matching
     ./nvim-bqf.nix          #
     ./nvim-cmp.nix          # Completion engine

@@ -34,7 +34,7 @@
 
     };
 
-    null-ls.sources = {
+    none-ls.sources = {
       code_actions.statix.enable = true;
       diagnostics.deadnix.enable = true;
       diagnostics.statix.enable = true;

@@ -27,6 +27,6 @@ in
     nvim-cmp = {
       window.completion.border = borderChars;
     };
-    #null-ls.border = "";   # See: `:help nvim_open_win()`
+    #none-ls.border = "";   # See: `:help nvim_open_win()`
   };
 }

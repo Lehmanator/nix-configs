@@ -7,7 +7,7 @@
 {
   # --- null-ls ----------------------
   # Integrate external sources with native nvim LSP
-  programs.nixvim.plugins.null-ls = {
+  programs.nixvim.plugins.none-ls = {
     enable = true;
     #border = lib.mkDefault "rounded"; # none|single|double|rounded|solid|shadow
 
