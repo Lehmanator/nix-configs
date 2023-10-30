@@ -6,7 +6,7 @@
   imports = [
   ];
 
-  home.packages = [ pkgs.teams-for-linux ];
+  home.packages = [ pkgs.teams-for-linux.override { electron_24 = pkgs.electron_25; ];
 
   xdg.configFile.teams-config = {
     target = "${config.xdg.configHome}/teams-for-linux/config.json";
