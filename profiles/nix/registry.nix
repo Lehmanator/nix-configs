@@ -17,6 +17,17 @@
       nixos.flake = inputs.nixos;
       darwin.flake = inputs.darwin;
 
+      nixpkgs = {
+        from = {
+          id = "nixpkgs";
+          type = "indirect";
+        };
+        flake = inputs.nixpkgs;
+      };
+
+      home-manager.flake = inputs.home;
+      home.flake = inputs.home;
+
       #repo = {
       #  to = { type = "github";
       #    owner = "PresqueIsleWineDev";

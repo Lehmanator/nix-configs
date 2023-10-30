@@ -4,6 +4,7 @@
 , packages
 , modules
 , templates
+, osConfig
 , config
 , lib
 , pkgs
@@ -28,6 +29,7 @@ with lib;
 #in
 {
   imports = [
+    ./access-tokens.nix
     ./cache.nix
     ./utils
   ];
@@ -37,7 +39,6 @@ with lib;
   nixpkgs.config = import ./nixpkgs.nix;
   nix.settings   = import ./nix.nix;
 
-  xdg.configFile."nixpkgs/config.nix".source = ./nixpkgs.nix;
 
   #xdg.configFile = let mkInputConfigs = attrsets.mapAttrs' (k: v: [ "nix/inputs/${k}".source v.outPath ]);
   #in mkInputConfigs inputs // {
@@ -55,10 +56,13 @@ with lib;
   #in mkInputRegistry inputs;
 
 
-  nix.registry.self.flake         = inputs.self;
-  nix.registry.nixpkgs.flake      = inputs.nixpkgs;
-  nix.registry.nixos.flake        = inputs.nixos;
-  nix.registry.home-manager.flake = inputs.home;
+  nix.registry = with inputs; {
+    self.flake         = self;
+    nixpkgs.flake      = nixpkgs;
+    nixos.flake        = nixos;
+    home-manager.flake = home;
+    home.flake         = home;
+  };
 
   # TODO: Combine system / home-manager configs for: nix, nixpkgs, flake.nixConfig
   # TODO: Separate nix config to separate file like `nixpkgs.config`
@@ -69,10 +73,19 @@ with lib;
 
   # Keep legacy nix-channels in sync w/ flake inputs (for tooling compat)
   # TODO: Same for NixOS, conditionally if system is NixOS
-  xdg.configFile."nix/inputs/nixpkgs".source = inputs.nixpkgs.outPath;
-  xdg.configFile."nix/inputs/nixos".source = inputs.nixos.outPath;
-  xdg.configFile."nix/inputs/home".source = inputs.home.outPath;
+  xdg.configFile = with inputs; {
+    #"nix/nix.conf".source           = ./nix.nix;
+    #"nix/registry.json".source      = ./registry.json;
+    #"nixpkgs/config.nix".source     = ./nixpkgs.nix;
+    "nix/inputs/home".source         = home.outPath;
+    "nix/inputs/home-manager".source = home.outPath;
+    "nix/inputs/nixpkgs".source      = nixpkgs.outPath; # osConfig.environment.etc."nix/inputs/nixpkgs";
+    "nix/inputs/nixos".source        = nixos.outPath; # osConfig.environment.etc."nix/inputs/nixos";
+    "nix/inputs/self".source         = self.outPath;
+    "nix/inputs/nixos-config".source = self.outPath;
+    "nix/inputs/home-config".source  = self.outPath;
+  };
 
-  home.sessionVariables.NIX_PATH = "nixpkgs=${config.xdg.configHome}/nix/inputs/nixpkgs$\{NIX_PATH:+:$NIX_PATH}";
+  #home.sessionVariables.NIX_PATH = "nixpkgs=${config.xdg.configHome}/nix/inputs/nixpkgs$\{NIX_PATH:+:$NIX_PATH}";
 
 }

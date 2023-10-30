@@ -2,9 +2,13 @@
 , pkgs
 , ...
 }:
+let
+  sys = pkgs.stdenv.system;
+in
+with inputs;
 {
 
-  nixpkgs.overlays = [ inputs.nvfetcher.overlays.default ];
+  nixpkgs.overlays = [ nvfetcher.overlays.default ];
   home.packages = [
     # --- Package Updaters ---
     pkgs.niv        # Nix project dependency management
@@ -14,6 +18,8 @@
     pkgs.nvfetcher  # Update Nix resource commits & hashes
     pkgs.pr-tracker # Nixpkgs pull request channel tracker
     #pkgs.nixpkgs-update
+
+    fast-flake-update.packages.${sys}.default
   ];
 
 }

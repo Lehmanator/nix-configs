@@ -16,15 +16,6 @@
 
   appstream.enable = true;
 
-  # --- Nix CLI Settings -----------------------------------
-  nix.settings.extra-experimental-features = [
-    "auto-allocate-uids"
-    "cgroups"
-    #"dynamic-derivations" # After Nix v2.16.0
-    "ca-derivations"
-  ];
-
-
   # --- Shell Environment ----------------------------------
   # FIXME: Correctly set NIX_PATH
   #nix.nixPath = [ "nixos=${inputs.nixos}" ];  #"nixos=${inputs.nixpkgs}"

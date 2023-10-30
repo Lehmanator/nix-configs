@@ -10,8 +10,8 @@
   # https://www.tweag.io/blog/2020-09-10-nix-cas/
   # https://edolstra.github.io/pubs/phd-thesis.pdf#page=143
   # https://discourse.nixos.org/t/tweag-nix-dev-update-12/13185/3
+  nixpkgs.config.contentAddressedByDefault = false;
   nix = {
-    config.contentAddressedByDefault = true;
     settings = {
       experimental-features = ["ca-derivations" "fetch-closure"];
       substituters = ["https://cache.ngi0.nixos.org/"];

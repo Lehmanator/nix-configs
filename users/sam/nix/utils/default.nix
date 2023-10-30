@@ -7,23 +7,20 @@
   imports = [
     ./converters.nix
     ./direnv.nix
+    #./cli.nix
+    #./devshell.nix
+    #./diff.nix
+    ./docs.nix
+    ./editor.nix
     ./nix-alien.nix
     #./nix-index.nix
+    #./plugins.nix
     ./updaters.nix
   ];
-  home.packages = [
-
-    # --- Documentation ------
-    pkgs.manix # Fast documentation searcher for Nix
-    pkgs.vimPlugins.telescope-manix   # Manix Telescope plugin
-    pkgs.nur.repos.mrcpkgs.manix-fzf  # Manix FZF interface
-    #(lib.lists.optional config.programs.neovim.enable pkgs.vimPlugins.telescope-manix)   # Manix Telescope plugin
-    #(lib.lists.optional config.programs.fzf.enable    pkgs.nur.repos.mrcpkgs.manix-fzf)  # Manix FZF interface
-    pkgs.nix-doc # Nix documentation CLI
-
-    # --- Diffs ---
-    pkgs.nvd # Nix version diff tool
-    pkgs.niff # Compares two Nix expressions & determines what attributes changed
+  home.packages = let sys = pkgs.stdenv.system; in with inputs; [
+    # TODO: Add more utils
+    # TODO: Add package conversion utils
+    # TODO: Add config format conversion utils
 
     # --- Nix Plugins --------
     pkgs.nix-plugins # Extensions for Nix
@@ -35,25 +32,13 @@
     pkgs.nox # Cleaner CLI
     pkgs.nux # Wrapper over Nix CLI
 
-    # TODO: Add more utils
-    # TODO: Add package conversion utils
-    # TODO: Add config format conversion utils
-
     # --- Benchmarking ---
     pkgs.unixbench
     pkgs.phoronix-test-suite
 
-    # --- Editors ---
-    # TODO: Move to ${self}/users/sam/editors/default.nix
-    pkgs.alejandra # Nix code formatter
-    #pkgs.nil # Language server
-    pkgs.statix # Linting & suggestions
-    pkgs.vimPlugins.statix # Use statix in vim
-
     # --- Shell ---
     # TODO: Move to ${self}/users/sam/shell/default.nix
     pkgs.any-nix-shell
-
+    #pkgs.zsh-nix-shell
   ];
-
 }

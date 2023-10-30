@@ -616,6 +616,11 @@
 
       # --- Nix Utils ------------------------------------------------
 
+      fast-flake-update.url = "github:Mic92/fast-flake-update"; # Util to update `flake.lock` faster than `nix flake update`
+      harmonia = {
+        url = "github:nix-community/harmonia";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
       nixt = {
         url = "github:nix-community/nixt";
         inputs.nixpkgs.follows = "nixpkgs";
@@ -636,10 +641,6 @@
         url = "github:nix-community/rnix-parser";
         inputs.nixpkgs.follows = "nixpkgs";
       }; # TODO: Install pkg
-      harmonia = {
-        url = "github:nix-community/harmonia";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
       napalm = {
         url = "github:nix-community/napalm";
         inputs.nixpkgs.follows = "nixpkgs";
