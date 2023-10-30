@@ -24,7 +24,7 @@
     # --- Instagram -----
 
     # --- Reddit --------
-    pkgs.giara
+    #pkgs.giara  10/25/23: Dep python311Packages.prawcore build fails
     pkgs.headlines
 
     # --- Signal --------

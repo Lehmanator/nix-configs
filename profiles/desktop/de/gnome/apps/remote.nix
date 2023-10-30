@@ -18,8 +18,8 @@
   ];
 
   # TODO: Only set if using Wayland & xwayland
-  services.xserver.desktopManager.gnome.extraGSettings = ''
+  services.xserver.desktopManager.gnome.extraGSettingsOverrides = ''
     [org.gnome.mutter.wayland]
-    xwayland-grab-access-rules "['Remmina', 'xfreerdp']"
+    xwayland-grab-access-rules="['Remmina', 'xfreerdp']"
   '';
 }

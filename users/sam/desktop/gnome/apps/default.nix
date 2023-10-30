@@ -1,7 +1,56 @@
-{ self, inputs,
-  config, lib, pkgs,
-  ...
+{ self
+, inputs
+, config
+, lib
+, pkgs
+, ...
 }:
+# TODO: Package updated GNOME apps
+# https://gitlab.gnome.org/GNOME/gnome-system-monitor/-/merge_requests/55 # GNOME System Monitor w/ GTK4
+# https://gitlab.gnome.org/World/warp # File transfer
+# https://gitlab.gnome.org/GNOME/gnome-calendar/
+# https://flathub.org/apps/details/de.schmidhuberj.Flare
+# https://gitlab.gnome.org/GNOME/sysprof
+#
+# TODO: Package new GNOME apps
+# https://github.com/kaii-lb/overskride # Bluetooth config
+# https://github.com/kra-mo/cartridges  # Game launcher
+# https://github.com/fkinoshita/Wildcard # Regex tester
+# https://github.com/sonnyp/Workbench/ # GTK IDE
+# https://apps.gnome.org/PdfMetadataEditor/ # Edit document metadata
+# https://flathub.org/apps/com.vixalien.decibels # Audio file player with waveform
+# https://github.com/flattool/warehouse # Manages installed flatpaks, their data, & flatpak remotes
+# https://framagit.org/tractor/carburetor # Connect to TOR
+# https://flathub.org/apps/com.belmoussaoui.snowglobe # QEMU viewer over DBus
+# https://gitlab.gnome.org/philippun1/turtle # Manage Git repos in Nautilus (Nautilus extension)
+# https://github.com/mijorus/smile # Emoji picker
+# https://github.com/Diego-Ivan/Flowtime # Time tracker
+# https://github.com/sonnyp/Commit # Write Git commit messages
+# https://gitlab.gnome.org/World/chess-clock # Chess clock
+# https://gitlab.gnome.org/World/apostrophe # Markdown editor
+# https://flathub.org/apps/com.mardojai.DiccionarioLengua # Spanish dictionary
+# https://flathub.org/apps/io.gitlab.theevilskeleton.Upscaler # Image upscaler
+# https://bavarder.codeberg.page/ # Multi-chatbot UI
+# https://github.com/aleiepure/ticketbooth # TV Show viewer w/ TMDB API
+# https://gitlab.gnome.org/philippun1/snoop # GUI tool to search thru files w/ Nautilus extension
+# https://gdm-settings.github.io/ # Configure GDN login screen
+# https://github.com/tchx84/Flatseal # Modify flatpak permissions & sandboxing
+# https://codeberg.org/baarkerlounger/jogger # Fitness tracker
+# https://gitlab.com/gregorni/Letterpress # ASCII art maker
+#https://flathub.org/apps/details/org.nickvision.cavalier
+#https://flathub.org/apps/details/org.nickvision.tubeconverter
+#https://apps.gnome.org/Impression/ # USB flasher
+#https://flathub.org/apps/io.gitlab.gwendalj.package-transporter # Flatpak data backup & migration
+#https://github.com/bragefuglseth/fretboard # Lookup guitar chords
+#https://flathub.org/apps/io.gitlab.daikhan.stable
+#https://github.com/Nokse22/ascii-draw
+#
+# TODO: Package updated GNOME extensions
+# https://extensions.gnome.org/extension/5660/weather-or-not/ # (Updated to fix duplicate icon)
+#
+# TODO: Package new GNOME extensions
+# https://extensions.gnome.org/extension/5500/auto-activities/ # Show activities when no windows
+# https://extensions.gnome.org/extension/4627/focus-changer/ # Change focus b/w windows w/ keyboard
 {
   imports = [
     ./chat.nix
@@ -32,61 +81,61 @@
   # TODO: Figure out apps loaded elsewhere & remove
   home.packages = with pkgs; [
     authenticator
-    aviator          # Merge JSON/YAML files
-    bleachbit        # Clean your computer
-    boatswain        # Control Elgato Stream Deck devices
-    cambalache       # Rapid Application Development for GTK4 / GTK3
+    aviator # Merge JSON/YAML files
+    bleachbit # Clean your computer
+    boatswain # Control Elgato Stream Deck devices
+    cambalache # Rapid Application Development for GTK4 / GTK3
     #cawbird          # Twitter client (deprecated?)
-    celeste          # File sync client for multiple cloud providers
+    celeste # File sync client for multiple cloud providers
     #cobang           # QR code scanner
-    czkawka          # Remove unnecessary files
-    denaro           # Personal finance manager
-    dialect          # Translator
+    czkawka # Remove unnecessary files
+    denaro # Personal finance manager
+    dialect # Translator
     #dino             # Jabber/XMPP client
     dynamic-wallpaper # Create dynamic wallpapers for GNOME
-    eartag           # Music tag editor
-    elastic          # Design spring animations
-    emblem           # Generate project icons & avatars from a symbolic icon
-    endeavour        # Personal task manager for GNOME
+    eartag # Music tag editor
+    elastic # Design spring animations
+    emblem # Generate project icons & avatars from a symbolic icon
+    endeavour # Personal task manager for GNOME
     #flare-signal     # Unofficial Signal client
-    formiko          # reStructuredText editor & live preview
-    fragments        # Torrent client
-    gaphor           # Simple modeling tool
-    gnome-builder    # IDE for GNOME
-    gnome-decoder    # QR code scanner & creator
+    formiko # reStructuredText editor & live preview
+    fragments # Torrent client
+    gaphor # Simple modeling tool
+    gnome-builder # IDE for GNOME
+    gnome-decoder # QR code scanner & creator
     gnome-extension-manager # Manage GNOME Shell extensions w/ search & install functionality
-    gnome-secrets    # Password manager for GNOME using KeePass v4 format
-    gradience        # App to theme GNOME, GTK, & various apps according to palettes or wallpapers
+    gnome-secrets # Password manager for GNOME using KeePass v4 format
+    gradience # App to theme GNOME, GTK, & various apps according to palettes or wallpapers
     #halftone         # Give images pixel-art style
-    icon-library     # Symbolic icon catalog
-    identity         # Compare multiple versions of an image or video
-    livecaptions     # Provides live captioning
-      gnomeExtensions.live-captions-assistant  # Extension to provide better desktop integration with GNOME
+    icon-library # Symbolic icon catalog
+    identity # Compare multiple versions of an image or video
+    livecaptions # Provides live captioning
+    gnomeExtensions.live-captions-assistant # Extension to provide better desktop integration with GNOME
     metadata-cleaner # Remove metadata from files
-    mousai           # Identify playing music
-    pika-backup      # Backup application
+    mousai # Identify playing music
+    pika-backup # Backup application
     portfolio-filemanager # Mobile-first file manager
-    rnote            # Handwritten notes
-    schemes          # Create / edit syntax highlighting style-schemes for GtkSourceView
+    rnote # Handwritten notes
+    schemes # Create / edit syntax highlighting style-schemes for GtkSourceView
     symbolic-preview # Create, preview, export symbolic icons easily
-    tagger           # Music tag editor
-    tangram          # Run web apps in tabbed app-like client
+    tagger # Music tag editor
+    tangram # Run web apps in tabbed app-like client
     #tuba             # Fediverse / Mastodon client
-    video-trimmer    # Trim videos
-    warp             # QR code file transfer
-    wike             # Wikipedia client
+    video-trimmer # Trim videos
+    warp # QR code file transfer
+    wike # Wikipedia client
 
 
-    amberol          # Music player
-    celeste          # File synchronization app supporting Google Drive, Dropbox, Nextcloud, OwnCloud, WebDAV. (Future: OneDrive, Amazon S3)
-    contrast         # Check contrast & colorscheme accessibility (WCAG requirements)
+    amberol # Music player
+    celeste # File synchronization app supporting Google Drive, Dropbox, Nextcloud, OwnCloud, WebDAV. (Future: OneDrive, Amazon S3)
+    contrast # Check contrast & colorscheme accessibility (WCAG requirements)
     emulsion-palette # Store color palettes
-    eyedropper       # Color picker & formatter
+    eyedropper # Color picker & formatter
     #obs-studio       # Streaming & video recording suite
     #  obs-studio-plugins.obs-3d-effect wlrobs obs-ndi obs-vaapi obs-nvfbc obs-teleport obs-hyperion droidcam-obs obs-vkcapture obs-gstreamer input-overlay multi-rtmp obs-source-clone obs-shaderfilter obs-source-record obs-livesplit-one looking-glass-obs obs-vintage-filter obs-command-source obs-move-transition obs-backgroundremoval advanced-scene-switcher obs-pipewire-audio-capture
-    paleta           # Generate color paletes
+    paleta # Generate color paletes
     #pods             # Podman desktop application
-    sticky           # Sticky Notes app
+    sticky # Sticky Notes app
   ];
 
   # Set default apps
@@ -240,126 +289,128 @@
   # --- Mime Types -----------------------------------------
   # Common: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
   #    All: https://www.iana.org/assignments/media-types/media-types.xhtml
-  xdg.mimeApps.defaultApplications = let
-    audio-player = [""];
-    calendar     = ["org.gnome.Calendar.desktop"];
-    email-client = ["thunderbird.desktop"];
-    image-viewer = ["org.gnome.eog.desktop"];
-    video-viewer = ["org.gnome.Totem.desktop"];
-    text-editor  = ["org.gnome.TextEditor.desktop"];
-    web-browser  = ["firefox.desktop" "org.gnome.Epiphany.desktop"];
-  in {
+  xdg.mimeApps.defaultApplications =
+    let
+      audio-player = [ "" ];
+      calendar = [ "org.gnome.Calendar.desktop" ];
+      email-client = [ "thunderbird.desktop" ];
+      image-viewer = [ "org.gnome.eog.desktop" ];
+      video-viewer = [ "org.gnome.Totem.desktop" ];
+      text-editor = [ "org.gnome.TextEditor.desktop" ];
+      web-browser = [ "firefox.desktop" "org.gnome.Epiphany.desktop" ];
+    in
+    {
 
-    # --- Browser ---
-    "x-scheme-handler/http"  = web-browser;
-    "x-scheme-handler/https" = web-browser;
-    "application/xhtml+xml"  = web-browser;
-    "text/html"              = web-browser;
+      # --- Browser ---
+      "x-scheme-handler/http" = web-browser;
+      "x-scheme-handler/https" = web-browser;
+      "application/xhtml+xml" = web-browser;
+      "text/html" = web-browser;
 
-    # --- Communication ---
-    "x-scheme-handler/mailto" = email-client;
-    "text/calendar" = calendar;
+      # --- Communication ---
+      "x-scheme-handler/mailto" = email-client;
+      "text/calendar" = calendar;
 
-    # --- Text Editor ---
-    "text/plain" = text-editor;
+      # --- Text Editor ---
+      "text/plain" = text-editor;
 
-    # --- Audio ---
-    "audio/x-vorbis+ogg" = audio-player;
-    "audio/mpeg" = audio-player;
-    "audio/wav" = audio-player;
-    "audio/x-aac" = audio-player;
-    "audio/x-aiff" = audio-player;
-    "audio/x-ape" = audio-player;
-    "audio/x-flac" = audio-player;
-    "audio/x-m4a" = audio-player;
-    "audio/x-m4b" = audio-player;
-    "audio/x-mp1" = audio-player;
-    "audio/x-mp2" = audio-player;
-    "audio/x-mp3" = audio-player;
-    "audio/x-mpg" = audio-player;
-    "audio/x-mpeg" = audio-player;
-    "audio/x-mpegurl" = audio-player;
-    "audio/x-opus+ogg" = audio-player;
-    "audio/x-pn-aiff" = audio-player;
-    "audio/x-pn-au" = audio-player;
-    "audio/x-pn-wav" = audio-player;
-    "audio/x-speex" = audio-player;
-    "audio/x-vorbis" = audio-player;
-    "audio/x-wavpack" = audio-player;
+      # --- Audio ---
+      "audio/x-vorbis+ogg" = audio-player;
+      "audio/mpeg" = audio-player;
+      "audio/wav" = audio-player;
+      "audio/x-aac" = audio-player;
+      "audio/x-aiff" = audio-player;
+      "audio/x-ape" = audio-player;
+      "audio/x-flac" = audio-player;
+      "audio/x-m4a" = audio-player;
+      "audio/x-m4b" = audio-player;
+      "audio/x-mp1" = audio-player;
+      "audio/x-mp2" = audio-player;
+      "audio/x-mp3" = audio-player;
+      "audio/x-mpg" = audio-player;
+      "audio/x-mpeg" = audio-player;
+      "audio/x-mpegurl" = audio-player;
+      "audio/x-opus+ogg" = audio-player;
+      "audio/x-pn-aiff" = audio-player;
+      "audio/x-pn-au" = audio-player;
+      "audio/x-pn-wav" = audio-player;
+      "audio/x-speex" = audio-player;
+      "audio/x-vorbis" = audio-player;
+      "audio/x-wavpack" = audio-player;
 
-    # --- Images ---
-    "image/jpeg" = image-viewer;
-    "image/bmp" = image-viewer;
-    "image/gif" = image-viewer;
-    "image/jpg" = image-viewer;
-    "image/pjpeg" = image-viewer;
-    "image/png" = image-viewer;
-    "image/tiff" = image-viewer;
-    "image/webp" = image-viewer;
-    "image/x-bmp" = image-viewer;
-    "image/x-gray" = image-viewer;
-    "image/x-icb" = image-viewer;
-    "image/x-ico" = image-viewer;
-    "image/x-png" = image-viewer;
-    "image/x-portable-anymap" = image-viewer;
-    "image/x-portable-bitmap" = image-viewer;
-    "image/x-portable-graymap" = image-viewer;
-    "image/x-portable-pixmap" = image-viewer;
-    "image/x-xbitmap" = image-viewer;
-    "image/x-xpixmap" = image-viewer;
-    "image/x-pcx" = image-viewer;
-    "image/svg+xml" = image-viewer;
-    "image/svg+xml-compressed" = image-viewer;
-    "image/vnd.wap.wbmp" = image-viewer;
-    "image/x-icns" = image-viewer;
+      # --- Images ---
+      "image/jpeg" = image-viewer;
+      "image/bmp" = image-viewer;
+      "image/gif" = image-viewer;
+      "image/jpg" = image-viewer;
+      "image/pjpeg" = image-viewer;
+      "image/png" = image-viewer;
+      "image/tiff" = image-viewer;
+      "image/webp" = image-viewer;
+      "image/x-bmp" = image-viewer;
+      "image/x-gray" = image-viewer;
+      "image/x-icb" = image-viewer;
+      "image/x-ico" = image-viewer;
+      "image/x-png" = image-viewer;
+      "image/x-portable-anymap" = image-viewer;
+      "image/x-portable-bitmap" = image-viewer;
+      "image/x-portable-graymap" = image-viewer;
+      "image/x-portable-pixmap" = image-viewer;
+      "image/x-xbitmap" = image-viewer;
+      "image/x-xpixmap" = image-viewer;
+      "image/x-pcx" = image-viewer;
+      "image/svg+xml" = image-viewer;
+      "image/svg+xml-compressed" = image-viewer;
+      "image/vnd.wap.wbmp" = image-viewer;
+      "image/x-icns" = image-viewer;
 
-    # --- Video --
-    "video/x-ogm+ogg" = video-viewer;
-    "video/3gp" = video-viewer;
-    "video/3gpp" = video-viewer;
-    "video/3gpp2" = video-viewer;
-    "video/dv" = video-viewer;
-    "video/divx" = video-viewer;
-    "video/fli" = video-viewer;
-    "video/flv" = video-viewer;
-    "video/mp2t" = video-viewer;
-    "video/mp4" = video-viewer;
-    "video/mp4v-es" = video-viewer;
-    "video/mpeg" = video-viewer;
-    "video/mpeg-system" = video-viewer;
-    "video/msvideo" = video-viewer;
-    "video/ogg" = video-viewer;
-    "video/quicktime" = video-viewer;
-    "video/vivo" = video-viewer;
-    "video/vnd.divx" = video-viewer;
-    "video/vnd.mpegurl" = video-viewer;
-    "video/vnd.rn-realvideo" = video-viewer;
-    "video/vnd.vivo" = video-viewer;
-    "video/webm" = video-viewer;
-    "video/x-anim" = video-viewer;
-    "video/x-avi" = video-viewer;
-    "video/x-flc" = video-viewer;
-    "video/x-fli" = video-viewer;
-    "video/x-flic" = video-viewer;
-    "video/x-flv" = video-viewer;
-    "video/x-m4v" = video-viewer;
-    "video/x-matroska" = video-viewer;
-    "video/x-mjpeg" = video-viewer;
-    "video/x-mpeg" = video-viewer;
-    "video/x-mpeg2" = video-viewer;
-    "video/x-ms-asf" = video-viewer;
-    "video/x-ms-asf-plugin" = video-viewer;
-    "video/x-ms-asx" = video-viewer;
-    "video/x-msvideo" = video-viewer;
-    "video/x-ms-wm" = video-viewer;
-    "video/x-ms-wmv" = video-viewer;
-    "video/x-ms-wmx" = video-viewer;
-    "video/x-ms-wvx" = video-viewer;
-    "video/x-nsv" = video-viewer;
-    "video/x-theora" = video-viewer;
-    "video/x-theora+ogg" = video-viewer;
-    #"video/x-totem-stream" = video-viewer;
-  };
+      # --- Video --
+      "video/x-ogm+ogg" = video-viewer;
+      "video/3gp" = video-viewer;
+      "video/3gpp" = video-viewer;
+      "video/3gpp2" = video-viewer;
+      "video/dv" = video-viewer;
+      "video/divx" = video-viewer;
+      "video/fli" = video-viewer;
+      "video/flv" = video-viewer;
+      "video/mp2t" = video-viewer;
+      "video/mp4" = video-viewer;
+      "video/mp4v-es" = video-viewer;
+      "video/mpeg" = video-viewer;
+      "video/mpeg-system" = video-viewer;
+      "video/msvideo" = video-viewer;
+      "video/ogg" = video-viewer;
+      "video/quicktime" = video-viewer;
+      "video/vivo" = video-viewer;
+      "video/vnd.divx" = video-viewer;
+      "video/vnd.mpegurl" = video-viewer;
+      "video/vnd.rn-realvideo" = video-viewer;
+      "video/vnd.vivo" = video-viewer;
+      "video/webm" = video-viewer;
+      "video/x-anim" = video-viewer;
+      "video/x-avi" = video-viewer;
+      "video/x-flc" = video-viewer;
+      "video/x-fli" = video-viewer;
+      "video/x-flic" = video-viewer;
+      "video/x-flv" = video-viewer;
+      "video/x-m4v" = video-viewer;
+      "video/x-matroska" = video-viewer;
+      "video/x-mjpeg" = video-viewer;
+      "video/x-mpeg" = video-viewer;
+      "video/x-mpeg2" = video-viewer;
+      "video/x-ms-asf" = video-viewer;
+      "video/x-ms-asf-plugin" = video-viewer;
+      "video/x-ms-asx" = video-viewer;
+      "video/x-msvideo" = video-viewer;
+      "video/x-ms-wm" = video-viewer;
+      "video/x-ms-wmv" = video-viewer;
+      "video/x-ms-wmx" = video-viewer;
+      "video/x-ms-wvx" = video-viewer;
+      "video/x-nsv" = video-viewer;
+      "video/x-theora" = video-viewer;
+      "video/x-theora+ogg" = video-viewer;
+      #"video/x-totem-stream" = video-viewer;
+    };
 
 
 }

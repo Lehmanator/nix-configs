@@ -10,7 +10,7 @@
     # --- Multi-Platform -------------------------
     # https://github.com/NixOS/nixpkgs/blob/master/pkgs/applications/emulators/retroarch/cores.nix
     #pkgs.retroarch-assets  # Assets for RetroArch
-    pkgs.retroarchFull     # Multi-platform emulator frontend for libretro cores (all cores) [retroarch{,Full,Bare)
+    pkgs.retroarchBare     # Multi-platform emulator frontend for libretro cores (all cores) [retroarch{,Full,Bare)
     pkgs.retro-gtk         # GTK frontend to libretro cores  # TODO: Move to GTK/GNOME profile?
     #pkgs.libretro.thepowdertoy   # Example core (The Powder Toy)
 

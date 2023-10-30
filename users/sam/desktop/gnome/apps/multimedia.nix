@@ -14,7 +14,7 @@
     pkgs.easyeffects                 # Audio effects for PipeWire apps
     pkgs.gnome.gnome-sound-recorder  # Recorder app
     pkgs.helvum                      # GTK patchbay for Pipewire
-    pkgs.recapp                      # GTK audio recorder & screencaster
+    #pkgs.recapp                      # GTK audio recorder & screencaster
 
     # --- Audio Editors ------
     pkgs.eartag                      # Music tag editor
@@ -57,8 +57,8 @@
     # --- Video Editors ------
     pkgs.blender                     # 3D modeling & video rendering
     pkgs.losslesscut-bin             # Swiss army knife of video editing
-    pkgs.natron                      # Node-graph based compositing software
-    #pkgs.pitivi                      # Create/edit your own movies            # librosa dep broken 2023-08-14
+    #pkgs.natron                      # Node-graph based compositing software
+    pkgs.pitivi                      # Create/edit your own movies            # librosa dep broken 2023-08-14
     pkgs.shotcut                     # Video editor
     pkgs.video-trimmer               # GTK4 video trimming app
 
