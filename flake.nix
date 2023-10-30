@@ -119,8 +119,10 @@ inputs = {
   envfs.url = "github:Mic92/envfs";
   envfs.inputs.nixpkgs.follows = "nixpkgs";
   # --- Modules: Containers --------------------------------------
-  nix-helm = { url = "github:gytis-ivaskevicius/nix-helm"; inputs.nixpkgs.follows = "nixpkgs"; };
-  arion = { url = "github:hercules-ci/arion"; inputs.nixpkgs.follows = "nixpkgs"; };
+  nix-helm.url = "github:gytis-ivaskevicius/nix-helm";
+  nix-helm.inputs.nixpkgs.follows = "nixpkgs";
+  arion.url = "github:hercules-ci/arion";
+  arion.inputs.nixpkgs.follows = "nixpkgs";
   # --- Modules: Secrets -----------------------------------------
   agenix.url = "github:ryantm/agenix";
   agenix.inputs.nixpkgs.follows = "nixpkgs";
@@ -137,12 +139,8 @@ inputs = {
   nixvim.inputs.nixpkgs.follows = "nixpkgs";
   nixos-flatpak.url = "github:GermanBread/declarative-flatpak";
   nixos-flatpak.inputs.nixpkgs.follows = "nixpkgs";
-  lanzaboote = {
-    url = "github:nix-community/lanzaboote";
-    inputs.nixpkgs.follows = "nixpkgs";
-    inputs.flake-utils.follows = "flake-utils";
-    #inputs.rust-overlay.follows = "rust-overlay";
-  };
+  lanzaboote.url = "github:nix-community/lanzaboote";
+  lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
   # --- Packages: Pre-built Images -------------------------------
   nixos-images.url = "github:nix-community/nixos-images";
   # --- Packages: Package Management ------------------------------
