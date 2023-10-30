@@ -17,7 +17,12 @@ in
   };
 
   # Enable Firefox integration
-  programs.firefox.nativeMessagingHosts.gsconnect = true;
+  #programs.firefox.nativeMessagingHosts.gsconnect = true;
+  programs.firefox.nativeMessagingHosts.packages = [
+    pkgs.gnomeExtensions.gsconnect
+    pkgs.gnomeExtensions.valent
+    pkgs.valent
+  ];
 
   # Install implementation of GSConnect & shell-extension
   environment.systemPackages = if (implementation == "valent") then [

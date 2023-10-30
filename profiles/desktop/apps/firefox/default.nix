@@ -60,11 +60,12 @@
   };
 
   nativeMessagingHosts = {
+    packages = [pkgs.tridactyl-native];
     ugetIntegrator = false;
-    tridactyl = true;
+    #tridactyl = true;
     passff = true;
     jabref = false;
-    gsconnect = config.programs.kdeconnect.enable;
+    #gsconnect = config.programs.kdeconnect.enable;
     fxCast = true;
     ff2mpv = true;
     euwebid = true;
