@@ -31,7 +31,7 @@
     #pkgs.nestopia        # NES (accuracy focused)
     #pkgs.zsnes           # SNES
     #pkgs.cen64           # N64 (Cycle-Accurate)
-    pkgs.dolphin-emu       # Gamecube / Wii emulator for x86_64 & ARMv8
+    #pkgs.dolphin-emu       # Gamecube / Wii emulator for x86_64 & ARMv8
     pkgs.cemu              # Wii U                                          #pkgs.nur.repos.mcaju.decaf-emu
     pkgs.ryujinx           # Nintendo Switch                                #pkgs.nur.repos.ivar.ryujinx
     pkgs.yuzu-early-access # Nintendo Switch (experimental preview version) #pkgs.nur.repos.ivar.yuzu-ea
