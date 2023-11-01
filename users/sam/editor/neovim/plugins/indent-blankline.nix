@@ -53,7 +53,7 @@
 
     viewportBuffer.max = 500;
     viewportBuffer.min = 30;
-    whitespace.highlight = "hl-IblWhitespace";
+    #whitespace.highlight = "hl-IblWhitespace";
     whitespace.removeBlanklineTrail = true;
 
 
