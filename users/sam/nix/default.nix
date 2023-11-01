@@ -33,7 +33,7 @@ with lib;
     ./cache.nix
     ./utils
   ];
-  nix.package = mkDefault pkgs.nixUnstable; # Needed for use-xdg-base-directories
+  nix.package = lib.mkDefault pkgs.nixUnstable; # Needed for use-xdg-base-directories
 
   # Import nixpkgs config & write to ~/.config/nixpkgs/config.nix so profiles use same config
   nixpkgs.config = import ./nixpkgs.nix;
