@@ -16,7 +16,7 @@ outputs = { self, nixpkgs, nixos, home, nur, ... }@inputs: {
     system = "x86_64-linux";
     specialArgs = {inherit self inputs; system="x86_64-linux"; user="sam";};
     modules = with inputs; [ ./hosts/fw
-      nix-data.nixosModules.default
+      nix-data.nixosModules.nix-data
       nix-index.nixosModules.nix-index { programs.nix-index-database.comma.enable = true; }
       nur.nixosModules.nur
       agenix.nixosModules.default
@@ -69,7 +69,7 @@ inputs = {
   nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
   nixpkgs-android.url = "github:tadfisher/android-nixpkgs";
   nixpkgs-mozilla.url = "github:mozilla/nixpkgs-mozilla";
-  flake-firefox-nightly.url = "github:colemickens/flake-firefox-nightly";
+  flake-firefox-nightly.url = "github:nix-community/flake-firefox-nightly";
   nixGL.url = "github:guibou/nixGL";
   nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
   neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
@@ -176,9 +176,12 @@ inputs = {
   nix-installer = { url = "github:DeterminateSystems/nix-installer"; inputs.nixpkgs.follows = "nixpkgs"; };
   # --- DevShells ------------------------------------------------
   nmd.url = "github:gvolpe/nmd";
-  devshell = { url = "github:numtide/devshell"; inputs.nixpkgs.follows = "nixpkgs"; };
-  microvm = { url = "github:astro/microvm.nix"; inputs.nixpkgs.follows = "nixpkgs"; };
-  colmena = { url = "github:zhaofengli/colmena"; inputs.nixpkgs.follows = "nixpkgs"; };
+  devshell.url = "github:numtide/devshell";
+  devshell.inputs.nixpkgs.follows = "nixpkgs";
+  microvm.url = "github:astro/microvm.nix";
+  microvm.inputs.nixpkgs.follows = "nixpkgs";
+  colmena.url = "github:zhaofengli/colmena";
+  colmena.inputs.nixpkgs.follows = "nixpkgs";
   # --- Packages: Individual Packages ----------------------------
   nix-software-center.url = "github:vlinkz/nix-software-center";
   nixos-conf-editor.url = "github:vlinkz/nixos-conf-editor";
