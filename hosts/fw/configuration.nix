@@ -24,7 +24,7 @@
     ../../profiles/desktop
     ../../profiles/desktop/de/gnome
     #../../profiles/editor
-    ../../profiles/hardware/displaylink.nix
+    #../../profiles/hardware/displaylink.nix
     #../../profiles/hardware/fprintd.nix
     ../../profiles/hardware/fwupd.nix
     ../../profiles/hardware/logitech.nix
@@ -133,7 +133,7 @@
       enable = true;
       defaultSearchProviderEnabled = true;
     };
-    firefox.enable = true;
+    #firefox.enable = true;
 
     # --- Keys ---
     gnupg = {

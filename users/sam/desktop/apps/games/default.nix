@@ -1,6 +1,9 @@
-{ self, inputs,
-  config, lib, pkgs,
-  ...
+{ self
+, inputs
+, config
+, lib
+, pkgs
+, ...
 }:
 {
   imports = [
@@ -20,6 +23,8 @@
     # TODO: Create ./smash/utils.nix
     ./smash.nix
     #./smash-modding.nix
+
+    ./social.nix
 
     # TODO: Create ./steam.nix
   ];

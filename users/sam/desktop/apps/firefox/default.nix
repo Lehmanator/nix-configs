@@ -1,10 +1,14 @@
-{
-  self,
-  modulesPath,
-  inputs, outputs,
-  host, network, repo,
-  config, lib, pkgs,
-  ...
+{ self
+, modulesPath
+, inputs
+, outputs
+, host
+, network
+, repo
+, config
+, lib
+, pkgs
+, ...
 }:
 {
   imports = [
@@ -23,7 +27,7 @@
 
     # --- Firefox Versions, Releases, & Flavors ---
     #./variants/default.nix                  # Firefox Stable
-    ./variants/nightly.nix                  # Firefox Nightly
+    ./variants/nightly.nix # Firefox Nightly
     # TODO: `./variants/librewolf.nix`           # Librewolf fork (stable)
 
     # --- Settings ---
@@ -34,13 +38,14 @@
     enable = true;
 
     #enableGnomeExtensions = true;
-    package = pkgs.firefox.override {
-      cfg.enableGnomeExtensions = config.gtk.enable;  #config.services.xserver.desktopManager.gnome.enable;
-      cfg.enableTridactylNative = true;
-    };
+    package = inputs.flake-firefox-nightly.packages.${pkgs.system}.firefox-bin;
+    #package = pkgs.firefox.override {
+    #  cfg.enableGnomeExtensions = config.gtk.enable;  #config.services.xserver.desktopManager.gnome.enable;
+    #  cfg.enableTridactylNative = true;
+    #};
   };
 
   home.packages = lib.mkIf config.gtk.enable [
-    pkgs.nur.repos.federicoschonborn.firefox-gnome-theme
+    #pkgs.nur.repos.federicoschonborn.firefox-gnome-theme
   ];
 }

@@ -1,23 +1,30 @@
-{ self, inputs,
-  config, lib, pkgs,
-  ...
+{ self
+, inputs
+, config
+, lib
+, pkgs
+, ...
 }:
 {
   imports = [
     inputs.nur.nixosModules.nur
   ];
-  environment.systemPackages = [
-    inputs.firefox.packages.${pkgs.system}.firefox-nightly-bin
-  ];
+  #environment.systemPackages = [
+  #  inputs.firefox.packages.${pkgs.system}.firefox-nightly-bin
+  #];
 
   nixpkgs.overlays = [ inputs.nur.overlay ];
 
   programs.firefox = {
+    enable = true;
+    package = inputs.flake-firefox-nightly.packages.${pkgs.system}.firefox-bin;
     #package = pkgs.firefox;
 
+
+
     # https://support.mozilla.org/en-US/kb/customizing-firefox-using-autoconfig
-    autoConfig = ''
-    '';
+    #autoConfig = ''
+    #'';
 
     # https://github.com/mozilla/policy-templates/blob/master/README.md
     policies = {
@@ -26,7 +33,7 @@
       DisableFirefoxStudies = true;
       DisablePocket = true;
       DisableTelemetry = true;
-      DisableFirefoxAccounts = true;  # TODO: Re-enable after hosting firefox sync server
+      DisableFirefoxAccounts = true; # TODO: Re-enable after hosting firefox sync server
       DontCheckDefaultBrowser = true;
       FirefoxHome = {
         Pocket = false;
@@ -53,25 +60,24 @@
       };
     };
 
-    preferences = {
-    };
+    preferences = { };
 
     preferencesStatus = "default";
   };
 
-  nativeMessagingHosts = {
-    packages = [pkgs.tridactyl-native];
-    ugetIntegrator = false;
-    #tridactyl = true;
-    passff = true;
-    jabref = false;
-    #gsconnect = config.programs.kdeconnect.enable;
-    fxCast = true;
-    ff2mpv = true;
-    euwebid = true;
-    bukubrow = true;
-    browserpass = true;
-  };
+  #nativeMessagingHosts = {
+  #  packages = [pkgs.tridactyl-native];
+  #  ugetIntegrator = false;
+  #  #tridactyl = true;
+  #  passff = true;
+  #  jabref = false;
+  #  #gsconnect = config.programs.kdeconnect.enable;
+  #  fxCast = true;
+  #  ff2mpv = true;
+  #  euwebid = true;
+  #  bukubrow = true;
+  #  browserpass = true;
+  #};
 
   # TODO: Move to locale profile
   languagePacks = [ "en-US" "es-MX" "zh-CN" ];
