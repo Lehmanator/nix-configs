@@ -22,6 +22,9 @@
   environment.systemPackages = [
     pkgs.fuse3
     pkgs.fuse-common
+
+    pkgs.appimagekit
+    pkgs.appimage-run
   ];
 
 }
