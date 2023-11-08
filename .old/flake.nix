@@ -1,16 +1,4 @@
 {
-nixConfig = {
-  connect-timeout = 10;
-  substituters = [
-    "https://cache.nixos.org/"
-    "https://nix-community.cachix.org/"
-  ];
-  trusted-keys = [
-    "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-    "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-  ];
-};
-
 outputs = { self, nixpkgs, nixos, home, nur, ... }@inputs: {
   nixosConfigurations.fw = with inputs; nixos.lib.nixosSystem {
     system = "x86_64-linux";
@@ -109,5 +97,20 @@ inputs = {
   colmena.url = "github:zhaofengli/colmena";
   colmena.inputs.nixpkgs.follows = "nixpkgs";
 };
+
+nixConfig = {
+  connect-timeout = 10;
+  extra-substituters = [
+    #"https://cache.nixos.org/"
+    "https://nix-community.cachix.org/"
+    "https://numtide.cachix.org/"
+  ];
+  extra-trusted-public-keys = [
+    #"cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+    "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
+  ];
+};
+
 }
 

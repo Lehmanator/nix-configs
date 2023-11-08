@@ -1,6 +1,6 @@
 { disks    ? ["/dev/vda"]
 , keyfiles ? ["/tmp/secret.luks"] # TODO: Match to agenix/sops-nix secret
-, passfile ? "/tmp/passwd.luks"
+, passfile ?  "/tmp/passwd.luks"
 , tmpfs    ? true
 , swap     ? false
 , persist  ? false
@@ -42,10 +42,6 @@
                 extraArgs = [ "-f" ];
                 # TODO: Conditional subvolumes based on args
                 subvolumes = {
-                  "/root" = {
-                    mountpoint = "/";
-                    mountOptions = [ "compress=zstd" "noatime" ];
-                  };
                   "/home" = {
                     mountpoint = "/home";
                     mountOptions = [ "compress=zstd" "noatime" ];
@@ -57,6 +53,10 @@
                   "/persist" = {
                     mountpoint = "/persist";
                     mountOptions = ["compress=zstd" "noatime"];
+                  };
+                  "/root" = {
+                    mountpoint = "/";
+                    mountOptions = [ "compress=zstd" "noatime" ];
                   };
                   # TODO: Not implemented yet
                   "/swap" = {
