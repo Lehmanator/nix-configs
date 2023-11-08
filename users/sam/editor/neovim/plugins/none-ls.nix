@@ -35,6 +35,8 @@
         shfmt.enable = true;
         stylua.enable = true;
         taplo.enable = true;
+        fantomas.enable = false;
+        fantomas.package = null;
       };
     };
   };
