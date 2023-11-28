@@ -1,158 +1,59 @@
-# This example uses YAML anchors which allows reuse of multiple keys
-# without having to repeat yourself.
 # Also see https://github.com/Mic92/dotfiles/blob/master/nixos/.sops.yaml
 # for a more complex example.
 #
 # List GPG key fingerprints: $ gpg --list-secret-keys
-#
-# Setup Process:
-#
-# - Edit secrets using:
-#   - Environments **without** sops installed: `nix-shell -p sops --run "sops <path>/<filename>.yaml"`
-#   - Environments **with**    sops installed: `sops <path>/<filename>.yaml`
-#
-# - Convert SSH keys in format `ed25519` -> `age`:
-#   - `ssh-to-age`
-#   - Generic: `ssh-to-age -o (user(_<role>)?|host)_<name>_age.asc`
-#
-# - Convert SSH keys in format     `rsa` -> `gpg`:
-#   - Generic: `ssh-to-pgp -o (user(_<role>)?|host)_<name>_gpg.asc`
-#
-# - Add new user:
-# - Add new machine:
-#
-# Notes:
-# - **Admin**  user keys should be able to decrypt       **all** systems' secrets
-# - **All**    user keys should be able to decrypt **their own**   user's secrets
-# - **All** machine keys should be able to decrypt **their own** system's secrets
-# - **Dev** machine keys should be able to decrypt    **server** systems' secrets?
-#
-# - [ ] TODO: Consider renaming `machine` to `host` (more descriptive, esp. considering VMs)
-# - [ ] TODO: Create GPG keys for each machine
-#   - [ ] TODO: Create  `ssh-ed25519` keys for each machine
-#   - [ ] TODO: Convert `ssh-ed25519` keys to `pgp` / `gpg` format using `ssh-to-pgp`
-#   - [ ] TODO: Add `gpg` key fingerprints below as: `machine_<hostname>_gpg`
-#
-# - [ ] TODO: Create age keys for each machine
-#   - [ ] TODO: Create  `ssh-rsa` keys for each machine
-#   - [ ] TODO: Convert `ssh-rsa` keys to `age` format using `ssh-to-age`
-#   - [ ] TODO: Add `age` key fingerprints below as: `machine_<hostname>_age`
-#
-# - [ ] TODO: Create `GPG` keys for each user
-#   - [ ] TODO: Create  `ssh-ed25519` keys for each machine
-#   - [ ] TODO: Convert `ssh-ed25519` keys to `pgp` / `gpg` format using `ssh-to-pgp`
-#   - [ ] TODO: Add `gpg` key fingerprints below as: `user_<username>(_<role>)?_gpg`
-#   - [ ] TODO: Rename existing keys to naming scheme above
-#
-# - [ ] TODO: Create `age` keys for each user
-#   - [ ] TODO: Create  `ssh-rsa` keys for each user
-#   - [ ] TODO: Convert `ssh-rsa` keys to `age` format using `ssh-to-age`
-#   - [ ] TODO: Add `age` key fingerprints below as: `user_<username>(_<role>)?_age`
-#
-
 keys:
-# --- User Keys ---
-- &user_sam_gpg 5222833B7C18B486CB7146F52D0FBE0203AE5181
-- &user_slehman_gpg DC1962D6560FF66BB16F99E0C47C146240410561
-- &user_slehman_age age18990pmghcx8a7ggwwcgyu0rh97xxec3u42ardvr66an69f9v5agsrgucqu
+  # --- Host ---
+  - &age-host-fw-ssh-ed25519 age14ussjg6kmjawm6zhfkspnujndx48a8yzlg6sew0gzyu74gpr8amq9g9udd
+  - &gpg-host-fw-ssh-rsa 68ee228d57b5b97c7f88dd33188b0095248cb8a0
+  # --- User ---
+  - &age-user-sam-ssh-ed25519 age18v7nxk3e5p2xjtpe7uxv2jz9zz624tkscpkcr6fepc0k6vvvfdgq5mduj8
+  - &gpg-user-sam-ssh-rsa 23e6e50809065aed145adb5aa4b65f3430feef6c
+  - &gpg-user-sam-primary DC1962D6560FF66BB16F99E0C47C146240410561
+  - &age-backup age19exrq2t6lkchn08mhmxvywcsq2eur6h0jpz4zqrtvkvume37c3ysx8usjq
 
-# --- Host Keys ---
-- &host_fw_gpg 68ee228d57b5b97c7f88dd33188b0095248cb8a0
-#- &host_wyse_gpg     fff
-#- &host_fajita_gpg   fff
-#- &host_flame_gpg    fff
-#- &host_cheetah_gpg  fff
-#- &host_prodesk0_gpg fff
-#- &host_prodesk1_gpg fff
-#- &host_prodesk2_gpg fff
-#- &host_prodesk3_gpg fff
-#- &host_prodesk4_gpg fff
-#- &host_prodesk5_gpg fff
-#- &host_server0_gpg  fff
-
-# --- Shorthand ---
-# Set to *(user_<username>|host_<hostname>)_(age|gpg) depending on preferred primary key format
-#- &user_sam         *user_sam_gpg
-#- &user_slehman     *user_slehman_gpg
-#- &host_fw          *host_fw_gpg
-
-# --- Secret Files -------------------------------------------------------------
-# TODO: Convert `path_regex` to support `std` & `hive` cell directory structure.
-# TODO: Figure out how to define paths so that:
-# - all users can decrypt their own secrets, but *only* their own & not other users' secrets.
 creation_rules:
-
   # --- Host Secrets -------------------------------------------------
-  # For host-specific secrets
-
-  # --- current ---
-  # Path: ./secrets/hosts/<hostname>/*.(yaml|json|ini|env)
-  - path_regex: secrets/hosts?/[^/]+/[^/]+\.(ya?ml|json|ini|env)$
-    key_groups: &default
-      - pgp:
-        - *user_sam_gpg
-        - *user_slehman_gpg
-        - *host_fw_gpg
-        age:
-        - *user_slehman_age
-        #- *user_sam_age
-        #- *host_fw_age
-
-  - path_regex: secrets/hosts?/fw(/[^/]+)?\.(ya?ml|json|ini|env)$
-    key_groups: &host_fw
-      - pgp:
-        - *host_fw_gpg
-        #age:
-        #- *host_fw_age
+  - path_regex: hosts/fw/secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
+    key_groups:
+      - age:
+        - *age-host-fw-ssh-ed25519
+        - *age-user-sam-ssh-ed25519
+        - *age-backup
+        #pgp:
+        #- *age-host-fw-ssh-ed25519
+        #- *gpg-host-fw-ssh-rsa
+        #- *gpg-user-sam-primary
+  - path_regex: hosts/[^/]+/secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
+    key_groups:
+      - age:
+        - *age-host-fw-ssh-ed25519
+        - *age-user-sam-ssh-ed25519
+        - *age-backup
+        #pgp:
+        #- *age-host-fw-ssh-ed25519
+        #- *gpg-host-fw-ssh-rsa
+        #- *gpg-user-sam-primary
 
   # --- User Secrets -------------------------------------------------
-  # For user-specific secrets
-  # Path: ./secrets/user/<username>/secrets.yaml
-  - path_regex: secrets/users?/(default|root|adm|admin|sam|s?lehman)/[^/]+\.(ya?ml|json|ini|env)$
-    key_groups: &sam_keys
-      - pgp:
-        - *user_sam_gpg
-        - *user_slehman_gpg
-        #- *host_fw_gpg
-        age:
-        - *user_slehman_age
-        #- *user_sam_age
-        #- *host_fw_age
+  - path_regex: users/sam/\.secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
+    key_groups:
+      - age:
+        - *age-host-fw-ssh-ed25519
+        - *age-user-sam-ssh-ed25519
+        - *age-backup
+        #pgp:
+        #- *age-host-fw-ssh-ed25519
+        #- *gpg-host-fw-ssh-rsa
+        #- *gpg-user-sam-primary
+  - path_regex: users/[^/]+/\.secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
+    key_groups:
+      - age:
+        - *age-host-fw-ssh-ed25519
+        - *age-user-sam-ssh-ed25519
+        - *age-backup
+        #pgp:
+        #- *age-host-fw-ssh-ed25519
+        #- *gpg-host-fw-ssh-rsa
+        #- *gpg-user-sam-primary
 
-  # --- Repo Secrets -------------------------------------------------
-  # For secrets to be shared repo-wide
-  # Path: ./secrets/*.yaml
-  - path_regex: secrets/[^/]+\.(ya?ml|json|ini|env)$
-    key_groups: *default
-
-  # --- Service Secrets ----------------------------------------------
-  # For secrets to be shared amongst machines running the same service
-  # Path: ./secrets/service/<service>.yaml
-  - path_regex: secrets/services?/[^/]+\.(ya?ml|json|ini|env)$
-    key_groups: *default
-
-  # --- Network Secrets ----------------------------------------------
-  # For secrets to be shared amongst machines on the same network
-  - path_regex: secrets/networks?/[^/]+\.(ya?ml|json|ini|env)$
-    key_groups: *default
-
-  # --- Cluster Secrets ----------------------------------------------
-  # For secrets to be shared amongst machines in the same Kubernetes cluster
-  # Path: ./secrets/clusters/<clusterName>.yaml
-  - path_regex: ^secrets/clusters?/[^/]+\.(ya?ml|json|ini|env)$
-    key_groups: *default
-
-  # --- Group Secrets ------------------------------------------------
-  # For secrets to be shared amongst groups of users
-  - path_regex: secrets/groups?/[^/]+\.(ya?ml|json|ini|env)$
-    key_groups: *default
-
-  # --- Role Secrets -------------------------------------------------
-  # For secrets to be shared amongst groups of users
-  - path_regex: secrets/roles?/[^/]+\.(ya?ml|json|ini|env)$
-    key_groups: *default
-  #
-  # --- CI/CD Secrets ------------------------------------------------
-  # For secrets used by CI/CD pipelines
-  - path_regex: secrets/ci/[^/]+\.(ya?ml|json|ini|env)$
-    key_groups: *default
