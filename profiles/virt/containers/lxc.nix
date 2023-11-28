@@ -6,7 +6,7 @@
 # LXC - Linux Containers (LXC), provides tools for creating & managing system / application containers on Linux
 {
   imports = [
-    ../../apparmor.nix      # LXD service complains about missing AppArmor support (WARN)
+    ../../security/apparmor.nix      # LXD service complains about missing AppArmor support (WARN)
   ];
 
   #boot.kernelModules = ["vhost_vsock"];         # TODO: Explain why kernel module added

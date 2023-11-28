@@ -24,7 +24,7 @@
     # TODO: Determine best app indicator extension (DING, base, GTK4-ng, ...)
     pkgs.gnomeExtensions.dash-to-panel                 # Taskbar w/ lots of features
     #pkgs.gnomeExtensions.dash2dock-lite               # Dock w/ animations, dynamic icons, symbolic icons, & more
-    pkgs.gnomeExtensions.ddterm                        # Dropdown terminal
+    #pkgs.gnomeExtensions.ddterm                        # Dropdown terminal
     #pkgs.gnomeExtensions.pin-app-folders-to-dash       # Pin app folders to dash like app icons (overview)
     #pkgs.gnomeExtensions.favourites-in-appgrid        # Keep favorites in the app grid (overview-feature-pack)
     pkgs.gnomeExtensions.forge                         # Tile, tab, & stack windows extension like pop-shell
@@ -36,7 +36,7 @@
     # --- Integrations ------------
     # https://github.com/harshadgavali/searchprovider-for-browser-tabs
     #pkgs.gnomeExtensions.notifications-to-file        # Append notifications to a file in $HOME/.notifications
-    pkgs.gnomeExtensions.pano                          # Clipboard manager
+    #pkgs.gnomeExtensions.pano                          # Clipboard manager
     pkgs.gnomeExtensions.shortcuts                     # Overlay to show keyboard shortcuts
     #pkgs.gnomeExtensions.window-calls-extended         # D-Bus call for getting windows & their properties
 

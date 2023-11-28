@@ -1,7 +1,9 @@
-{ inputs, self
-, config, lib, pkgs
-, user
-, ...
+{
+  self,
+  inputs,
+  hosts, userPrimary,
+  config, lib, pkgs,
+  ...
 }:
 {
   imports = [
@@ -34,5 +36,6 @@
     pkgs.foliate
     pkgs.warp
   ];
+
 
 }

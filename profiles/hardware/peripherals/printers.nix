@@ -1,6 +1,6 @@
 { self, inputs
 , config, lib, pkgs
-, username ? "sam"
+, user ? "sam"
 , ...
 }:
 {
@@ -28,14 +28,19 @@
       };
     };
   };
+
   services.udev.packages = [
     pkgs.utsushi           # Miscellaneous Scanners
   ];
-  users.users."${username}".extraGroups = [ "scanner" "lp" ];
+
+  users.users."${user}".extraGroups = [ "scanner" "lp" ];
 
   # Network Scanning
-  services.avahi.enable = true;
-  services.avahi.nssmdns = true;
+  # TODO: Conditional based on if using Avahi for mDNS
+  services.avahi = {
+    enable = true;
+    nssmdns = true;
+  };
 
   # GIMP Support
   nixpkgs.config.packageOverrides = pkgs: {

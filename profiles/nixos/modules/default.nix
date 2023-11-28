@@ -1,4 +1,9 @@
-{ inputs, pkgs, system ? "x86_64-linux", user ? "sam", ... }: with inputs;
+{ inputs
+, pkgs
+, system ? "x86_64-linux"
+, user ? "sam"
+, ...
+}: with inputs;
 [
   agenix.nixosModules.default
   nix-index.nixosModules.nix-index { programs.nix-index-database.comma.enable = true; }

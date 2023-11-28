@@ -1,12 +1,12 @@
-{ self, inputs,
-  config, lib, pkgs,
-
-  system,
-
-  usernames ? [],
-  modules ? [],
-  specialArgs ? [ ],
-  ...
+{ inputs, self
+, config, lib, pkgs
+, modulesPath
+, user ? "sam"
+#, system ? "x86_64-linux"
+#, usernames ? []
+#, modules ? []
+#, specialArgs ? [ ]
+,  ...
 }:
 let
   userConfigs = {};
@@ -22,10 +22,10 @@ in
     nixpkgs-android.hmModule
     arkenfox.hmModules.default
     sops-nix.homeManagerModules.sops
-  ] ++ modules;
+  ]; #++ modules;
 
   useGlobalPkgs = false;
   useUserPackages = true;
-  extraSpecialArgs = { inherit self inputs system; };
+  extraSpecialArgs = { inherit self inputs user; };
   #users.<name> = import "../users/${username}";
 }

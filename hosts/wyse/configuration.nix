@@ -10,13 +10,8 @@
 , ...
 }: {
   imports = [
-    # Include SnowflakeOS config
-    #./snowflake.nix
-
     # Include the results of the hardware scan.
     #./hardware-configuration.nix
-
-    #./displays.nix
 
     # Activate profiles
     ../../profiles/adb.nix
@@ -28,7 +23,7 @@
     #../../profiles/hardware/fprintd.nix
     ../../profiles/hardware/fwupd.nix
     ../../profiles/hardware/peripherals/logitech.nix
-    ../../profiles/hardware/tpm2.nix
+    #../../profiles/hardware/tpm2.nix
     ../../profiles/hardware/usb.nix
     ../../profiles/locale
     ../../profiles/network
@@ -41,6 +36,7 @@
     ../../profiles/users
     ../../profiles/virt
     #../../profiles/virt/windows
+    ../../profiles/workarounds.nix
   ];
 
   # This value determines the NixOS release from which the default
@@ -49,8 +45,7 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  #system.stateVersion = "23.11"; # Did you read the comment?
-  system.stateVersion = "23.05"; # Did you read the comment?
+  system.stateVersion = "23.11"; # Did you read the comment?
 
   # --- Cross-compilation ---
   boot.binfmt.emulatedSystems = [
@@ -60,42 +55,15 @@
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
   console.useXkbConfig = true;
   hardware.enableAllFirmware = true;
-  hardware.opengl.driSupport32Bit = true;
-  networking.hostName = "fw";
+  networking.hostName = "wyse";
 
   # --- Users ---
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users."sam" = {
+  users.users."${user}" = {
     isNormalUser = true;
     description = "Sam Lehman";
     extraGroups = [ "wheel" "users" "dialout" ];
   };
-
-  #users = {
-  #  groups = {
-  #    nm-openconnect = {};
-  #    #netdev = {};
-  #  };
-  #  #extraGroups = {
-  #  #  # Fix for D-Bus error on missing group: netdev
-  #  #  # TODO: Figure out what causes this error (sshd? pkcs? pam? pam-pkcs11?)
-  #  #  netdev = { name = "netdev"; };
-  #  #};
-  #  extraUsers = {
-  #    # Fix for D-Bus error on missing user: nm-openconnect
-  #    # TODO: Figure out what causes this error (sshd? pkcs? pam? pam-pkcs11? OpenConnect? NetworkManager?)
-  #    nm-openconnect = {
-  #      name = "nm-openconnect";
-  #      description = "System user to control OpenConnect in NetworkManager";
-  #      isSystemUser = true;
-  #      group = "nm-openconnect";
-  #      extraGroups = [
-  #        #"netdev"
-  #        "networkmanager"
-  #      ];
-  #    };
-  #  };
-  #};
 
   # TODO: Move most of these to home-manager profile (default user?)
   environment.systemPackages = with pkgs; [

@@ -29,7 +29,7 @@
     ./gc.nix
     ./nixpkgs.nix
     ./optimize.nix
-    ./registry.nix
+    #./registry.nix
     ./sandbox.nix
     ./shell.nix
     ./utils.nix

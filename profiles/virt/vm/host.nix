@@ -1,5 +1,8 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, self
+, config
+, lib
+, pkgs
 , user ? "sam"
 , isOld ? false
 , isIntelCpu ? true
@@ -26,18 +29,18 @@ in
   # --- Guest Integration ---
   environment.systemPackages = [
     #pkgs.gnome-boxes
-    pkgs.guestfs-tools
-    pkgs.libguestfs
-    pkgs.libguestfs-appliance
+    #pkgs.guestfs-tools
+    #pkgs.libguestfs
+    #pkgs.libguestfs-appliance
     pkgs.spice
     pkgs.spice-protocol
     pkgs.spice-gtk
 
     pkgs.python311Packages.guestfs
   ];
-  services.spice-vdagentd.enable = true;             # Guest-only?
-  services.spice-webdavd.enable = true;              # Share files between host & guest via WebDAV
-  virtualisation.spiceUSBRedirection.enable = true;  # USB device access in guest VM
+  services.spice-vdagentd.enable = true; # Guest-only?
+  services.spice-webdavd.enable = true; # Share files between host & guest via WebDAV
+  virtualisation.spiceUSBRedirection.enable = true; # USB device access in guest VM
 
   #virtualisation.sharedDirectories = {   # nixos-rebuild says this option doesnt exist
   #  windows   = { source = "/mnt/share/windows";   target = "C:/host-share/windows";   };

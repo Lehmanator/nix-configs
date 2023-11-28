@@ -6,9 +6,9 @@
 # LXD - Daemon that manages containers. Users in `lxd` group can interact w/ daemon (to start/stop containers) using the `lxc` command line tool & others.
 {
   imports = [
-    #../../apparmor.nix      # LXD service complains about missing AppArmor support (WARN)
-    #./lxc.nix               # Interfacing w/ LXD can be done with LXC (or other utils, but you will likely use LXC)
-    #./lxd-image-server.nix  # Creates, manages, & mirrors a simplestreams lxd image server on top of nginx.
+    #../../security/apparmor.nix  # LXD service complains about missing AppArmor support (WARN)
+    #./lxc.nix                    # Interfacing w/ LXD can be done w/ LXC (or other utils, but you will probs use LXC)
+    #./lxd-image-server.nix       # Creates, manages, & mirrors a simplestreams lxd image server on top of nginx.
   ];
 
   boot.kernelModules = [

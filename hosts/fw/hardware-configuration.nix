@@ -10,53 +10,45 @@
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     inputs.nixos-hardware.nixosModules.framework-12th-gen-intel
+    ../../profiles/hardware/bluetooth.nix
     ../../profiles/hardware/fprintd.nix
+    ../../profiles/hardware/peripherals/logitech.nix
   ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "usb_storage" "sd_mod" ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
-
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/d1f565b9-ff81-430d-a963-01556f876f68";
-      fsType = "ext4";
+  boot = {
+    extraModulePackages = [ ];
+    kernelModules = [ "kvm-intel" ];
+    initrd = {
+      availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "usb_storage" "sd_mod" ];
+      kernelModules = [ ];
     };
+  };
 
-  fileSystems."/boot/efi" =
-    { device = "/dev/disk/by-uuid/6674-832F";
-      fsType = "vfat";
-    };
+  fileSystems = {
+    "/"         = {fsType="ext4"; device="/dev/disk/by-uuid/d1f565b9-ff81-430d-a963-01556f876f68";};
+    "/boot/efi" = {fsType="vfat"; device="/dev/disk/by-uuid/6674-832F";};
+  };
+  #swapDevices = [
+  #  { device = "/dev/nvme0n1p3"; }
+  #];
 
-  swapDevices = [
-    #{ device = "/dev/nvme0n1p3"; }
-  ];
+  hardware = {
+    enableRedistributableFirmware = lib.mkDefult true;
+    cpu.intel.updateMicrocode = lib.mkDefault true;
+
+    # Sensors
+    sensor.iio.enable = true;
+
+  };
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp0s13f0u2c2.useDHCP = lib.mkDefault true;
-  # networking.interfaces.wlp166s0.useDHCP = lib.mkDefault true;
+  #networking.interfaces.enp0s13f0u2c2.useDHCP = lib.mkDefault true;
+  #networking.interfaces.wlp166s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-
-  # High-resolution display
-  #hardware.video.hidpi.enable = lib.mkDefault true;  # Deprecated
-
-  # Bluetooth
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true;
-
-  # Sensors
-  hardware.sensor.iio.enable = true;
-
-  # Peripherals
-  hardware.logitech.wireless = {
-    enable = true;
-    enableGraphical = true;
-  };
 }

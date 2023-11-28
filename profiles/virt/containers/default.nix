@@ -5,7 +5,7 @@
 }:
 {
   imports = [
-    ../../apparmor.nix
+    ../../security/apparmor.nix
     ./containerd.nix
     ./cri-o.nix
     ./lxc.nix

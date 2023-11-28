@@ -14,7 +14,7 @@
 
   # Make the Tailscale command usable to users
   environment.systemPackages = lib.mkIf config.services.xserver.desktopManager.gnome.enable [
-    pkgs.gnomeExtensions.taildrop-send
+    #pkgs.gnomeExtensions.taildrop-send
     pkgs.gnomeExtensions.tailscale-qs
     pkgs.gnomeExtensions.tailscale-status
     #pkgs.trayscale
