@@ -6,25 +6,19 @@
 , config
 , lib
 , pkgs
-, user ? "sam"
+, user
 , ...
 }: {
   imports = [
-    # Include SnowflakeOS config
-    #./snowflake.nix
-
     # Include the results of the hardware scan.
     #./hardware-configuration.nix
 
-    #./displays.nix
-
-    # Activate profiles
     ../../profiles/adb.nix
     ../../profiles/boot
     ../../profiles/desktop
     ../../profiles/desktop/de/gnome
     #../../profiles/editor
-    #../../profiles/hardware/display/displaylink.nix
+    ../../profiles/hardware/display
     #../../profiles/hardware/fprintd.nix
     ../../profiles/hardware/fwupd.nix
     ../../profiles/hardware/peripherals/logitech.nix
@@ -35,8 +29,8 @@
     ../../profiles/nixos
     ../../profiles/piwc
     ../../profiles/security/polkit.nix
+    ../../profiles/security/sops.nix
     ../../profiles/shell
-    ../../profiles/sops.nix
     ../../profiles/sshd.nix
     ../../profiles/users
     ../../profiles/virt
@@ -60,12 +54,11 @@
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
   console.useXkbConfig = true;
   hardware.enableAllFirmware = true;
-  hardware.opengl.driSupport32Bit = true;
   networking.hostName = "fw";
 
   # --- Users ---
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users."sam" = {
+  users.users."${user}" = {
     isNormalUser = true;
     description = "Sam Lehman";
     extraGroups = [ "wheel" "users" "dialout" ];

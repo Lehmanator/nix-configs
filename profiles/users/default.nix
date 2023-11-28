@@ -12,7 +12,7 @@
 #in
 {
   imports = [
-    ./home-manager.nix
+    #./home-manager.nix
     ./primary.nix
   ];
 }

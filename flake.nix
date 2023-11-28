@@ -15,14 +15,14 @@
     nixosConfigurations.fw = with inputs; nixos.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = { inherit self inputs; system = "x86_64-linux"; user = "sam"; };
-      modules = let debug = true; in with inputs; [
+      modules = let debug = false; in with inputs; [
         ./hosts/fw
         nix-data.nixosModules.nix-data
         nix-index.nixosModules.nix-index
         { programs.nix-index-database.comma.enable = true; }
         nur.nixosModules.nur
         agenix.nixosModules.default
-        sops-nix.nixosModules.sops
+        #sops-nix.nixosModules.sops
         home.nixosModules.home-manager
         {
           home-manager = {

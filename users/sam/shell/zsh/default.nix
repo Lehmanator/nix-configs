@@ -1,89 +1,30 @@
 { self, inputs
-, user ? "sam"
+, user
 , config, lib, pkgs
 , ...
 }:
-#let
-#  zsh-set-tab-title = ''
-#    autoload -Uz add-zsh-hook
-#    function xterm_title_precmd() {
-#      print -Pn -- '\e]2;%n@%m %~\a'
-#      [[ "$TERM" == 'screen'* ]] && print -Pn -- '\e_\005{g}%n\005{-}@\005{m}%m\005{-} \005{B}%~\005{-}\e\\'
-#    }
-#    function xterm_title_preexec () {
-#      print -Pn -- '\e]2;%n@%m %~ %# ' && print -n -- "${"{(q)1}"}\a"
-#     [[ "$TERM" == 'screen'* ]] && { print -Pn -- '\e_\005{g}%n\005{-}@\005{m}%m\005{-} \005{B}%~\005{-} %# ' && print -n -- "${"{(q)1}"}\e\\"; }
-#    }
-#    if [[ "$TERM" == (Eterm*|alacritty*|aterm*|foot*|gnome*|konsole*|kterm*|putty*|rxvt*|screen*|wezterm*|tmux*|xterm*) ]]; then
-#      add-zsh-hook -Uz precmd  xterm_title_precmd
-#      add-zsh-hook -Uz preexec xterm_title_preexec
-#    fi
-#  '';
-#in
 {
   imports = [
     ../common
     ./alias.nix
+    #./completion.nix
+    ./dirs.nix
     ./highlight.nix
     ./history.nix
+    ./init.nix
+    #./keymaps.nix
+    ./plugins.nix
+    #./vte.nix
   ];
-
 
   programs.zsh = {
     enable = true;
-    dotDir = ".config/zsh"; # Relative to $HOME. #dotDir = "${config.xdg.configHome}/zsh"; #config.home.sessionVariables.ZDOTDIR;
+    dotDir = ".config/zsh"; # Relative to $HOME.
 
     # --- Keybindings ---
-    # TODO: Create global user/system-wide keymap setting & set these options correspondingly
-    defaultKeymap = "viins";
+    # TODO: Create homeManagerModule for global user keymap setting
+    defaultKeymap = "viins";       # TODO: lib.mkIf config.keymap=="vim";
     #prezto.editor.keymap = "vi";
-
-    # --- Directories ---
-    # TODO: Use XDG User Dirs if graphical environment (only?)
-    # TODO: Use lib to turn dirHashes attrset into equivalent list
-    #cdpath = lib. config.programs.zsh.dirHashes
-    autocd = true;             # Auto-cd into directory if command name matches dir & not a command
-    dirHashes = with config.xdg; {
-      # --- Base Dirs ---
-      cache  = cacheHome;  #XDG_CACHE_HOME";
-      config = configHome; #XDG_CONFIG_HOME";
-      data   = dataHome;   #XDG_DATA_HOME";
-      state  = stateHome;  #XDG_STATE_HOME";
-
-      # --- User Dirs ---
-      desk = userDirs.desktop;
-      dl   = userDirs.download;
-      docs = userDirs.documents;
-      music= userDirs.music;
-      pics = userDirs.pictures;
-      pub  = userDirs.publicShare;
-      templ= userDirs.templates;
-      vids = userDirs.videos;
-
-      # --- Extra User Dirs ---
-      audio  = userDirs.extraConfig.XDG_AUDIO_DIR;
-      back   = userDirs.extraConfig.XDG_BACKUP_DIR;
-      book   = userDirs.extraConfig.XDG_BOOKS_DIR;
-      code   = userDirs.extraConfig.XDG_CODE_DIR;
-      game   = userDirs.extraConfig.XDG_GAMES_DIR;
-      note   = userDirs.extraConfig.XDG_NOTES_DIR;
-      script = userDirs.extraConfig.XDG_SCRIPTS_DIR;
-      vault  = "${config.home.homeDirectory}/Vaults"; #vault= userDirs.extraConfig.XDG_VAULT_DIR;
-
-      # --- Configs ---
-      nix    = "${configHome}/nixos"; #XDG_CONFIG_HOME/nixos";
-
-      # --- Keys & Secrets ---
-      gpg    = "${config.programs.gpg.homedir}"; #"${config.xdg.dataHome}/gnupg";   #GNUPGHOME";
-      ssh    = "${config.home.homeDirectory}/.ssh";       #HOME/.ssh";
-      pki    = "${config.home.homeDirectory}/.pki";       #HOME/.pki";
-      shh    = "${config.home.homeDirectory}/.local/secrets"; #HOME/.local/secrets";
-
-      # --- Executables ---
-      bin    = "${config.home.homeDirectory}/.local/bin"; #HOME/.local/bin";
-      repos  = "${config.home.homeDirectory}/.local/repos"; #HOME/.local/repos";
-      flatpak= "${config.home.homeDirectory}/.var/app";
-    };
 
     # --- Completion ---
     enableAutosuggestions = true;
@@ -93,20 +34,6 @@
       autoload -U bashcompinit && bashcompinit
     '';
     prezto.editor.dotExpansion = true; # Auto expand ... to ../..
-
-    # --- Initialization -------------------------------------
-    # TODO: Move cdls to user zsh config
-    #initExtra = ''
-    #  function cdls() {
-    #    ${pkgs.eza}/bin/eza -a --icons --git --group-directories-first
-    #  }
-    #  chpwd_functions=(cdls)
-    #'';
-    #initExtraBeforeCompInit
-    #initExtraFirst
-    #localVariables
-    #loginExtra
-    #logoutExtra
 
     # --- Integration ---
     enableVteIntegration = true;
@@ -123,59 +50,14 @@
     #  itermIntegration = true;
     #};
 
-    # --- Plugins --------------------------------------------
-    # TODO: Fetch plugins using nvfetcher & nixpkgs overlay ?
-    prezto.enable = false;
-    plugins = [
-      #{ name = "zsh-nix-shell"; file = "nix-shell.plugin.zsh";   # Use ZSH inside nix-shell
-      #  src = pkgs.fetchFromGitHub { owner = "chisui"; repo = "zsh-nix-shell"; rev = "v0.7.0"; hash = "sha256-oQpYKBt0gmOSBgay2HgbXiDoZo5FoUKwyHSlUrOAP5E="; };
-      #}
-    ];
-
-    # ---- Extras --------------------------------------------
-    prezto.extraFunctions = [ "zargs" "zmv" ]; # Extra ZSH functions to load. See: `$ man zshcontrib`
-    initExtra = ''
-      autoload -Uz zargs zcp zln zmv
-      zmodload zsh/attr
-      zmodload zsh/computil
-      zmodload zsh/mathfunc
-      zmodload zsh/parameter
-      zmodload zsh/nearcolor
-      zmodload zsh/stat
-      zmodload zsh/termcap
-      zmodload zsh/terminfo
-      zmodload zsh/watch
-      zmodload zsh/zpty
-    '';
-    #prezto.extraModules = [ "attr" "stat" ]; # Extra ZSH modules to load.   See: `$ man zshmodules`
-    prezto.pmodules = [
-      "environment"
-      "terminal"
-      "editor"
-      "history"
-      "directory"
-      "spectrum"
-      "utility"
-      "completion"
-      "prompt"
-    ];
-
-    # TODO: Separate personal keys from profile-related config.
-    # TODO: mkSshIdentities = name: [ "id_${name}_rsa" "id_${name}_ed25519" ];
-    prezto.ssh.identities = [
-      "id_rsa"
-      "id_ed25519"
-      "id_lehmanator_ed25519"
-      "id_slehman_ed25519"
-      "id_slehman_rsa"
-    ];
   };
-
-  #home.sessionVariables.ZDOTDIR = "${config.home.homeDirectory}/${config.programs.zsh.dotDir}";
 
   home.packages = [
     pkgs.zsh-nix-shell
     pkgs.any-nix-shell
     pkgs.nix-zsh-completions
   ];
+
+  #home.sessionVariables.ZDOTDIR = "${config.home.homeDirectory}/${config.programs.zsh.dotDir}";
+
 }

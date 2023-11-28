@@ -33,7 +33,7 @@
   #];
 
   hardware = {
-    enableRedistributableFirmware = lib.mkDefult true;
+    enableRedistributableFirmware = lib.mkDefault true;
     cpu.intel.updateMicrocode = lib.mkDefault true;
 
     # Sensors

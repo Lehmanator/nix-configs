@@ -14,7 +14,7 @@
     pkgs.kustomize-sops
     pkgs.terraform-providers.sops
   ] ++ (with inputs.sops-nix.packages.${pkgs.system}; [
-    lint
+    #lint
     sops-import-keys-hook
     sops-init-gpg-key
     sops-install-secrets

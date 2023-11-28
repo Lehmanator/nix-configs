@@ -1,6 +1,7 @@
-{ self, inputs, config, lib, pkgs,
-  host, network, repo,
-  ...
+{ self, inputs
+, config, lib, pkgs
+, host, network, repo
+, ...
 }:
 let
   # Framework Builtin Display

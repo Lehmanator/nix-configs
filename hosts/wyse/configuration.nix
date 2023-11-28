@@ -30,13 +30,12 @@
     ../../profiles/nixos
     ../../profiles/piwc
     ../../profiles/security/polkit.nix
+    ../../profiles/security/sops.nix
     ../../profiles/shell
-    ../../profiles/sops.nix
     ../../profiles/sshd.nix
     ../../profiles/users
     ../../profiles/virt
     #../../profiles/virt/windows
-    ../../profiles/workarounds.nix
   ];
 
   # This value determines the NixOS release from which the default
