@@ -6,7 +6,7 @@
 }:
 {
   programs.nixvim.colorschemes.tokyonight = {
-    enable = lib.mkDefault false;
+    #enable = lib.mkDefault false;
     #dayBrightness = 1;
     dimInactive = lib.mkDefault true;
     hideInactiveStatusline = lib.mkDefault true;

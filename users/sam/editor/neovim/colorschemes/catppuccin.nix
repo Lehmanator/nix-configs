@@ -7,7 +7,7 @@
 }:
 {
   programs.nixvim.colorschemes.catppuccin = {
-    enable = lib.mkDefault true;
+    #enable = lib.mkDefault false;
 
     showBufferEnd = false; # Show `~` after end of buffers
     terminalColors = true;
@@ -21,11 +21,11 @@
 
     # --- Styling, Highlights, & Overrides ---
     colorOverrides = {
-      all = {};
-      frappe = {};
-      latte = {};
-      macchiato = {};
-      mocha = {};
+      all = { };
+      frappe = { };
+      latte = { };
+      macchiato = { };
+      mocha = { };
     };
 
     #customHighlights = ''
@@ -40,69 +40,71 @@
 
     # TODO: Make some symbol classes bold & others italic
     styles = {
-      booleans = [];
-      comments = ["italic"];
-      conditionals = ["italic"];
-      functions = [];
-      keywords = ["bold"];
-      loops = [];
-      numbers = [];
-      operators = ["bold"];
-      properties = [];
-      strings = [];
-      types = [];
-      variables = [];
+      booleans = [ ];
+      comments = [ "italic" ];
+      conditionals = [ "italic" ];
+      functions = [ ];
+      keywords = [ "bold" ];
+      loops = [ ];
+      numbers = [ ];
+      operators = [ "bold" ];
+      properties = [ ];
+      strings = [ ];
+      types = [ ];
+      variables = [ ];
     };
 
     # TODO: All integrations
     integrations = with config.programs.nixvim.plugins; {
       aerial = true;
-      barbar = barbar.enable;
+      barbar = true; #barbar.enable;
       beacon = true;
-      cmp = nvim-cmp.enable;
+      cmp = true; #nvim-cmp.enable;
       coc_nvim = true;
-      dap.enabled = dap.enable; dap.enable_ui = dap.extensions.dap-ui.enable;
-      dashboard = dashboard.enable;
+      dap.enabled = true; #dap.enable;
+      dap.enable_ui = true; #dap.extensions.dap-ui.enable;
+      dashboard = true; #dashboard.enable;
       fern = true;
       fidget = true;
-      gitgutter = gitgutter.enable;
-      gitsigns = gitsigns.enable;
+      gitgutter = true; #gitgutter.enable;
+      gitsigns = true; #gitsigns.enable;
       harpoon = true;
       headlines = true;
       hop = true;
-      illuminate = true;
+      #illuminate = true;
       leap = true;
       lightspeed = true;
-      lsp_saga = lspsaga.enable;
-      lsp_trouble = trouble.enable;
+      lsp_saga = true; #lspsaga.enable;
+      lsp_trouble = true; #trouble.enable;
       markdown = true;
       mason = true;
-      mini = true;
-      navic.enabled = true; navic.custom_bg = "NONE";
-      neogit = neogit.enable;
+      #mini = true;
+      navic.enabled = true;
+      navic.custom_bg = "NONE";
+      neogit = true; #neogit.enable;
       neotest = true;
       neotree = true;
-      noice = noice.enable;
+      noice = true; #noice.enable;
       notify = true;
       nvimtree = true;
       octo = true;
       overseer = true;
       pounce = true;
-      rainbow_delimiters = rainbow-delimiters.enable;
+      rainbow_delimiters = true; #rainbow-delimiters.enable;
       sandwich = true;
       semantic_tokens = true;
       symbols_outline = true;
       telekasten = true;
-      telescope = telescope.enable;
-      treesitter = treesitter.enable;
-      treesitter_context = treesitter-context.enable;
+      treesitter = true; #treesitter.enable;
+      treesitter_context = true; #treesitter-context.enable;
       ts_rainbow = true;
       ts_rainbow2 = true;
       vim_sneak = true;
       vimwiki = true;
-      which_key = which-key.enable;
+      which_key = true; #which-key.enable;
 
-      barbecue = { # VSCode-like window symbol hierarchy/scope/nesting line
+      barbecue = {
+        # VSCode-like window symbol hierarchy/scope/nesting line
         alt_background = false;
         bold_basename = true;
         dim_context = false;
@@ -115,18 +117,22 @@
       native_lsp = {
         enabled = true;
         underlines = {
-          errors = ["underline"];
-          hints = ["underline"];
-          information = ["underline"];
-          warnings = ["underline"];
+          errors = [ "underline" ];
+          hints = [ "underline" ];
+          information = [ "underline" ];
+          warnings = [ "underline" ];
         };
         virtual_text = {
-          errors = ["italic"];
-          hints = ["italic"];
-          information = ["italic"];
-          warnings = ["italic"];
+          errors = [ "italic" ];
+          hints = [ "italic" ];
+          information = [ "italic" ];
+          warnings = [ "italic" ];
         };
       };
+      #telescope = {
+      #  enabled = true; #telescope.enable;
+      #  #style = "";
+      #};
     };
   };
 }

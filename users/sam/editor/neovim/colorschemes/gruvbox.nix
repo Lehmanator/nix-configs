@@ -1,4 +1,3 @@
-
 { inputs
 , config
 , lib
@@ -7,7 +6,7 @@
 }:
 {
   programs.nixvim.colorschemes.gruvbox = {
-    enable = lib.mkDefault false;
+    #enable = lib.mkDefault false;
     bold = true;
     colorColumn = "bg";
     contrastDark = "medium";

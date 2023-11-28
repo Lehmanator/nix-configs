@@ -1,4 +1,3 @@
-
 { inputs
 , config
 , lib
@@ -7,7 +6,7 @@
 }:
 {
   programs.nixvim.colorschemes.base16 = {
-    enable = lib.mkDefault false;
-    colorscheme = lib.mkDefault "material";
+    #enable = lib.mkDefault false;
+    colorscheme = "material";
   };
 }

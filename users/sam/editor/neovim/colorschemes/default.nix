@@ -1,6 +1,10 @@
 { inputs
+, lib
 , ...
 }:
+let
+  colorscheme = "catppuccin";
+in
 {
   imports = [
     ./base16.nix
@@ -9,5 +13,5 @@
     ./nord.nix
     ./tokyonight.nix
   ];
-  programs.nixvim.colorschemes.catppuccin.enable = true;
+  programs.nixvim.colorschemes.${colorscheme}.enable = true;
 }

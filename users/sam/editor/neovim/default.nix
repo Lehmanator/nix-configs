@@ -63,6 +63,7 @@
   # --- Nixvim ---------------------------------------------
   programs.nixvim = {
     enable = true;
+    enableMan = false; # Enable manpages for nixvim options
     defaultEditor = true;
     options = {
       # --- Lines ---
@@ -78,6 +79,7 @@
       mouse = "a"; # "nv";
     };
 
+    # TODO: Move options to colorschemes?
     highlight = {
       #IndentBlanklineIndent2.ctermfg = "bg";
       #IndentBlanklineIndent1 = { fg = "NONE"; ctermfg = "NONE"; };
@@ -93,7 +95,7 @@
       TabLineFill.fg = "NONE";
       StatusLine.bg = "NONE";
       StatusLineNC.bg = "NONE";
-      StatusLine.fg = "NONE";
+      #StatusLine.fg = "NONE"; "black";
       StatusLineNC.fg = "NONE";
     };
 
@@ -111,7 +113,7 @@
 
   # --- Git / VCS ----------------------
   programs.git.extraConfig = {
-    diff.external = false; #extraConfig.diff_opts.internal = true;
+    diff.external = true; #extraConfig.diff_opts.internal = true;
     core.editor = "nvim"; # TODO: Replace with pkgs.neovim ?
   };
 

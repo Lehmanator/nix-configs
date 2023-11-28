@@ -6,7 +6,7 @@
 }:
 {
   programs.nixvim.colorschemes.nord = {
-    enable = lib.mkDefault false;
+    #enable = lib.mkDefault false;
     enable_sidebar_background = lib.mkDefault true;
     borders = lib.mkDefault true;
     contrast = lib.mkDefault false;

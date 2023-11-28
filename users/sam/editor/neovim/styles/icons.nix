@@ -1,5 +1,8 @@
-{ self, inputs
-,config, lib, pkgs
+{ self
+, inputs
+, config
+, lib
+, pkgs
 , ...
 }:
 let
@@ -21,6 +24,6 @@ in
     };
     trouble.icons = iconsEnabled;
     trouble.indentLines = iconsEnabled;
-    telescope.extensions.frecency.deviconsDisabled = !iconsEnabled;
+    #telescope.extensions.frecency.deviconsDisabled = !iconsEnabled;
   };
 }
