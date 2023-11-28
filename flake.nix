@@ -15,7 +15,7 @@
     nixosConfigurations.fw = with inputs; nixos.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = { inherit self inputs; system = "x86_64-linux"; user = "sam"; };
-      modules = with inputs; [
+      modules = let debug = true; in with inputs; [
         ./hosts/fw
         nix-data.nixosModules.nix-data
         nix-index.nixosModules.nix-index
@@ -71,7 +71,7 @@
     nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
     # --- Image Builders: Non-Nix ----------------------------------
     # --- Extra Package Sets ---------------------------------------
-    nixpkgs-gnome.url = "github:NixOS/nixpkgs/gnome";
+    #nixpkgs-gnome.url = "github:NixOS/nixpkgs/gnome";
     nixpkgs-gnome-mobile.url = "github:chuangzhu/nixpkgs-gnome-mobile";
     nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
     nixpkgs-android.url = "github:tadfisher/android-nixpkgs";
