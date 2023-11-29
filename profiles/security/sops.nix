@@ -7,21 +7,21 @@
 }:
 {
   # TODO: Make devShell with pkgs.sops installed
-  imports = [ inputs.sops-nix.nixosModules.sops ];
+  #imports = [ inputs.sops-nix.nixosModules.sops ];
 
   sops = {
     defaultSopsFile = ../../hosts/${config.networking.hostName}/secrets/default.yaml;
     age = {
-      generateKey = true;
+      #generateKey = true;
       sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ]; #"/etc/ssh/ssh_host_rsa_key"];
       #keyFile = "/var/lib/sops-nix/sops-host-age.privkey";
       #lib.map (k: k.path) config.services.openssh.hostKeys;  # TODO: Filter to type="rsa"
     };
-    gnupg = {
-      home = "/var/lib/sops";
-      #home = "/root/.local/share/gnupg";
-      #sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" "/etc/ssh/ssh_host_rsa_key" ];
-    };
+    #gnupg = {
+    #  home = "/var/lib/sops";
+    #  #home = "/root/.local/share/gnupg";
+    #  #sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" "/etc/ssh/ssh_host_rsa_key" ];
+    #};
 
     # --- Secrets ---
     secrets = {

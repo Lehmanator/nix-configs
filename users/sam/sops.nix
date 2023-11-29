@@ -4,6 +4,7 @@
 , lib
 , pkgs
 , user
+  #, user ? "sam"
 , ...
 }:
 {
@@ -11,28 +12,31 @@
 
   sops = {
     defaultSopsFile = ../../users/${user}/.secrets/default.yaml;
+    #defaultSopsFile = "../../users/sam/.secrets/default.yaml";
     keepGenerations = 10;
 
     age = {
-      generateKey = true;
+      #generateKey = true;
       sshKeyPaths = [
-        "${config.home.homeDir}/.ssh/id_ed25519"
-        "${config.home.homeDir}/.ssh/id_sops_ed25519"
-        #"${config.home.homeDir}/.ssh/id_sops_rsa"
-        #"${config.home.homeDir}/.ssh/id_rsa"
-        #"${config.home.homeDir}/.ssh/id_fw_rsa"
+        #"/home/${config.home.username}/.ssh/id_ed25519"
+        #"/home/${config.home.username}/.ssh/id_sops_ed25519"
+        "${config.home.homeDirectory}/.ssh/id_ed25519"
+        "${config.home.homeDirectory}/.ssh/id_sops_ed25519"
+        #"${config.home.homeDirectory}/.ssh/id_sops_rsa"
+        #"${config.home.homeDirectory}/.ssh/id_rsa"
+        #"${config.home.homeDirectory}/.ssh/id_fw_rsa"
       ];
-      #  "${config.home.homeDir}/.ssh/id_ed25519" ];
-      #keyFile = "${config.home.homeDir}/.local/secrets/sops-age.privkey";
+      #  "${config.home.homeDirectory}/.ssh/id_ed25519" ];
+      #keyFile = "${config.home.homeDirectory}/.local/secrets/sops-age.privkey";
     };
 
-    gpupg = {
-      home = config.programs.gnupg.homedir;
-      #sshKeyPaths = [
-      #  "${config.home.homeDir}/.ssh/id_rsa"
-      #  "${config.home.homeDir}/.ssh/id_ed25519"
-      #];
-    };
+    #gnupg = {
+    #  home = config.programs.gpg.homedir;
+    #  #sshKeyPaths = [
+    #  #  "${config.home.homeDirectory}/.ssh/id_rsa"
+    #  #  "${config.home.homeDirectory}/.ssh/id_ed25519"
+    #  #];
+    #};
 
     secrets = {
       test-user-secret = { };
