@@ -1,4 +1,4 @@
-{ inputs, self, lib, pkgs, config, osConfig, ... }:
+{ inputs, lib, pkgs, config, osConfig, ... }:
 let
   sys = pkgs.stdenv.system;
   hasVim = #builtins.trace (
@@ -21,7 +21,7 @@ in
     pkgs.nvd # Nix version diff tool
     pkgs.niff # Compares two Nix expressions & determines what attributes changed
 
-  ] ++ lib.optional hasVim pkgs.vimPlugins.telescope-manix # Manix Telescope plugin
+  ] #++ lib.optional hasVim pkgs.vimPlugins.telescope-manix # Manix Telescope plugin
     ++ lib.optional hasFzf pkgs.nur.repos.mrcpkgs.manix-fzf # Manix FZF interface
   ;
 }

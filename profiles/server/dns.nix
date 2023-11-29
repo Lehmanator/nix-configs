@@ -1,5 +1,4 @@
 { inputs
-, self
 , config
 , lib
 , pkgs
@@ -9,7 +8,7 @@ let
   website = "216.38.6.66";
   lan = "173.90.248.196";
   domain = "piwine.com";
-  ms-dom = "piwine-com";  # TODO: Programmatic conversion from regular domain name
+  ms-dom = "piwine-com"; # TODO: Programmatic conversion from regular domain name
   ms-tenant = "piwines";
 
   piwine-com = with inputs.dns.lib.combinators; {
@@ -26,8 +25,8 @@ let
       "ns55.worldnic.com"
       "ns56.worldnic.com"
     ];
-    A = [website];
-    AAAA = [];
+    A = [ website ];
+    AAAA = [ ];
     CAA = [{
       issuerCritical = false;
       tag = "issue"; # issue | issuewild | iodef
@@ -60,43 +59,43 @@ let
     DS = [{
       keyTag = 0; # u16: Tag computed over the DNSKEY referenced by this RR to identify it.
       algorithm = "rsa"; # algorithm of the key referenced by this RR
-      digestType = "sha-256";  # Digest of the DNSKEY referenced by this RR
+      digestType = "sha-256"; # Digest of the DNSKEY referenced by this RR
     }];
     MX = [{ exchange = "${ms-dom}.mail.protection.outlook.com"; preference = 0; }];
-    PTR = [];
+    PTR = [ ];
     SRV = [{
-      service = "";  # Symbolic name of desired service. Dont add underscore.
-      proto = "";  # Symbolic name of desired protocol. Dont add underscore.
+      service = ""; # Symbolic name of desired service. Dont add underscore.
+      proto = ""; # Symbolic name of desired protocol. Dont add underscore.
       port = 22; # Port on this target host of this service.
-      priority = 0;  # Priority of this target host.
+      priority = 0; # Priority of this target host.
       target = ""; # Domain name of the target host.
       weight = 100; # Specifies relative weight for entries w/ same priority.
     }];
     TXT = [
-      "MS=ms27247019"  # Microsoft domain verification
+      "MS=ms27247019" # Microsoft domain verification
       "v=spf1 ip4=${website} ip4=${lan} include:spf.protection.outlook.com -all" # SPF sender allow/deny list
       #"v=spf1 ip4=${website} ip4=${lan} include:spf.protection.outlook.com include:pi.wine -all" # SPF sender allow/deny list
     ];
     subdomains = {
       # Microsoft Outlook / Exchange & DKIM
-      autodiscover.CNAME = ["autodiscover.outlook.com"];
-      mail.CNAME = ["${ms-dom}.mail.protection.outlook.com"]; # SMTP/IMAP/POP3 host?
-      imap.CNAME = ["mail.${domain}"]; # SMTP/IMAP/POP3 host?
-      smtp.CNAME = ["mail.${domain}"]; # SMTP/IMAP/POP3 host?
-      "selector1._domainkey".CNAME = ["selector1-piwine-com._domainkey.${ms-tenant}.onmicrosoft.com"]; # DKIM
-      "selector2._domainkey".CNAME = ["selector2-piwine-com._domainkey.${ms-tenant}.onmicrosoft.com"]; # DKIM
+      autodiscover.CNAME = [ "autodiscover.outlook.com" ];
+      mail.CNAME = [ "${ms-dom}.mail.protection.outlook.com" ]; # SMTP/IMAP/POP3 host?
+      imap.CNAME = [ "mail.${domain}" ]; # SMTP/IMAP/POP3 host?
+      smtp.CNAME = [ "mail.${domain}" ]; # SMTP/IMAP/POP3 host?
+      "selector1._domainkey".CNAME = [ "selector1-piwine-com._domainkey.${ms-tenant}.onmicrosoft.com" ]; # DKIM
+      "selector2._domainkey".CNAME = [ "selector2-piwine-com._domainkey.${ms-tenant}.onmicrosoft.com" ]; # DKIM
 
       # Microsoft Teams / Skype for Business SIP calling
-      lyncdiscover.CNAME = ["webdir.online.lync.com"];
-      "_SIP._TLS".SRV = ["sipdir.online.lync.com"];
-      "_SIPFEDERATIONTLS._TCP".SRV = ["sipfed.online.lync.com"];
+      lyncdiscover.CNAME = [ "webdir.online.lync.com" ];
+      "_SIP._TLS".SRV = [ "sipdir.online.lync.com" ];
+      "_SIPFEDERATIONTLS._TCP".SRV = [ "sipfed.online.lync.com" ];
 
       # Microsoft MLM / Intune / Device Management
-      enterpriseregistration.CNAME = ["enterpriseregistration.windows.net"];
-      enterpriseenrollment.CNAME = ["enterpriseenrollment-s.manage.microsoft.com"];
+      enterpriseregistration.CNAME = [ "enterpriseregistration.windows.net" ];
+      enterpriseenrollment.CNAME = [ "enterpriseenrollment-s.manage.microsoft.com" ];
 
       # GitHub organization verification
-      "_github-challenge-presqueislewinecellars-org".TXT = ["8b9bbe0783"];
+      "_github-challenge-presqueislewinecellars-org".TXT = [ "8b9bbe0783" ];
 
       # Nameservers
       ns1.CNAME = [ "ns55.worldnic.com" ];
@@ -108,7 +107,7 @@ let
 
       # Reroute everything else to on-premises domain controller
       #"*".AAAA = [""]; TODO: Local network IPv6
-      "*".A = [lan];
+      "*".A = [ lan ];
     };
   };
 in

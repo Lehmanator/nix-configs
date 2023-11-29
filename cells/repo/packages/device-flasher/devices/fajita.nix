@@ -1,5 +1,4 @@
 { inputs
-, self
 , ...
 }:
 inputs.flake-utils.lib.eachDefaultSystem (system:

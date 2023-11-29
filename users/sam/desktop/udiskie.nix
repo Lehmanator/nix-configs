@@ -1,5 +1,7 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, config
+, lib
+, pkgs
 , ...
 }:
 # udiskie: Userspace mount daemon
@@ -18,7 +20,8 @@
         udisks_version = 2;
         tray = true;
       };
-      icon_names.media = [ "media"  #"media-optical"
+      icon_names.media = [
+        "media" #"media-optical"
       ];
     };
   };

@@ -1,6 +1,8 @@
-{ inputs, self
+{ inputs
 , user
-, config, lib, pkgs
+, config
+, lib
+, pkgs
 , ...
 }:
 {

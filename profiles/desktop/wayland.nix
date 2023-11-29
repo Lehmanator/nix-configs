@@ -1,25 +1,20 @@
-{ self, inputs,
-  system, userPrimary,
-  config, lib, pkgs,
-  host, user, repo, network, machine,
-  ...
+{ inputs
+, config
+, lib
+, pkgs
+, ...
 }:
 {
-  imports = [
-    ./xserver.nix
-  ];
-
-  environment.systemPackages = [ pkgs.wl-clipboard ];
-
+  imports = [ ./xserver.nix ];
   hardware.opengl.enable = true;
-
   #programs.wshowkeys.enable = true;
-
   services.xserver.displayManager.gdm.wayland = true;
   services.xserver.windowManager.qtile.backend = "wayland";
 
   # Try to force Electron apps to use Wayland
-  environment.sessionVariables.NIXOS_OZONE_WL = "1";
-  environment.sessionVariables.MOZ_ENABLE_WAYLAND = lib.mkIf config.programs.firefox.enable "1";
-
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+    MOZ_ENABLE_WAYLAND = lib.mkIf config.programs.firefox.enable "1";
+  };
+  environment.systemPackages = [ pkgs.wl-clipboard ];
 }

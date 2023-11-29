@@ -1,14 +1,13 @@
-{ self, system, userPrimary, inputs, config, lib, pkgs, ... }: {
-  imports = [
-  ];
-
+{ inputs, config, lib, pkgs, user, ... }: {
+  imports = [ ];
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
-  services.pipewire.enable = true;
-  services.pipewire.alsa.enable = false;
-  services.pipewire.alsa.support32Bit = true;
-  services.pipewire.pulse.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = false;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
   sound.enable = true;
-
-  users.users."sam".extraGroups = [ "audio" ];
+  users.users.${user}.extraGroups = [ "audio" ];
 }

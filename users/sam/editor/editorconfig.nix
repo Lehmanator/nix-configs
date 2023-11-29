@@ -1,22 +1,17 @@
-{
-  self,
-  inputs,
-  system,
-  host, userPrimary,
-  config, lib, pkgs,
-  ...
+{ inputs
+, config
+, lib
+, pkgs
+, ...
 }:
-let
-in
 {
-  imports = [
-  ]; 
+  imports = [ ];
 
   # TODO: Add editorconfig plugin to editors
   editorconfig.enable = true;
   editorconfig.settings = {
     "*" = {
-      charset = "utf-8";  # TODO: Handle Windows/MacOS/Android
+      charset = "utf-8"; # TODO: Handle Windows/MacOS/Android
       end_of_line = "lf";
       trim_trailing_whitespace = true;
       insert_final_newline = true;

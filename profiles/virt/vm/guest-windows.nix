@@ -1,14 +1,5 @@
-{ inputs, self
-, config, lib, pkgs
-, ...
-}:
+{ inputs, config, lib, pkgs, ... }:
 {
-  imports = [
-    ./host.nix
-  ];
-
-  environment.systemPackages = [
-    pkgs.win-spice
-  ];
-
+  imports = [ ./host.nix ];
+  environment.systemPackages = [ pkgs.win-spice ];
 }

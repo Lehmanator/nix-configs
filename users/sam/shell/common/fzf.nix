@@ -1,5 +1,7 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, config
+, lib
+, pkgs
 , ...
 }:
 let
@@ -57,8 +59,8 @@ in
   #};
 
   home.packages = [
-    pkgs.sysz  # systemd fzf UI  # TODO: Conditionally load for Linux systems
-    pkgs.ytfzf     # FZF UI to search & watch YouTube videos
+    pkgs.sysz # systemd fzf UI  # TODO: Conditionally load for Linux systems
+    pkgs.ytfzf # FZF UI to search & watch YouTube videos
     #pkgs.fzf-obc  # Completion script adding FZF over all known bash completion functions
   ];
 }

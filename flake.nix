@@ -1,4 +1,26 @@
 {
+  description = "Personal Nix & NixOS configurations";
+  outputs = { self, nixpkgs, nixos, home, nur, ... }@inputs: {
+    nixosConfigurations = with inputs; {
+      fw = nixos.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = { inherit inputs; user = "sam"; };
+        modules = let debug = false; in with inputs; [
+          ./hosts/fw
+          nix-data.nixosModules.nix-data
+          nix-index.nixosModules.nix-index
+          { programs.nix-index-database.comma.enable = true; }
+          nur.nixosModules.nur
+        ];
+      };
+      wyse = nixos.lib.nixosSystem rec {
+        system = "x86_64-linux";
+        specialArgs = { inherit inputs; user = "sam"; };
+        modules = [ ./hosts/wyse ];
+      };
+    };
+  };
+
   nixConfig = {
     connect-timeout = 10;
     substituters = [
@@ -9,37 +31,6 @@
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];
-  };
-
-  outputs = { self, nixpkgs, nixos, home, nur, ... }@inputs: {
-    nixosConfigurations.fw = with inputs; nixos.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = { inherit self inputs; system = "x86_64-linux"; user = "sam"; };
-      modules = let debug = false; in with inputs; [
-        ./hosts/fw
-        nix-data.nixosModules.nix-data
-        nix-index.nixosModules.nix-index
-        { programs.nix-index-database.comma.enable = true; }
-        nur.nixosModules.nur
-        agenix.nixosModules.default
-        #sops-nix.nixosModules.sops
-        home.nixosModules.home-manager
-        {
-          home-manager = {
-            sharedModules = [
-              arkenfox.hmModules.default
-              nix-index.hmModules.nix-index
-              { programs.nix-index-database.comma.enable = true; }
-              sops-nix.homeManagerModules.sops
-            ];
-            useGlobalPkgs = false;
-            useUserPackages = true;
-            extraSpecialArgs = { inherit self inputs; system = "x86_64-linux"; user = "sam"; };
-            users.sam = import ./users/sam; # ./users/sam/home.nix
-          };
-        }
-      ];
-    };
   };
 
   inputs = {

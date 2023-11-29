@@ -1,5 +1,4 @@
 { inputs
-, self
 , config
 , lib
 , ...
@@ -12,7 +11,7 @@ rec {
   # --- Generic Devices ---
   packages.fastboot-flash-slot = pkgs.writeShellApplication {
     name = "fastboot-flash-slot";
-    runtimeInputs = [pkgs.android-tools];
+    runtimeInputs = [ pkgs.android-tools ];
     text = ''
       slot="\$\{1:-a}"
       fastboot flash aop_$slot aop.img

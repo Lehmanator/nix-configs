@@ -1,10 +1,1 @@
-{ inputs, self
-, config, lib, pkgs
-, ...
-}:
-{
-  imports = [
-    ../common
-  ];
-
-}
+{ inputs, config, lib, pkgs, ... }: { imports = [ ../common ]; }

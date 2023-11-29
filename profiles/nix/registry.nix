@@ -1,13 +1,6 @@
-{ inputs, self
-, config, lib, pkgs
-, ...
-}:
+{ inputs, config, lib, pkgs, ... }:
 {
-  imports = [
-    inputs.nix-quick-registry.nixosModules.local-registry
-  ];
-
-  # --- Nix Registry ---------------------------------------
+  imports = [ inputs.nix-quick-registry.nixosModules.local-registry ];
   # User: ~/.config/nix/registry.json
   # Create Nix registry from nixpkgs
   # TODO: Select input based on system type
@@ -16,7 +9,6 @@
     registry = {
       nixos.flake = inputs.nixos;
       darwin.flake = inputs.darwin;
-
       nixpkgs = {
         from = {
           id = "nixpkgs";
@@ -24,10 +16,8 @@
         };
         flake = inputs.nixpkgs;
       };
-
       home-manager.flake = inputs.home;
       home.flake = inputs.home;
-
       #repo = {
       #  to = { type = "github";
       #    owner = "PresqueIsleWineDev";
@@ -40,12 +30,9 @@
       cacheGlobalRegistry = true;
       noGlobalRegistry = false;
     };
-
     settings = {
       use-registries = true;
       flake-registry = true;
     };
-
   };
-
 }

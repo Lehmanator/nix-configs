@@ -1,14 +1,5 @@
-{ inputs, self
-, config, lib, pkgs
-, ...
-}:
+{ inputs, config, lib, pkgs, ... }:
 {
-  imports = [
-    ../common
-  ];
-
-  home.packages = [
-    inputs.nur.repos.federicoschonborn.gradebook
-  ];
-
+  imports = [ ../common ];
+  home.packages = [ inputs.nur.repos.federicoschonborn.gradebook ];
 }

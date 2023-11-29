@@ -1,14 +1,11 @@
 { inputs
-, self
 , config
 , lib
 , pkgs
 , ...
 }:
 {
-  imports = [
-  ];
-
+  imports = [ ];
   nixpkgs.overlays = [ inputs.fenix.overlays.default ];
   home.packages = [
     pkgs.fenix.complete.toolchain

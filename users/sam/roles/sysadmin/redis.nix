@@ -1,17 +1,9 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, config
+, lib
+, pkgs
 , ...
 }:
 {
-  imports = [
-  ];
-
-  home.packages = [
-    pkgs.redis-dump
-    pkgs.resp-app
-    pkgs.iredis
-    pkgs.rdbtools
-    pkgs.redli
-    #pkgs.webdis
-  ];
+  home.packages = with pkgs; [ redis-dump resp-app iredis rdbtools redli webdis ];
 }

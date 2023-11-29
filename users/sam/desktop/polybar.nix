@@ -1,5 +1,7 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, config
+, lib
+, pkgs
 , ...
 }:
 {
@@ -21,14 +23,14 @@
         monitor = "\${env:MONITOR:eDP1}";
         width = "100%";
         height = "3%";
-        radius = 0;                        # TODO: Pass user style preferences
+        radius = 0; # TODO: Pass user style preferences
         modules-center = "date";
       };
       "module/date" = {
         type = "internal/date";
         internal = 5;
-        date = "%d %m";             #, %y";
-        time = "%H:%M";             # TODO: AM/PM?
+        date = "%d %m"; #, %y";
+        time = "%H:%M"; # TODO: AM/PM?
         label = "%time% on %date%"; # "%date% @ %time%";
         #format-prefix-foreground = "\''${colors.foreground-alt}";
       };
@@ -45,7 +47,7 @@
         format.volume = "<ramp-volume> <label-volume>";
         label.muted.text = "🔇";
         label.muted.foreground = "#666";
-        ramp.volume = ["🔈" "🔉" "🔊"];
+        ramp.volume = [ "🔈" "🔉" "🔊" ];
         click.right = "pavucontrol &";
       };
     };

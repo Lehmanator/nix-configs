@@ -1,15 +1,13 @@
-## Shell-agnostic configuration
-##
-##
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, config
+, lib
+, pkgs
 , user
 , ...
 }:
 {
-  imports = [
-    ./alias.nix
-  ];
+  ## Shell-agnostic configuration
+  imports = [ ./alias.nix ];
 
   # --- Shell Initialization -------------------------------
   environment = {
@@ -30,8 +28,8 @@
     #  neofetch
     #'';
 
-    pathsToLink = [ "/share/bash-completion" ];                   # Always link bash completion. Used directly by bash & ZSH compat.
-    systemPackages = [ pkgs.unixODBC ];                           # Package to get CLI clients to connect to ODBC databases.
+    pathsToLink = [ "/share/bash-completion" ]; # Always link bash completion. Used directly by bash & ZSH compat.
+    systemPackages = [ pkgs.unixODBC ]; # Package to get CLI clients to connect to ODBC databases.
     unixODBCDrivers = with pkgs.unixODBCDrivers; [ sqlite psql ]; # Unix ODBC drivers to register in /etc/odbcinst.ini
   };
 
@@ -39,8 +37,8 @@
 
   # --- fzf: fuzzy searcher ---
   programs.fzf = {
-    fuzzyCompletion = true;  # Enables completion widgets for bash & zsh
-    keybindings = true;      # Enables shell keybindings to complete with fzf widgets
+    fuzzyCompletion = true; # Enables completion widgets for bash & zsh
+    keybindings = true; # Enables shell keybindings to complete with fzf widgets
   };
 
   # --- command-not-found ---

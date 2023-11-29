@@ -1,22 +1,15 @@
 { inputs
-, self
 , config
 , lib
 , pkgs
-, user ? "sam"
+, user
 , ...
 }:
 {
-  imports = [
-  ];
-
   networking.networkmanager = {
     enable = true;
     enableStrongSwan = true;
-
-    #appendNammeservers = [
-    #];
-
+    #appendNammeservers = [ ];
     # Configuration for [connection] section of NetworkManager.conf
     # See: https://developer.gnome.org/NetworkManager/stable/NetworkManager.conf.html
     #connectionConfig = {
@@ -33,7 +26,6 @@
     #  #stable-id = "";
     #  ethernet.cloned-mac-address = "preserved";
     #};
-
     #dhcp = "internal";  # dhcpcd | internal
     dispatcherScripts = [
       {
@@ -73,6 +65,6 @@
 
   };
 
-  users.users."${user}".extraGroups = [ "networkmanager" ];
+  users.users.${user}.extraGroups = [ "networkmanager" ];
 
 }

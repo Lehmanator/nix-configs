@@ -1,10 +1,12 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, config
+, lib
+, pkgs
 , ...
 }:
 {
   imports = [
-    ./quiet.nix   # Set quiet boot so splash isnt interrupted by scrolling boot logging text.
+    ./quiet.nix # Set quiet boot so splash isnt interrupted by scrolling boot logging text.
   ];
 
   boot.plymouth = {

@@ -1,5 +1,4 @@
 { inputs
-, self
 , config
 , lib
 , pkgs
@@ -14,13 +13,10 @@ let
   };
 in
 {
-  imports = [
-  ];
-
+  imports = [ ];
   networking.wireless.networks = {
     "PIWC" = main;
     "PIWC-5G" = main;
     "!Piwine!" = { psk = "!Winery64"; authProtocols = [ "WPA-PSK" ]; hidden = false; auth = null; };
   };
-
 }

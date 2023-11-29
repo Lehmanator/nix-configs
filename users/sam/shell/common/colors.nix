@@ -1,5 +1,7 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, config
+, lib
+, pkgs
 , ...
 }:
 # --- Colors ---------------
@@ -10,7 +12,7 @@
 #   - programs.fish.shellInit
 #   - programs.zsh.initExtraBeforeCompInit
 {
-  imports = [];
+  imports = [ ];
   programs.dircolors = {
     enable = true;
     settings = {

@@ -1,5 +1,4 @@
-{ self
-, inputs
+{ inputs
 , config
 , lib
 , pkgs

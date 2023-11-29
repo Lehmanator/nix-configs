@@ -1,5 +1,7 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, config
+, lib
+, pkgs
 , style ? "rounded"
 , ...
 }:
@@ -8,9 +10,9 @@ let
     rounded = [ "" "" "" "" "" "" "" "" ];
     none = [ "" "" "" "" "" "" "" "" ];
     square = [ "" "" "" "" "" "" "" "" ];
-    double=["╔" "═" "╗" "║" "╝" "═" "╚" "║"];
-    border=["╭" "─" "╮" "│" "╯" "─" "╰" "│"];
-    single=["┌" "─" "┐" "│" "┘" "─" "└" "│"];
+    double = [ "╔" "═" "╗" "║" "╝" "═" "╚" "║" ];
+    border = [ "╭" "─" "╮" "│" "╯" "─" "╰" "│" ];
+    single = [ "┌" "─" "┐" "│" "┘" "─" "└" "│" ];
     #flaoterm="─│─│┌┐┘└";
   };
   borderChars = borderCharSets."${style}";

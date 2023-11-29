@@ -1,13 +1,14 @@
-
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, config
+, lib
+, pkgs
 , ...
 }:
 {
   imports = [
-    ../common/samba.nix { drives = [ "Company Shared Data" "QBsCompanyFile" "Shared" ]; }
+    ../common/samba.nix
+    { drives = [ "Company Shared Data" "QBsCompanyFile" "Shared" ]; }
     ../common
     ./.
   ];
-
 }

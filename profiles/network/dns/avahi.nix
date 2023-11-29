@@ -1,5 +1,7 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, config
+, lib
+, pkgs
 , ...
 }:
 {
@@ -21,22 +23,22 @@
       "lehman.run"
     ];
 
-    cacheEntriesMax = 8092;    # default=4096
-    domainName = "local";      # default=local
-    nssmdns = true;            # default=false   # Enable mDNS NSS (Name Service Switch) plugin. Allows apps to resolve .local domain by querying Avahi daemon
-    openFirewall = true;       # default=true
+    cacheEntriesMax = 8092; # default=4096
+    domainName = "local"; # default=local
+    nssmdns = true; # default=false   # Enable mDNS NSS (Name Service Switch) plugin. Allows apps to resolve .local domain by querying Avahi daemon
+    openFirewall = true; # default=true
 
     publish = {
-      enable       = true;     # default=false  # Enables publishing mDNS records in general
-      addresses    = true;     # default=false  # Register mDNS records for all local IP addresses
-      domain       = false;    # default=false  # Announce locally used domain name for browsing by other hosts
-      hinfo        = false;    # default=false  # Register mDNS HINFO record which contains info about local OS & CPU
-      userServices = false;    # default=false  # Publish user services. Sets addresses=true
-      workstation  = false;    # default=false  # Register service of type "_workstation._tcp" on local LAN
+      enable = true; # default=false  # Enables publishing mDNS records in general
+      addresses = true; # default=false  # Register mDNS records for all local IP addresses
+      domain = false; # default=false  # Announce locally used domain name for browsing by other hosts
+      hinfo = false; # default=false  # Register mDNS HINFO record which contains info about local OS & CPU
+      userServices = false; # default=false  # Publish user services. Sets addresses=true
+      workstation = false; # default=false  # Register service of type "_workstation._tcp" on local LAN
     };
 
-    reflector = false;         # default=false  # Reflect incoming mDNS requests to all allowed network interfaces
-    wideArea = true;           # default=true   # Enable wide-area service discovery
+    reflector = false; # default=false  # Reflect incoming mDNS requests to all allowed network interfaces
+    wideArea = true; # default=true   # Enable wide-area service discovery
 
     # Extra config to append to avahi-daemon.conf
     #extraConfig = ''

@@ -1,9 +1,7 @@
 { inputs
-, self
 , config
 , lib
 , pkgs
-, system ? "x86_64-linux"
 , ...
 }:
 {
@@ -34,7 +32,7 @@
   home.packages = [
     # --- ADB & Fastboot ---
     #pkgs.android-tools
-    inputs.nixpkgs-android.packages.${system}.platform-tools
+    inputs.nixpkgs-android.packages.${pkgs.system}.platform-tools
     #inputs.nixpkgs-android.sdk
     #(sdkPkgs: with sdkPkgs; [
     #  build-tools-34-0-0

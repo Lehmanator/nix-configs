@@ -1,12 +1,5 @@
-{ inputs, self
-, config, lib, pkgs
-, ...
-}:
+{ inputs, config, lib, pkgs, ... }:
 {
-  imports = [
-  ];
-
-  # --- Binary Cache -------------------
   # TODO: Rename file `./substituters.nix`
   # TODO: Questions
   # - How does `nix.settings.substituters`, etc. interact with flake attr: `nixConfig.extra-substituters`?

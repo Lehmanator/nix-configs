@@ -1,13 +1,11 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, config
+, lib
+, pkgs
 , user
 , ...
 }:
 {
-  imports = [
-  ];
-
   programs.adb.enable = true;
-  users.extraGroups.adbusers.members = [user];
-
+  users.extraGroups.adbusers.members = [ user ];
 }

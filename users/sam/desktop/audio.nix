@@ -1,5 +1,7 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, config
+, lib
+, pkgs
 , ...
 }:
 {
@@ -12,7 +14,7 @@
     #./audio/pipewire.nix
     #./audio/pulseaudio.nix
     #./audio/pulseeffects.nix
-    ../shell/common/audio.nix   # CLI controls for MPRIS & other audio sources
+    ../shell/common/audio.nix # CLI controls for MPRIS & other audio sources
 
   ];
 

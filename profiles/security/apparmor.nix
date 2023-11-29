@@ -1,5 +1,7 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, config
+, lib
+, pkgs
 , ...
 }:
 {
@@ -32,16 +34,16 @@
 
   };
 
-  services.dbus.apparmor = "enabled";   # enabled = enables mediation when supported in kernel | disabled = always disabled | required = fails when AppArmor not found in kernel
+  services.dbus.apparmor = "enabled"; # enabled = enables mediation when supported in kernel | disabled = always disabled | required = fails when AppArmor not found in kernel
 
   #security.pam.services.<name>.enableAppArmor = false;   # Enable support for attaching AppArmor profiles at the user/group level.
 
   environment.systemPackages = [
     #pkgs.apparmor-pam
-    pkgs.apparmor-bin-utils         # Installed if AppArmor enabled
+    pkgs.apparmor-bin-utils # Installed if AppArmor enabled
     pkgs.apparmor-kernel-patches
     pkgs.apparmor-parser
     pkgs.apparmor-profiles
-    pkgs.apparmor-utils             # Installed if AppArmor enabled
+    pkgs.apparmor-utils # Installed if AppArmor enabled
   ];
 }

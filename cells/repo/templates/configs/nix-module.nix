@@ -1,15 +1,10 @@
-{
-  self,
-  inputs,
-  system,
-  hosts, userPrimary,
-  config, lib, pkgs,
-  ...
+{ inputs
+, config
+, lib
+, pkgs
+, user
+, ...
 }:
-let
-in
 {
-  imports = [
-  ];
-
+  imports = [ ];
 }

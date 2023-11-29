@@ -1,9 +1,11 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, config
+, lib
+, pkgs
 , user
-#, netboot ? false
-#, memtest ? false
-#, harden ? true
+  #, netboot ? false
+  #, memtest ? false
+  #, harden ? true
 , ...
 }:
 {
@@ -12,13 +14,13 @@
 
   boot.loader.systemd-boot = {
     enable = true;
-    configurationLimit = 50;  # Max generations in boot menu. Prevent boot partition from running out of space
-    consoleMode = "keep";      # keep (keep mode selected by firmware) | max (pick highest-numbered available mode) | auto (auto-pick using heuristics) | "2" (1st non-standard mode provided by firmware if any) | "1" (80x50) | "0" (UEFI 80x25)
+    configurationLimit = 50; # Max generations in boot menu. Prevent boot partition from running out of space
+    consoleMode = "keep"; # keep (keep mode selected by firmware) | max (pick highest-numbered available mode) | auto (auto-pick using heuristics) | "2" (1st non-standard mode provided by firmware if any) | "1" (80x50) | "0" (UEFI 80x25)
     #editor = !harden;          # Allow editing bootloader entries. Recommended to disable. Default=true for compat. Hardening: disable
-    editor = false;          # Allow editing bootloader entries. Recommended to disable. Default=true for compat. Hardening: disable
-    graceful = false;          # Invoke bootctl install with the --graceful option, which ignores errors when EFI variables cannot be written or when the EFI System Partition cannot be found.
-                               # Currently only applies to random seed operations.
-                               # Only enable this option if systemd-boot otherwise fails to install, as the scope or implication of the --graceful option may change in the future.
+    editor = false; # Allow editing bootloader entries. Recommended to disable. Default=true for compat. Hardening: disable
+    graceful = false; # Invoke bootctl install with the --graceful option, which ignores errors when EFI variables cannot be written or when the EFI System Partition cannot be found.
+    # Currently only applies to random seed operations.
+    # Only enable this option if systemd-boot otherwise fails to install, as the scope or implication of the --graceful option may change in the future.
 
     # --- EFI Binaries ---
     #memtest86 = {

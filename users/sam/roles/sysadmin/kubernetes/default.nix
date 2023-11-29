@@ -1,31 +1,18 @@
 { inputs
-, self
 , config
 , lib
 , pkgs
 , ...
 }:
 {
-  imports = [
-
-    # TODO: Reorganize this file by splitting into categories.
-    ./security.nix
-
-  ];
-
+  # TODO: Reorganize this file by splitting into categories.
+  imports = [ ./security.nix ];
   # TODO: Separate into Kubernetes developer & administrator
-  home.packages = [
-    pkgs.kubelogin #
-    pkgs.kubeadm # Administer Kubernetes clusters
-    pkgs.kubectl # CLI to interact with Kubernetes API to control clusters
-    #pkgs.k9s # TUI for kubectl
-  ];
-
+  home.packages = with pkgs; [ kubelogin kubeadm kubectl k9s ];
   # TODO: Each cluster specified in separate `.nix` files, each appending their config to this env var.
   # TODO: Figure out if Nix's module merging can handle colon-separated strings.
   # TODO: Consider `XDG_DATA_HOME` vs `XDG_CONFIG_HOME` (possible to prevent secret auth data from being stored in `~/.config`?
   home.sessionVariables.KUBECONFIG = "${config.xdg.configHome}/kube/config";
-
   # https://k9scli.io/
   # https://k9scli.io/topics/config/
   # https://github.com/derailed/k9s/tree/master
@@ -39,7 +26,7 @@
         headless = true;
         crumbsless = true;
         readOnly = false;
-        noIcons = false;      # TODO: Pass global style var set in home-manager to determine icon presence
+        noIcons = false; # TODO: Pass global style var set in home-manager to determine icon presence
         logger = {
           tail = 200;
           buffer = 1000;
@@ -82,15 +69,12 @@
         };
       };
     };
-
     # https://k9scli.io/topics/skins/
     #skins = {
     #  k9s = {
     #  };
     #};
-
   };
-
 
   # TODO: Write shell command thru Nix config in home-manager
   #pods() {
@@ -106,5 +90,4 @@
   #    --preview-window up:follow \
   #    --preview 'kubectl logs --follow --all-containers --tail=10000 --namespace {1} {2}' "$@"
   #}
-
 }

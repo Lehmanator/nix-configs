@@ -1,30 +1,22 @@
 { inputs
-, self
 , config
 , lib
 , pkgs
 , user
-  #, user ? "sam"
 , ...
 }:
 {
-  #imports = [ inputs.sops-nix.homeManagerModules.sops ];
+  imports = [ inputs.sops-nix.homeManagerModules.sops ];
 
   sops = {
     defaultSopsFile = ../../users/${user}/.secrets/default.yaml;
-    #defaultSopsFile = "../../users/sam/.secrets/default.yaml";
     keepGenerations = 10;
 
     age = {
       #generateKey = true;
       sshKeyPaths = [
-        #"/home/${config.home.username}/.ssh/id_ed25519"
-        #"/home/${config.home.username}/.ssh/id_sops_ed25519"
         "${config.home.homeDirectory}/.ssh/id_ed25519"
         "${config.home.homeDirectory}/.ssh/id_sops_ed25519"
-        #"${config.home.homeDirectory}/.ssh/id_sops_rsa"
-        #"${config.home.homeDirectory}/.ssh/id_rsa"
-        #"${config.home.homeDirectory}/.ssh/id_fw_rsa"
       ];
       #  "${config.home.homeDirectory}/.ssh/id_ed25519" ];
       #keyFile = "${config.home.homeDirectory}/.local/secrets/sops-age.privkey";

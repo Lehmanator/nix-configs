@@ -1,10 +1,10 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, config
+, lib
+, pkgs
 , ...
 }:
 {
-  imports = [
-    # NOTE: samba.nix passed drives=["Shared"] by default
-    ./.
-  ];
+  # NOTE: samba.nix passed drives=["Shared"] by default
+  imports = [ ./. ];
 }

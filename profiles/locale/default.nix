@@ -1,11 +1,4 @@
-{ inputs, self
-, config, lib, pkgs
-, user
-, ...
-}:
+{ inputs, config, lib, pkgs, user, ... }:
 {
-  imports = [
-    ./est.nix
-  ];
-
+  imports = [ ./est.nix ];
 }

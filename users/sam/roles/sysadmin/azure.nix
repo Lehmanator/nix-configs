@@ -1,18 +1,10 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, config
+, lib
+, pkgs
 , ...
 }:
 {
-
-  imports = [
-    #./azure-activedirectory.nix # ???
-    #./azure-kubernetes.nix      # ???
-    #./common
-  ];
-
-  home.packages = [
-    pkgs.azure-cli
-    pkgs.kubelogin
-  ];
-
+  #imports = [ ./azure-activedirectory.nix ./azure-kubernetes.nix ./common ];
+  home.packages = [ pkgs.azure-cli pkgs.kubelogin ];
 }

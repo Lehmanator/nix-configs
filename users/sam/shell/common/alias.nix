@@ -1,15 +1,11 @@
-{ self
-, inputs
-, system
-, hosts
-, userPrimary
+{ inputs
 , config
 , lib
 , pkgs
 , ...
 }:
 let
-  inherit (lib) mkIf mkDefault;
+  inherit (lib) mkIf;
 in
 {
   imports = [

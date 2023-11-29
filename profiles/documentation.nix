@@ -1,14 +1,11 @@
 { inputs
-, self
-, cell
 , config
 , lib
 , pkgs
 , ...
 }:
 {
-  imports = [
-  ];
+  imports = [ ];
 
   documentation = {
     dev.enable = false;

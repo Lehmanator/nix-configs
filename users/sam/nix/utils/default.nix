@@ -1,5 +1,7 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, config
+, lib
+, pkgs
 , ...
 }:
 {
@@ -11,7 +13,7 @@
     #./devshell.nix
     #./diff.nix
     ./docs.nix
-    ./editor.nix
+    #./editor.nix
     ./nix-alien.nix
     #./nix-index.nix
     #./plugins.nix

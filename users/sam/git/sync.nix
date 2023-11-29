@@ -1,9 +1,4 @@
-{ inputs, self
-, config, lib, pkgs
-, ...
-}:
+{ inputs, config, lib, pkgs, ... }:
 {
-  imports = [
-  ];
   services.git-sync.enable = true;
 }

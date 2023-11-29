@@ -1,9 +1,7 @@
 { inputs
-, self
 , config
 , lib
 , pkgs
-, system ? "x86_64-linux"
 , ...
 }:
 {

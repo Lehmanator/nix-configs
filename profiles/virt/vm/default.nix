@@ -1,7 +1,4 @@
-{ inputs, self
-, config, lib, pkgs
-, ...
-}:
+{ inputs, config, lib, pkgs, ... }:
 {
   imports = [
     ./host.nix
@@ -11,5 +8,4 @@
     ./qemu-web.nix
     ./guest-windows.nix
   ];
-
 }

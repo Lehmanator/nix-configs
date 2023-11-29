@@ -1,13 +1,9 @@
-{ inputs, self
-, config, lib, pkgs
-, ...
-}:
+{ inputs, config, lib, pkgs, ... }:
 let
   pkgs-common = with pkgs; [
     stdenv.cc.cc
     openssl
     libelf
-
     # Required
     glib
     bzip2
@@ -26,7 +22,6 @@ let
     libGL
     libva
     libvdpau
-
     libcanberra
   ];
   pkgs-x11 = with pkgs; [
@@ -64,8 +59,7 @@ let
   ];
 in
 {
-  imports = [
-  ];
+  imports = [ ];
 
   # --- Running Foreign Packages ---------------------------
   # https://unix.stackexchange.com/questions/522822/different-methods-to-run-a-non-nixos-executable-on-nixos
@@ -78,16 +72,17 @@ in
     # patchelf - Patch binaries to run in NixOS
     pkgs.patchelf
 
-    (let base = pkgs.appimageTools.defaultFhsEnvArgs; in
+    (
+      let base = pkgs.appimageTools.defaultFhsEnvArgs; in
       pkgs.buildFHSUserEnv (base // {
         name = "fhs";
-        targetPkgs = pkgs: (base.targetPkgs pkgs) ++ [pkgs.pkg-config];
-        multiPkgs = pkgs: [pkgs.dpkg];
+        targetPkgs = pkgs: (base.targetPkgs pkgs) ++ [ pkgs.pkg-config ];
+        multiPkgs = pkgs: [ pkgs.dpkg ];
         profile = "export FHS=1";
 
         # TODO: Use system default shell?
         runScript = if config.programs.zsh.enable then "zsh" else "bash";
-        extraOutputsToInstall = ["dev"];
+        extraOutputsToInstall = [ "dev" ];
       })
     )
   ]
@@ -121,18 +116,55 @@ in
   programs.nix-ld = {
     enable = true;
     # TODO: Use same list as buildFHSUserEnv
-    libraries = with pkgs; [   # Common set of libraries used by arbitrary packages.
-      stdenv.cc.cc nspr               zlib
-      alsa-lib     pipewire           at-spi2-atk        at-spi2-core       atk
-      curl         expat              fuse3              glib               gdk-pixbuf      gtk3
-      fontconfig   freetype           cairo              pango
-      mesa         libGL              libdrm             libnotify          libpulseaudio   libappindicator-gtk3
-      libuuid      libusb1            libxkbcommon
-      systemd      dbus               cups               icu                openssl         nss
-      xorg.libX11  xorg.libXScrnSaver xorg.libXcomposite xorg.libXcursor    xorg.libXdamage
-      xorg.libXext xorg.libXfixes     xorg.libxcb        # X11 Libraries
-      xorg.libXi   xorg.libXrandr     xorg.libXrender
-      xorg.libXtst xorg.libxkbfile    xorg.libxshmfence
+    libraries = with pkgs; [
+      # Common set of libraries used by arbitrary packages.
+      stdenv.cc.cc
+      nspr
+      zlib
+      alsa-lib
+      pipewire
+      at-spi2-atk
+      at-spi2-core
+      atk
+      curl
+      expat
+      fuse3
+      glib
+      gdk-pixbuf
+      gtk3
+      fontconfig
+      freetype
+      cairo
+      pango
+      mesa
+      libGL
+      libdrm
+      libnotify
+      libpulseaudio
+      libappindicator-gtk3
+      libuuid
+      libusb1
+      libxkbcommon
+      systemd
+      dbus
+      cups
+      icu
+      openssl
+      nss
+      xorg.libX11
+      xorg.libXScrnSaver
+      xorg.libXcomposite
+      xorg.libXcursor
+      xorg.libXdamage
+      xorg.libXext
+      xorg.libXfixes
+      xorg.libxcb # X11 Libraries
+      xorg.libXi
+      xorg.libXrandr
+      xorg.libXrender
+      xorg.libXtst
+      xorg.libxkbfile
+      xorg.libxshmfence
     ];
   };
 

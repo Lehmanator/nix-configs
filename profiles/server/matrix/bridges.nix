@@ -1,18 +1,19 @@
-{ self, inputs, config, lib, pkgs,
-  host, user, repo, network, machine,
-  settings,
-  ...
+{ inputs
+, config
+, lib
+, pkgs
+, user
+, settings
+, ...
 }:
-# https://nixos.wiki/wiki/Matrix
-
 let
-  hostname = host.domain or "redstone.pw";
-  serverType = if
-    config.services.matrix-synapse.enable then "matrix-synapse.service" else if
-    config.services.matrix-conduit.enable then "matrix-conduit.service" else "matrix-dendrite.service";
-
+  # https://nixos.wiki/wiki/Matrix
+  hostname = config.networking.domain; #host.domain or "redstone.pw";
+  serverType =
+    if
+      config.services.matrix-synapse.enable then "matrix-synapse.service" else if
+      config.services.matrix-conduit.enable then "matrix-conduit.service" else "matrix-dendrite.service";
   appservices = [ "discord" "irc" ];
-
   database = {
     host = "localhost";
     port = 5432;
@@ -20,27 +21,20 @@ let
       "${hostname}-appservice-irc" = { name = "matrix-${hostname}-appservice-irc-${hostname}"; password = ""; };
     };
   };
-  dbConnectionString = {
-    type ? "postgres",
-    user ? "matrix",
-    password,
-    port ? 5432,  # TODO: Determine default based on DB type
-    database ? "matrix-appservice",
-  }: "${type}://${user}:${password}@${host}:${port}/${database}";
+  dbConnectionString =
+    { type ? "postgres"
+    , user ? "matrix"
+    , password
+    , port ? 5432
+    , # TODO: Determine default based on DB type
+      database ? "matrix-appservice"
+    ,
+    }: "${type}://${user}:${password}@${hostname}:${port}/${database}";
 
 in
 with settings;
 {
-  imports = [
-    inputs.agenix.nixosModules.age
-  ];
-
-  environment.systemPackages = [
-    pkgs.matrix-appservice-slack
-    pkgs.mautrix-googlechat
-    pkgs.mautrix-signal
-    pkgs.mautrix-whatsapp
-  ];
+  environment.systemPackages = with pkgs; [ matrix-appservice-slack mautrix-googlechat mautrix-signal mautrix-whatsapp ];
 
   # TODO: Define secrets here
   # TODO: Convert `hostname` to `matrix_hostname`
@@ -84,8 +78,8 @@ with settings;
     registrationUrl = "http://localhost:8009";
     settings = {
       database = rec {
-        engine = "postgres";  # nedb
-        connectionString = dbConnectionString { type="postgres"; user = "matrix"; password = ""; host = "localhost"; database = "matrix-${hostname}-appservice-irc"; };
+        engine = "postgres"; # nedb
+        connectionString = dbConnectionString { type = "postgres"; user = "matrix"; password = ""; host = "localhost"; database = "matrix-${hostname}-appservice-irc"; };
       };
       homeserver = {
         domain = hostname;
@@ -93,7 +87,7 @@ with settings;
       };
       ircService = {
         passwordEncryptionKeyPath = config.age.secrets."matrix-appservice-irc_password-encryption-key".path;
-        servers = [];
+        servers = [ ];
       };
 
     };
@@ -147,16 +141,16 @@ with settings;
           args = {
             width = 256;
             height = 256;
-            fps = 30;               # only for webm
-            background = "020202";  # only for gif, transparency not supported
+            fps = 30; # only for webm
+            background = "020202"; # only for gif, transparency not supported
           };
         };
       };
     };
   };
   systemd.services.mautrix-telegram.path = with pkgs; [
-    lottieconverter  # for animated stickers conversion, unfree package
-    ffmpeg           # if converting animated stickers to webm (very slow!)
+    lottieconverter # for animated stickers conversion, unfree package
+    ffmpeg # if converting animated stickers to webm (very slow!)
   ];
 
 
@@ -169,7 +163,7 @@ with settings;
         port = 8434;
         bindAddress = "localhost";
         domain = hostname;
-        homeserverUrl = "matrix.${hostname}";  # "matrix-conduit.${hostname}";
+        homeserverUrl = "matrix.${hostname}"; # "matrix-conduit.${hostname}";
         mediaUrl = hostname;
       };
       loginSharedSecretMap = {
@@ -196,9 +190,9 @@ with settings;
           #"@.*:server\\.com"  # Specific homeserver
           #".*"    # Anyone
         ];
-        blacklist = [];
+        blacklist = [ ];
       };
-      selfService.whitelist = ["@.*:${hostname}"];
+      selfService.whitelist = [ "@.*:${hostname}" ];
     };
   };
 

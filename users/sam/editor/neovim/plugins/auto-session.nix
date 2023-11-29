@@ -1,5 +1,7 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, config
+, lib
+, pkgs
 , ...
 }:
 {
@@ -28,7 +30,7 @@
     sessionLens = {
       loadOnSetup = true;
       previewer = true;
-      themeConf = { winblend=10; border = true; };
+      themeConf = { winblend = 10; border = true; };
       #sessionControl.controlDir = "vim.fn.stdpath 'data' .. '/auto_sessions/'";
       #sessionControl.controlFilename = "session_control.json";
     };

@@ -1,27 +1,20 @@
-{ self
-, inputs
+{ inputs
 , config
 , lib
 , pkgs
-, user ? "sam"
-, secretType ? "agenix"
+, user
 , ...
 }:
 # See: https://nixos.wiki/wiki/WireGuard
-#
 # TODO: Layout schema for wireguard interfaces
-#
 # - Personal:    wg0 | personal
 #   - Peer: k8s API Ingress
 #   - Peer: k8s nginx-ingress
 #   - Peer: home network
 #   - Peer: work network
-#
 # - Mullvad USA: mullvad-usa
 # - Mullvad EU:  mullvad-eu
-#
 # - ...
-#
 {
   imports = [
     #inputs.agenix.nixosModules.age
@@ -40,7 +33,6 @@
   # Fixes IPv6-based exit node servers
   # TODO: Move to server config
   networking.nftables.enable = true;
-
   networking.wireguard = {
     enable = true;
     #interfaces = {
@@ -85,10 +77,8 @@
     #  ip46tables -t mangle -D nixos-fw-rpfilter -p udp -m udp --dport 51820 -j RETURN || true
     #'';
   };
-
   #networking.wg-quick.interfaces.wg0 = {
   #};
-
 
   # Enable Wireguard network manager service
   services.wg-netmanager.enable = true;

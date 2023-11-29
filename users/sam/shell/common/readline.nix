@@ -1,14 +1,13 @@
-{ inputs, self
-, config, lib, pkgs
-, user ? "sam"
+{ inputs
+, config
+, lib
+, pkgs
+, user
 , bindings ? "vim"
 , ...
 }:
 {
-
-  imports = [
-  ];
-
+  imports = [ ];
   # TODO: Determine base source of truth for keybinds            (i.e. Vim keybinds set ZSH, readline, etc.)
   # TODO: Determine base source of truth for completion behavior (i.e. Vim wildmenu completion mimicks ZSH, readline)
   #
@@ -30,27 +29,20 @@
   # See: https://www.man7.org/linux/man-pages/man3/readline.3.html
   programs.readline = {
     enable = true;
-
-    bindings = {
-    };
-
+    bindings = { };
     includeSystemConfig = true;
-
     variables = {
       editing-mode = if bindings == "emacs" then bindings else "vi";
-
       bell-style = "visible";
       blink-matching-paren = true;
       colored-stats = true;
       colored-completion-prefix = true;
       show-mode-in-prompt = true;
-
       expand-tilde = true;
       menu-complete-display-prefix = true;
       show-all-if-ambiguous = true;
       skip-completed-text = true;
     };
-
     #extraConfig = ''
     #  $include ${config.xdg.configFile.inputrc-completion.target}
     #  $include ${config.xdg.configFile.inputrc-highlight.target}
@@ -58,7 +50,6 @@
     #  $include ${config.xdg.configFile.inputrc-keybinds.target}
     #  $include ${config.xdg.configFile.inputrc-prompt.target}
     #'';
-
   };
 
   # TODO: Can make .inputrc respect XDG Base Directories spec?

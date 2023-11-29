@@ -1,10 +1,12 @@
-{ inputs, self
-, config, lib, pkgs
-, disks      ? ["/dev/nvme0n1"]
-, tmpfs      ? true
+{ inputs
+, config
+, lib
+, pkgs
+, disks ? [ "/dev/nvme0n1" ]
+, tmpfs ? true
 , tmpfs-home ? false              # Use two switches: one for root, one for home?
-, secretMgr  ? "agenix"
-, secretDir  ? "/run/secrets"
+, secretMgr ? "agenix"
+, secretDir ? "/run/secrets"
 , ...
 }:
 #
@@ -27,7 +29,7 @@
 
   disko.devices = {
     disk = lib.genAttrs disks (dev: {
-      name = lib.replaceStrings ["/"] ["_"] dev;
+      name = lib.replaceStrings [ "/" ] [ "_" ] dev;
       type = "disk";
       device = dev; #"/dev/nvme0n1";
       content = {
@@ -44,7 +46,7 @@
               type = "filesystem";
               format = "vfat";
               mountpoint = "/boot";
-              mountOptions = ["defaults"];
+              mountOptions = [ "defaults" ];
             };
           };
 
@@ -54,13 +56,13 @@
             content = {
               type = "luks";
               name = "encrypted-nixos";
-              extraOpenArgs = ["--allow-discards"];
+              extraOpenArgs = [ "--allow-discards" ];
 
               # TODO: Convert keyFiles & passwordFile to agenix / sops-nix secrets
               # if you want to use the key for interactive login be sure there is no trailing newline
               # for example use `echo -n "password" > /tmp/secret.key`
               #passwordFile = "/run/secrets/luks/root.passwd";       #"/tmp/secret.key"; # Interactive
-              settings.keyFile = "/run/secrets/luks/root.lukskey";   #"/tmp/secret.key";
+              settings.keyFile = "/run/secrets/luks/root.lukskey"; #"/tmp/secret.key";
               additionalKeyFiles = [
                 "/run/secrets/luks/root-extra.lukskey"
                 #"/tmp/additionalSecret.key"
@@ -69,16 +71,18 @@
               # TODO: Need to create persistence directory for impermanence? Under /nix?
               content = {
                 type = "btrfs";
-                extraArgs = ["-f"];
-                subvolumes = if tmpfs then {  # tmpfs=true => tmpfs root, no root btrfs subvolume + need /var btrfs subvolume
-                  "/home" = { mountpoint = "/home"; mountOptions = ["compress=zstd" "noatime"]; };
-                  "/nix"  = { mountpoint = "/nix";  mountOptions = ["compress=zstd" "noatime"]; };
-                  "/var"  = { mountpoint = "/var";  mountOptions = ["compress=zstd" "noatime"]; }; # Only necessary with tmpfs / rootfs
-                } else {
-                  "/home" = { mountpoint = "/home"; mountOptions = ["compress=zstd" "noatime"]; };
-                  "/nix"  = { mountpoint = "/nix";  mountOptions = ["compress=zstd" "noatime"]; };
-                  "/root" = { mountpoint = "/";     mountOptions = ["compress=zstd" "noatime"]; };
-                };
+                extraArgs = [ "-f" ];
+                subvolumes =
+                  if tmpfs then {
+                    # tmpfs=true => tmpfs root, no root btrfs subvolume + need /var btrfs subvolume
+                    "/home" = { mountpoint = "/home"; mountOptions = [ "compress=zstd" "noatime" ]; };
+                    "/nix" = { mountpoint = "/nix"; mountOptions = [ "compress=zstd" "noatime" ]; };
+                    "/var" = { mountpoint = "/var"; mountOptions = [ "compress=zstd" "noatime" ]; }; # Only necessary with tmpfs / rootfs
+                  } else {
+                    "/home" = { mountpoint = "/home"; mountOptions = [ "compress=zstd" "noatime" ]; };
+                    "/nix" = { mountpoint = "/nix"; mountOptions = [ "compress=zstd" "noatime" ]; };
+                    "/root" = { mountpoint = "/"; mountOptions = [ "compress=zstd" "noatime" ]; };
+                  };
               };
             };
           };
@@ -87,10 +91,11 @@
       };
     });
 
-  # TODO: Enable impermanence
+    # TODO: Enable impermanence
     # Add a regular tmpfs dir mounted at /tmp
-    nodev = if tmpfs then { "/"    = { fsType = "tmpfs"; mountOptions = ["size=2G" "defaults" "mode=755"]; }; }
-                     else { "/tmp" = { fsType = "tmpfs"; mountOptions = ["size=1G"                      ]; }; };
+    nodev =
+      if tmpfs then { "/" = { fsType = "tmpfs"; mountOptions = [ "size=2G" "defaults" "mode=755" ]; }; }
+      else { "/tmp" = { fsType = "tmpfs"; mountOptions = [ "size=1G" ]; }; };
 
   };
 

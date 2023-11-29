@@ -1,6 +1,6 @@
-{ self , inputs
-, config , lib , pkgs
-, user ? "sam"
+{ inputs
+, config, lib, pkgs
+, user
 , ...
 }:
 # TODO: Split config into:

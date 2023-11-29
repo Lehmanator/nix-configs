@@ -1,9 +1,8 @@
 { inputs
-, self
 , config
 , lib
 , pkgs
-, user ? "sam"
+, user
 , ...
 }:
 {
@@ -35,9 +34,7 @@
     #./vlans.nix
     #./vswitches.nix
   ];
-
-  # Load regulatory DB at boot
-  hardware.wirelessRegulatoryDatabase = true;
+  hardware.wirelessRegulatoryDatabase = true; # Load regulatory DB at boot
 
   networking = {
     # IPv6 <-> IPv4 address generation & translation
@@ -58,7 +55,6 @@
     #  Benefit is that unique names means that if devices are detected/added in inconsistent order,
     #   interface names don't get assigned to a different device between boots/rebuilds.
     usePredictableInterfaceNames = lib.mkDefault false;
-
   };
 
   # NetworkManager GTK4 lib
@@ -71,15 +67,10 @@
   #  If other end supports, then encrypt traffic, else cleartext.
   #  Note: Not reliable to ensure TCP encryption, but upgrades some insecure TCP
   networking.tcpcrypt.enable = true;
-  #users = lib.mkIf config.networking.tcpcrypt.enable {
-    # Also create group
-    users.groups.tcpcryptd = { };
-    users.users.tcpcryptd.group = "tcpcryptd";
-    #users.users.${user}.extraGroups = [ "tcpcryptd" ];
-  #};
-
-  # Allow primary user to control networking without privilege escalation
-  users.users."${user}".extraGroups = [ "network" ]
-    ++ lib.optional config.networking.tcpcrypt.enable "tcpcryptd"
-    ++ lib.optional config.networking.wireless.enable config.networking.wireless.userControlled.group;
+  users = with config.networking; {
+    # Allow primary user to control networking without privilege escalation
+    users.${user}.extraGroups = [ "network" ] ++ lib.optional wireless.enable wireless.userControlled.group;
+    users.tcpcryptd.group = "tcpcryptd";
+    groups.tcpcryptd.members = lib.mkIf tcpcrypt.enable [ "tcpcryptd" user ]; # Also create group
+  };
 }

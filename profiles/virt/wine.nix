@@ -1,8 +1,5 @@
-{ self, system, userPrimary, inputs, config, lib, pkgs, ... }: {
-
-  imports = [
-  ];
-
+{ inputs, config, lib, pkgs, user, ... }: {
+  imports = [ ];
   environment.systemPackages = with pkgs; [
     bottles
     lutris

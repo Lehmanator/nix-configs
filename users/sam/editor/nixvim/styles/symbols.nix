@@ -1,4 +1,4 @@
-{ inputs, self
+{ inputs
 , config, lib, pkgs
 , style      ? "rounded"
 , chars      ? "devicons"

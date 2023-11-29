@@ -1,11 +1,11 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, config
+, lib
+, pkgs
 , ...
 }:
 {
-  imports = [
-  ];
-
+  imports = [ ];
   home.packages = [
     pkgs.python3
     pkgs.python311Packages.xlsxwriter
@@ -14,7 +14,5 @@
     pkgs.python311Packages.pyexcel-xls
     pkgs.python311Packages.pyexcel-ods
     pkgs.python311Packages.pyexcel
-
   ];
-
 }

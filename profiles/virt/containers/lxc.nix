@@ -1,16 +1,15 @@
-{ inputs, self
-, config, lib, pkgs
-, user ? "sam"
+{ inputs
+, config
+, lib
+, pkgs
+, user
 , ...
 }:
 # LXC - Linux Containers (LXC), provides tools for creating & managing system / application containers on Linux
 {
-  imports = [
-    ../../security/apparmor.nix      # LXD service complains about missing AppArmor support (WARN)
-  ];
-
+  imports = [ ../../security/apparmor.nix ]; # LXD service complains about missing AppArmor support (WARN)
   #boot.kernelModules = ["vhost_vsock"];         # TODO: Explain why kernel module added
-  users.users."${user}".extraGroups = ["lxc"];  #users.extraGroups.lxc.members = [user];  users.groups.lxc.members = [user];
+  users.users.${user}.extraGroups = [ "lxc" ]; #users.extraGroups.lxc.members = [user];  users.groups.lxc.members = [user];
 
   # Hooks that will be placed under /var/lib/libvirt/hooks/lxc.d/ & called for lxc domains begin/end events.
   #   See: https://libvirt.org/hooks.html
@@ -20,7 +19,7 @@
 
   virtualisation.lxc = {
     enable = true;
-    lxcfs.enable = true;   # Enables LXCFS, a FUSE filesystem for LXC.
+    lxcfs.enable = true; # Enables LXCFS, a FUSE filesystem for LXC.
 
     # Default config (default.conf) for new containers (i.e. for network config)
     #   Note: Current value is to set containers to use lxcfs, which is enabled below
@@ -36,7 +35,6 @@
     #   See: lxc-usernet(5)
     #usernetConfig = ''
     #'';
-
   };
 
   # Disable the DHCP client for any interface whose name matches any of the shell glob patterns in this list.

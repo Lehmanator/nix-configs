@@ -1,23 +1,17 @@
 { inputs
-, self
 , config
 , lib
 , pkgs
-, user ? "sam"
+, user
 , ...
 }:
 {
-  imports = [
-    #./rygel.nix
-  ];
-
-  # --- NetworkManager ---
+  #imports = [ ./rygel.nix ];
   networking.networkmanager.enable = true;
-  users.users."${user}".extraGroups = [ "netdev" ] ++ lib.optionals config.networking.networkmanager.enable [
+  users.users.${user}.extraGroups = [ "netdev" ] ++ lib.optionals config.networking.networkmanager.enable [
     "networkmanager"
     "nm-openconnect"
   ];
-
   services.gnome = {
     glib-networking.enable = true; # GLib network extensions
     gnome-online-accounts.enable = true; # Daemon providing single-sign-on framework for GNOME desktop.
@@ -25,5 +19,4 @@
     gnome-remote-desktop.enable = true; # Remote Desktop
     gnome-user-share.enable = true; # User-level file-sharing service for GNOME.
   };
-
 }

@@ -1,19 +1,18 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, config
+, lib
+, pkgs
 , ...
 }:
 let
   overrideCommand = false;
 in
 {
-  imports = [
-  ];
-
+  imports = [ ];
   #home.packages = [ pkgs.fzf-git-sh ];
   #programs.zsh.initExtra = ''
   #  source ${pkgs.fzf-git-sh}/share/fzf-git-sh/fzf-git.sh
   #'';
-
   #programs.zsh.plugins = lib.mkIf config.programs.fzf.enable [
   #   Plugin to use FZF to complete git objects.
   #  pkgs.fzf-git-sh

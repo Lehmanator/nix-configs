@@ -1,5 +1,7 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, config
+, lib
+, pkgs
 , ...
 }:
 {
@@ -20,7 +22,7 @@
       names = true;
       rgb_fn = true;
       sass.enable = true;
-      tailwind = true;  # null | bool | normal | lsp | both
+      tailwind = true; # null | bool | normal | lsp | both
 
       #mode = null;        # null | foreground | background | virtualtext
       #virtualText = " ";  # VT char when mode set to 'virtualtext'

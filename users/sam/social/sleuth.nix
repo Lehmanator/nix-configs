@@ -1,13 +1,10 @@
-{ self, inputs, system, config, lib, pkgs, ... }: let
-in {
-  imports = [];
-
+{ inputs, config, lib, pkgs, ... }:
+{
+  imports = [ ];
   home.packages = with pkgs; [
-
     instaloader
     sherlock
     socialscan
     snscrape
-
   ];
 }

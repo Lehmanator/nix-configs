@@ -1,13 +1,12 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, config
+, lib
+, pkgs
 , ...
 }:
 {
-  imports = [
-  ];
-
   home.packages = [
-    pkgs.ksmbd-tools     # Userspace utilities for the ksmbd kernel SMB server
+    pkgs.ksmbd-tools # Userspace utilities for the ksmbd kernel SMB server
     #pkgs.samba4Full      # Standard Windows interoperability suite of Linux/Unix programs
     #pkgs.enum4linux-ng  # Windows/Samba enumeration tool
     #pkgs.erosmb         # SMB network scanner
@@ -18,5 +17,4 @@
     #pkgs.smbscan        # Tool to enumerate file shares
     #pkgs.wsdd           # A Web Service Discovery (WSD) host daemon for SMB/Samba
   ];
-
 }

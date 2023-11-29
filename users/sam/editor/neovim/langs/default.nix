@@ -1,6 +1,4 @@
-{ self, inputs
-, ...
-}:
+{ inputs, pkgs, config, lib, ... }:
 {
   imports = [
     #./bash.nix
@@ -19,6 +17,6 @@
   ];
   programs.nixvim.plugins = {
     plantuml-syntax.enable = true; # PlantUML diagram syntax
-    zig.enable = true;             # Zig language syntax
+    zig.enable = true; # Zig language syntax
   };
 }

@@ -1,7 +1,5 @@
-{ inputs, self
+{ inputs
 , config, lib, pkgs
-, system
-, host, network
 , ...
 }:
 let

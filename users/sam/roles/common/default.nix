@@ -1,10 +1,4 @@
-{ inputs, self
-, config, lib, pkgs
-, ...
-}:
+{ inputs, config, lib, pkgs, ... }:
 {
-  imports = [
-    ./.
-  ];
-
+  imports = [ ./. ];
 }

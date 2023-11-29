@@ -1,9 +1,8 @@
 { inputs
-, self
 , config
 , lib
 , pkgs
-, user ? "sam"
+, user
 , ...
 }:
 {

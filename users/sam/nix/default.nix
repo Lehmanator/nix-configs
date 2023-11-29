@@ -1,5 +1,4 @@
-{ self
-, inputs
+{ inputs
 , overlays
 , packages
 , modules
@@ -37,7 +36,7 @@ with lib;
 
   # Import nixpkgs config & write to ~/.config/nixpkgs/config.nix so profiles use same config
   nixpkgs.config = import ./nixpkgs.nix;
-  nix.settings   = import ./nix.nix;
+  nix.settings = import ./nix.nix;
 
 
   #xdg.configFile = let mkInputConfigs = attrsets.mapAttrs' (k: v: [ "nix/inputs/${k}".source v.outPath ]);
@@ -56,13 +55,13 @@ with lib;
   #in mkInputRegistry inputs;
 
 
-  nix.registry = with inputs; {
-    self.flake         = self;
-    nixpkgs.flake      = nixpkgs;
-    nixos.flake        = nixos;
-    home-manager.flake = home;
-    home.flake         = home;
-  };
+  #nix.registry = with inputs; {
+  #  self.flake         = self;
+  #  nixpkgs.flake      = nixpkgs;
+  #  nixos.flake        = nixos;
+  #  home-manager.flake = home;
+  #  home.flake         = home;
+  #};
 
   # TODO: Combine system / home-manager configs for: nix, nixpkgs, flake.nixConfig
   # TODO: Separate nix config to separate file like `nixpkgs.config`
@@ -77,13 +76,13 @@ with lib;
     #"nix/nix.conf".source           = ./nix.nix;
     #"nix/registry.json".source      = ./registry.json;
     #"nixpkgs/config.nix".source     = ./nixpkgs.nix;
-    "nix/inputs/home".source         = home.outPath;
+    "nix/inputs/home".source = home.outPath;
     "nix/inputs/home-manager".source = home.outPath;
-    "nix/inputs/nixpkgs".source      = nixpkgs.outPath; # osConfig.environment.etc."nix/inputs/nixpkgs";
-    "nix/inputs/nixos".source        = nixos.outPath; # osConfig.environment.etc."nix/inputs/nixos";
-    "nix/inputs/self".source         = self.outPath;
+    "nix/inputs/nixpkgs".source = nixpkgs.outPath; # osConfig.environment.etc."nix/inputs/nixpkgs";
+    "nix/inputs/nixos".source = nixos.outPath; # osConfig.environment.etc."nix/inputs/nixos";
+    "nix/inputs/self".source = self.outPath;
     "nix/inputs/nixos-config".source = self.outPath;
-    "nix/inputs/home-config".source  = self.outPath;
+    "nix/inputs/home-config".source = self.outPath;
   };
 
   #home.sessionVariables.NIX_PATH = "nixpkgs=${config.xdg.configHome}/nix/inputs/nixpkgs$\{NIX_PATH:+:$NIX_PATH}";

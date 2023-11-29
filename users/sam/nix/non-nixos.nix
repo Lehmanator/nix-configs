@@ -1,14 +1,14 @@
-{ inputs, self, config, lib, pkgs, ... }:
+{ inputs, config, lib, pkgs, ... }:
 {
   imports = [
   ];
 
   targets.genericLinux.enable = true;
   home.sessionVariables.NIX_PATH = "nixpkgs=${inputs.nixpkgs}";
-  nixpkgs.overlays = [inputs.nur.overlay];
+  nixpkgs.overlays = [ inputs.nur.overlay ];
   nix = {
     package = pkgs.nixFlakes;
-    settings.experimental-features = ["nix-command" "flakes"];
+    settings.experimental-features = [ "nix-command" "flakes" ];
     #registry.nixos.flake = inputs.nixos;
     #registry.darwin.flake = inputs.darwin;
     registry.nixpkgs = {

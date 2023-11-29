@@ -1,17 +1,20 @@
-{ inputs , self
-, config, lib, pkgs
-, user ? "sam"
+{ inputs
+, config
+, lib
+, pkgs
+, user
 , ...
 }:
 # TODO: Move all config that isn't NixOS-specific stuff to common file
 {
   imports = [
     #inputs.nix-index.nixosModules.nix-index { programs.nix-index-database.comma.enable = true; }
-    ../nix
     ./activate.nix
     ./alias.nix
     ./homed.nix
+    ./home-manager.nix
     ./normalize.nix
+    ../nix
   ];
 
   appstream.enable = true;

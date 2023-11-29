@@ -1,8 +1,9 @@
-{ inputs, self
-, config , lib , pkgs
+{ inputs
+, config
+, lib
+, pkgs
 , ...
 }:
-#
 # Good overview of GPG:
 # - https://rgoulter.com/blog/posts/programming/2022-06-10-a-visual-explanation-of-gpg-subkeys.html
 #
@@ -47,18 +48,15 @@
       #show-sig-expire = true;     # invalid
       #show-usage = true;          # invalid
     };
-
     #package = pkgs.gnupg
     #mutableKeys = false;  # Default: true
     #mutableTrust = true;  # Default: true
-
     # --- Smartcard Daemon ---
     # pkgs.gnupg-pkcs11-scd  # scdaemon that enables use of PKCS#11 tokens w/ GnuPG
     # See: man scdaemon(1)
     #scdaemonSettings = {
     #  disable-ccid = true;
     #};
-
     # --- External Public Keys ---
     # WARN: Entries here will be added to the world-viewable Nix store
     #publicKeys = [
@@ -68,36 +66,29 @@
     #  trust = "full";  # unknown | never | marginal | full | ultimate
     #}
     #];
-
   };
 
   # --- GnuPG Agent ---
   services.gpg-agent = {
-    enable            = true;    # Use agent to manage access to GPG keys
-    enableExtraSocket = true;    # Enable extra socket of GnuPG key agent, useful for GPG Agent forwarding
-    enableScDaemon    = true;    # Enable scdaemon tool, enables ability to do smartcard operations
-    enableSshSupport  = lib.mkIf (!config.services.gnome-keyring.enable) true; # Use GnuPG agent for SSH keys
-
-    defaultCacheTtl    = 1800;
+    enable = true; # Use agent to manage access to GPG keys
+    enableExtraSocket = true; # Enable extra socket of GnuPG key agent, useful for GPG Agent forwarding
+    enableScDaemon = true; # Enable scdaemon tool, enables ability to do smartcard operations
+    enableSshSupport = lib.mkIf (!config.services.gnome-keyring.enable) true; # Use GnuPG agent for SSH keys
+    defaultCacheTtl = 1800;
     defaultCacheTtlSsh = 1800;
     #grabKeyboardAndMouse = true;
     #maxCacheTtl = null;
     #maxCacheTtlSsh = null;
-
     # TODO: Also set services.dbus.packages = [ pkgs.gcr ];
     pinentryFlavor = "tty"; #"gnome3"; # gtk2 | gnome3 | curses | tty | qt | emacs
-
     verbose = true;
-
     extraConfig = ''
       allow-loopback-pinentry
     '';
-
     # Which GPG keys (by keygrip) to expose as SSH keys
     #sshKeys = [
     #  ""
     #];
-
   };
 
   # --- Keychain ---

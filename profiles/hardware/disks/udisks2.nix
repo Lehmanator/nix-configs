@@ -1,5 +1,7 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, config
+, lib
+, pkgs
 , ...
 }:
 {
@@ -20,7 +22,7 @@
         modules_load_preference = "ondemand";
       };
     };
-    mountOnMedia = false;  # Mount to /media instead of /run/user/${uid}
+    mountOnMedia = false; # Mount to /media instead of /run/user/${uid}
   };
   #programs.gnome-disks.enable = true;
 

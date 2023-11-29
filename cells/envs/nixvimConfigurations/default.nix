@@ -1,38 +1,27 @@
+{ inputs
+, config
+, osConfig
+, pkgs
+, lib
+, ...
+}:
 # Standalone Nixvim config
-#
 # --- Usage ---
-# - nixvim.legacyPackages.${system}.makeNixvim           { ... nixvim config ... }
-# - nixvim.legacyPackages.${system}.makeNixvimWithModule { ... nixvim config ... }
-#
+# - nixvim.legacyPackages.${pkgs.system}.makeNixvim           { ... nixvim config ... }
+# - nixvim.legacyPackages.${pkgs.system}.makeNixvimWithModule { ... nixvim config ... }
 #
 # --- Devshell ---
-#
 # let
-#   nvim = nixvim.legacyPackages.x86_64-linux.makeNixvim {
+#   nvim = nixvim.legacyPackages.${pkgs.system}.makeNixvim {
 #     plugins.lsp.enable = true;
 #   };
 # in pkgs.mkShell {
 #   buildInputs = [nvim];
 # };
-#
-#
-#
-{ self
-, inputs
-, config
-, osConfig
-, pkgs
-, lib
-, system ? "x86_64-linux"
-, ...
-}:
 {
-  pkgs = inputs.nixpkgs.legacyPackages.${system};
-  extraSpecialArgs = {
-    inherit self inputs config osConfig system;
-  };
-  module = {
-  };
+  pkgs = inputs.nixpkgs.legacyPackages.${pkgs.system};
+  extraSpecialArgs = { inherit inputs config osConfig pkgs; };
+  module = { };
 
   # --- Options ----------------------------------
   enableMan = true;
@@ -40,7 +29,8 @@
 
   clipboard = {
     register = "unnamedplus";
-    providers = { # :h clipboard
+    providers = {
+      # :h clipboard
       wl-copy.enable = lib.mkDefault true;
       xclip.enable = lib.mkDefault false;
       xsel.enable = lib.mkDefault false;
@@ -70,13 +60,13 @@
     transparentBackground = true;
     background = { dark = "latte"; light = "frappe"; };
     colorOverrides = {
-      all = {};
-      frappe = {};
-      latte = {};
-      macchiato = {};
-      mocha = {};
+      all = { };
+      frappe = { };
+      latte = { };
+      macchiato = { };
+      mocha = { };
     };
-    customHighlights = {};
+    customHighlights = { };
     dimInactive = {
       enabled = true;
       percentage = 0.10;
@@ -90,7 +80,7 @@
       native_lsp.enabled = true;
       which_key = true;
     };
-    styles = {};
+    styles = { };
   };
 
   # --- Extra Config -----------------------------
@@ -102,8 +92,8 @@
   '';
   extraConfigVim = ''
   '';
-  extraFiles = {};
-  extraLuaPackages = {}: [];
+  extraFiles = { };
+  extraLuaPackages = {}: [ ];
   extraPackages = [ pkgs.fzf ];
   extraPlugins = [ ];
   path = "nixvim.lua"; #vim";
@@ -114,8 +104,8 @@
   options = { };
   autoCmd = [
     {
-      event = ["BufEnter" "BufWinEnter"];
-      pattern = ["*.c" "*.h"];
+      event = [ "BufEnter" "BufWinEnter" ];
+      pattern = [ "*.c" "*.h" ];
       command = "echo 'Entering C or C++ file'";
       callback = { __raw = "function() print('This buffer enters') end"; };
       desc = "Description";
@@ -134,24 +124,23 @@
     filename = null;
     pattern = null;
   };
-  highlight = {};
+  highlight = { };
   maps = {
-    command = {};
-    insert = {};
-    insertCommand = {};
-    lang = {};
-    normal = {};
-    normalVisualOp = {};
-    operator = {};
-    select = {};
-    terminal = {};
-    visual = {};
-    visualOnly = {};
+    command = { };
+    insert = { };
+    insertCommand = { };
+    lang = { };
+    normal = { };
+    normalVisualOp = { };
+    operator = { };
+    select = { };
+    terminal = { };
+    visual = { };
+    visualOnly = { };
   };
-  keymaps = [];
-  userCommands = {};
+  keymaps = [ ];
+  userCommands = { };
 
   # --- Plugins ----------------------------------
-  plugins = {
-  };
+  plugins = { };
 }

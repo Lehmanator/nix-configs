@@ -1,5 +1,7 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, config
+, lib
+, pkgs
 , ...
 }:
 # --- Documentation --------
@@ -10,7 +12,7 @@
     #./news.nix
   ];
 
-  home.extraOutputsToInstall = [ "doc" "info" "devdoc" ];
+  #home.extraOutputsToInstall = [ "doc" "info" "devdoc" ];
 
   manual = {
     html.enable = true;
@@ -18,7 +20,7 @@
     manpages.enable = true;
   };
 
-  news.display = "show";  # silent | notify | show
+  news.display = "show"; # silent | notify | show
 
   # See: https://dbrgn.github.io/tealdeer/config.html
   programs.tealdeer = {

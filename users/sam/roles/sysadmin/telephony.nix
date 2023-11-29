@@ -1,13 +1,4 @@
-{ inputs, self
-, config, lib, pkgs
-, ...
-}:
+{ inputs, config, lib, pkgs, ... }:
 {
-  imports = [
-  ];
-
-  home.packages = [
-    pkgs.asterisk-ldap   # Software implementation of a telephone private branch exchange (PBX)
-  ];
-
+  home.packages = [ pkgs.asterisk-ldap ]; # Software implementation of a telephone private branch exchange (PBX)
 }

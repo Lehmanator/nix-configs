@@ -1,12 +1,8 @@
-{ self, inputs, system, config, lib, pkgs, ... }: let
-in {
-  imports = [
-    #./chat.nix
-  ];
-
+{ inputs, config, lib, pkgs, ... }:
+{
+  #imports = [ ./chat.nix ];
   # TODO: Move purple/pidgin plugins to ./app-chat.nix
   home.packages = [
-
     # --- Purple Plugins ---
 
     # OMEMO Encryption for libpurple
@@ -44,7 +40,5 @@ in {
     #gnomeExtensions.pidgin-im-integration
   ];
 
-
   # TODO: Add browser webapps for missing social networks
-
 }

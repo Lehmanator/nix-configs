@@ -1,11 +1,5 @@
-{ inputs, self
-, config, lib, pkgs
-, ...
-}:
+{ inputs, config, lib, pkgs, ... }:
 {
-  imports = [
-  ];
-
   # TODO: Figure out how to enable per-user encrypted home directories
   # - Compatible with sops-nix?
   # - Compatible with agenix?

@@ -1,28 +1,22 @@
-{ self, inputs
-, config, lib, pkgs
-, user ? "sam"
+{ inputs
+, config
+, lib
+, pkgs
+, user
 , ...
 }:
-#
 # TODO: Consider scrapping most of this config in favor of home-manager.
 #  - NixOS options differ significantly from home-manager
 #  - Something is breaking aliases & more.
-#
 {
-  imports = [
-    ./common.nix
-  ];
-
-  # --- Default ---------------
-  users.defaultUserShell  =   pkgs.zsh;       # ZSH default for users
-  environment.shells      = [ pkgs.zsh ];     # Add ZSH to list of available shells
+  imports = [ ./common.nix ];
+  users.defaultUserShell = pkgs.zsh; # ZSH default for users
+  environment.shells = [ pkgs.zsh ]; # Add ZSH to list of available shells
   environment.pathsToLink = [ "/share/zsh" ]; # Enables completion for system packages
-
   programs.zsh = {
     enable = true; # Enable ZSH
-    # --- History ---------------
     #histFile = with config.xdg; (if enable then dataHome else "${config.home.homeDirectory}/.local/share")+"/zsh/history"; # "$HOME/.local/share/zsh/history";
-    #histFile = "${users.users."${user}".home}/.local/share/zsh/history";
+    #histFile = "${users.users.${user}.home}/.local/share/zsh/history";
     histFile = "$HOME/.local/share/zsh/history";
     histSize = 1000000;
 

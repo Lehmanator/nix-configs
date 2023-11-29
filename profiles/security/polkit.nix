@@ -1,21 +1,21 @@
-{
-  self, inputs,
-  system, userPrimary,
-  config, lib, pkgs,
-  ...
+{ inputs
+, config
+, lib
+, pkgs
+, user
+, ...
 }:
 {
-  security.polkit.enable = true;
-
-  security.polkit.adminIdentities = [
-    "unix-group:adm"
-    "unix-group:admin"
-    #"unix-group:polkitusers"
-    "unix-group:wheel"
-  ];
-
-  #security.polkit.extraConfig = ''
-  #'';
-
-  users.extraGroups.polkituser = { name = "polkituser"; members = [ "sam" ]; };
+  security.polkit = {
+    enable = true;
+    adminIdentities = [
+      "unix-group:adm"
+      "unix-group:admin"
+      #"unix-group:polkitusers"
+      "unix-group:wheel"
+    ];
+    #extraConfig = ''
+    #'';
+  };
+  users.extraGroups.polkituser.members = [ user ];
 }

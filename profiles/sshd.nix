@@ -1,4 +1,4 @@
-{ inputs, self
+{ inputs
 , config, lib, pkgs
 , user
 , sshguard ? true
@@ -50,7 +50,7 @@ in
   #sops.secrets.ssh-host-ed25519-pubkey  = { owner = "root"; group = "root"; mode = "0644"; };
 
   # --- SSHD ---------------------------------------------------------
-  users.users."${user}".extraGroups = ["sshd"];
+  users.users.${user}.extraGroups = ["sshd"];
   services.openssh = {
     enable = true;
 

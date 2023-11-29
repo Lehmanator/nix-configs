@@ -1,15 +1,12 @@
-{ self, inputs
-, config, lib, pkgs
-, user ? "sam"
+{ inputs
+, config
+, lib
+, pkgs
+, user
 , ...
 }:
-#let user = if ((host ? users) && (host.users ? primary)) then
-#  host.users.primary else "sam";
-#in
 {
-  imports = [
-  ];
-
+  users.users.${user}.extraGroups = [ "input" ]; # Needed for X11 gesture extension support
   environment.systemPackages = with pkgs.gnomeExtensions; [
     # Touchpad gesutre improvements on Wayland/X11
     # https://github.com/harshadgavali/gnome-gesture-improvements
@@ -23,7 +20,4 @@
     # - Minimize window:       3-finger-vertical    desktop
     pkgs.gnomeExtensions.gesture-improvements
   ];
-
-  # Needed for X11 gesture extension support
-  users.users.${user}.extraGroups = [ "input" ];
 }

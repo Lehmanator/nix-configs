@@ -1,11 +1,11 @@
-{ inputs, self, lib, pkgs, config, osConfig, ... }:
+{ inputs, lib, pkgs, config, osConfig, ... }:
 let
   sys = pkgs.stdenv.system;
   hasVim = #builtins.trace (
     config.programs.nixvim.enable || osConfig.programs.nixvim.enable ||
     config.programs.neovim.enable || osConfig.programs.neovim.enable ||
-    config.programs.vim.enable    || osConfig.programs.vim.enable
-  #) osConfig
+    config.programs.vim.enable || osConfig.programs.vim.enable
+    #) osConfig
   ;
   #hasFzf = config.programs.fzf.enable; #|| osConfig.programs.fzf.enable;
 in
@@ -24,6 +24,6 @@ in
     pkgs.deadnix # Check for unreachable code
 
   ] ++ lib.optional hasVim pkgs.vimPlugins.statix # Use statix in vim
-    ++ lib.optional hasVim pkgs.vimPlugins.none-ls-nvim # LSP Vim plugin
+  ++ lib.optional hasVim pkgs.vimPlugins.none-ls-nvim # LSP Vim plugin
   ;
 }

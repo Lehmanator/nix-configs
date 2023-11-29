@@ -1,5 +1,7 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, config
+, lib
+, pkgs
 , ...
 }:
 {
@@ -11,14 +13,14 @@
     enable = true;
     autocmd = {
       enabled = lib.mkDefault true;
-      events = ["CursorHold" "CursorHoldI"];
-      pattern = ["*"];
+      events = [ "CursorHold" "CursorHoldI" ];
+      pattern = [ "*" ];
     };
     float.enabled = lib.mkDefault true;
     statusText.enabled = lib.mkDefault true;
     virtualText = {
       enabled = lib.mkDefault true;
-      hlMode = "replace";   # replace | combine | blend
+      hlMode = "replace"; # replace | combine | blend
     };
   };
 

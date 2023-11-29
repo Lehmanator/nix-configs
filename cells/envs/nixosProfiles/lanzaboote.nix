@@ -1,5 +1,7 @@
-{ inputs, self
-, config, lib, pkgs
+{ inputs
+, config
+, lib
+, pkgs
 , ...
 }:
 {
@@ -14,7 +16,7 @@
   # ```
   imports = [ inputs.lanzaboote.nixosModules.lanzaboote ];
 
-  environment.systemPackages = [pkgs.sbctl];
+  environment.systemPackages = [ pkgs.sbctl ];
 
   boot = {
     lanzaboote = {
@@ -24,7 +26,7 @@
       # TODO: Make sure persists via impermanence
     };
     loader = {
-      grub.enable         = lib.mkForce false;
+      grub.enable = lib.mkForce false;
       systemd-boot.enable = lib.mkForce false;
     };
   };

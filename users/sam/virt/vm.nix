@@ -1,16 +1,11 @@
 { inputs
-, self
 , config
 , lib
 , pkgs
 , ...
 }:
 {
-  imports = [
-  ];
-
-  # Necessary for QEMU / KVM user session
-  # TODO: Conditional based on system config
+  # Necessary for QEMU / KVM user session TODO: Conditional based on system config
   # TODO: Use symlink to `/var/lib/libvirt/qemu.conf` instead?
   xdg.configFile.qemu-libvirt = {
     target = "${config.xdg.configHome}/libvirt/qemu.conf";

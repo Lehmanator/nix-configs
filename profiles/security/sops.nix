@@ -1,5 +1,4 @@
 { inputs
-, self
 , config
 , lib
 , pkgs
@@ -7,7 +6,7 @@
 }:
 {
   # TODO: Make devShell with pkgs.sops installed
-  #imports = [ inputs.sops-nix.nixosModules.sops ];
+  imports = [ inputs.sops-nix.nixosModules.sops ];
 
   sops = {
     defaultSopsFile = ../../hosts/${config.networking.hostName}/secrets/default.yaml;

@@ -1,6 +1,8 @@
-{ inputs, self
-, config, lib, pkgs
-, user ? "sam"
+{ inputs
+, config
+, lib
+, pkgs
+, user
 , ...
 }:
 {
@@ -17,23 +19,18 @@
   # Common config module in: `/etc/containers`
   virtualisation.containers = {
     enable = true;
-
     containersConf = {
       cniPlugins = [
-        pkgs.cni-plugins          # dhcp host-local static bridge dummy host-device ipvlan loopback macvlan ptp tap vlan bandwidth firewall portmap sbr tuning vrf
-        pkgs.dnsname-cni          # DNS name resolution for containers
+        pkgs.cni-plugins # dhcp host-local static bridge dummy host-device ipvlan loopback macvlan ptp tap vlan bandwidth firewall portmap sbr tuning vrf
+        pkgs.dnsname-cni # DNS name resolution for containers
         #pkgs.calico-cni-plugin   # Cloud native networking & network security
         #pkgs.multus-cni          # Attaching multiple network interfaces to pods
         #pkgs.cni-plugin-flannel  # IPv4 network b/w multiple nodes in a cluster. Not how containers are networked to host, only how traffic is transported b/w hosts.
       ];
-
       # Configuration for containers.conf
-      settings = {
-      };
+      settings = { };
     };
-
-    ociSeccompBpfHook.enable = false;   # TODO: What is this?
-
+    ociSeccompBpfHook.enable = false; # TODO: What is this?
     # Signature verification policy file.
     #    If option empty, the default policy file from `skopeo` is used.
     policy = {
@@ -44,13 +41,11 @@
       #  };
       #};
     };
-
     registries = {
-      block    = []; # List of registries to block
-      insecure = []; # List of insecure repositories
-      search   = [ "docker.io" "quay.io" "gcr.io" "ghcr.io" ];
+      block = [ ]; # List of registries to block
+      insecure = [ ]; # List of insecure repositories
+      search = [ "docker.io" "quay.io" "gcr.io" "ghcr.io" ];
     };
-
     # Configuration: storage.conf
     storage.settings = {
       storage = {
@@ -61,9 +56,9 @@
     };
   };
 
-
   # --- Containers -------------------------------------------------------------
-  virtualisation.oci-containers.containers = { # OCI (Docker) containers to run as systemd services
+  virtualisation.oci-containers.containers = {
+    # OCI (Docker) containers to run as systemd services
     #<name> = {
     #  autoStart = true;
     #  cmd = ["--port=9000"];
@@ -141,7 +136,6 @@
     #  tmpfs = [ "/var" ];
     #};
   };
-
 
   # Whether to enable extra-container, a tool for running declarative NixOS containers without host system rebuilds .
   programs.extra-container.enable = true;
