@@ -1,21 +1,31 @@
 {
   description = "Personal Nix & NixOS configurations";
-  outputs = { self, nixpkgs, nixos, home, nur, ... }@inputs: {
-    nixosConfigurations =
-      let
-        mkSystem = host: args: nixos.lib.nixosSystem ({
-          system = "x86_64-linux";
-          specialArgs = { inherit inputs; user = "sam"; };
-          modules = [ ./hosts/${host} ];
-        } // args);
-      in
-      {
-        fw = mkSystem "fw" { };
-        wyse = mkSystem "wyse" { };
-        fajita = mkSystem "fajita" { system = "aarch64-linux"; };
-        fajita2 = mkSystem "fajita2" { system = "aarch64-linux"; };
-      };
-  };
+  outputs = { self, nixpkgs, nixos, home, nur, ... }@inputs:
+    let
+      forAllSystems = nixpkgs.lib.genAttrs [
+        "aarch64-linux"
+        "x86_64-linux"
+        "riscv-linux"
+        "aarch64-darwin"
+        "x86_64-darwin"
+      ];
+    in
+    {
+      nixosConfigurations =
+        let
+          mkSystem = host: args: nixos.lib.nixosSystem ({
+            system = "x86_64-linux";
+            specialArgs = { inherit inputs; user = "sam"; };
+            modules = [ ./hosts/${host} ];
+          } // args);
+        in
+        {
+          fw = mkSystem "fw" { };
+          wyse = mkSystem "wyse" { };
+          fajita = mkSystem "fajita" { system = "aarch64-linux"; };
+          fajita2 = mkSystem "fajita2" { system = "aarch64-linux"; };
+        };
+    };
 
   nixConfig = {
     connect-timeout = 10;
@@ -106,6 +116,7 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     fprint-clear.url = "github:nixvital/fprint-clear";
     nixos-mobile = { url = "github:vlinkz/mobile-nixos/gnomelatest"; flake = false; }; #url = "github:NixOS/mobile-nixos";
+    srvos.url = "github:nix-community/srvos";
     # --- Modules: Filesystems -------------------------------------
     impermanence.url = "github:nix-community/impermanence";
     disko.url = "github:nix-community/disko";
@@ -172,6 +183,7 @@
     nmd.url = "github:gvolpe/nmd";
     devshell.url = "github:numtide/devshell";
     devshell.inputs.nixpkgs.follows = "nixpkgs";
+    devenv.url = "github:cachix/devenv";
     microvm.url = "github:astro/microvm.nix";
     microvm.inputs.nixpkgs.follows = "nixpkgs";
     colmena.url = "github:zhaofengli/colmena";

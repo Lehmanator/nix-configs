@@ -28,10 +28,13 @@
     #};
 
     # Plymouth theme to use
-    theme = "bgrt";
+    theme = "bgrt"; #"spinner-monochrome";
 
     # Packages providing Plymouth themes
     themePackages = [
+      #(pkgs.plymouth-spinner-monochrome.override {
+      #  inherit (config.boot.plymouth) logo;
+      #})
       #pkgs.catppuccin-plymouth
       #pkgs.adi1090x-plymouth-themes
       pkgs.nixos-bgrt-plymouth

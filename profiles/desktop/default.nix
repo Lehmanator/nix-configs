@@ -1,5 +1,4 @@
-{ self
-, inputs
+{ inputs
 , config
 , lib
 , pkgs
@@ -7,6 +6,7 @@
 }:
 {
   imports = [
+    inputs.srvos.nixosModules.desktop
     ./apps
     ./de
   ];
@@ -21,4 +21,6 @@
 
   # Enable CUPS to print documents
   services.printing.enable = true;
+
+  environment.profileRelativeSessionVariables.QT_PLUGIN_PATH = lib.mkIf config.qt.enable [ "/lib/qt-6/plugins" ];
 }

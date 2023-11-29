@@ -3,11 +3,12 @@
 , lib
 , pkgs
 , user
+, modulesPath
 , ...
 }:
 {
   imports = [
-    # Include the results of the hardware scan.
+    (modulesPath + "/installer/scan/not-detected.nix")
     #./hardware-configuration.nix
     ../../profiles/adb.nix
     ../../profiles/boot
@@ -32,8 +33,7 @@
   ];
   system.stateVersion = "23.11"; # Did you read the comment?
   boot.binfmt.emulatedSystems = [
-    "aarch64-linux"
-    #"aarch64-darwin" "x86_64-darwin"
+    "aarch64-linux" #"aarch64-darwin" "x86_64-darwin"
   ];
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
   console.useXkbConfig = true;
@@ -43,7 +43,11 @@
     isNormalUser = true;
     description = "Sam Lehman";
     extraGroups = [ "wheel" "users" "dialout" ];
+    openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB2M80EUw0wQaBNutE06VNgSViVot6RL0O6iv2P1ewWH sam@fw" ];
   };
+  #users.users.nixos = {
+  #  initialPassword = "nixos-installer-changeme";
+  #};
   environment.systemPackages = with pkgs; [
     bat
     eza

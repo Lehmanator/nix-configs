@@ -99,13 +99,13 @@ in
     openFirewall = true;
     ports = [ 2224 2223 ];
 
-    settings = {
+    settings = lib.mkForce {
       GatewayPorts = "no";                 # Whether remote hosts allowed to connect to ports forwarded for client. sshd_config(5)
       KbdInteractiveAuthentication = true; # Whether keyboard-interactive authentication is allowed.
       PasswordAuthentication = false;      # (Dis)allow auth using passwords
       PermitRootLogin = "no";              # yes | without-password | prohibit-password | forced-commands-only | no
       UseDns = true;                       # Lookup remote host name & check that resolved host name for remote IP maps to same IP.
-      X11Forwarding = true;                # (Dis)allow X11 connections to be forwarded.
+      X11Forwarding = true;    # (Dis)allow X11 connections to be forwarded.
       #LogLevel = "INFO";                   # QUIET | FATAL | ERROR | INFO | VERBOSE | DEBUG | DEBUG1 | DEBUG2 | DEBUG3
       # --- Crypto Algorithms ---
       #Ciphers = [ "chacha20-poly1305@openssh.com" "aes256-gcm@openssh.com" "aes128-gcm@openssh.com" "aes256-ctr"             "aes192-ctr"             "aes128-ctr" ];

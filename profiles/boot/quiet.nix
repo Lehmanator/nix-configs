@@ -1,19 +1,18 @@
 { inputs
-, config, lib, pkgs
+, config
+, lib
+, pkgs
 , ...
 }:
 {
-
-  imports = [
-  ];
-
-  # Minimal info to console in initrd.
-  boot.initrd.verbose = false;
-
-  # Lowest boot console log level
-  boot.consoleLogLevel = 0;
-
-  # Silent boot splash
-  boot.kernelParams = [ "quiet" "udev.log_level=3" ];
-
+  boot = {
+    # Silent boot splash
+    kernelParams = [ "quiet" "loglevel=3" "systemd.show_status=auto" "udev.log_level=3" "rd.udev.log_level=3" "vt.global_cursor_default=0" ];
+    consoleLogLevel = 0; # Lowest boot console log level
+    initrd.verbose = false; # Minimal info to console in initrd.
+  };
+  console = {
+    useXkbConfig = true;
+    earlySetup = false;
+  };
 }

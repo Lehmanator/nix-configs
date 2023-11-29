@@ -145,4 +145,6 @@
 
   # https://github.com/checkpoint-restore/criu
   programs.criu.enable = true;
+
+  #environment.persistence."/nix/persist".directories = ["/var/lib/containers"];
 }

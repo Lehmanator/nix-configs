@@ -11,7 +11,6 @@
   # Daemonless container engine for developing, managing, & running OCI Containers. Drop-in replacement for `docker` command.
   virtualisation.podman = {
     enable = true;
-    enableNvidia = false; # Enable use of NVidia GPUs from within podman containers.
     autoPrune = {
       enable = true;
       dates = "weekly";

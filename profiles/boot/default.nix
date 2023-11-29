@@ -12,6 +12,6 @@
     ./splash.nix
   ];
 
-  boot.loader.timeout = 6; # Seconds until bootloader boots default menu item. Use `null` if loader should wait indefinitely.
+  boot.loader.timeout = lib.mkDefault 6; # Seconds until bootloader boots default menu item. Use `null` if loader should wait indefinitely.
 
 }

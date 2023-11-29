@@ -10,12 +10,13 @@
 # $ sudo nix develop "github:nixvital/fprint-clear
 # $ fprint-clear
 #
+# Oops, only provides devShell. TODO: Upstream packages & build devShell for other arches.
+#environment.systemPackages = lib.mkIf pkgs.system=="x86_64-linux" [inputs.fprint-clear.packages.${pkgs.system}.default];
+#
 {
-  imports = [
-  ];
-
+  imports = [ ];
   services.fprintd = {
-    enable = false;
+    enable = true;
     #tod.enable = true;
     #tod.driver = pkgs.libfprint-2-tod1-goodix;
   };
@@ -24,5 +25,4 @@
   #security.pam.services.login.fprintAuth = config.services.fprintd.enablee;
 
   #pam_ccreds
-
 }

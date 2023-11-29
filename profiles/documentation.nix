@@ -10,7 +10,7 @@
   documentation = {
     dev.enable = false;
     doc.enable = false;
-    info.enable = true;
+    info.enable = lib.mkForce true;
 
     man.enable = true;
     man.generateCaches = true;

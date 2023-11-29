@@ -15,8 +15,8 @@
     extraModulePackages = [ ];
     kernelModules = [ "kvm-intel" ];
     initrd = {
-      availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "usb_storage" "sd_mod" ];
-      kernelModules = ["nvme"];
+      availableKernelModules = [ "xhci_pci" "ahci" "thunderbolt" "nvme" "usbhid" "usb_storage" "sd_mod" ];
+      kernelModules = [ "nvme" ];
     };
   };
 

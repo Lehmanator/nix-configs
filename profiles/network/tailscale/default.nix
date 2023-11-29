@@ -27,9 +27,11 @@
   # Use MagicDNS
   networking = {
     nameservers = [ "100.100.100.100" ]; # TODO: Make sure nameserver is always first: 100.100.100.100
+    firewall.checkReversePath = "loose";
     firewall.trustedInterfaces = [ config.services.tailscale.interfaceName ]; # Always allow traffic from Tailscale network
     firewall.allowedUDPPorts = [ config.services.tailscale.port ]; # Allow Tailscale ports through the firewall
   };
 
   #sops.secrets.tailscale-auth-key = {};
+  #environment.persistence."/nix/persist".directories = ["/var/lib/tailscale"];
 }
