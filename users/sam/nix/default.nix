@@ -36,7 +36,7 @@ with lib;
 
   # Import nixpkgs config & write to ~/.config/nixpkgs/config.nix so profiles use same config
   nixpkgs.config = import ./nixpkgs.nix;
-  nix.settings = import ./nix.nix;
+  #nix.settings = import ./nix.nix;
 
 
   #xdg.configFile = let mkInputConfigs = attrsets.mapAttrs' (k: v: [ "nix/inputs/${k}".source v.outPath ]);
