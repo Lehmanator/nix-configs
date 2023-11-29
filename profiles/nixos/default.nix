@@ -8,7 +8,9 @@
 # TODO: Move all config that isn't NixOS-specific stuff to common file
 {
   imports = [
-    #inputs.nix-index.nixosModules.nix-index { programs.nix-index-database.comma.enable = true; }
+    inputs.nix-data.nixosModules.nix-data
+    inputs.nix-index.nixosModules.nix-index
+    { programs.nix-index-database.comma.enable = true; }
     ./activate.nix
     ./alias.nix
     ./homed.nix

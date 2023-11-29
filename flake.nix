@@ -1,24 +1,20 @@
 {
   description = "Personal Nix & NixOS configurations";
   outputs = { self, nixpkgs, nixos, home, nur, ... }@inputs: {
-    nixosConfigurations = with inputs; {
-      fw = nixos.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { inherit inputs; user = "sam"; };
-        modules = let debug = false; in with inputs; [
-          ./hosts/fw
-          nix-data.nixosModules.nix-data
-          nix-index.nixosModules.nix-index
-          { programs.nix-index-database.comma.enable = true; }
-          nur.nixosModules.nur
-        ];
+    nixosConfigurations =
+      let
+        mkSystem = host: args: nixos.lib.nixosSystem ({
+          system = "x86_64-linux";
+          specialArgs = { inherit inputs; user = "sam"; };
+          modules = [ ./hosts/${host} ];
+        } // args);
+      in
+      {
+        fw = mkSystem "fw" { };
+        wyse = mkSystem "wyse" { };
+        fajita = mkSystem "fajita" { system = "aarch64-linux"; };
+        fajita2 = mkSystem "fajita2" { system = "aarch64-linux"; };
       };
-      wyse = nixos.lib.nixosSystem rec {
-        system = "x86_64-linux";
-        specialArgs = { inherit inputs; user = "sam"; };
-        modules = [ ./hosts/wyse ];
-      };
-    };
   };
 
   nixConfig = {
