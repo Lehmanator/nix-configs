@@ -1,5 +1,4 @@
-{ self
-, inputs
+{ inputs
 , config
 , lib
 , pkgs
@@ -9,53 +8,54 @@
   imports = [
     #./chat.nix
     #../../apps/social.nix
+
+    # --- FOSS ---------------------------------------------
+    # --- Mastodon ---
+    ./tuba
+
+    # --- Proprietary --------------------------------------
+    # --- Discord -------
+    ./gtkcord
+    ./gotktrix
+
+    # --- Reddit ---
+    #./headlines
+
+    # --- Telegram ---
+    #./paper-plane
+
+    # --- Twitch --------
+    ./chatterino
   ];
 
   home.packages = [
-    # --- Proprietary --------------------------------------
-    # --- Bumble --------
-
-    # --- Discord -------
-    pkgs.gtkcord4
-    pkgs.gotktrix
-
-    # --- Facebook ------
-    # --- Hacker News ---
-    # --- Instagram -----
-
     # --- Reddit --------
     #pkgs.giara  10/25/23: Dep python311Packages.prawcore build fails
     pkgs.headlines
 
     # --- Signal --------
-    pkgs.signal-desktop  # TODO: Move to ../../apps/chat.nix
+    pkgs.signal-desktop # TODO: Move to ../../apps/chat.nix
 
+    # --- Bumble --------
+    # --- Facebook ------
+    # --- Hacker News ---
+    # --- Instagram -----
     # --- Snapchat ------
     # --- Telegram ------
     # --- Tinder --------
     # --- Tumblr --------
-
-    # --- Twitch --------
-    pkgs.chatterino2 # TODO: Move to ../../apps/social.nix
-
     # --- Twitter -------
     #pkgs.cawbird    # Deprecated
 
     # --- Decentralized ------------------------------------
-    # --- Friendica -----
+    # --- Matrix --------
+    pkgs.element-desktop # TODO: Move to ../../apps/social.nix or ../../apps/chat.nix
+
     # --- Lemmy ---------
     #pkgs.nur.repos.colinsane.lemoa   # Broken 7/25/2023
 
-    # --- Mastodon ---
-    pkgs.tuba
-    pkgs.tootle
-
-    # --- Matrix --------
-    pkgs.element-desktop  # TODO: Move to ../../apps/social.nix or ../../apps/chat.nix
-    #pkgs.fractal-next
-
+    # --- Friendica -----
     # --- PixelFed ------
-
   ];
 
   #nixpkgs.overlays = [

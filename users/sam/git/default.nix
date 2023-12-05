@@ -9,6 +9,8 @@
     ./aliases.nix
     ./diff.nix
     ./fzf.nix
+    ./gh.nix
+    ./gitui.nix
     ./hooks.nix
     ./ignore.nix
     ./includes.nix

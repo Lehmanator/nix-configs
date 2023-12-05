@@ -173,4 +173,14 @@ in
       };
     };
   };
+
+
+  # --- XDG Utils ----------------------------------------------------
+  home.packages = [
+    # TODO: Set MimeType for default terminal application: `x-scheme-handler/terminal`
+    # TODO: Configure: `~/.config/handlr/handlr.toml`
+    pkgs.handlr
+    pkgs.xdg-ninja
+  ];
+
 }

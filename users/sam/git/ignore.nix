@@ -8,9 +8,12 @@
 {
   # https://git-scm.com/docs/gitignore
   programs.git.ignores = [
+    # --- temp files ---
     "*~"
     "*.swp"
     "*.swo"
+
+    # --- keys ---
     "*.key"
     "*.privkey"
     "*.luks"
@@ -23,7 +26,12 @@
     "*.cert"
     "*.crt"
     "*.pem"
+
+    # --- build artifacts ---
+    "result"
     "*.o"
+
+    # --- data ---
     "*.log"
   ];
 }
