@@ -29,6 +29,7 @@
     ./gc.nix
     ./nixpkgs.nix
     ./optimize.nix
+    ./overlays.nix
     #./registry.nix
     ./sandbox.nix
     ./shell.nix
