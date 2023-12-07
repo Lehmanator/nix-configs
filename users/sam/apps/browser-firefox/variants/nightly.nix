@@ -1,11 +1,14 @@
-{ self, inputs,
-  config, lib, pkgs,
-  ...
+{ self
+, inputs
+, config
+, lib
+, pkgs
+, ...
 }:
 {
-  nixpkgs.overlays = [
-    #inputs.nixpkgs-mozilla.overlay   # Imported in flake
-  ];
+  #nixpkgs.overlays = [
+  #  inputs.nixpkgs-mozilla.overlay   # Imported in flake
+  #];
 
   home.packages = [
     # https://github.com/mozilla/nixpkgs-mozilla

@@ -19,7 +19,15 @@
     ./homed.nix
     ./home-manager.nix
     ./normalize.nix
+    ../boot
+    ../hardware
+    ../locale
+    ../network
     ../nix
+    ../security
+    ../shell
+    ../users
+    ../sshd.nix
   ];
 
   appstream.enable = true;

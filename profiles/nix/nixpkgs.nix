@@ -13,6 +13,7 @@
     # --- Overlays -----------------------
     # Nix overlays are used to override packages
     overlays = with inputs; [
+      fenix.overlays.default
       nur.overlay
       #(final: prev: {
       #  gnome-decoder = prev.gnome-decoder.overrideAttrs (attrs: {

@@ -13,7 +13,7 @@
       nix-index.hmModules.nix-index
       { programs.nix-index-database.comma.enable = true; }
     ];
-    useGlobalPkgs = false;
+    useGlobalPkgs = true;
     useUserPackages = true;
     extraSpecialArgs = { inherit inputs user; };
     users.${user} = import ../../users/${user};

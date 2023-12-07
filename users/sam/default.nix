@@ -39,9 +39,9 @@
     ./devices/sawfish.nix
   ];
 
-  nixpkgs.overlays = [
-    inputs.nur.overlay
-  ];
+  #nixpkgs.overlays = [
+  #  inputs.nur.overlay
+  #];
 
   #home.stateVersion = "23.11";
   home.stateVersion = "23.05";

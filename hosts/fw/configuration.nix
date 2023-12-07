@@ -1,8 +1,7 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-{ self
-, inputs
+{ inputs
 , config
 , lib
 , pkgs
@@ -11,7 +10,7 @@
 }: {
   imports = [
     # Include the results of the hardware scan.
-    #./hardware-configuration.nix
+    ./hardware-configuration.nix
   ];
 
   # This value determines the NixOS release from which the default
@@ -114,7 +113,6 @@
   };
 
   qt.enable = true;
-
   nix.settings.trusted-public-keys = [
     "hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs="
   ];

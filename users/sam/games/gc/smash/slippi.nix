@@ -13,7 +13,7 @@
 
   # TODO: Only enable if overlay not provided via OS nixpkgs.
   #nixpkgs.overlays = lib.mkIf (!osConfig.ssbm.overlay.enable) [ inputs.ssbm-nix.overlay ];
-  nixpkgs.overlays = [ inputs.ssbm-nix.overlay ];
+  #nixpkgs.overlays = [ inputs.ssbm-nix.overlay ];
 
   # --- Melee ---------------------------------
   # https://gitlab.com/ramirez7/slippi-netplay-nix
