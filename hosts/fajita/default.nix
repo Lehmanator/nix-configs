@@ -7,10 +7,11 @@
 }:
 {
   imports = [
-    (inputs.mobile-nixos + "/lib/configuation.nix" { device = "oneplus-fajita"; })
+    #(import (inputs.mobile-nixos + "/lib/configuation.nix") { device = "oneplus-fajita"; })
 
     # System configuration
     ./configuration.nix
+    ./mobile.nix
 
     # Configuration related to hardware
     #./hardware-configuration.nix
@@ -26,6 +27,8 @@
     # - nix-software-center
     #./managed.nix
 
+    ./profiles.nix
   ];
 
+  nixpkgs.config.allow-unfree = true;
 }
