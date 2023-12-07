@@ -2,27 +2,31 @@
 {
   imports = [
     ../../profiles/adb.nix
-    ../../profiles/boot
     ../../profiles/desktop
     ../../profiles/desktop/de/gnome
-    #../../profiles/editor
     ../../profiles/hardware/display
-    #../../profiles/hardware/fprintd.nix
-    ../../profiles/hardware/fwupd.nix
-    ../../profiles/hardware/peripherals/logitech.nix
     ../../profiles/hardware/tpm2.nix
-    ../../profiles/hardware/usb.nix
-    ../../profiles/locale
-    ../../profiles/network
+    ../../profiles/hardware/peripherals/logitech.nix
     ../../profiles/nixos
     ../../profiles/piwc
-    ../../profiles/security/polkit.nix
-    ../../profiles/security/sops.nix
     ../../profiles/server/kubernetes/k3s-node-main.nix
-    ../../profiles/shell
-    ../../profiles/sshd.nix
-    ../../profiles/users
     ../../profiles/virt
+    ../../profiles/virt/emulators/slippi.nix
+
+    # --- Disabled ---
+    #../../profiles/editor
+    #../../profiles/hardware/fprintd.nix
     #../../profiles/virt/windows
+
+    # --- Imported by profiles/nixos ---
+    #../../profiles/boot
+    #../../profiles/hardware
+    #../../profiles/locale
+    #../../profiles/network
+    #../../profiles/security
+    #../../profiles/security/sops.nix
+    #../../profiles/shell
+    #../../profiles/sshd.nix
+    #../../profiles/users
   ];
 }
