@@ -7,6 +7,7 @@
 }:
 {
   imports = [
+    (inputs.mobile-nixos + "/lib/configuation.nix" { device = "oneplus-fajita"; })
 
     # System configuration
     ./configuration.nix

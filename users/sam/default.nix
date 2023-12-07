@@ -7,11 +7,13 @@
 }:
 {
   imports = [
+    inputs.nixos-flatpak.homeManagerModules.default
     ./crypto
-    ./desktop/apps
-    ./desktop/gnome
+    ./apps
+    ./gnome
     ./editor
     ./fonts.nix
+    ./games
     ./git
     ./languages/nodejs.nix
     ./languages/python.nix

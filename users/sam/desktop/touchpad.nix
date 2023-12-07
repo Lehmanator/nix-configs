@@ -26,13 +26,10 @@ in
     };
     swipe = {
       "3" = {
-        left = {
-	  command = "ydotool key super+alt+Right";
-	  threshold = 0.1;
-	};
+        left = { command = "ydotool key super+alt+Right"; threshold = 0.1; };
         right.command = "ydotool key super+alt+Left";
-	up.command    = "ydotool key super+alt+Up";
-	down.command  = "ydotool key super+alt+Down";
+        up.command    = "ydotool key super+alt+Up";
+        down.command  = "ydotool key super+alt+Down";
       };
     };
   };
