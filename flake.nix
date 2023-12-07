@@ -9,23 +9,37 @@
         "aarch64-darwin"
         "x86_64-darwin"
       ];
+      mkSystem = host: args: nixos.lib.nixosSystem ({
+        system = "x86_64-linux";
+        specialArgs = { inherit inputs; user = "sam"; };
+        modules = [ ./hosts/${host} ];
+      } // args);
     in
     {
-      nixosConfigurations =
-        let
-          mkSystem = host: args: nixos.lib.nixosSystem ({
-            system = "x86_64-linux";
-            specialArgs = { inherit inputs; user = "sam"; };
-            modules = [ ./hosts/${host} ];
-          } // args);
-        in
-        {
-          fw = mkSystem "fw" { };
-          wyse = mkSystem "wyse" { };
-          fajita = mkSystem "fajita" { system = "aarch64-linux"; };
-          fajita2 = mkSystem "fajita2" { system = "aarch64-linux"; };
+      nixosConfigurations = {
+        fw = mkSystem "fw" { };
+        wyse = mkSystem "wyse" { };
+        installer = nixos.lib.nixosSystem {
+          specialArgs = { inherit inputs; user = "sam"; };
+          modules = [ ./profiles/installer ];
         };
+      };
     };
+  #// {
+  #nixosConfigurations = {
+  #  fajita = nixos.lib.nixosSystem {
+  #    system = "aarch64-linux";
+  #    specialArgs = { inherit inputs; user = "sam"; };
+  #    modules = [
+  #      { _module.args = { inherit inputs; user = "sam"; }; }
+  #      (import "${inputs.mobile-nixos}/lib/configuration.nix" { device = "oneplus-fajita"; })
+  #      inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
+  #      ({ config, ... }: { nixpkgs.config.allow-unfree = true; })
+  #    ];
+  #  };
+  #  #fajita2 = mkSystem "fajita2" { system = "aarch64-linux"; };
+  #};
+  #};
 
   nixConfig = {
     connect-timeout = 10;
@@ -116,6 +130,7 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     fprint-clear.url = "github:nixvital/fprint-clear";
     nixos-mobile = { url = "github:vlinkz/mobile-nixos/gnomelatest"; flake = false; }; #url = "github:NixOS/mobile-nixos";
+    mobile-nixos = { url = "github:NixOS/mobile-nixos"; flake = false; };
     srvos.url = "github:nix-community/srvos";
     # --- Modules: Filesystems -------------------------------------
     impermanence.url = "github:nix-community/impermanence";
@@ -146,6 +161,7 @@
     nixos-flatpak.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
+    ssbm-nix.url = "github:djanatyn/ssbm-nix";
     # --- Packages: Pre-built Images -------------------------------
     nixos-images.url = "github:nix-community/nixos-images";
     # --- Packages: Package Management ------------------------------
