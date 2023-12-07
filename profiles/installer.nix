@@ -10,7 +10,7 @@ let
     # --- On target machine ---
     passwd
     ip addr
-    wait 10
+    wait 10./managed.nix
 
     # --- From remote machine ---
     # Test SSH connection

@@ -6,8 +6,10 @@
 }:
 {
   imports = [
-    ./apparmor.nix
+    ./apparmor.nix # Desktop only?
     ./auditd.nix
+    ./polkit.nix # Desktop only?
+    ./sops.nix
     #./networking.nix
   ];
 

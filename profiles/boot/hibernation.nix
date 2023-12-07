@@ -1,7 +1,17 @@
 { inputs
-, config, lib, pkgs
+, config
+, lib
+, pkgs
 , ...
 }:
+# TODO: Possible to work with machines that are Kubernetes nodes?
+# TODO: Setup Full Disk Encryption (FDE) before enabling swap & hibernation.
+# TODO: Encrypt keyfiles with agenix or sops-nix, then add to repo.
+#  - [ ] Use primary keyfile to decrypt root partition.
+#  - [ ] Store keyfiles for other partitions on root partition?
+#  - [ ] Mount other keyfiles at proper location on disk.
+# TODO: Configure hardware-configuration & disk partitions with Disko.
+#
 #
 # See:
 #
@@ -10,6 +20,7 @@
 #
 {
   imports = [
+    #./swap.nix
   ];
 
   # Device for manual resume attempt during boot.
@@ -17,22 +28,37 @@
   #  If left empty, the swap partitions are used.
   #  Specify here the device where the file resides.
   #  You should also use boot.kernelParams to specify «resume_offset».
-  #boot.resumeDevice = "";
 
-  boot.zfs.allowHibernation = lib.mkIf config.boot.zfs.enable true;
+  boot = {
+    # TODO: Other hardware-configuration settings
+    # TODO: initrd LUKS disk unlock?
+    # TODO: initrd swap?
+    # TODO: swapDevices?
+    # TODO: swap LUKS encryption?
+    # TODO: neededForBoot on parent filesystem when using swapfile?
+    # TODO: Both physical & Zram swap possible together?
+    #resumeDevice = "/dev/nvme0n1p2";
+    #kernelParams = ["resume_offset=<uInt>"];
+    #kernelModules = [];
+    #initrd = {
+    #  availableKernelModules = [];
+    #  kernelModules = [];
+    #};
+    zfs.allowHibernation = lib.mkIf config.boot.zfs.enable true;
+  };
 
   services.logind = {
     hibernationKey = "hibernate";
-    hibernationKeyLongPress = "suspend-then-hibernate";  # “ignore”, “poweroff”, “reboot”, “halt”, “kexec”, “suspend”, “hibernate”, “hybrid-sleep”, “suspend-then-hibernate”, “lock”
+    hibernationKeyLongPress = "suspend-then-hibernate"; # “ignore”, “poweroff”, “reboot”, “halt”, “kexec”, “suspend”, “hibernate”, “hybrid-sleep”, “suspend-then-hibernate”, “lock”
     lidSwitch = "suspend";
     lidSwitchDocked = "ignore";
-    lidSwitchExternalPower = config.services.logind.lidSwitch;  #"ignore";
-    suspendKey = "suspend";  # “ignore”, “poweroff”, “reboot”, “halt”, “kexec”, “suspend”, “hibernate”, “hybrid-sleep”, “suspend-then-hibernate”, “lock”
-    suspendKeyLongPress = "hibernate";  # “ignore”, “poweroff”, “reboot”, “halt”, “kexec”, “suspend”, “hibernate”, “hybrid-sleep”, “suspend-then-hibernate”, “lock”
+    lidSwitchExternalPower = config.services.logind.lidSwitch; #"ignore";
+    suspendKey = "suspend"; # “ignore”, “poweroff”, “reboot”, “halt”, “kexec”, “suspend”, “hibernate”, “hybrid-sleep”, “suspend-then-hibernate”, “lock”
+    suspendKeyLongPress = "hibernate"; # “ignore”, “poweroff”, “reboot”, “halt”, “kexec”, “suspend”, “hibernate”, “hybrid-sleep”, “suspend-then-hibernate”, “lock”
   };
 
   services.physlock.lockOn.hibernate = true;
-  services.upower.criticalPowerAction = "Hibernate";  # PowerOff | Hibernate | HybridSleep (default)
+  services.upower.criticalPowerAction = "Hibernate"; # PowerOff | Hibernate | HybridSleep (default)
 
   # The swap devices and swap files. These must have been initialised using mkswap.
   #  Each element should be an attribute set specifying either:
@@ -45,16 +71,16 @@
 
       # --- Swap device parameters ---
       device = "/dev/nvme0n1p2"; # Path of the device or swap file.
-      discardPolicy = null;      # null | once | pages | both
-      label = "swap";            # Label of the device. Can be used instead of device.
-      options = ["defaults"];    # Options used to mount the swap.
-      priority = 10;             # Priority of the swap device b/w [0, 32767] where higher number => higher priority. null lets kernel choose priority, which will show up as negative value.
-      size = 2048;               # Swap size in Megabytes.                # TODO: Set to RAM size * 1.5
+      discardPolicy = null; # null | once | pages | both
+      label = "swap"; # Label of the device. Can be used instead of device.
+      options = [ "defaults" ]; # Options used to mount the swap.
+      priority = 10; # Priority of the swap device b/w [0, 32767] where higher number => higher priority. null lets kernel choose priority, which will show up as negative value.
+      size = 2048; # Swap size in Megabytes.                # TODO: Set to RAM size * 1.5
 
       # --- Swap Encryption ---
       encrypted = {
-        enable = true;               # The block device is backed by an encrypted one, adds this device as a initrd luks entry.
-        blkDev = "/dev/nvme0n1p2";   # Location of the backing encrypted device.
+        enable = true; # The block device is backed by an encrypted one, adds this device as a initrd luks entry.
+        blkDev = "/dev/nvme0n1p2"; # Location of the backing encrypted device.
         # Path to a keyfile used to unlock the backing encrypted device.
         #  At the time this keyfile is accessed,
         #   the neededForBoot filesystems (see fileSystems.<name?>.neededForBoot) will have been mounted under /mnt-root,
@@ -74,12 +100,12 @@
       #   ...as the UUIDs & labels will get erased on every boot when the partition is encrypted.
       #   Best to use /dev/disk/by-partuuid/…
       randomEncryption = {
-        enable = false;             # Encrypt swap with random data. Note: cannot be used w/ hibernate!
-        allowDiscards = false;      # Harden: set false.
+        enable = false; # Encrypt swap with random data. Note: cannot be used w/ hibernate!
+        allowDiscards = false; # Harden: set false.
         cipher = "aes-xts-plain64"; #
-        keySize = "512";            # If null, will be determined by cryptsetup. See: cryptsetup-open(8)
-        sectorSize = "4096";        #  If null, will be determined by cryptsetup. See: cryptsetup-open(8)
-        source = "/dev/urandom";    # /dev/random
+        keySize = "512"; # If null, will be determined by cryptsetup. See: cryptsetup-open(8)
+        sectorSize = "4096"; #  If null, will be determined by cryptsetup. See: cryptsetup-open(8)
+        source = "/dev/urandom"; # /dev/random
       };
 
     };
@@ -93,27 +119,6 @@
   #'';
 
 
-  #
-  # TODO: Handle various filesystem types.
-  #  - [ ] TODO: Switch to BTRFS / ZFS ?
-  #
-  # TODO: Other hardware-configuration settings
-  #  - neededForBoot
-  #  - boot.resumeDevice
-  #  - boot.kernelParams = [ "resume_offset=???" ]; # "resumeDevice=..." ];
-  #  - boot.initrd.kernelModules
-  #  - boot.initrd.availableKernelModules
-  #  - boot.kernelModules
-  #
-  # TODO: Setup Full Disk Encryption (FDE) before enabling swap & hibernation.
-  # TODO: Encrypt keyfiles with agenix or sops-nix, then add to repo.
-  #  - [ ] Use primary keyfile to decrypt root partition.
-  #  - [ ] Store keyfiles for other partitions on root partition?
-  #  - [ ] Mount other keyfiles at proper location on disk.
-  #  - [ ]
-  #
-  # TODO: Configure hardware-configuration & disk partitions with Disko.
-  #
 
 }
 

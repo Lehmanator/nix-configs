@@ -6,6 +6,7 @@
 }:
 {
   imports = [
+    ./fwupd.nix
     ./usb.nix
     #./disks
     #./display

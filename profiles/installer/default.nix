@@ -14,16 +14,21 @@
     };
   };
 
+  # Faster build (at expense of iso size)
+  isoImage.squashfsCompression = "gzip -Xcompression-level 1";
+
+  # --- SSH ---
+  services.openssh = {
+    enable = true;
+    extraConfig = ''
+      MaxAuthTries 600
+    '';
+  };
   users.users.root = {
     initialPassword = "changeme-nixos-installer";
     openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB2M80EUw0wQaBNutE06VNgSViVot6RL0O6iv2P1ewWH sam@fw" ];
   };
 
-  # Faster build (at expense of iso size)
-  #isoImage.squashfsCompression = "gzip -Xcompression-level 1";
-
-  # --- Shell environment ---
-  # --- SSH keys ---
 
   # --- Bootloader, initrd, & Kernel ---
   boot = {
@@ -81,13 +86,7 @@
   # https://www.kernel.org/doc/Documentation/blockdev/zram.txt
   zramSwap = { enable = true; algorithm = "zstd"; };
 
-
-  services.openssh = {
-    enable = true;
-    extraConfig = ''
-      MaxAuthTries 600
-    '';
-  };
+  # --- Shell environment ---
   environment = {
     sessionVariables.EDITOR = "nvim";
     shells = [ pkgs.bash pkgs.zsh ];
