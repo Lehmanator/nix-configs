@@ -154,6 +154,9 @@
     nixpak.url = "github:nixpak/nixpak";
     nixpak.inputs.nixpkgs.follows = "nixpkgs";
 
+    # --- Modules: Home-Manager ------------------------------------
+    ssbm-nix.url = "github:djanatyn/ssbm-nix";
+
     # --- Packages: Pre-built Images -------------------------------
     nixos-images.url = "github:nix-community/nixos-images";
     microvm.url = "github:astro/microvm.nix";
