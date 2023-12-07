@@ -35,13 +35,13 @@
     };
     gtk3 = {
       bookmarks = with config.xdg.userDirs.extraConfig; [
-        "file:///${XDG_BACKUP_DIR}"
-        "file:///${XDG_BOOKS_DIR}"
-        "file:///${XDG_CODE_DIR}"
-        "file:///${XDG_NOTES_DIR}"
-        #"file:///${XDG_AUDIO_DIR}"
-        "file:///${config.xdg.userDirs.templates}"
-        "file:///${config.xdg.userDirs.publicShare}"
+        "file:///${XDG_BACKUP_DIR} Backup"
+        "file:///${XDG_BOOKS_DIR} Books"
+        "file:///${XDG_CODE_DIR} Code"
+        "file:///${XDG_NOTES_DIR} Notes"
+        #"file:///${XDG_AUDIO_DIR} Audio"
+        "file:///${config.xdg.userDirs.templates} Templates"
+        "file:///${config.xdg.userDirs.publicShare} Public"
         #"google-drive://${email}/${gdrive-hash} Google Drive"
         #"google-drive://${email}/${gdrive-shared-hash} Google Drive: Shared"
       ];
