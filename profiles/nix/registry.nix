@@ -1,33 +1,14 @@
 { inputs, config, lib, pkgs, ... }:
 {
-  imports = [ inputs.nix-quick-registry.nixosModules.local-registry ];
-  # User: ~/.config/nix/registry.json
-  # Create Nix registry from nixpkgs
-  # TODO: Select input based on system type
-  #nix.registry.nixpkgs.flake = inputs.nixpkgs;
-  nix = {
-    #registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
-    #nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
+  imports = [
+    inputs.nix-quick-registry.nixosModules.local-registry
+    inputs.flake-utils-plus.nixosModules.autoGenFromInputs
+  ];
 
-    registry = {
-      nixos.flake = inputs.nixos;
-      darwin.flake = inputs.darwin;
-      nixpkgs = {
-        #from = {
-        #  id = "nixpkgs";
-        #  type = "indirect";
-        #};
-        flake = inputs.nixpkgs;
-      };
-      home-manager.flake = inputs.home;
-      home.flake = inputs.home;
-      #repo = {
-      #  to = { type = "github";
-      #    owner = "PresqueIsleWineDev";
-      #    repo = "nix-configs";
-      #  };
-      #};
-    };
+  nix = {
+    generateNixPathFromInputs = true;
+    generateRegistryFromInputs = true;
+    linkInputs = true;
     localRegistry = {
       enable = true;
       cacheGlobalRegistry = true;
@@ -39,3 +20,14 @@
     };
   };
 }
+#registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
+#nixPath = lib.mapAttrsToList (key: value: "${key}=${value.flake.outPath}") config.nix.registry;
+#environment.etc."nixtest" = lib.mapAttrs'
+#  (fname: flake: {
+#    name = "nix/inputs2/${fname}";
+#    value = flake.outPath;
+#  })
+#  inputs;
+
+#environment.etc = lib.mapAttrs' (name: value: lib.nameValuePair ("nix/inputs/${name}".source) (value.outPath)) inputs;
+
