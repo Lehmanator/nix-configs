@@ -24,7 +24,7 @@ in
 {
   imports = [
     # Use same caches as NixOS system. home-manager config will only define extra caches to add on top.
-    ../../../profiles/nix/cache.nix
+    ../../../profiles/nix/binary-caches.nix
   ];
 
   # --- Binary Cache -------------------

@@ -12,7 +12,7 @@
 {
   imports = [
     ./access-tokens.nix
-    ./cache.nix
+    ./binary-caches.nix
     ./utils
     ./write-config.nix
     #./nix.nix
