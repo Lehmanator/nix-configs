@@ -3,9 +3,9 @@
 , lib
 , pkgs
 , user
-, isFunnel ? false
 , ...
 }:
+let isFunnel = false; in
 {
   imports = [
     ./personal.nix
