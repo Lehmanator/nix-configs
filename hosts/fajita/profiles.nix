@@ -1,10 +1,12 @@
 { config, lib, pkgs, inputs, ... }:
 {
   imports = [
-    ../../profiles/adb.nix
-    ../../profiles/desktop
-    ../../profiles/desktop/de/gnome
+    #../../profiles/adb.nix
+    #../../profiles/desktop
+    #../../profiles/desktop/de/gnome
+    ../../profiles/mobile
     ../../profiles/nixos
+    #../../profiles/virt/emulators/slippi.nix
 
     # --- Disabled ---
     #../../profiles/editor

@@ -18,7 +18,7 @@
     man.mandoc.enable = true; # Note: man-db & mandoc cannot both be enabled simultaneously
 
     nixos.enable = true; # Include dev docs if documentation.man.enable=true (`devman`,`devinfo`,`devdoc` outputs)
-    nixos.options.splitBuild = true; # Split opt docs into cacheable/not. Faster build. Some user modules may break. Default=true
+    nixos.options.splitBuild = lib.mkForce true; # Split opt docs into cacheable/not. Faster build. Some user modules may break. Default=true
     #nixos.includeAllModules = true;                   # Gen docs for options in NixOS config. Default=false (Ignores options outside baseModules)
     #nixos.extraModuleSources = [ pkgs.customModule ]; # Extra NixOS module paths gen'd documentation should strip from options. Default=[]
     #nixos.extraModules = [];                          # Modules to show options even when not imported. Default=[]

@@ -12,7 +12,7 @@
     ../../sysadmin/azure.nix
     ../../sysadmin/kubernetes
     ../../../xdg.nix
-    ./bitwarden.nix
+    #./bitwarden.nix
     #./git.nix
     #./.
   ];

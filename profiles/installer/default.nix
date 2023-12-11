@@ -67,20 +67,6 @@
     };
   };
 
-  # --- Hardware Support -----------------------------------
-  hardware.firmware = [ ];
-  # Microcode
-  hardware.cpu.intel.updateMicrocode = true;
-
-  # Model-Specific Registers
-  hardware.cpu.x86.msr = {
-    enable = true;
-    group = "msr";
-    mode = "0640";
-    owner = "root";
-    settings = { };
-  };
-
   # --- Features -------------------------------------------
   # --- Zram Swap ---
   # https://www.kernel.org/doc/Documentation/blockdev/zram.txt

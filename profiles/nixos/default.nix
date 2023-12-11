@@ -14,12 +14,12 @@
     inputs.nix-data.nixosModules.nix-data
     inputs.nix-index.nixosModules.nix-index
     { programs.nix-index-database.comma.enable = true; }
-    ./activate.nix
+    #./activate.nix
     ./alias.nix
-    ./homed.nix
+    #./homed.nix
     ./home-manager.nix
     ./normalize.nix
-    ../boot
+    #../boot
     ../hardware
     ../locale
     ../network
@@ -28,26 +28,8 @@
     ../shell
     ../users
     ../sshd.nix
-  ];
-
+  ]
+    #++ lib.optionals (pkgs.system == "x86_64-linux") [ ../boot ../security/apparmor.nix ]
+  ;
   appstream.enable = true;
-
-  # --- Shell Environment ----------------------------------
-  # FIXME: Correctly set NIX_PATH
-  #nix.nixPath = [ "nixos=${inputs.nixos}" ];  #"nixos=${inputs.nixpkgs}"
-  #nix.nixPath = ["nixos=/etc/nix/inputs/nixos:nixpkgs=/etc/nix/inputs/nixpkgs:home-manager=/etc/nix/inputs/home-manager"];
-  #nix.registry = {
-  #  nixos.flake = inputs.nixos;
-  #  nixpkgs.flake = inputs.nixpkgs;
-  #  home-manager.flake = inputs.home;
-  #};
-  #
-  ## Place flake source in /etc/nixos
-  ## TODO: Convert to divnix/hive first
-  ##etc.nixos.source = inputs.self;
-  #environment.etc = {
-  #  "nix/inputs/nixos".source = inputs.nixos.outPath;
-  #  "nix/inputs/home-manager".source = inputs.home.outPath;
-  #};
-
 }

@@ -8,27 +8,14 @@
 {
   imports = [
     #(import (inputs.mobile-nixos + "/lib/configuation.nix") { device = "oneplus-fajita"; })
-
-    # System configuration
-    ./configuration.nix
-    ./mobile.nix
-
-    # Configuration related to hardware
-    #./hardware-configuration.nix
-
-    # Uses some stuff from SnowflakeOS
-    #./snowflake.nix
-
-    # Handles hardware peripherals for external & internal displays
-    #./displays.nix
-
-    # Include configuration managed by apps:
-    # - nixos-conf-editor
-    # - nix-software-center
-    #./managed.nix
-
-    ./profiles.nix
+    ./configuration.nix #         # System configuration
+    #./hardware-configuration.nix # Configuration related to hardware
+    #./mobile.nix                 # Mobile configuration
+    #./snowflake.nix #            # Uses some stuff from SnowflakeOS
+    #./displays.nix #             # Handles hardware peripherals for external & internal displays
+    #./managed.nix #              # Include app-managed config: nixos-conf-editor & nix-software-center
+    ./profiles.nix #              # Include profiles
   ];
-
-  nixpkgs.config.allow-unfree = true;
+  networking.hostName = "fajita";
+  system.stateVersion = "23.11";
 }

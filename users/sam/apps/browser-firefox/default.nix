@@ -1,10 +1,5 @@
-{ self
-, modulesPath
+{ modulesPath
 , inputs
-, outputs
-, host
-, network
-, repo
 , config
 , lib
 , pkgs
@@ -38,7 +33,7 @@
     enable = true;
 
     #enableGnomeExtensions = true;
-    package = inputs.flake-firefox-nightly.packages.${pkgs.system}.firefox-bin;
+    package = if (pkgs.system != "x86_64-linux") then pkgs.firefox else inputs.flake-firefox-nightly.packages.${pkgs.system}.firefox-bin;
     #package = pkgs.firefox.override {
     #  cfg.enableGnomeExtensions = config.gtk.enable;  #config.services.xserver.desktopManager.gnome.enable;
     #  cfg.enableTridactylNative = true;

@@ -11,7 +11,7 @@
     ./de
   ];
 
-  boot.kernelPackages = pkgs.linuxPackages_zen;
+  boot.kernelPackages = lib.mkIf (pkgs.system == "x86_64-linux") pkgs.linuxPackages_zen;
 
   programs.fuse.userAllowOther = true;
 

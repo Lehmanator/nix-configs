@@ -4,8 +4,7 @@
 #   - All GNOME packages:  default.nix
 #   - GNOME Installer Env: installer.nix
 #   - Update GNOME:        updater.nix
-{ self
-, inputs
+{ inputs
 , config
 , lib
 , pkgs

@@ -1,6 +1,7 @@
-{
-  config, lib, pkgs,
-  ...
+{ config
+, lib
+, pkgs
+, ...
 }:
 # GNOME Shell Extensions for the desktop & widgets
 
@@ -17,7 +18,10 @@
     #circular-widgets
 
     # Clock widget on desktop
-    #desktop-clock
+    desktop-clock
+
+    # Lyrics of playing song on desktop
+    desktop-lyric
 
     #desktop-icons-ng-ding    # Desktop Icons NG fork w enhancements
     #desktop-icons-neo        # Desktop Icons NG fork w shapes,corners,perf
@@ -25,7 +29,7 @@
     # - Works best on Wayland
     # - Nautilus drag & drop
     # - Supports GSConnect
-    #gtk4-desktop-icons-ng-ding
+    gtk4-desktop-icons-ng-ding
 
     # Add overlays to wallpapers
     #wallpaper-overlay

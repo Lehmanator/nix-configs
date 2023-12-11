@@ -5,9 +5,7 @@
 , ...
 }:
 {
-  imports = [
-  ];
-
+  imports = [ ];
   environment.systemPackages = [
     pkgs.usbutils
   ];

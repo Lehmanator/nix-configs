@@ -1,5 +1,7 @@
 { inputs
-, config, lib, pkgs
+, config
+, lib
+, pkgs
 , ...
 }:
 let
@@ -16,10 +18,10 @@ in
     };
 
     extensions = #with inputs.nur.repos.rycee.firefox-addons; [
-                 with pkgs.nur.repos.rycee.firefox-addons; [
-      gnome-shell-integration
-      gsconnect
-    ];
+      with pkgs.nur.repos.rycee.firefox-addons; [
+        gnome-shell-integration
+        gsconnect
+      ];
 
     settings = {
       # --- Options: Defaults = Set ---
@@ -41,6 +43,7 @@ in
     };
 
     # TODO: @import "${pkgs.nur.repos.federicoschonborn.firefox-gnome-theme}/userChrome.css";
+    # https://raw.githubusercontent.com/easonwong-de/Tab-Preview-On-Hover/main/CSS%20Theme/userChrome.css
     userChrome = ''
       @import "firefox-gnome-theme/userChrome.css";
       @import "firefox-gnome-theme/theme/extensions/adaptive-tab-bar-color.css";

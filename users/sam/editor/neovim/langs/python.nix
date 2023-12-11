@@ -1,4 +1,5 @@
 { inputs
+, pkgs
 , ...
 }:
 {
@@ -7,7 +8,7 @@
       enable = true;
       #package = pkgs.vimPlugins.nvim-dap-python;
       #adapterPythonPath = "/nix/store/...-python3-3.10.12/bin/python3";  # Path to python interpretter. Path must be absolute or in $PATH & must have debugpy package installed.
-      console = "integratedTerminal";  # integratedTerminal | internalConsole | externalTerminal
+      console = "integratedTerminal"; # integratedTerminal | internalConsole | externalTerminal
       includeConfigs = true;
       #resolvePython = null;            # Fn to resolve path to python to use for execution. By default use VIRTUAL_ENV | CONDA_PREFIX if present.
       #testRunner = null;               # Name of test runner to use by default. Default is dynamic & depends on pytest.ini or manage.py markers. If neither found, use 'unittest'
@@ -15,7 +16,7 @@
     };
 
     lsp.servers.pylsp = {
-      enable = true;
+      enable = (pkgs.system == "x86_64-linux");
       settings.configurationSources = "flake8";
       settings.plugins = {
         autopep8.enabled = true;

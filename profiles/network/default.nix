@@ -34,7 +34,7 @@
     #./vlans.nix
     #./vswitches.nix
   ];
-  hardware.wirelessRegulatoryDatabase = true; # Load regulatory DB at boot
+  hardware.wirelessRegulatoryDatabase = lib.mkDefault true; # Load regulatory DB at boot
 
   networking = {
     # IPv6 <-> IPv4 address generation & translation
@@ -66,7 +66,7 @@
   # Enable opportunistic TCP encryption.
   #  If other end supports, then encrypt traffic, else cleartext.
   #  Note: Not reliable to ensure TCP encryption, but upgrades some insecure TCP
-  networking.tcpcrypt.enable = true;
+  networking.tcpcrypt.enable = lib.mkDefault true;
   users = with config.networking; {
     # Allow primary user to control networking without privilege escalation
     users.${user}.extraGroups = [ "network" ] ++ lib.optional wireless.enable wireless.userControlled.group;

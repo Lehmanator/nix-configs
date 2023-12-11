@@ -6,7 +6,7 @@
 , ...
 }:
 {
-  imports = [ ./personal.nix ./work.nix ];
+  imports = [ ./personal.nix ]; #./work.nix ];
   environment.systemPackages = lib.mkIf config.services.xserver.desktopManager.gnome.enable [
     #pkgs.gnomeExtensions.taildrop-send
     pkgs.gnomeExtensions.tailscale-qs
@@ -27,9 +27,11 @@
   # Use MagicDNS
   networking = {
     nameservers = [ "100.100.100.100" ]; # TODO: Make sure nameserver is always first: 100.100.100.100
-    firewall.checkReversePath = "loose";
-    firewall.trustedInterfaces = [ config.services.tailscale.interfaceName ]; # Always allow traffic from Tailscale network
-    firewall.allowedUDPPorts = [ config.services.tailscale.port ]; # Allow Tailscale ports through the firewall
+    firewall = {
+      checkReversePath = "loose";
+      trustedInterfaces = [ config.services.tailscale.interfaceName ]; # Always allow traffic from Tailscale network
+      allowedUDPPorts = [ config.services.tailscale.port ]; # Allow Tailscale ports through the firewall
+    };
   };
 
   #sops.secrets.tailscale-auth-key = {};

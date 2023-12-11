@@ -1,20 +1,21 @@
-{ self, inputs
-, config, lib, pkgs
+{ inputs
+, config
+, lib
+, pkgs
 , ...
 }:
-
 {
-  imports = [
-  ];
-
+  imports = [ ];
   environment.systemPackages = with pkgs.gnomeExtensions; [
-    #duckduckgo-search-provider
+    another-window-session-manager
+    duckduckgo-search-provider
     #google-search-provider
     #fuzzy-app-search
+    historymanager-prefix-search
     #keyman
     #just-another-search-bar
-    #remmina-search-provider
+    remmina-search-provider
+    search-light
     ssh-search-provider-reborn
   ];
-
 }

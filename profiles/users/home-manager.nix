@@ -15,7 +15,7 @@
     sops-nix.homeManagerModules.sops
   ];
   extraSpecialArgs = { inherit inputs user; };
-  useGlobalPkgs = false;
+  useGlobalPkgs = true;
   useUserPackages = true;
   users.${user} = import ../../users/${user};
 }

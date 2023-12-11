@@ -1,5 +1,4 @@
-{ self
-, inputs
+{ inputs
 , config
 , lib
 , pkgs
@@ -13,7 +12,6 @@
     ./gnome
     ./editor
     ./fonts.nix
-    ./games
     ./git
     ./languages/nodejs.nix
     ./languages/python.nix
@@ -29,22 +27,10 @@
     ./xdg.nix
     #../../profiles/workarounds.nix
     # TODO: Conditionally load ./nixos.nix when system is NixOS-based
-
-    # --- Devices ---
-    ./devices
-    #./devices/flame.nix
-    #./devices/cheetah.nix
-    #./devices/fajita.nix
-    ./devices/pinetime.nix
-    ./devices/sawfish.nix
   ];
 
-  #nixpkgs.overlays = [
-  #  inputs.nur.overlay
-  #];
-
-  #home.stateVersion = "23.11";
-  home.stateVersion = "23.05";
+  #home.stateVersion = "23.05";
+  home.stateVersion = "23.11";
   home.enableDebugInfo = true;
   home.enableNixpkgsReleaseCheck = true;
   #home.extraOutputsToInstall = [ "doc" "info" "devdoc" "dev" "bin" ];

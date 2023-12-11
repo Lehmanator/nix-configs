@@ -29,7 +29,7 @@
     #../../desktop/gnome/apps/phone.nix
   ];
 
-  home.packages = [
+  home.packages = lib.mkIf (pkgs.system == "x86_64-linux") [
     # --- ADB & Fastboot ---
     #pkgs.android-tools
     inputs.nixpkgs-android.packages.${pkgs.system}.platform-tools

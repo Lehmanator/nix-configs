@@ -8,16 +8,12 @@
   nixpkgs = {
     overlays = with inputs; [
       fenix.overlays.default
+      lanzaboote.overlays.default
+      nix-alien.overlays.default
+      nixpkgs-gnome-apps.overlays.default
       nur.overlay
-
-      #(final: prev: {
-      #  gnome-decoder = prev.gnome-decoder.overrideAttrs (attrs: {
-      #    preBuild = ''
-      #      export BINDGEN_EXTRA_CLANG_ARGS="$BINDGEN_EXTRA_CLANG_ARGS -DPW_ENABLE_DEPRECATED"
-      #    '';
-      #    meta.broken = false;
-      #  });
-      #})
+      nvfetcher.overlays.default
+      ssbm-nix.overlay
 
       # --- Overlaying Alternative Package Sets ---
       #(final: prev: {       stable = flake-utils.lib.eachDefaultSystem (system: nixos-stable.legacyPackages.${system});    })

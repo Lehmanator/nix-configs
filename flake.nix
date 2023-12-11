@@ -9,9 +9,22 @@
         "aarch64-darwin"
         "x86_64-darwin"
       ];
-      mkSystem = host: args: nixos.lib.nixosSystem ({
+      mkSystem = host: args: nixos.lib.nixosSystem (rec {
         system = "x86_64-linux";
-        specialArgs = { inherit inputs; user = "sam"; };
+        specialArgs = {
+          inherit inputs;
+          user = "sam";
+          # Instantiate all instances of nixpkgs in flake.nix to avoid creating new nixpkgs instances
+          # for every `import nixpkgs` call within submodules/subflakes. Saves time & RAM.
+          #  See:
+          #  - https://nixos-and-flakes.thiscute.world/nixos-with-flakes/downgrade-or-upgrade-packages
+          #  - https://nixos-and-flakes.thiscute.world/nixpkgs/multiple-nixpkgs
+          pkgs-stable = import inputs.nixpkgs-stable { inherit system; config.allowUnfree = true; };
+          pkgs-unstable = import inputs.nixpkgs-unstable { inherit system; config.allowUnfree = true; };
+          pkgs-master = import inputs.nixpkgs-master { inherit system; config.allowUnfree = true; };
+          pkgs-staging = import inputs.nixpkgs-staging { inherit system; config.allowUnfree = true; };
+          pkgs-staging-next = import inputs.nixpkgs-staging-next { inherit system; config.allowUnfree = true; };
+        };
         modules = [ ./hosts/${host} ];
       } // args);
     in
@@ -23,23 +36,36 @@
           specialArgs = { inherit inputs; user = "sam"; };
           modules = [ ./profiles/installer ];
         };
+        fajita = nixos.lib.nixosSystem {
+          system = "aarch64-linux";
+          specialArgs = { inherit inputs; user = "sam"; };
+          modules = [
+            { _module.args = { inherit inputs; user = "sam"; }; }
+            (import "${inputs.mobile-nixos}/lib/configuration.nix" { device = "oneplus-fajita"; })
+            ./hosts/fajita
+            inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
+          ];
+        };
       };
-    };
-  #// {
-  #nixosConfigurations = {
-  #  fajita = nixos.lib.nixosSystem {
-  #    system = "aarch64-linux";
-  #    specialArgs = { inherit inputs; user = "sam"; };
-  #    modules = [
-  #      { _module.args = { inherit inputs; user = "sam"; }; }
-  #      (import "${inputs.mobile-nixos}/lib/configuration.nix" { device = "oneplus-fajita"; })
-  #      inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
-  #      ({ config, ... }: { nixpkgs.config.allow-unfree = true; })
-  #    ];
-  #  };
-  #  #fajita2 = mkSystem "fajita2" { system = "aarch64-linux"; };
-  #};
-  #};
+      overlays.gnome-mobile = import ./overlays/gnome-mobile;
+      #packages = forAllSystems (s: {
+      #  fajita-images = inputs.self.nixosConfigurations.fajita.config.mobile.outputs.android-fastboot-images;
+      #});
+      packages.x86_64-linux.fajita-fastboot-images = inputs.self.nixosConfigurations.fajita.config.mobile.outputs.android.android-fastboot-images;
+
+    } // inputs.flake-utils.lib.eachDefaultSystem (system:
+      let
+        #pkgs=inputs.nixpkgs.legacyPackages.${system};
+        pkgs = import inputs.nixpkgs { inherit system; overlays = self.overlays.gnome-mobile; };
+      in
+      {
+        packages = {
+          gnome-shell-mobile = pkgs.gnome-shell-mobile;
+          gnome-shell-mobile-devel = pkgs.gnome-shell-mobile-devel;
+          mutter-mobile = pkgs.mutter-mobile;
+          mutter-mobile-devel = pkgs.mutter-mobile-devel;
+        };
+      });
 
   nixConfig = {
     connect-timeout = 10;
@@ -83,7 +109,8 @@
     # --- Image Builders: Non-Nix ----------------------------------
     # --- Extra Package Sets ---------------------------------------
     #nixpkgs-gnome.url = "github:NixOS/nixpkgs/gnome";
-    nixpkgs-gnome-mobile.url = "github:chuangzhu/nixpkgs-gnome-mobile";
+    nixpkgs-gnome-mobile.url = "github:lehmanator/nixpkgs-gnome-mobile/develop";
+    nixpkgs-gnome-apps.url = "github:chuangzhu/nixpkgs-gnome-apps";
     nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
     nixpkgs-android.url = "github:tadfisher/android-nixpkgs";
     nixpkgs-mozilla.url = "github:mozilla/nixpkgs-mozilla";
@@ -130,7 +157,7 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     fprint-clear.url = "github:nixvital/fprint-clear";
     nixos-mobile = { url = "github:vlinkz/mobile-nixos/gnomelatest"; flake = false; }; #url = "github:NixOS/mobile-nixos";
-    mobile-nixos = { url = "github:NixOS/mobile-nixos"; flake = false; };
+    mobile-nixos = { url = "github:NixOS/mobile-nixos/development"; flake = false; };
     srvos.url = "github:nix-community/srvos";
     # --- Modules: Filesystems -------------------------------------
     impermanence.url = "github:nix-community/impermanence";
@@ -178,6 +205,7 @@
     nix-portable = { url = "github:DavHau/nix-portable"; inputs.nixpkgs.follows = "nixpkgs"; }; # TODO: Install pkg
     nixdoc = { url = "github:nix-community/nixdoc"; inputs.nixpkgs.follows = "nixpkgs"; }; # TODO: Install pkg
     nix-index = { url = "github:Mic92/nix-index-database"; inputs.nixpkgs.follows = "nixpkgs"; };
+    nix-fast-build = { url = "github:Mic92/nix-fast-build"; inputs.nixpkgs.follows = "nixpkgs"; };
     namaka = { url = "github:nix-community/namaka"; inputs.nixpkgs.follows = "nixpkgs"; };
     nixago = { url = "github:nix-community/nixago"; inputs.nixpkgs.follows = "nixpkgs"; }; # TODO: Collect lib
     nixago-extensions = { url = "github:nix-community/nixago-extensions"; inputs.nixpkgs.follows = "nixpkgs"; }; # TODO: Collect lib

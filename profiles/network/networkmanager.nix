@@ -8,7 +8,7 @@
 {
   networking.networkmanager = {
     enable = true;
-    enableStrongSwan = true;
+    enableStrongSwan = lib.mkDefault true;
     #appendNammeservers = [ ];
     # Configuration for [connection] section of NetworkManager.conf
     # See: https://developer.gnome.org/NetworkManager/stable/NetworkManager.conf.html

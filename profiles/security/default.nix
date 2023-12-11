@@ -6,14 +6,15 @@
 }:
 {
   imports = [
-    ./apparmor.nix # Desktop only?
+    #./apparmor.nix # Desktop only?
     ./auditd.nix
     ./polkit.nix # Desktop only?
     ./sops.nix
+    ./sudo-rs.nix
     #./networking.nix
   ];
 
-  security = {
+  security = lib.mkIf (pkgs.system == "x86_64-linux") {
     protectKernelImage = true;
   };
 }

@@ -1,5 +1,7 @@
-{ self, inputs
-, lib, config, pkgs
+{ inputs
+, lib
+, config
+, pkgs
 , ...
 }:
 # Default settings for all desktop environments

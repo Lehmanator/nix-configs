@@ -15,7 +15,7 @@
     #networkmanager.firewallBackend = "nftables"; # iptables | nftables | none  # Compat layer means NetworkManager always uses nftables
     nftables.enable = true;
     firewall = {
-      enable = true;
+      enable = lib.mkDefault true;
 
       # Allow pings, but not many
       pingLimit =

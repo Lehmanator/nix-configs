@@ -30,7 +30,7 @@ in
   # Install implementation of GSConnect & shell-extension
   environment.systemPackages =
     if (implementation == "valent") then [
-      #pkgs.valent
+      pkgs.valent
       #pkgs.gnomeExtensions.valent
     ] else [
       pkgs.gnomeExtensions.gsconnect

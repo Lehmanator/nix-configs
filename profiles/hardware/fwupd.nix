@@ -1,15 +1,13 @@
-{ self, inputs
-, config, lib, pkgs
+{ inputs
+, config
+, lib
+, pkgs
 , ...
 }:
 {
-  imports = [
-  ];
-
+  imports = [ ];
   services.fwupd = {
     enable = true;
     extraRemotes = [ "lvfs-testing" ];
   };
-
 }
-

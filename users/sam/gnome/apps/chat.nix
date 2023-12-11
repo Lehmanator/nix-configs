@@ -1,5 +1,4 @@
-{ self
-, inputs
+{ inputs
 , config
 , lib
 , pkgs
@@ -13,12 +12,15 @@
     ../../apps/chat-twitch
 
     # --- SMS ----------------
+    #../../apps/chat-sms
     ./chatty
 
     # --- XMPP ---------------
+    #../../apps/chat-xmpp
     ./dino
 
     # --- Signal -------------
+    ../../apps/chat-signal
     ./flare
 
     # --- Matrix -------------

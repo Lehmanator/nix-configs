@@ -7,9 +7,10 @@
 }:
 {
   imports = [ inputs.home.nixosModules.home-manager ];
-  home-manager = {
+  home-manager = lib.mkIf (config.networking.hostName != "fajita") {
     sharedModules = with inputs; [
       #arkenfox.hmModules.default
+      #sops.homeManagerModules.sops
       nix-index.hmModules.nix-index
       { programs.nix-index-database.comma.enable = true; }
     ];

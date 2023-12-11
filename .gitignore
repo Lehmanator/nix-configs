@@ -34,6 +34,8 @@ ssh_*_key
 **/pubring.kbx
 **/random_seed
 **/trustdb.gpg
+**/keys
+**/.keys
 
 # --- Private Info ---
 hosts.nix

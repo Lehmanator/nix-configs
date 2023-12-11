@@ -1,6 +1,6 @@
-{ self, inputs, config, lib, pkgs, ... }:
+{ inputs, config, lib, pkgs, ... }:
 {
-  imports = [];
+  imports = [ ];
   environment.systemPackages = [
     pkgs.cachix # CLI for cachix binary caches
     pkgs.deadnix # Find dead code in Nix configs
@@ -12,10 +12,11 @@
     pkgs.nix-output-monitor
     pkgs.nix-tree # Interactively view dep graphs of Nix derivations
     pkgs.nix-update # Update Nix packages
-    #pkgs.nix-query-tree-viewer # GUI to view Nix store path deps
+    pkgs.nix-query-tree-viewer # GUI to view Nix store path deps
     pkgs.nurl # Automatically generate fetcher expressions from URLs
-    #pkgs.nvfetcher # Update package commits & hashes
+    pkgs.nvfetcher # Update package commits & hashes
     pkgs.pre-commit # Git pre-commit hooks
     pkgs.vulnix # Nix(OS) vulnerability scanner
+    inputs.nix-fast-build.packages.${pkgs.system}.nix-fast-build
   ];
 }

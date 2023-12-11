@@ -1,22 +1,22 @@
 { inputs, lib, config, pkgs, ... }:
 {
   imports = [
-    ./browsers.nix
+    #./browsers.nix
     ./browser-chromium
     ./browser-firefox
-    ./browser-tor
+    #./browser-tor
 
     ./chat-matrix
     ./chat-pidgin
     #./chat-beeper
     #./chat-discord
-    #./chat-signal
+    ./chat-signal
 
     ./libreoffice
     #./onlyoffice
 
     #./passwords.nix
-    ./bitwarden
+    #./bitwarden
     #./keepass
     #./nextcloud-passwords
     #./pass

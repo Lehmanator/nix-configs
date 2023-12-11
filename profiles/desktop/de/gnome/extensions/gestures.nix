@@ -18,6 +18,6 @@
     # - Overview/Grid/Desktop: 4-finger-vertical    anywhere
     # - Max/Unmax/Fullscreen:  3-finger-vertical    desktop
     # - Minimize window:       3-finger-vertical    desktop
-    pkgs.gnomeExtensions.gesture-improvements
+    gesture-improvements
   ];
 }

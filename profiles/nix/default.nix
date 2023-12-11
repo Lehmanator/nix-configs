@@ -1,5 +1,7 @@
 { inputs
-, config, lib, pkgs
+, config
+, lib
+, pkgs
 , user
 , ...
 }:
@@ -21,18 +23,20 @@
     ../documentation.nix
     ./access-tokens.nix
     ./aliases.nix
+    ./binary-caches.nix
     #./ca-derivations.nix
-    ./cache.nix
     ./ccache.nix
     ./features.nix
     ./flakes.nix
     ./gc.nix
+    #./nix-path.nix
     ./nixpkgs.nix
     ./optimize.nix
     ./overlays.nix
-    #./registry.nix
+    ./registry.nix
     ./sandbox.nix
     ./shell.nix
+    #./ssh-serve-store.nix
     ./utils.nix
   ];
 
@@ -62,8 +66,7 @@
     warn-dirty = lib.mkDefault false; # Warn git unstaged/uncommitted files
 
     # Expose extra system paths to Nix build sandbox
-    extra-sandbox-paths = [
-    ];
+    extra-sandbox-paths = [ ];
 
     # --- Nix Plugins --------------------
     #plugin-files = [
@@ -74,43 +77,5 @@
 
   # --- Nix Outputs --------------------
   environment.extraOutputsToInstall = [ "doc" "info" "devdoc" "dev" "bin" ];
-
-  # --- Nix Path -----------------------
-  # https://nixos.wiki/wiki/Flakes
-  # Note: channels & nixPath are legacy, but still often used by tooling
-  environment.etc = {
-    "nix/inputs/nixpkgs".source          = inputs.nixpkgs.outPath;
-    #"nix/inputs/nixpkgs-stable".source   = inputs.nixpkgs-stable.outPath;
-    #"nix/inputs/nixpkgs-unstable".source = inputs.nixpkgs-unstable.outPath;
-    #"nix/inputs/nixpkgs-staging".source  = inputs.nixpkgs-staging.outPath;
-    #"nix/inputs/nixpkgs-master".source   = inputs.nixpkgs-stable.outPath;
-
-    "nix/inputs/nixos".source            = inputs.nixos.outPath;
-    #"nix/inputs/nixos-stable".source     = inputs.nixos-stable.outPath;
-    #"nix/inputs/nixos-unstable".source   = inputs.nixos-unstable.outPath;
-    #"nix/inputs/nixos-staging".source    = inputs.nixos-staging.outPath;
-    #"nix/inputs/nixos-master".source     = inputs.nixos-stable.outPath;
-  };
-  nix.nixPath = [
-    "nixpkgs=/etc/nix/inputs/nixpkgs"
-    #"nixpkgs-stable=/etc/nix/inputs/nixpkgs-stable"
-    #"nixpkgs-unstable=/etc/nix/inputs/nixpkgs-unstable"
-    #"nixpkgs-staging=/etc/nix/inputs/nixpkgs-staging"
-    #"nixpkgs-master=/etc/nix/inputs/nixpkgs-master"
-    #"nixpkgs-gnome=/etc/nix/inputs/nixpkgs-gnome"
-
-    "nixos=/etc/nix/inputs/nixos"
-    #"nixos-stable=/etc/nix/inputs/nixos-stable"
-    #"nixos-unstable=/etc/nix/inputs/nixos-unstable"
-    #"nixos-staging=/etc/nix/inputs/nixos-staging"
-    #"nixos-master=/etc/nix/inputs/nixos-master"
-    #"nixos-gnome=/etc/nix/inputs/nixos-gnome"
-
-    #"nixos-config=/etc/nixos/configuration.nix"
-  ];
-  #nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
-  #nix.nixPath = let path = toString ./.; in [ "repl=${path}/repl.nix" "nixpkgs=${inputs.nixpkgs}" ];
-
-
 
 }

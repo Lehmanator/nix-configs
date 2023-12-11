@@ -20,6 +20,32 @@
       pmbu = "pmb update";
       pmbv = "pmb --version";
     };
+    file = {
+      flash-pmos = {
+        enable = true;
+        executable = true;
+        #onChange = "";
+        target = ".local/bin/flash-pmos";
+        text = ''
+          #!/usr/bin/env bash
+          pmbootstrap install --fde --add unl0kr && \
+          fastboot erase dtbo && sleep 3 && \
+          pmbootstrap flasher flash_rootfs --partition=userdata && sleep 5 && \
+          pmbootstrap flasher flash_kernel && sleep 5 && \
+          fastboot reboot bootloader
+        '';
+      };
+      update-pmos = {
+        executable = true;
+        target = ".local/bin/update-pmos";
+        text = ''
+          #!/usr/bin/env bash
+          pmbootstrap pull && \
+          pmbootstrap aportupgrade --all && \
+          pmbootstrap index  # && \
+        '';
+      };
+    };
   };
 
   # TODO: Convert to Nix, use lib to write as TOML

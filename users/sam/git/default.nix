@@ -14,6 +14,7 @@
     ./hooks.nix
     ./ignore.nix
     ./includes.nix
+    ./mr.nix
     #./sync.nix
     ./tui.nix
   ];

@@ -6,7 +6,7 @@
 , ...
 }:
 {
-  home.packages = [ pkgs.bitwarden ];
+  #home.packages = [ pkgs.bitwarden ];
   programs.rbw = {
     enable = true;
     #settings.email = "slehman@piwine.com";

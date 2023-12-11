@@ -5,8 +5,7 @@
 , ...
 }:
 {
-  imports = [
-  ];
+  imports = [ ];
 
   # --- System Activation Info -----------------------------
   # TODO: Show flake inputs diff

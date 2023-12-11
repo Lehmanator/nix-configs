@@ -1,12 +1,13 @@
-{ self, inputs,
-  config, lib, pkgs,
-  ...
+{ inputs
+, config
+, lib
+, pkgs
+, ...
 }:
 {
-  imports = [];
-
+  imports = [ ];
   home.packages = [
-    pkgs.denaro         # Personal finance manager GTK4 app
+    pkgs.denaro # Personal finance manager GTK4 app
   ];
 
 }
