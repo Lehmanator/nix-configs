@@ -1,5 +1,10 @@
-on: [push]
 name: Dead code analysis
+
+on:
+  pull_request:
+  push:
+    branches [main]
+
 jobs:
   deadnix:
     name: Deadnix
