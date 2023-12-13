@@ -8,30 +8,6 @@
 , user
 , ...
 }: {
-  imports = [
-    # Include SnowflakeOS config
-    #./snowflake.nix
-    # Include the results of the hardware scan.
-    #./hardware-configuration.nix
-    #./displays.nix
-    # Activate profiles
-    ../../profiles/security/sops.nix
-    ../../profiles/server/headscale.nix
-    ../../profiles/server/keycloak.nix
-    ../../profiles/server/lldap.nix
-    #../../profiles/server/openldap.nix
-    ../../profiles/server/wireguard.nix
-    ../../profiles/sshd.nix
-    ../../profiles/boot
-    #../../profiles/editor
-    #../../profiles/hardware/fwupd.nix
-    #../../profiles/hardware/tpm2.nix
-    ../../profiles/locale
-    ../../profiles/network
-    ../../profiles/nixos
-    ../../profiles/shell
-    ../../profiles/users
-  ];
   system.stateVersion = "23.05"; # Did you read the comment?
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
