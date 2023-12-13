@@ -2,13 +2,13 @@
 {
   imports = [
     ../../profiles/adb.nix
-    ../../profiles/boot
     ../../profiles/desktop
     ../../profiles/desktop/de/gnome
     ../../profiles/hardware/display
     ../../profiles/hardware/tpm2.nix
     ../../profiles/hardware/peripherals/logitech.nix
     ../../profiles/nixos
+    ../../profiles/nixos/boot
     ../../profiles/nixos/homed.nix
     ../../profiles/piwc
     ../../profiles/security
@@ -23,7 +23,6 @@
     #../../profiles/virt/windows
 
     # --- Imported by profiles/nixos ---
-    #../../profiles/boot
     #../../profiles/hardware
     #../../profiles/locale
     #../../profiles/network

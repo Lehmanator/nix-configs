@@ -11,12 +11,12 @@
     ../../profiles/desktop/flatpak.nix
     # --- Disabled ---
     #../../profiles/editor
-    #../../profiles/hardware/fprintd.nix
+    #../../profiles/nixos/hardware/fprintd.nix
     #../../profiles/virt/windows
 
     # --- Imported by profiles/nixos ---
-    #../../profiles/boot
-    #../../profiles/hardware
+    #../../profiles/nixos/boot
+    #../../profiles/nixos/hardware
     #../../profiles/locale
     #../../profiles/network
     #../../profiles/security

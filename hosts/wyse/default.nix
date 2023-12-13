@@ -8,6 +8,7 @@
     ./configuration.nix # System configuration
     ./disko.nix # Disk configuration
     ./hardware-configuration.nix # Configuration related to hardware
+    ./profiles.nix # Load profiles
     #./snowflake.nix # Uses some stuff from SnowflakeOS
     #./displays.nix # Handles hardware peripherals for external & internal displays
     ./managed.nix # Include configuration managed by apps: nixos-conf-editor & nix-software-center
