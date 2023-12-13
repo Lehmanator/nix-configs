@@ -32,10 +32,10 @@
       nixosConfigurations = {
         fw = mkSystem "fw" { };
         wyse = mkSystem "wyse" { };
-        installer = nixos.lib.nixosSystem {
-          specialArgs = { inherit inputs; user = "sam"; };
-          modules = [ ./profiles/installer ];
-        };
+        #installer = nixos.lib.nixosSystem {
+        #  specialArgs = { inherit inputs; user = "sam"; };
+        #  modules = [ ./profiles/installer ];
+        #};
         fajita = nixos.lib.nixosSystem {
           system = "aarch64-linux";
           specialArgs = { inherit inputs; user = "sam"; };
