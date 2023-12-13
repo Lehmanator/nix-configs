@@ -20,14 +20,3 @@
     };
   };
 }
-#registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
-#nixPath = lib.mapAttrsToList (key: value: "${key}=${value.flake.outPath}") config.nix.registry;
-#environment.etc."nixtest" = lib.mapAttrs'
-#  (fname: flake: {
-#    name = "nix/inputs2/${fname}";
-#    value = flake.outPath;
-#  })
-#  inputs;
-
-#environment.etc = lib.mapAttrs' (name: value: lib.nameValuePair ("nix/inputs/${name}".source) (value.outPath)) inputs;
-
