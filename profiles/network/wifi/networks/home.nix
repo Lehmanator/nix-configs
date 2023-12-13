@@ -15,4 +15,5 @@ in
     auth = null; # Mutually-exclusive w/ psk & pskRaw options
   };
 
+  sops.secrets.wifi-home-network = { };
 }
