@@ -36,6 +36,8 @@ in
   networking.firewall.enable = false;
   system.stateVersion = "23.11";
 
+  nixpkgs.hostPlatform = "aarch64-linux";
+
   #mobile.device.firmware = pkgs.fajita-firmware;
   #environment.systemPackages = [ pkgs.fajita-kernel ];
 }
