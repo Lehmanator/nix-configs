@@ -1,4 +1,4 @@
-self: super: {
+final: prev: {
   # Base override/patch description from:
   # https://github.com/vlinkz/mobile-nixos/blob/ac0aff0ccf28fd34b4a8119e25d488687121982c/examples/gnome/overlay/default.nix
   # Custom overrides:
@@ -8,10 +8,10 @@ self: super: {
   # - Change version: 43.1-mobile -> 45.1-mobile
   # - Change hash fmt: sha256="." -> hash = "sha256-."
   # - Update repos rev+hash
-  gnome = super.gnome.overrideScope' (gself: gsuper: {
-    gnome-shell = gsuper.gnome-shell.overrideAttrs (old: {
+  gnome = prev.gnome.overrideScope' (gfinal: gprev: {
+    gnome-shell = gprev.gnome-shell.overrideAttrs (old: {
       version = "45.2-mobile";
-      src = super.fetchFromGitLab {
+      src = prev.fetchFromGitLab {
         domain = "gitlab.gnome.org";
         owner = "verdre";
         repo = "mobile-shell";
@@ -19,7 +19,7 @@ self: super: {
         hash = "sha256-s47z1q+MZWogT99OkzgQxKrqFT4I0yXyfGSww1IaaFs="; #  # Branch: mobile-shell       (09/23)
         fetchSubmodules = true;
       };
-      buildInputs = old.buildInputs ++ [ super.modemmanager ]; #super.cmake ];
+      buildInputs = old.buildInputs ++ [ prev.modemmanager ]; #prev.cmake ];
       # The services need typelibs.
       postFixup = ''
         patchShebangs src/data-to-c.pl
@@ -27,9 +27,9 @@ self: super: {
         for svc in org.gnome.ScreenSaver org.gnome.Shell.Extensions org.gnome.Shell.Notifications org.gnome.Shell.Screencast; do wrapGApp $out/share/gnome-shell/$svc done
       '';
     });
-    gnome-shell-mobile-devel = gself.gnome-shell.overrideAttrs (old: {
+    gnome-shell-mobile-devel = gfinal.gnome-shell.overrideAttrs (old: {
       version = "45.2-mobile-devel";
-      src = super.fetchFromGitLab {
+      src = prev.fetchFromGitLab {
         domain = "gitlab.gnome.org";
         owner = "verdre";
         repo = "mobile-shell";
@@ -39,9 +39,9 @@ self: super: {
       };
     });
 
-    mutter-mobile = gsuper.mutter.overrideAttrs (old: {
+    mutter-mobile = gprev.mutter.overrideAttrs (old: {
       version = "45.2-mobile";
-      src = super.fetchFromGitLab {
+      src = prev.fetchFromGitLab {
         domain = "gitlab.gnome.org";
         owner = "verdre";
         repo = "mobile-mutter";
@@ -51,12 +51,12 @@ self: super: {
         #hash = "";
       };
       #patches = [ ./sysprof.patch ];
-      #buildInputs = old.buildInputs ++ [ super.gtk4 ];
+      #buildInputs = old.buildInputs ++ [ prev.gtk4 ];
       #outputs = [ "out" "dev" "man" ];
     });
-    mutter-mobile-devel = gself.mutter.overrideAttrs (old: {
+    mutter-mobile-devel = gfinal.mutter.overrideAttrs (old: {
       version = "45.2-mobile-devel";
-      src = super.fetchFromGitLab {
+      src = prev.fetchFromGitLab {
         domain = "gitlab.gnome.org";
         owner = "verdre";
         repo = "mobile-mutter";
