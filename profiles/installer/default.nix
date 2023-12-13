@@ -63,7 +63,7 @@
       };
 
       grub.enable = lib.mkForce false; # Disable GRUB & conditionally systemd-boot
-      systemd-boot = config.boot ? lanzaboote; # Only use systemd-boot if we don't have lanzaboote for SecureBoot
+      systemd-boot.enable = config.boot ? lanzaboote; # Only use systemd-boot if we don't have lanzaboote for SecureBoot
     };
   };
 
