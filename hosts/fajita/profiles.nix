@@ -8,6 +8,7 @@
     ../../profiles/nixos
     #../../profiles/virt/emulators/slippi.nix
 
+    ../../profiles/desktop/flatpak.nix
     # --- Disabled ---
     #../../profiles/editor
     #../../profiles/hardware/fprintd.nix
