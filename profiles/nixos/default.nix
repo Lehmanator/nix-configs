@@ -11,9 +11,9 @@
     inputs.srvos.nixosModules.common
     inputs.srvos.nixosModules.mixins-nix-experimental
     inputs.srvos.nixosModules.mixins-trusted-nix-caches
-    inputs.nix-data.nixosModules.nix-data
-    inputs.nix-index.nixosModules.nix-index
-    { programs.nix-index-database.comma.enable = true; }
+    #inputs.nix-data.nixosModules.nix-data
+    #inputs.nix-index.nixosModules.nix-index
+    #{ programs.nix-index-database.comma.enable = true; }
     #./activate.nix
     ./alias.nix
     #./homed.nix
