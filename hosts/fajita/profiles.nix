@@ -1,7 +1,6 @@
 { config, lib, pkgs, inputs, ... }:
 {
   imports = [
-    #../../profiles/adb.nix
     #../../profiles/desktop
     #../../profiles/desktop/de/gnome
     ../../profiles/mobile

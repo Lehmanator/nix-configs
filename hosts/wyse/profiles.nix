@@ -2,7 +2,6 @@
 {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
-    ../../profiles/adb.nix
     ../../profiles/desktop
     ../../profiles/desktop/de/gnome
     #../../profiles/editor

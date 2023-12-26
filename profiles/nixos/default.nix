@@ -15,6 +15,7 @@
     #inputs.nix-index.nixosModules.nix-index
     #{ programs.nix-index-database.comma.enable = true; }
     #./activate.nix
+    ./adb.nix
     ./alias.nix
     #./homed.nix
     ./home-manager.nix
