@@ -1,18 +1,21 @@
-{ self, inputs
-, config, lib, pkgs
+{ self
+, inputs
+, config
+, lib
+, pkgs
 , ...
 }:
 {
   # --- Treesitter -------------------
   programs.nixvim.plugins = {
-    cmp-treesitter.enable = true;   # Make nvim-cmp completion use treesitter source
-    nvim-autopairs.checkTs = true;  # Make autopair matching use treesitter
+    cmp-treesitter.enable = true; # Make nvim-cmp completion use treesitter source
+    nvim-autopairs.checkTs = true; # Make autopair matching use treesitter
 
     treesitter = {
       enable = true;
       folding = true;
       indent = true;
-      nixGrammars = true;      # Install grammars with Nix
+      nixGrammars = true; # Install grammars with Nix
       nixvimInjections = true; # Enable Nixvim-specific injections (like Lua highlighting in extraConfigLua)
       incrementalSelection.enable = true;
 
@@ -47,11 +50,19 @@
 
     treesitter-refactor = {
       enable = true;
-      highlightCurrentScope.enable = false;
+      highlightCurrentScope.enable = true;
       highlightDefinitions.enable = true;
       highlightDefinitions.clearOnCursorMove = true;
       navigation.enable = true;
       smartRename.enable = true;
+      #navigation.keymaps={};
+    };
+    treesitter-textobjects = {
+      enable = true;
+      lspInterop = {enable=true; border="rounded"; floatingPreviewOpts={}; peekDefinitionCode={};};
+      move.enable=true; # {...};
+      select={enable=true; includeSurroundingWhitespace=false; keymaps={}; lookahead=true; selectionModes={};};
+      swap={enable=true;};
     };
 
     rainbow-delimiters = {

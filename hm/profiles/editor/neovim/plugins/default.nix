@@ -1,50 +1,42 @@
-{ self
-, inputs
-, config
-, lib
-, pkgs
-, ...
-}:
+{ inputs, config, lib, pkgs, ... }:
 {
   imports = [
-    ./auto-session.nix # Auto save/restore Vim sessions
-    ./barbar.nix # Status bar
-    ./comment-nvim.nix #
-    ./dap.nix # Diagnostics
-    ./dashboard.nix # Startup screen
-    ./emmet.nix # HTML tags
-    ./floaterm.nix # Floating terminal
-    ./gitmessenger.nix # Display Git log / message from last commit under cursor
-    ./gitsigns.nix # Git sign column
-    ./indent-blankline.nix # Indent new lines
-    ./lsp.nix # Language server protocol
-    ./lualine.nix # Statusline
-    ./luasnip.nix # Snippets
-    ./markdown-preview.nix # Render Markdown previews
-    ./neogit.nix # Magit for neovim
-    ./neorg.nix # Organization notes
-    ./noice.nix # Experimental UI
-    ./notify.nix # Notification UI
-    #./none-ls.nix # Integration w/ LSP
-    ./nvim-autopairs.nix # Pair matching
-    ./nvim-bqf.nix #
-    ./nvim-cmp.nix # Completion engine
-    ./nvim-colorizer.nix # Color highlighter
-    ./nvim-cursorline.nix # Cursor line/word highlight
-    #./nvim-lightbulb.nix   # Code Actions
-    ./nvim-tree.nix # File tree
-    ./nvim-ufo.nix # Code folding UI
-    ./rust-tools.nix # Rust utils
-    ./tagbar.nix # Bar for tags
-    #./telescope.nix # Search result UIs
-    ./todo-comments.nix # Highlight todos & more
-
-    ./treesitter.nix # Syntax trees
-
-    ./trouble.nix # Pretty UIs: diagnostics, refs, telescope, quickfix, location lists
-
-    ./vim-matchup.nix # Highlight matching pairs
-    ./which-key.nix # UI to show next keymaps
+    ./auto-session.nix #     # Auto save/restore Vim sessions
+    ./barbar.nix #           # Status bar
+    ./comment-nvim.nix #     #
+    ./dap.nix #              # Diagnostics
+    ./dashboard.nix #        # Startup screen
+    ./emmet.nix #            # HTML tags
+    ./floaterm.nix #         # Floating terminal
+    ./gitmessenger.nix #     # Display Git log / message from last commit under cursor
+    ./gitsigns.nix #         # Git sign column
+    ./indent-blankline.nix # # Indent new lines
+    ./lsp.nix #              # Language server protocol
+    ./lualine.nix #          # Statusline
+    ./luasnip.nix #          # Snippets
+    ./markdown-preview.nix # # Render Markdown previews
+    ./neogit.nix #           # Magit for neovim
+    ./neorg.nix #            # Organization notes
+    ./noice.nix #            # Experimental UI
+    ./notify.nix #           # Notification UI
+    ./none-ls.nix #         # Integration w/ LSP
+    ./nvim-autopairs.nix #   # Pair matching
+    ./nvim-bqf.nix #         #
+    ./nvim-cmp.nix #         # Completion engine
+    ./nvim-colorizer.nix #   # Color highlighter
+    ./nvim-cursorline.nix #  # Cursor line/word highlight
+    #./nvim-lightbulb.nix #  # Code Actions
+    ./nvim-tree.nix #        # File tree
+    ./nvim-ufo.nix #         # Code folding UI
+    ./rust-tools.nix #       # Rust utils
+    ./tagbar.nix #           # Bar for tags
+    ./telescope.nix #       # Search result UIs
+    ./todo-comments.nix #    # Highlight todos & more
+    ./treesitter.nix #       # Syntax trees
+    ./trouble.nix #          # Pretty UIs: diagnostics, refs, telescope, quickfix, location lists
+    ./vim-matchup.nix #      # Highlight matching pairs
+    ./which-key.nix #        # UI to show next keymaps
+    ./yanky.nix #            # Improved Yanking
 
     # TODO: Move plugins to separate file
     #./netman.nix            # Access network resources in Neovim

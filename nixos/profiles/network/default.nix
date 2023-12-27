@@ -66,11 +66,16 @@
   # Enable opportunistic TCP encryption.
   #  If other end supports, then encrypt traffic, else cleartext.
   #  Note: Not reliable to ensure TCP encryption, but upgrades some insecure TCP
+  # Problem: tcpcryptd crashes when attempting to change kernel settings via `sysctl` (kernel probably immutable)
+  # TODO: Convert `iptables` rules to `nftables` in `systemd.services.tcpcrypt.prestart`
+  # TODO: Drop `sysctl -w net.ipv4.tcp_ecn=0` in `systemd.services.tcpcrypt.prestart`?
+  # TODO: Only enable `tcpcrypt` on interfaces without DNS over TLS/HTTPS/QUIC?
   networking.tcpcrypt.enable = lib.mkDefault true;
   users = with config.networking; {
     # Allow primary user to control networking without privilege escalation
-    users.${user}.extraGroups = [ "network" ] ++ lib.optional wireless.enable wireless.userControlled.group;
+    users.${user}.extraGroups = ["network" "tcpcryptd"] ++ lib.optional wireless.enable wireless.userControlled.group;
     users.tcpcryptd.group = "tcpcryptd";
-    groups.tcpcryptd.members = lib.mkIf tcpcrypt.enable [ "tcpcryptd" user ]; # Also create group
+    groups.tcpcryptd.members = lib.mkIf tcpcrypt.enable ["tcpcryptd" user ]; # Also create group
   };
+  #boot.kernel.sysctl."net.ipv4.tcp_ecn" = 0; # d:2
 }

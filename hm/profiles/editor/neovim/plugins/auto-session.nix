@@ -1,14 +1,5 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
+{ inputs, config, lib, pkgs, ... }:
 {
-  imports = [
-  ];
-
-
   programs.nixvim.plugins.auto-session = {
     enable = true;
     #package = pkgs.vimPlugin.auto-session;
