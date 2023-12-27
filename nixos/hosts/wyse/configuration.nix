@@ -11,7 +11,7 @@
   boot.binfmt.emulatedSystems = [
     "aarch64-linux" #"aarch64-darwin" "x86_64-darwin"
   ];
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  #boot.loader.efi.efiSysMountPoint = "/boot/efi";
   console.useXkbConfig = true;
   hardware.enableAllFirmware = true;
   networking.hostName = "wyse";
