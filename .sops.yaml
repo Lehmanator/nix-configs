@@ -9,7 +9,7 @@ keys:
   # --- Host ---
   - &age-host-fw-ssh-ed25519 age14ussjg6kmjawm6zhfkspnujndx48a8yzlg6sew0gzyu74gpr8amq9g9udd
   - &gpg-host-fw-ssh-rsa 68ee228d57b5b97c7f88dd33188b0095248cb8a0
-  #- &age-host-wyse-ssh-ed25519 age14ussjg6kmjawm6zhfkspnujndx48a8yzlg6sew0gzyu74gpr8amq9g9udd
+  - &age-host-wyse-ssh-ed25519 age14ussjg6kmjawm6zhfkspnujndx48a8yzlg6sew0gzyu74gpr8amq9g9udd
   # --- User ---
   - &age-user-sam-ssh-ed25519 age18v7nxk3e5p2xjtpe7uxv2jz9zz624tkscpkcr6fepc0k6vvvfdgq5mduj8
   - &gpg-user-sam-ssh-rsa 23e6e50809065aed145adb5aa4b65f3430feef6c
@@ -25,7 +25,7 @@ creation_rules:
     key_groups:
       - age:
         - *age-host-fw-ssh-ed25519
-        #- *age-host-wyse-ssh-ed25519
+        - *age-host-wyse-ssh-ed25519
         #- *age-host-fajita-ssh-ed25519
         - *age-user-sam-ssh-ed25519
         - *age-backup
@@ -33,7 +33,7 @@ creation_rules:
     key_groups:
       - age:
         - *age-host-fw-ssh-ed25519
-        #- *age-host-wyse-ssh-ed25519
+        - *age-host-wyse-ssh-ed25519
         #- *age-host-fajita-ssh-ed25519
         - *age-user-sam-ssh-ed25519
         - *age-backup
@@ -52,14 +52,15 @@ creation_rules:
   - path_regex: nixos/hosts/wyse/secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
     key_groups:
       - age:
-        #- *age-host-wyse-ssh-ed25519
-        - *age-host-fw-ssh-ed25519
+        - *age-host-wyse-ssh-ed25519
+        #- *age-host-fw-ssh-ed25519
         - *age-user-sam-ssh-ed25519
         - *age-backup
   - path_regex: nixos/hosts/[^/]+/secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
     key_groups:
       - age:
         - *age-host-fw-ssh-ed25519
+        - *age-host-wyse-ssh-ed25519
         - *age-user-sam-ssh-ed25519
         - *age-backup
         #pgp:
