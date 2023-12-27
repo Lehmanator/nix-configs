@@ -1,7 +1,10 @@
 # Also see https://github.com/Mic92/dotfiles/blob/master/nixos/.sops.yaml
 # for a more complex example.
 #
+# TODO: Implement .sops.yaml in Nix: https://github.com/TUM-DSE/doctor-cluster-config/blob/master/sops.yaml.nix
+#
 # List GPG key fingerprints: $ gpg --list-secret-keys
+#
 keys:
   # --- Host ---
   - &age-host-fw-ssh-ed25519 age14ussjg6kmjawm6zhfkspnujndx48a8yzlg6sew0gzyu74gpr8amq9g9udd
@@ -14,7 +17,7 @@ keys:
 
 creation_rules:
   # --- Host Secrets -------------------------------------------------
-  - path_regex: hosts/fw/secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
+  - path_regex: nixos/hosts/fw/secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
     key_groups:
       - age:
         - *age-host-fw-ssh-ed25519
@@ -24,7 +27,7 @@ creation_rules:
         #- *age-host-fw-ssh-ed25519
         #- *gpg-host-fw-ssh-rsa
         #- *gpg-user-sam-primary
-  - path_regex: hosts/[^/]+/secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
+  - path_regex: nixos/hosts/[^/]+/secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
     key_groups:
       - age:
         - *age-host-fw-ssh-ed25519
@@ -36,7 +39,7 @@ creation_rules:
         #- *gpg-user-sam-primary
 
   # --- User Secrets -------------------------------------------------
-  - path_regex: users/sam/\.secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
+  - path_regex: hm/users/sam/secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
     key_groups:
       - age:
         - *age-host-fw-ssh-ed25519
@@ -46,7 +49,7 @@ creation_rules:
         #- *age-host-fw-ssh-ed25519
         #- *gpg-host-fw-ssh-rsa
         #- *gpg-user-sam-primary
-  - path_regex: users/[^/]+/\.secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
+  - path_regex: hm/users/[^/]+/secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
     key_groups:
       - age:
         - *age-host-fw-ssh-ed25519

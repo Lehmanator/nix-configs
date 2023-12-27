@@ -25,16 +25,40 @@
           pkgs-staging = import inputs.nixpkgs-staging { inherit system; config.allowUnfree = true; };
           pkgs-staging-next = import inputs.nixpkgs-staging-next { inherit system; config.allowUnfree = true; };
         };
-        modules = [ ./hosts/${host} ];
+        modules = [ ./nixos/hosts/${host} ];
       } // args);
     in
     {
+      #homeConfigurations = {
+      #  sam = inputs.home.lib.homeManagerConfiguration {
+      #    #pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      #    modules = [ ./hm/users/sam ];
+      #    extraSpecialArgs = { inherit inputs; user = "sam"; };
+      #  };
+      #  sammy = inputs.home.lib.homeManagerConfiguration {
+      #    pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      #    extraSpecialArgs = { inherit inputs; user = "sammy"; };
+      #    modules = [
+      #      ({ inputs, user, config, lib, pkgs, osConfig, modulesPath, ... }: {
+      #        home.stateVersion = "24.05";
+      #        home.username = "sammy";
+      #        home.homeDirectory = "/home/sammy";
+      #      })
+      #    ];
+      #  };
+      #  guest = inputs.home.lib.homeManagerConfiguration {
+      #    pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      #    #modules = [./hm/users/default];
+      #    extraSpecialArgs = { inherit inputs; user = "guest"; };
+      #  };
+      #};
+
       nixosConfigurations = {
         fw = mkSystem "fw" { };
         wyse = mkSystem "wyse" { };
         #installer = nixos.lib.nixosSystem {
         #  specialArgs = { inherit inputs; user = "sam"; };
-        #  modules = [ ./profiles/installer ];
+        #  modules = [ ./profiles/nixos/installer ];
         #};
         fajita = nixos.lib.nixosSystem {
           system = "aarch64-linux";
@@ -42,12 +66,12 @@
           modules = [
             { _module.args = { inherit inputs; user = "sam"; }; }
             (import "${inputs.mobile-nixos}/lib/configuration.nix" { device = "oneplus-fajita"; })
-            ./hosts/fajita
+            ./nixos/hosts/fajita
             inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
           ];
         };
       };
-      overlays.gnome-mobile = import ./overlays/gnome-mobile;
+      overlays.gnome-mobile = import ./nixos/overlays/gnome-mobile;
       #packages = forAllSystems (s: {
       #  fajita-images = inputs.self.nixosConfigurations.fajita.config.mobile.outputs.android-fastboot-images;
       #});
@@ -66,6 +90,34 @@
           mutter-mobile-devel = pkgs.mutter-mobile-devel;
         };
       });
+
+  # --- Disko ---
+  # TODO: [Disko UI](https://gist.github.com/Mic92/b5b592c0c33d720cb07a070cb8911588)
+  #
+  # TODO: [Disko `nix run`](https://github.com/nix-community/disko/pull/78)
+  #
+  # Write disk by running command:
+  #   `nix run .#nixosConfigurations.<host>.config.system.build.diskoNoDeps`
+  # before running:
+  #   `nixos-install --flake .#<host>`
+  #
+  #// inputs.flake-utils.lib.eachDefaultSystem (system:
+  #let
+  #  pkgs = nixpkgs.legacyPackages.${system};
+  #  hosts = pkgs.lib.filterAttrs
+  #    (_: value:
+  #      value.pkgs.system == system &&
+  #      builtins.hasAttr "diskoNoDeps" value.config.system.build
+  #    )
+  #    self.nixosConfigurations;
+  #in
+  #if (hosts == { }) then { } else {
+  #  apps.disko = pkgs.lib.genAttrs (builtins.attrNames hosts) (name:
+  #    {
+  #      program = "${self.nixosConfigurations.${name}.config.system.build.diskoNoDeps}";
+  #      type = "app";
+  #    });
+  #});
 
   nixConfig = {
     connect-timeout = 10;
@@ -147,6 +199,8 @@
     # https://github.com/juspay/cachix-push
     dns.url = "github:kirelagin/dns.nix";
     dns.inputs.nixpkgs.follows = "nixpkgs"; # (optionally) };
+    nix-github-actions.url = "github:nix-community/nix-github-actions";
+    nix-github-actions.inputs.nixpkgs.follows = "nixpkgs";
     # --- Modules: Flake-parts -------------------------------------
     # https://github.com/srid/nixos-flake
     flake-root.url = "github:srid/flake-root";
@@ -184,16 +238,16 @@
     arkenfox.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
-    nixos-flatpak.url = "github:GermanBread/declarative-flatpak";
-    nixos-flatpak.inputs.nixpkgs.follows = "nixpkgs";
+    declarative-flatpak.url = "github:GermanBread/declarative-flatpak";
+    declarative-flatpak.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
-    ssbm-nix.url = "github:djanatyn/ssbm-nix";
+    ssbm-nix.url = "github:lytedev/ssbm-nix"; # Fork of: "github:djanatyn/ssbm-nix";
     # --- Packages: Pre-built Images -------------------------------
     nixos-images.url = "github:nix-community/nixos-images";
     # --- Packages: Package Management ------------------------------
     nur-update.url = "github:nix-community/nur-update"; # nur-update: Update NUR
-    nix-quick-registry.url = "github:divnix/quick-nix-registry";
+    quick-nix-registry.url = "github:divnix/quick-nix-registry";
     nixpkgs-graph-explorer.url = "github:tweag/nixpkgs-graph-explorer"; # nixpkgs-graph-explorer: CLI to explore nixpkgs graph
     debnix.url = "github:ngi-nix/debnix";
     nurl = { url = "github:nix-community/nurl"; inputs.nixpkgs.follows = "nixpkgs"; };
@@ -204,7 +258,7 @@
     patchelf = { url = "github:NixOS/patchelf"; inputs.nixpkgs.follows = "nixpkgs"; };
     nix-portable = { url = "github:DavHau/nix-portable"; inputs.nixpkgs.follows = "nixpkgs"; }; # TODO: Install pkg
     nixdoc = { url = "github:nix-community/nixdoc"; inputs.nixpkgs.follows = "nixpkgs"; }; # TODO: Install pkg
-    nix-index = { url = "github:Mic92/nix-index-database"; inputs.nixpkgs.follows = "nixpkgs"; };
+    nix-index = { url = "github:nix-community/nix-index-database"; inputs.nixpkgs.follows = "nixpkgs"; };
     nix-fast-build = { url = "github:Mic92/nix-fast-build"; inputs.nixpkgs.follows = "nixpkgs"; };
     namaka = { url = "github:nix-community/namaka"; inputs.nixpkgs.follows = "nixpkgs"; };
     nixago = { url = "github:nix-community/nixago"; inputs.nixpkgs.follows = "nixpkgs"; }; # TODO: Collect lib
