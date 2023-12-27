@@ -1,0 +1,38 @@
+@import "firefox-gnome-theme/userChrome.css";
+@import "autohide_sidebar.css";
+@import "page_action_buttons_on_urlbar_hover.css";
+@import "compact_extensions_panel.css";
+@import "urlbar_connection_type_text_colors.css";
+@import "urlbar_container_color_border.css";
+@import "multi-row_bookmarks.css";
+@import "tab-hover-preview.css";
+/*
+@import "firefox-sidebar/userChrome.css";
+@import "urlbar_connection_type_background_colors.css";
+@import "floating_findbar_on_top.css";
+@import "custom_menupopup_check_icons.css";
+*/
+@import "overlay_sidebar_header.css";
+@import "autohide_navigation_button.css";
+@import "grid_overflow_menu.css";
+@import "newtab_button_always_on_hover.css";
+ * @import "urlbar_info_icons_on_hover.css";
+ *
+ *
+ *
+ * --lwt-accent-color-inactive: color-mix(in lab, AccentColor 35%, #000000) !important;
+ *
+ * https://github.com/lassekongo83/adw-gtk3/blob/main/gtk4.md
+ * https://github.com/lassekongo83/adw-gtk3#readme
+ *
+ * https://github.com/advanced03/FirefoxFluentTheme
+ * https://github.com/datguypiko/Firefox-Mod-Blur
+ * https://github.com/Redundakitties/colorful-minimalist
+ * https://github.com/Bali10050/FirefoxCSS
+ * https://github.com/easonwong-de/Tab-Preview-On-Hover
+ * https://github.com/easonwong-de/Adaptive-Tab-Bar-Colour
+ * https://github.com/Neikon/Minimal-VivaldiFox-Theme
+ * https://pastebin.com/uqJ2tziQ # Adapt to system color scheme
+ * https://github.com/Neikon/Fox11
+ */
+

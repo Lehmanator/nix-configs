@@ -1,0 +1,96 @@
+diff --git a/nixos/modules/services/desktops/flatpak.nix b/nixos/modules/services/desktops/flatpak.nix
+index 7da92cc9f26..868714ce603 100644
+--- a/nixos/modules/services/desktops/flatpak.nix
++++ b/nixos/modules/services/desktops/flatpak.nix
+@@ -28,11 +28,59 @@ in {
+       }
+     ];
+ 
+-    environment.systemPackages = [ pkgs.flatpak ];
++    environment.systemPackages = [ pkgs.flatpak pkgs.xdg-dbus-proxy pkgs.dbus-broker ];
+ 
+-    services.dbus.packages = [ pkgs.flatpak ];
++    services.dbus.packages = [ pkgs.flatpak /*"/var/lib/flatpak/exports"*/ ];
+ 
+-    systemd.packages = [ pkgs.flatpak ];
++    systemd.services.dbus-broker = {
++      path = [ pkgs.flatpak ];
++      enable = true;
++      aliases = [ "dbus.service" ];
++      # Don't restart dbus-daemon. Bad things tend to happen if we do.
++      reloadIfChanged = true;
++      restartTriggers = [ "/etc/dbus-1" ];
++      environment = { LD_LIBRARY_PATH = config.system.nssModules.path; };
++    };
++    systemd.user.services.dbus-broker = {
++      path = [ pkgs.flatpak ];
++      enable = true;
++      wantedBy = [ "default.target" ];
++      aliases = [ "dbus.service" ];
++      # Don't restart dbus-daemon. Bad things tend to happen if we do.
++      reloadIfChanged = true;
++      restartTriggers = [ "/etc/dbus-1" ];
++      environment = { LD_LIBRARY_PATH = config.system.nssModules.path; };
++    };
++
++    #systemd.services.dbus = {
++    #  enable = true;
++    #  aliases = [ "dbus.service" ];
++    #};
++    #systemd.user.services.dbus = {
++    #  enable = true;
++    #  aliases = [ "dbus.service" ];
++    #};
++
++    systemd.sockets.dbus = {
++      description = "D-Bus System Message Bus Socket";
++      wantedBy = [ "sockets.target" ];
++      socketConfig = { 
++        ListenStream = "/run/dbus/system_bus_socket";
++      };
++    };
++
++    systemd.user.sockets.dbus = {
++      description = "D-Bus System Message Bus Socket";
++      wantedBy = [ "sockets.target" ];
++      socketConfig = { 
++        ListenStream = "%t/bus";
++        ExecStartPost = "-/run/current-system/systemd/bin/systemctl --user set-environment DBUS_SESSION_BUS_ADDRESS=unix:path=%t/bus";
++      };
++    };
++    #systemd.services.dbus.enable = false;
++    #systemd.user.services.dbus.enable = false;
++
++    systemd.packages = [ pkgs.flatpak pkgs.dbus-broker ];
+ 
+     environment.profiles = [
+       "$HOME/.local/share/flatpak/exports"
+diff --git a/nixos/modules/services/system/dbus.nix b/nixos/modules/services/system/dbus.nix
+index d4cacb85694..85eb4350f73 100644
+--- a/nixos/modules/services/system/dbus.nix
++++ b/nixos/modules/services/system/dbus.nix
+@@ -102,7 +102,7 @@ in
+ 
+     users.groups.messagebus.gid = config.ids.gids.messagebus;
+ 
+-    systemd.packages = [ pkgs.dbus.daemon ];
++    #systemd.packages = [ pkgs.dbus.daemon ];
+ 
+     security.wrappers.dbus-daemon-launch-helper = {
+       source = "${pkgs.dbus.daemon}/libexec/dbus-daemon-launch-helper";
+diff --git a/pkgs/os-specific/linux/dbus-broker/default.nix b/pkgs/os-specific/linux/dbus-broker/default.nix
+index b7e0a6b6158..631c173e1ed 100644
+--- a/pkgs/os-specific/linux/dbus-broker/default.nix
++++ b/pkgs/os-specific/linux/dbus-broker/default.nix
+@@ -23,6 +23,11 @@ stdenv.mkDerivation rec {
+   PKG_CONFIG_SYSTEMD_SYSTEMDUSERUNITDIR = "${placeholder "out"}/lib/systemd/user";
+   PKG_CONFIG_SYSTEMD_CATALOGDIR = "${placeholder "out"}/lib/systemd/catalog";
+ 
++  postPatch = ''
++    substituteInPlace src/launch/launcher.c \
++      --replace "/usr/share/dbus-1" "${dbus.daemon}/share/dbus-1"
++  '';
++
+   postInstall = ''
+     install -Dm644 $src/README.md $out/share/doc/dbus-broker/README
+ 
