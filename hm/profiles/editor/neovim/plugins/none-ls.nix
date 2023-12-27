@@ -55,7 +55,7 @@
         eslint_d.enable=true;
         fnlfmt.enable = true;
         fourmolu.enable = true;
-        gofmt.enaable=true;
+        gofmt.enable=true;
         goimports.enable=true;
         golines.enable=true;
         isort.enable=true;
