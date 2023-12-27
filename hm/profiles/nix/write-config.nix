@@ -12,6 +12,7 @@
   home = {
     sessionVariables = {
       NIX_FLAKE_HOME = "${config.xdg.configHome}/nixos";
+      NIX_FLAKE_SYSTEM = "/etc/nixos";
     };
   };
 }

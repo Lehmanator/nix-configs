@@ -12,6 +12,7 @@
     ./features
 
     ./access-tokens.nix
+    ./diff.nix
     ./documentation.nix
     ./gc.nix
     ./nixpkgs.nix
@@ -75,7 +76,7 @@
     package = pkgs.nixUnstable; #pkgs.nixFlakes; #(nixUnstable for use-xdg-base-directories, nixFlakes for flakes support)
 
     settings = {
-      use-xdg-base-directories = lib.mkDefault true;
+      use-xdg-base-directories = true;
 
       # --- Users --------------------------
       allowed-users = [ "*" ];

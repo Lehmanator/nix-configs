@@ -12,6 +12,7 @@
 
     ./modules
 
+    ./boot
     ./hardware
     ./locale
     ./network
@@ -19,10 +20,17 @@
     ./security
     ./shell
     ./users
+    #./desktop
+    #./generators
+    #./installer
+    #./virt
 
     ./adb.nix
     ./normalize.nix
     ./sshd.nix
+    #./auto-upgrade.nix
+    #./specialization.nix
+    #./stylix.nix
 
     #inputs.srvos.nixosModules.common
     #inputs.srvos.nixosModules.mixins-nix-experimental

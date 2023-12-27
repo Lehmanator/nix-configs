@@ -7,6 +7,12 @@
 }:
 {
   imports = [
+    ./efi-shell.nix
+    ./fwupd.nix
+    ./memtest86.nix
+    ./netbootxyz.nix
+    ./restart-bootloader.nix
+    ./usb-boot.nix
   ];
 
   boot.loader.systemd-boot = {
@@ -44,6 +50,7 @@
   };
 
   # --- EFI Programs ---
+  # https://netboot.xyz/docs/faq
   # TODO: Disk Partitioning
 
   # --- Alternate Bootloaders ---
@@ -59,5 +66,4 @@
   #   TODO: fastboot
   #   TODO: LibreBoot
   #   TODO: CoreBoot
-
 }

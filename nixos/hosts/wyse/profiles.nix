@@ -5,6 +5,7 @@
     ../../profiles
 
     ../../profiles/boot
+    ../../profiles/boot/unl0kr.nix
     ../../profiles/desktop
     ../../profiles/desktop/de/gnome
     ../../profiles/hardware/display

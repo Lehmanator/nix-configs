@@ -3,6 +3,9 @@
 # --- Visual Disk Unlock ---
 # https://github.com/droidian/unl0kr
 #
+# TODO: Enable for mobile devices
+# TODO: Deterrmine if system has encrypted partitions
+#
 # TODO: Does this work with keyboard & mouse?
 # TODO: Only enable for mobile devices? touchscreens?
 #
