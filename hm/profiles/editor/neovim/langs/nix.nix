@@ -1,6 +1,4 @@
-{ inputs
-, ...
-}:
+{ inputs, lib , ... }:
 {
   programs.nixvim.plugins = {
     nix.enable = true;
@@ -22,7 +20,7 @@
       };
 
       nil_ls = {
-        enable = false;
+        enable = lib.mkDefault false;
         settings = {
           formatting.command = null;  # External formatter command Options: null | List<str>
         };
@@ -35,12 +33,12 @@
     };
 
     none-ls.sources = {
-      code_actions.statix.enable = true;
-      diagnostics.deadnix.enable = true;
-      diagnostics.statix.enable = true;
-      formatting.alejandra.enable = true;
-      formatting.nixfmt.enable = false;
-      formatting.nixpkgs_fmt.enable = false;
+      code_actions.statix.enable = lib.mkDefault true;
+      diagnostics.deadnix.enable = lib.mkDefault true;
+      diagnostics.statix.enable = lib.mkDefault true;
+      formatting.alejandra.enable = lib.mkDefault true;
+      formatting.nixfmt.enable = lib.mkDefault true;
+      formatting.nixpkgs_fmt.enable = lib.mkDefault true;
     };
 
   };
