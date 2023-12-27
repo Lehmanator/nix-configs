@@ -12,7 +12,7 @@ in
   # TODO: Filter out attr: `keepTerminfo`, `defaultOptions`
   #security.sudo-rs = lib.recursiveUpdate sudoConfig {
   security.sudo-rs = {
-    enable = true;
+    enable = lib.mkDefault true;
     execWheelOnly = true; #  # Only allow users in group `wheel` to access sudo.
   };
   #extraRules =

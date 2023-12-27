@@ -7,7 +7,7 @@
 }:
 {
   #imports = [ ./rygel.nix ];
-  networking.networkmanager.enable = true;
+  networking.networkmanager.enable = lib.mkDefault true;
   users.users.${user}.extraGroups = [ "netdev" ] ++ lib.optionals config.networking.networkmanager.enable [
     "networkmanager"
     "nm-openconnect"

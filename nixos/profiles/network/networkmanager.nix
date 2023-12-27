@@ -7,7 +7,7 @@
 }:
 {
   networking.networkmanager = {
-    enable = true;
+    enable = lib.mkDefault true;
     enableStrongSwan = lib.mkDefault true;
     #appendNammeservers = [ ];
     # Configuration for [connection] section of NetworkManager.conf

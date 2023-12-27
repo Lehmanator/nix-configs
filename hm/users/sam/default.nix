@@ -9,6 +9,9 @@
 {
   imports = [
     ../../profiles
+    ../../profiles/devices/fajita.nix
+    ../../profiles/devices/pinetime.nix
+    ../../profiles/devices/sawfish.nix
 
     ./git
 

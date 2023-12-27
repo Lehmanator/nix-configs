@@ -13,6 +13,7 @@
   imports = [
     ./oem/oneplus.nix
     ./os/android
+    ./os/postmarketos.nix
   ];
 
   # --- Downloads ------------------------------------------
@@ -107,7 +108,7 @@
   # - Termux & Termux plugins
 
   home.packages = [
-    pkgs.payload-flasher-go
+    #pkgs.payload-flasher-go
 
     # TODO: Create package for version `34.x.y`
     pkgs.android-tools

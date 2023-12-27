@@ -8,6 +8,7 @@
     #./displays.nix # Handles hardware peripherals for external & internal displays
     ./managed.nix # Include configuration managed by apps: nixos-conf-editor & nix-software-center
 
+    inputs.disko.nixosModules.disko
     inputs.srvos.nixosModules.desktop
     #inputs.srvos.nixosModules.mixins-nix-experimental
     #inputs.srvos.nixosModules.mixins-systemd-boot
