@@ -14,4 +14,6 @@
     #inputs.srvos.nixosModules.mixins-systemd-boot
     #inputs.srvos.nixosModules.mixins-trusted-nix-caches
   ];
+
+  boot.loader.efi.efiSysMountPoint = lib.mkForce "/boot";
 }
