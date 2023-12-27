@@ -11,8 +11,8 @@
     wireguard.interfaces.wg-sea1 = {
       allowedIPsAsRoutes = true; # default: true
       generatePrivateKeyFile = false; # default:
-      privateKeyFile = "/etc/wireguard/sea1-admin.privkey";
-      #privateKeyFile = config.sops.secrets.wireguard-sea1-privkey.path;
+      privateKeyFile = config.sops.secrets.wireguard-sea1-admin-privkey.path;
+      #privateKeyFile = "/etc/wireguard/sea1-admin.privkey";
       listenPort = 42270; # default: null  (51820)
       ips = [ "192.168.123.1/24" ];
       peers = [{
@@ -25,5 +25,6 @@
     };
   };
   environment.systemPackages = with pkgs; [ kubectl k9s kubernetes-helm ]; # TODO: Move to kubernetes user profile.
+  sops.secrets.wireguard-sea1-admin-privkey = { };
   #sops.secrets = { wireguard-sea1-privkey = {}; wireguard-sea1-pubkey = {}; };
 }
