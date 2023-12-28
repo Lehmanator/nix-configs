@@ -44,5 +44,9 @@
     #./users/homed.nix
   ];
 
+  # Enable extra info/metadata for packages
   appstream.enable = true;
+
+  # Always load modules: USB controller, NVMe controller, SATA controller, USB gadgets/peripherals
+  boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "ahci" "usbhid" "usb_storage" ];
 }

@@ -10,4 +10,12 @@
   ];
 
   environment.etc.machine-id.text = "aa38a832d16e436d8aab8bb0550d4810";
+
+  # https://github.com/nixvital/fprint-clear
+  # https://github.com/ssddq/fw-ectool
+  # https://github.com/mdvmeijer/fw-fanctrl-nix
+  # https://github.com/DHowett/FrameworkHacksPkg
+  # https://github.com/taotien/framework_toolbox
+  # https://github.com/DHowett/framework-ec
+  # https://github.com/morpheus636/awesome-framework
 }
