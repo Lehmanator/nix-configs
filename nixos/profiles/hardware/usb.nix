@@ -12,7 +12,7 @@
     "ahci" #      # SATA devices on modern AHCI controllers
     "sd_mod" #    # SCSI, SATA, & PATA (IDE) devices
     "sdhci_pci" # # SD card controller interface
-    "rtsx_pci_sdmcc" # Realtek PCIe SD/MMC card host driver
+    #"rtsx_pci_sdmcc" # Realtek PCIe SD/MMC card host driver
   ];
 
   environment.systemPackages = [

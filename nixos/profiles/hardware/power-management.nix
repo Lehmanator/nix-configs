@@ -3,7 +3,7 @@
   powerManagement = {
 
     # Moderate CPU frequency governor by default.
-    cpuFreqGovernor = lib.mkDefault "ondemand";
+    #cpuFreqGovernor = lib.mkDefault "ondemand";
 
     # Power usage monitoring util
     powertop.enable = true;
@@ -25,7 +25,7 @@
   #   - `PLATFORM_PROFILE_ON_AC`       / `PLATFORM_PROFILE_ON_BAT`
   #   - `CPU_ENERGY_PERF_POLICY_ON_AC` / `CPU_ENERGY_PERF_POLICY_ON_BAT` (only activated when above unsupported by hardware)
   #   - `CPU_BOOST_ON_AC`              / `CPU_BOOST_ON_BAT`              (disabled at high CPU temps when above item is active)
-  services.power-profiles-daemon.enable = !config.services.tlp.enable;
+  #services.power-profiles-daemon.enable = lib.mkDefault false; #!config.services.tlp.enable;
 
   # --- TLP ---
   # Notes:
@@ -40,7 +40,7 @@
   # NOTE: All params must be specified pairwise for both `AC` & ``BAT`
   # DOCS: https://linrunner.de/tlp/introduction.html
   services.tlp = {
-    enable = lib.mkDefault true;
+    #enable = lib.mkDefault true;
     settings =
       let
         shared = { CPU_BOOST_ON_AC = 1; CPU_BOOST_ON_BAT = 0; };
