@@ -50,7 +50,7 @@
     ];
     # TODO: initrd secrets? SSH in initrd? LUKS keys?
     initrd = {
-      availableKernelModules = [ "sdhci_pci" "nvme" "btrfs" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
+      availableKernelModules = [ "sdhci_pci" "nvme" "btrfs" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ]; #"rtsx_pci_sdmmc" ];
       includeDefaultModules = true;
       kernelModules = [ ];
       supportedFilesystems = [ "btrfs" "vfat" "f2fs" ];

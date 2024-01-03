@@ -5,7 +5,7 @@
   # --- NVMe Support ---
   boot = {
     #availableKernelModules = ["sdhci_pci" "nvme"];
-    kernelModules = [ "sdhci_pci" "nvme" ];
+    kernelModules = [ "nvme" ];
     initrd = {
       availableKernelModules = [ "sdhci_pci" "nvme" ];
       includeDefaultModules = true;
