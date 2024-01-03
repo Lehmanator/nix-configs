@@ -7,7 +7,7 @@
 {
   imports = [
     #./apparmor.nix # Desktop only?
-    ./auditd.nix
+    #./auditd.nix
     ./polkit.nix # Desktop only?
     #./sops.nix
     ./sudo-rs.nix

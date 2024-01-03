@@ -92,7 +92,7 @@
     pkgs.shotcut #                  # Video editor
     #pkgs.natron #                  # Node-graph based compositing software
 
-  ] ++ lib.optionals (osConfig ? "services" && osConfig.services.pipewire.enable && (config.gtk.enable || osConfig.gtk.enable)) [
+    #] ++ lib.optionals (osConfig ? "services" && osConfig.services.pipewire.enable && (config.gtk.enable || osConfig.gtk.enable)) [
     pkgs.easyeffects #              # Audio effects for PipeWire apps
     pkgs.helvum #    #              # GTK patchbay for Pipewire
   ];

@@ -16,12 +16,12 @@
     pkgs.gnome.adwaita-icon-theme
     pkgs.gnome.gnome-themes-extra
     pkgs.simp1e-cursors
-    pkgs.nur.repos.federicoschonborn.morewaita
+    #pkgs.nur.repos.federicoschonborn.morewaita
   ];
   gtk.iconCache.enable = true;
 
   # GTK3 plugin to show popup to search compatible application's menus
-  programs.plotinus.enable = true; #lib.mkDefault true;
+  #programs.plotinus.enable = true; #lib.mkDefault true;
   #environment.sessionVariables.GTK3_MODULES = ["${pkgs.plotinus}/lib/libplotinus.so"];
   programs.sway.wrapperFeatures.gtk = true;
   #services.xserver.displayManager.lightdm.greeters.gtk.enable = lib.mkDefault true;
