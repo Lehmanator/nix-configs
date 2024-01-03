@@ -5,6 +5,7 @@
 }:
 let
   isLspCmp = with config.programs.nixvim.plugins; lsp.enable && nvim-cmp.enable;
+  test = true;
 in
 {
 
