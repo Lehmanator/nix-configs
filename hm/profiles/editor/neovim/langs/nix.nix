@@ -1,35 +1,34 @@
-{ inputs, lib , ... }:
-{
+{ inputs
+, lib
+, ...
+}: {
   programs.nixvim.plugins = {
     nix.enable = true;
 
     lsp.servers = {
-
       nixd = {
-        enable = true;
+        enable = lib.mkDefault false;
         settings = {
           #eval.depth = 0;                   # Extra depth for evaluation
           #eval.workers = 3;                 # Number of workers for evaluation task
           #eval.target.args = [];            # Accept args as `nix eval`
           #eval.target.installable = "";     # "nix eval"
           formatting.command = "nixpkgs-fmt";
-          options.enable = true;            # Enable option completion task. Disable if writing a package
+          options.enable =
+            true; # Enable option completion task. Disable if writing a package
           #options.target.args = [];         # Accept args as `nix eval`
           #options.target.installable = "";  # "nix eval"
         };
       };
 
       nil_ls = {
-        enable = lib.mkDefault false;
-        settings = {
-          formatting.command = null;  # External formatter command Options: null | List<str>
-        };
+        enable = lib.mkDefault true;
+        #settings = {
+        #  formatting.command = null;  # External formatter command Options: null | List<str>
+        #};
       };
 
-      rnix-lsp = {
-        enable = false;
-      };
-
+      rnix-lsp = { enable = lib.mkDefault false; };
     };
 
     none-ls.sources = {
@@ -40,6 +39,5 @@
       formatting.nixfmt.enable = lib.mkDefault true;
       formatting.nixpkgs_fmt.enable = lib.mkDefault true;
     };
-
   };
 }
