@@ -41,7 +41,7 @@
     pkgs.eartag #                   # Music tag editor
     pkgs.tagger #                   # Music tag editor
     pkgs.tenacity #                 # Audacity fork  # TODO: Move to DE-agnostic profile
-    pkgs.zrythm #                   # Digital audio workstation
+    #pkgs.zrythm #                   # Digital audio workstation (build failing as of 1/15/23)
     # --- View ------
     pkgs.blanket #                  # Listen to sounds
     pkgs.cavalier #                 # Music visualizer
