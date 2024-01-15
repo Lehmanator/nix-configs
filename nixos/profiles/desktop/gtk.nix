@@ -8,7 +8,7 @@
 # Default settings for GTK-based desktops
 {
   environment.systemPackages = [
-    pkgs.livecaptions
+    #pkgs.livecaptions # Build failing as of 1/15/24: failing dep=python3.11-onnx-1.15.0
     pkgs.plotinus
     pkgs.gcr
     pkgs.gcr_4
