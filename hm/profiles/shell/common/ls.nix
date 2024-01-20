@@ -79,7 +79,7 @@ in {
       )
       (
         if show.color
-        then "--color-scale=gradient"
+        then "--color-scale=gradiant"
         else ""
       )
       #(if show.classify then "--classify"                else "")
