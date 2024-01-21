@@ -65,10 +65,13 @@
         nixfmt.enable=true;
         nixpkgs_fmt.enable=true;
         phpcbf.enable = true;
-        prettier.enable = true;
+        prettier = {
+          enable = true;
+          disableTsServerFormatter = true;
+        };
         rustfmt.enable=true;
         shfmt.enable = true;
-        sqlfluff.enable=true;
+        #sqlfluff.enable=true; # Broken as of 1/15/23: failing dep=python3.11-diff-cover-8.0.1
         stylua.enable = true;
         taplo.enable = true;
         trim_newlines.enable=true;

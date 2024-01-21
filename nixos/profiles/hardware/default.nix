@@ -15,8 +15,8 @@
     #./tpm2.nix
     ./usb.nix
     ./wifi.nix
-    ./peripherals/printers.nix
-    ./peripherals/scanners.nix
+    #./peripherals/printers.nix
+    #./peripherals/scanners.nix
 
     #./disks
     #./display

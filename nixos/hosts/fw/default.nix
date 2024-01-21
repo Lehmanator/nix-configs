@@ -10,6 +10,7 @@
   ];
 
   environment.etc.machine-id.text = "aa38a832d16e436d8aab8bb0550d4810";
+  boot.loader.efi.canTouchEfiVariables = true;
 
   # https://github.com/nixvital/fprint-clear
   # https://github.com/ssddq/fw-ectool

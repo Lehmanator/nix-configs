@@ -70,6 +70,16 @@
             inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
           ];
         };
+        fajita-minimal = nixos.lib.nixosSystem {
+          system = "aarch64-linux";
+          specialArgs = { inherit inputs; user = "sam"; };
+          modules = [
+            { _module.args = { inherit inputs; user = "sam"; }; }
+            (import "${inputs.mobile-nixos}/lib/configuration.nix" { device = "oneplus-fajita"; })
+            ./nixos/hosts/fajita/minimal.nix
+            inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
+          ];
+        };
       };
       overlays.gnome-mobile = import ./nixos/overlays/gnome-mobile;
       #packages = forAllSystems (s: {
@@ -191,6 +201,7 @@
     # --- Libs: Flakes ---------------------------------------------
     flake-utils.url = "github:numtide/flake-utils";
     flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus";
+    flake-utils-plus.inputs.flake-utils.follows = "flake-utils";
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-check.url = "github:srid/check-flake"; # check-flake: Adds a #check package for building all checks for the current system
     flake-compat = { url = "github:edolstra/flake-compat"; flake = false; };
@@ -201,6 +212,8 @@
     dns.inputs.nixpkgs.follows = "nixpkgs"; # (optionally) };
     nix-github-actions.url = "github:nix-community/nix-github-actions";
     nix-github-actions.inputs.nixpkgs.follows = "nixpkgs";
+    jsonresume-nix.url = "github:TaserudConsulting/jsonresume-nix";
+    jsonresume-nix.inputs.flake-utils.follows = "flake-utils";
     # --- Modules: Flake-parts -------------------------------------
     # https://github.com/srid/nixos-flake
     flake-root.url = "github:srid/flake-root";
@@ -211,7 +224,8 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     fprint-clear.url = "github:nixvital/fprint-clear";
     nixos-mobile = { url = "github:vlinkz/mobile-nixos/gnomelatest"; flake = false; }; #url = "github:NixOS/mobile-nixos";
-    mobile-nixos = { url = "github:NixOS/mobile-nixos/development"; flake = false; };
+    mobile-nixos = { url = "github:lehmanator/mobile-nixos/update-firmware"; flake = false; };
+    #mobile-nixos = { url = "github:NixOS/mobile-nixos/development"; flake = false; };
     srvos.url = "github:nix-community/srvos";
     # --- Modules: Filesystems -------------------------------------
     impermanence.url = "github:nix-community/impermanence";

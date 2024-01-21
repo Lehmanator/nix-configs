@@ -8,6 +8,8 @@
     ../../profiles/hardware/display
     ../../profiles/hardware/tpm2.nix
     ../../profiles/hardware/peripherals/logitech.nix
+    ../../profiles/hardware/peripherals/printers.nix
+    ../../profiles/hardware/peripherals/scanners.nix
     ../../profiles/security
     ../../profiles/security/apparmor.nix
     ../../profiles/server/kubernetes/k3s-node-main.nix

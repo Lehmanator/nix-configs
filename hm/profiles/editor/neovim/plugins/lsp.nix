@@ -5,15 +5,15 @@
 }:
 let
   isLspCmp = with config.programs.nixvim.plugins; lsp.enable && nvim-cmp.enable;
+  test = true;
 in
 {
-
   # --- Language Server Protocol -----
   programs.nixvim.plugins = {
     cmp-nvim-lsp.enable = lib.mkDefault isLspCmp;
     cmp-nvim-lsp-document-symbol.enable = lib.mkDefault isLspCmp;
     cmp-nvim-lsp-signature-help.enable = lib.mkDefault isLspCmp;
-    cmp-vim-lsp.enable = false; #lib.mkDefault isLspCmp;
+    cmp-vim-lsp.enable = false; # lib.mkDefault isLspCmp;
 
     lsp = {
       enable = true;
@@ -61,17 +61,23 @@ in
         #html.enable = true;
         #jsonls.enable = true;
         lua-ls.enable = true;
-        #nil_ls = {
-        #  enable=true;
-        #  settings = {
-        #    diagnostics = {excludedFiles=[]; ignored=[];};
-        #    formatting.command = [""];
-        #  };
-        #};
-        nixd = {
+        nil_ls = {
           enable = true;
           settings = {
-            eval = { depth = 3; workers = 5; }; # TODO: Set workers based on CPU cores on machine.
+            diagnostics = {
+              excludedFiles = [ ];
+              ignored = [ ];
+            };
+            #formatting.command = [""];
+          };
+        };
+        nixd = {
+          enable = false;
+          settings = {
+            eval = {
+              depth = 3;
+              workers = 5;
+            }; # TODO: Set workers based on CPU cores on machine.
             formatting.command = "nixpkgs-fmt";
             options.enable = true;
           };
@@ -86,20 +92,20 @@ in
 
     # lsp-lines - LSP multi-line diagnostics in-editor
     lsp-lines = {
-      enable = true; #lib.mkDefault config.programs.nixvim.plugins.lsp.enable;
+      enable = true; # lib.mkDefault config.programs.nixvim.plugins.lsp.enable;
       currentLine = true; # Only show diagnostics on current line
     };
 
     # lsp-format - LSP file formatting
     lsp-format = {
-      enable = true; #lib.mkDefault config.programs.nixvim.plugins.lsp.enable;
+      enable = true; # lib.mkDefault config.programs.nixvim.plugins.lsp.enable;
       lspServersToEnable = "all";
     };
 
     # lspkind.nvim - Entry types for LSP Completions w/ icons
     lspkind = {
-      enable = true; #lib.mkDefault config.programs.nixvim.plugins.lsp.enable;
-      mode = "symbol_text"; #"symbol_text";  # text|text_symbol|symbol_text*|symbol
+      enable = true; # lib.mkDefault config.programs.nixvim.plugins.lsp.enable;
+      mode = "symbol_text"; # "symbol_text";  # text|text_symbol|symbol_text*|symbol
       preset = "codicons"; # codicons|default   # TODO: Conditional based on style/theme icon type preference
       cmp = {
         enable = lib.mkDefault isLspCmp; # Integrate with nvim-cmp
@@ -126,16 +132,25 @@ in
     # lspsaga.nvim - LSP enhancements
     # TODO: Compatible with Noice?
     lspsaga = {
-      enable = true; # enable = lib.mkDefault config.programs.nixvim.plugins.lsp.enable;
-      beacon.enable = true; # Show a beacon to tell you where cursor moved after command causes jump
-      beacon.frequency = 7; #
+      enable =
+        true; # enable = lib.mkDefault config.programs.nixvim.plugins.lsp.enable;
+      beacon.enable =
+        true; # Show a beacon to tell you where cursor moved after command causes jump
+      beacon.frequency = 7;
       #borderStyle = "rounded";           # Deprecated
       #callhierarchy.layout = "float";    # Options: float | normal
-      codeAction = { extendGitSigns = true; showServerName = true; };
-      definition = { height = 0.5; width = 0.5; }; # keys={}; }; # TODO: Remap keys (defaults use <C-c> + letter)
+      codeAction = {
+        extendGitSigns = true;
+        showServerName = true;
+      };
+      definition = {
+        height = 0.5;
+        width = 0.5;
+      }; # keys={}; }; # TODO: Remap keys (defaults use <C-c> + letter)
       diagnostic = {
         diagnosticOnlyCurrent = false; # # Only show virt text on curr line
-        extendRelatedInformation = true; # When has `relatedInformation`, diagnostic msg extended to show it
+        extendRelatedInformation =
+          true; # When has `relatedInformation`, diagnostic msg extended to show it
         jumpNumShortcut = true;
         maxHeight = 0.6;
         maxShowHeight = 0.6;
@@ -145,7 +160,12 @@ in
         showLayout = "float";
         showNormalHeight = 10;
         textHlFollow = true;
-        keys = { execAction = "o"; quit = "q"; quitInShow = [ "q" "<ESC>" ]; toggleOrJump = "<CR>"; };
+        keys = {
+          execAction = "o";
+          quit = "q";
+          quitInShow = [ "q" "<ESC>" ];
+          toggleOrJump = "<CR>";
+        };
       };
       finder = {
         default = "ref+imp";
@@ -156,31 +176,76 @@ in
         methods = { tyd = "textDocument/typeDefinition"; };
         rightWidth = 0.3;
         silent = false;
-        keys = { close = "<C-c>k"; quit = "q"; shuttle = "[w"; split = "i"; tabe = "t"; tabnew = "r"; toggleOrOpen = "o"; vsplit = "s"; };
+        keys = {
+          close = "<C-c>k";
+          quit = "q";
+          shuttle = "[w";
+          split = "i";
+          tabe = "t";
+          tabnew = "r";
+          toggleOrOpen = "o";
+          vsplit = "s";
+        };
       };
-      hover = { maxHeight = 0.6; maxWidth = 0.9; openCmd = "!firefox"; openLink = "gx"; };
-      implement = { enable = true; sign = true; virtualText = true; };
-      lightbulb = { enable = true; sign = true; virtualText = true; };
+      hover = {
+        maxHeight = 0.6;
+        maxWidth = 0.9;
+        openCmd = "!firefox";
+        openLink = "gx";
+      };
+      implement = {
+        enable = true;
+        sign = true;
+        virtualText = true;
+      };
+      lightbulb = {
+        enable = true;
+        sign = true;
+        virtualText = true;
+      };
       outline = {
         autoClose = true;
         autoPreview = true;
         closeAfterJump = false;
         detail = true;
-        layout = "normal"; #layout="float";
+        layout = "normal"; # layout="float";
         leftWidth = 0.3;
         maxHeight = 0.5;
         winPosition = "right";
         winWidth = 30;
-        keys = { jump = "e"; quit = "q"; toggleOrJump = "o"; };
+        keys = {
+          jump = "e";
+          quit = "q";
+          toggleOrJump = "o";
+        };
       };
-      rename = { autoSave = false; inSelect = true; projectMaxHeight = 0.5; projectMaxWidth = 0.5; keys = { exec = "<CR>"; quit = "<C-k>"; select = "x"; }; };
-      scrollPreview = { scrollDown = "<C-f>"; scrollUp = "<C-b>"; };
-      symbolInWinbar = { enable = true; colorMode = true; folderLevel = 1; hideKeyword = false; separator = "›"; showFile = true; };
+      rename = {
+        autoSave = false;
+        inSelect = true;
+        projectMaxHeight = 0.5;
+        projectMaxWidth = 0.5;
+        keys = {
+          exec = "<CR>";
+          quit = "<C-k>";
+          select = "x";
+        };
+      };
+      scrollPreview = {
+        scrollDown = "<C-f>";
+        scrollUp = "<C-b>";
+      };
+      symbolInWinbar = {
+        enable = true;
+        colorMode = true;
+        folderLevel = 1;
+        hideKeyword = false;
+        separator = "›";
+        showFile = true;
+      };
       #ui={};
     };
 
     # inc-rename - Incremental previewing LSP renaming
     inc-rename.enable = lib.mkDefault config.programs.nixvim.plugins.lsp.enable;
-
   };
 }
