@@ -1,8 +1,11 @@
-{ inputs
-, config, lib, pkgs
-, ...
-}:
 {
+  inputs,
+  config,
+  lib,
+  pkgs,
+  user,
+  ...
+}: {
   imports = [
     ./abook.nix
     ./alias.nix
@@ -14,12 +17,27 @@
   ];
   programs.bash = {
     enableVteIntegration = true;
-    historyControl = [ "ignorespace" ];
+    historyControl = ["ignorespace"];
   };
+
+  # TODO: Move to separate file
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
+    config = {
+      global = {load_dotenv = true;};
+      whitelist = {
+        prefix = [
+          "/home/${user}/Code/Lehmanator" # Trust my personal projects
+          "/home/${user}/Code/forks" # # Trust projects I'm forking
+        ]; # "${config.xdg.userDirs.custom.}";
+        exact = [
+          "/home/${user}/.config/nixos/.envrc" # Trust NixOS config repo
+        ];
+      };
+    };
   };
+
   programs.command-not-found.enable = !config.programs.direnv.enable;
   services.lorri.enable = !config.programs.direnv.nix-direnv.enable;
   programs.starship = {
