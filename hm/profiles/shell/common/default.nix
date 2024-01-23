@@ -12,6 +12,7 @@
     ./fzf.nix
     ./ls.nix
     ./navi.nix
+    ./tmux.nix
     ../../docs
     ../../pager
   ];
