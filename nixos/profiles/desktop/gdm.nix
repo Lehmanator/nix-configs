@@ -11,16 +11,18 @@
   services.xserver.displayManager.gdm = {
     enable = lib.mkDefault true;
 
+    # Display text on login screen
+    # NOTE: Font is not monospaced.
     # TODO: Display MOTD?
     # TODO: Display lastUpdated?
     # TODO: Display nixpkgs version/channel/date/hash?
     banner =
       ''
-        --- Welcome! ---------------------
-            Host: ${config.networking.hostName}
-          Domain: lehman.run
-        ----------------------------------
+        Host: ${config.networking.hostName}
       ''
+      #--- Welcome! ---------------------
+      #  Domain: lehman.run
+      #''
       #--- NixOS ------------------------
       # Release: ${config.system.nixos.release} (${config.system.nixos.codeName})
       #Original: ${config.system.stateVersion}
@@ -37,19 +39,47 @@
       ;
 
     # Login after seconds as autoLogin.user when autoLogin.enable=true;
-    autoLogin.delay = lib.mkDefault 120;
+    #autoLogin.delay = lib.mkDefault 120;
 
     # Automatically suspend if no login after some time
-    autoSuspend = lib.mkDefault true;
+    #autoSuspend = lib.mkDefault true;
 
     # Enable debugging
-    debug = lib.mkDefault true;
+    #debug = lib.mkDefault false;
 
     # Use Wayland instead of X11
-    wayland = lib.mkDefault true;
+    #wayland = lib.mkDefault true;
 
     # Options to pass to the GDM daemon.
     # Options: https://help.gnome.org/admin/gdm/stable/configuration.html.en#daemonconfig
-    settings = lib.mkDefault {debug = {enable = true;};};
+    #settings = lib.mkDefault {
+    #  debug.enable = false;
+    #  daemon = {
+    #    TimedLoginEnable = false;
+    #    TimedLogin = user;
+    #    TimedLoginDelay = 30;
+    #    AutomaticLoginEnable = false;
+    #    AutomaticLogin = user;
+    #  };
+    #  greeter = {
+    #    IncludeAll = true;
+    #    Include = [user "guest"];
+    #    Exclude = ["bin" "root" "daemon" "adm" "lp" "sync" "shutdown" "halt" "mail" "news" "uucp" "operator" "nobody" "nobody4" "noaccess" "postgres" "pvm" "rpm" "nfsnobody" "pcap"];
+    #  };
+    #  security.DisallowTCP = true;
+    #  xdmcp = {
+    #    DisplaysPerHost = 3;
+    #    # NOTE: Also add `gdm:.${config.networking.domain}` to `/etc/hosts.allow`
+    #    Enable = true;
+    #    HonorIndirect = true;
+    #    MaxPending = 4;
+    #    MaxSessions = 16;
+    #    MaxWait = 30;
+    #    MaxWaitIndirect = 30;
+    #    PingIntervalSeconds = 60;
+    #    Port = 177;
+    #    Willing = "/etc/gdm/Xwilling";
+    #  };
+    #};
   };
 }
