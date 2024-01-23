@@ -70,12 +70,13 @@
   # TODO: Convert `iptables` rules to `nftables` in `systemd.services.tcpcrypt.prestart`
   # TODO: Drop `sysctl -w net.ipv4.tcp_ecn=0` in `systemd.services.tcpcrypt.prestart`?
   # TODO: Only enable `tcpcrypt` on interfaces without DNS over TLS/HTTPS/QUIC?
-  networking.tcpcrypt.enable = lib.mkDefault true;
-  users = with config.networking; {
-    # Allow primary user to control networking without privilege escalation
-    users.${user}.extraGroups = ["network" "tcpcryptd"] ++ lib.optional wireless.enable wireless.userControlled.group;
-    users.tcpcryptd.group = "tcpcryptd";
-    groups.tcpcryptd.members = lib.mkIf tcpcrypt.enable ["tcpcryptd" user ]; # Also create group
-  };
+  #networking.tcpcrypt.enable = lib.mkDefault true;
+  #users = with config.networking; {
+  #  # Allow primary user to control networking without privilege escalation
+  #  users.${user}.extraGroups = ["network" "tcpcryptd"] ++ lib.optional wireless.enable wireless.userControlled.group;
+  #  users.tcpcryptd.group = "tcpcryptd";
+  #  groups.tcpcryptd.members = lib.mkIf tcpcrypt.enable ["tcpcryptd" user ]; # Also create group
+  #};
+  users.users.${user}.extraGroups = ["network"];
   #boot.kernel.sysctl."net.ipv4.tcp_ecn" = 0; # d:2
 }
