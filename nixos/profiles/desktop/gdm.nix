@@ -3,9 +3,11 @@
   lib,
   pkgs,
   ...
-}: let
-  openssh-banner = (config.services.openssh.banner != null) && false;
-in {
+}:
+#let
+#  openssh-banner = (config.services.openssh.banner != null) && false;
+#in
+{
   services.xserver.displayManager.gdm = {
     enable = lib.mkDefault true;
 
@@ -16,20 +18,23 @@ in {
       ''
         --- Welcome! ---------------------
             Host: ${config.networking.hostName}
-          Domain: ${config.networking.domain}
-        --- NixOS ------------------------
-         Release: ${config.system.nixos.release} (${config.system.nixos.codeName})
-        Original: ${config.system.stateVersion}
-         Variant: ${config.system.nixos.variant_id ? "main"}
-        Revision: ${config.system.configurationRevision}
-           Label: ${config.system.nixos.label}
-            Tags: ${builtins.concatStringsSep ", " config.system.nixos.tags}
+          Domain: lehman.run
         ----------------------------------
       ''
-      + (lib.strings.optionalString (config.services.openssh.banner != null)
-        config.services.openssh.banner)
-      + (lib.strings.optionalString (config.users.motd != null)
-        config.users.motd);
+      #--- NixOS ------------------------
+      # Release: ${config.system.nixos.release} (${config.system.nixos.codeName})
+      #Original: ${config.system.stateVersion}
+      #Revision: ${config.system.configurationRevision}
+      #   Label: ${config.system.nixos.label}
+      #----------------------------------
+      #Variant: ${config.system.nixos.variant_id ? "main"}
+      #Domain: ${config.networking.domain} ? "lehman.run"}
+      #Tags: ${builtins.concatStringsSep ", " config.system.nixos.tags}
+      #+ (lib.strings.optionalString (config.services.openssh.banner != null)
+      #  config.services.openssh.banner)
+      #+ (lib.strings.optionalString (config.users.motd != null)
+      #config.users.motd)
+      ;
 
     # Login after seconds as autoLogin.user when autoLogin.enable=true;
     autoLogin.delay = lib.mkDefault 120;
