@@ -8,6 +8,7 @@
     ./alias.nix
     ./fzf.nix
     ./ls.nix
+    ./navi.nix
     ../../docs
     ../../pager
   ];
