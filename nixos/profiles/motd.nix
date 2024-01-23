@@ -23,7 +23,8 @@
   programs.rust-motd = {
     enable = lib.mkDefault true;
     enableMotdInSSHD = lib.mkDefault true;
-    order = lib.mkDefault [
+    order = [
+      "global"
       "banner"
       "uptime"
       "last_login" # TODO: lib.mkBefore
@@ -78,9 +79,9 @@
         home = "/home";
 
         # TODO: Auto list elements under /nix/persist
-        nix-persist =
-          lib.mkIf (config.environment.persistence."/nix/persist")
-          "/nix/persist";
+        #nix-persist =
+        #  lib.mkIf (config.environment.persistence."/nix/persist")
+        #  "/nix/persist";
         nix-store = "/nix/store";
       };
 
