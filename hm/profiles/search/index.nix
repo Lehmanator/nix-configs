@@ -1,7 +1,5 @@
 { inputs, config, lib, pkgs, ... }:
 {
-  imports = [ ];
-
   # --- File Indexer ---
   services.recoll = with config.xdg.userDirs; {
     enable = true;
