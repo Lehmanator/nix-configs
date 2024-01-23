@@ -1,9 +1,10 @@
-{ inputs
-, config
-, lib
-, pkgs
-, user
-, ...
+{
+  inputs,
+  config,
+  lib,
+  pkgs,
+  user,
+  ...
 }:
 # TODO: Move all config that isn't NixOS-specific stuff to common file
 {
@@ -26,6 +27,7 @@
     #./virt
 
     ./adb.nix
+    ./motd.nix
     ./normalize.nix
     ./sshd.nix
     #./auto-upgrade.nix
@@ -48,5 +50,5 @@
   appstream.enable = true;
 
   # Always load modules: USB controller, NVMe controller, SATA controller, USB gadgets/peripherals
-  boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "ahci" "usbhid" "usb_storage" ];
+  boot.initrd.availableKernelModules = ["xhci_pci" "nvme" "ahci" "usbhid" "usb_storage"];
 }
