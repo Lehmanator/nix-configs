@@ -1,11 +1,14 @@
-{ inputs
-, config
-, lib
-, pkgs
-, user
-, ...
-}:
 {
+  inputs,
+  config,
+  osConfig ? {},
+  lib,
+  pkgs,
+  user,
+  ...
+}: let
+  env = config.home or config.environment;
+in {
   # TODO: Move NixOS-specific config to `../../nixos/nix/`
   imports = [
     ./cache
@@ -73,14 +76,15 @@
 
     # --- Packages -----------------------
     # Use Nix package manager package with builtin flakes support
-    package = pkgs.nixUnstable; #pkgs.nixFlakes; #(nixUnstable for use-xdg-base-directories, nixFlakes for flakes support)
+    package =
+      pkgs.nixUnstable; # pkgs.nixFlakes; #(nixUnstable for use-xdg-base-directories, nixFlakes for flakes support)
 
     settings = {
       use-xdg-base-directories = true;
 
       # --- Users --------------------------
-      allowed-users = [ "*" ];
-      trusted-users = [ "root" "@wheel" "@builders" user ];
+      allowed-users = ["*"];
+      trusted-users = ["root" "@wheel" "@builders" user];
       build-users-group = lib.mkDefault "nixbld";
 
       keep-build-log = lib.mkDefault true;
@@ -89,7 +93,7 @@
       warn-dirty = lib.mkDefault false; # Warn git unstaged/uncommitted files
 
       # Expose extra system paths to Nix build sandbox
-      extra-sandbox-paths = [ ];
+      extra-sandbox-paths = [];
 
       # --- Nix Plugins --------------------
       #plugin-files = [
@@ -100,6 +104,13 @@
   };
 
   # --- Nix Outputs --------------------
-  environment.extraOutputsToInstall = [ "bin" ]; #[ "doc" "info" "devdoc" "dev" "bin" ];
-
+  ${env} = {
+    extraOutputsToInstall = ["bin"]; # [ "doc" "info" "devdoc" "dev" "bin" ];
+    shellAliases = {
+      nix-closure-list = "nix-store -qR `which $1`"; # TODO: Figure out how to allow
+      nix-closure-tree = "nix-store -q --tree `which $1`"; # arg not at end of alias
+      nix-dependencies = "nix-store -q --references `which $1`";
+      nix-dependencies-reverse = "nix-store -q --referrers `which $1`";
+    };
+  };
 }
