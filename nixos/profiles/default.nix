@@ -46,6 +46,12 @@
     #./users/homed.nix
   ];
 
+  # Mount /etc via overlay filesystem (faster activation)
+  system.etc.overlay = {
+    enable = lib.mkDefault true;
+    mutable = lib.mkDefault true;
+  };
+
   # Enable extra info/metadata for packages
   appstream.enable = true;
 
