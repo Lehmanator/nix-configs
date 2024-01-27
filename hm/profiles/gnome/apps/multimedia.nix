@@ -88,7 +88,7 @@
       pkgs.blender # # 3D modeling & video rendering
       pkgs.boatswain # # Control Elgato Stream Deck devices
       pkgs.losslesscut-bin # # Swiss army knife of video editing
-      pkgs.pitivi # # Create/edit your own movies   # librosa dep broken 2023-08-14
+      #pkgs.pitivi # # Create/edit your own movies   # librosa dep broken 2024-01-27
       pkgs.shotcut # # Video editor
       #pkgs.natron #                  # Node-graph based compositing software
 
