@@ -13,7 +13,7 @@
     forAllSystems = lib.genAttrs [
       "aarch64-linux"
       "x86_64-linux"
-      "riscv-linux"
+      #"riscv-linux"
       "aarch64-darwin"
       "x86_64-darwin"
     ];
@@ -87,100 +87,135 @@
     #// {
     #  inherit pops;
   in
-    {
-      #homeConfigurations = {
-      #  sam = inputs.home.lib.homeManagerConfiguration {
-      #    #pkgs = nixpkgs.legacyPackages.x86_64-linux;
-      #    modules = [ ./hm/users/sam ];
-      #    extraSpecialArgs = { inherit inputs; user = "sam"; };
-      #  };
-      #  sammy = inputs.home.lib.homeManagerConfiguration {
-      #    pkgs = nixpkgs.legacyPackages.x86_64-linux;
-      #    extraSpecialArgs = { inherit inputs; user = "sammy"; };
-      #    modules = [
-      #      ({ inputs, user, config, lib, pkgs, osConfig, modulesPath, ... }: {
-      #        home.stateVersion = "24.05";
-      #        home.username = "sammy";
-      #        home.homeDirectory = "/home/sammy";
-      #      })
-      #    ];
-      #  };
-      #  guest = inputs.home.lib.homeManagerConfiguration {
-      #    pkgs = nixpkgs.legacyPackages.x86_64-linux;
-      #    #modules = [./hm/users/default];
-      #    extraSpecialArgs = { inherit inputs; user = "guest"; };
-      #  };
-      #};
+    inputs.flake-parts.lib.mkFlake {inherit inputs;} {
+      systems = ["x86_64-linux" "aarch64-linux" "riscv64-linux"];
+      imports = [
+        inputs.agenix-shell.flakeModules.default
+        inputs.devenv.flakeModule
+        inputs.devshell.flakeModule
+        #inputs.ez-configs.flakeModule
+        inputs.nix-cargo-integration.flakeModule
+        inputs.pre-commit-hooks-nix.flakeModule
+        #inputs.process-compose-flake.flakeModule
+        #inputs.proc-flake.flakeModule
+        inputs.std.flakeModule
+        inputs.treefmt-nix.flakeModule
+      ];
+      perSystem = {
+        config,
+        lib,
+        pkgs,
+        ...
+      }: {
+        pre-commit = {
+          check.enable = true;
+          #devShell = null;
+          settings.hooks = {
+            # TODO: deadnix, mdl, mkdocs, nixfmt, nixpkgs-fmt, yamllint
+            actionlint = {
+              enable = true;
+              description = "GitHub Actions";
+              files = ".github/*.ya?ml$";
+            };
+          };
+        };
+      };
+      flake =
+        {
+          nixosConfigurations = {
+            fw = mkSystem "fw" {};
+            wyse = mkSystem "wyse" {};
+            #installer = nixos.lib.nixosSystem {
+            #  specialArgs = { inherit inputs; user = "sam"; };
+            #  modules = [ ./profiles/nixos/installer ];
+            #};
+            fajita = nixos.lib.nixosSystem {
+              system = "aarch64-linux";
+              specialArgs = {
+                inherit inputs;
+                user = "sam";
+              };
+              modules = [
+                {
+                  _module.args = {
+                    inherit inputs;
+                    user = "sam";
+                  };
+                }
+                (import "${inputs.mobile-nixos}/lib/configuration.nix" {
+                  device = "oneplus-fajita";
+                })
+                ./nixos/hosts/fajita
+                inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
+              ];
+            };
+            fajita-minimal = nixos.lib.nixosSystem {
+              system = "aarch64-linux";
+              specialArgs = {
+                inherit inputs;
+                user = "sam";
+              };
+              modules = [
+                {
+                  _module.args = {
+                    inherit inputs;
+                    user = "sam";
+                  };
+                }
+                (import "${inputs.mobile-nixos}/lib/configuration.nix" {
+                  device = "oneplus-fajita";
+                })
+                ./nixos/hosts/fajita/minimal.nix
+                inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
+              ];
+            };
+          };
+          #homeConfigurations = {
+          #  sam = inputs.home.lib.homeManagerConfiguration {
+          #    #pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          #    modules = [ ./hm/users/sam ];
+          #    extraSpecialArgs = { inherit inputs; user = "sam"; };
+          #  };
+          #  sammy = inputs.home.lib.homeManagerConfiguration {
+          #    pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          #    extraSpecialArgs = { inherit inputs; user = "sammy"; };
+          #    modules = [
+          #      ({ inputs, user, config, lib, pkgs, osConfig, modulesPath, ... }: {
+          #        home.stateVersion = "24.05";
+          #        home.username = "sammy";
+          #        home.homeDirectory = "/home/sammy";
+          #      })
+          #    ];
+          #  };
+          #  guest = inputs.home.lib.homeManagerConfiguration {
+          #    pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          #    #modules = [./hm/users/default];
+          #    extraSpecialArgs = { inherit inputs; user = "guest"; };
+          #  };
+          #};
 
-      nixosConfigurations = {
-        fw = mkSystem "fw" {};
-        wyse = mkSystem "wyse" {};
-        #installer = nixos.lib.nixosSystem {
-        #  specialArgs = { inherit inputs; user = "sam"; };
-        #  modules = [ ./profiles/nixos/installer ];
-        #};
-        fajita = nixos.lib.nixosSystem {
-          system = "aarch64-linux";
-          specialArgs = {
-            inherit inputs;
-            user = "sam";
+          #overlays.gnome-mobile = import ./nixos/overlays/gnome-mobile;
+          #packages = forAllSystems (s: {
+          #  fajita-images = inputs.self.nixosConfigurations.fajita.config.mobile.outputs.android-fastboot-images;
+          #});
+          packages.x86_64-linux.fajita-fastboot-images =
+            inputs.self.nixosConfigurations.fajita.config.mobile.outputs.android.android-fastboot-images;
+        }
+        // inputs.flake-utils.lib.eachDefaultSystem (system: let
+          #pkgs=inputs.nixpkgs.legacyPackages.${system};
+          pkgs = import inputs.nixpkgs {
+            inherit system;
+            overlays = self.overlays.gnome-mobile;
           };
-          modules = [
-            {
-              _module.args = {
-                inherit inputs;
-                user = "sam";
-              };
-            }
-            (import "${inputs.mobile-nixos}/lib/configuration.nix" {
-              device = "oneplus-fajita";
-            })
-            ./nixos/hosts/fajita
-            inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
-          ];
-        };
-        fajita-minimal = nixos.lib.nixosSystem {
-          system = "aarch64-linux";
-          specialArgs = {
-            inherit inputs;
-            user = "sam";
+        in {
+          packages = {
+            gnome-shell-mobile = pkgs.gnome-shell-mobile;
+            gnome-shell-mobile-devel = pkgs.gnome-shell-mobile-devel;
+            mutter-mobile = pkgs.mutter-mobile;
+            mutter-mobile-devel = pkgs.mutter-mobile-devel;
           };
-          modules = [
-            {
-              _module.args = {
-                inherit inputs;
-                user = "sam";
-              };
-            }
-            (import "${inputs.mobile-nixos}/lib/configuration.nix" {
-              device = "oneplus-fajita";
-            })
-            ./nixos/hosts/fajita/minimal.nix
-            inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
-          ];
-        };
-      };
-      #overlays.gnome-mobile = import ./nixos/overlays/gnome-mobile;
-      #packages = forAllSystems (s: {
-      #  fajita-images = inputs.self.nixosConfigurations.fajita.config.mobile.outputs.android-fastboot-images;
-      #});
-      packages.x86_64-linux.fajita-fastboot-images =
-        inputs.self.nixosConfigurations.fajita.config.mobile.outputs.android.android-fastboot-images;
-    }
-    // inputs.flake-utils.lib.eachDefaultSystem (system: let
-      #pkgs=inputs.nixpkgs.legacyPackages.${system};
-      pkgs = import inputs.nixpkgs {
-        inherit system;
-        overlays = self.overlays.gnome-mobile;
-      };
-    in {
-      packages = {
-        gnome-shell-mobile = pkgs.gnome-shell-mobile;
-        gnome-shell-mobile-devel = pkgs.gnome-shell-mobile-devel;
-        mutter-mobile = pkgs.mutter-mobile;
-        mutter-mobile-devel = pkgs.mutter-mobile-devel;
-      };
-    });
+        });
+    };
 
   # --- Disko ---
   # TODO: [Disko UI](https://gist.github.com/Mic92/b5b592c0c33d720cb07a070cb8911588)
@@ -284,7 +319,6 @@
     flake-utils.url = "github:numtide/flake-utils";
     flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus";
     flake-utils-plus.inputs.flake-utils.follows = "flake-utils";
-    flake-parts.url = "github:hercules-ci/flake-parts";
     flake-check.url = "github:srid/check-flake"; # check-flake: Adds a #check package for building all checks for the current system
     flake-compat = {
       url = "github:edolstra/flake-compat";
@@ -294,6 +328,7 @@
       url = "github:srid/devour-flake";
       flake = false;
     }; # devour-flake: Executable to devour flake and spit out out paths
+
     # --- Libs: Misc -----------------------------------------------
     # https://github.com/juspay/cachix-push
     dns.url = "github:kirelagin/dns.nix";
@@ -302,12 +337,26 @@
     nix-github-actions.inputs.nixpkgs.follows = "nixpkgs";
     jsonresume-nix.url = "github:TaserudConsulting/jsonresume-nix";
     jsonresume-nix.inputs.flake-utils.follows = "flake-utils";
+
     # --- Modules: Flake-parts -------------------------------------
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    agenix-shell.url = "github:aciceri/agenix-shell";
+    ez-configs.url = "github:ehllie/ez-configs";
+
+    #flake.parts-website.url = "github:hercules-ci/flake.parts-website";
     # https://github.com/srid/nixos-flake
     flake-root.url = "github:srid/flake-root";
     nixid.url = "github:srid/nixid";
     treefmt-nix.url = "github:numtide/treefmt-nix";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
+    devshell.url = "github:numtide/devshell";
+    devshell.inputs.nixpkgs.follows = "nixpkgs";
+    devenv.url = "github:cachix/devenv";
+    nix-cargo-integration.url = "github:yusdacra/nix-cargo-integration";
+    pre-commit-hooks-nix.url = "github:cachix/pre-commit-hooks.nix";
+    process-compose-flake.url = "github:Platonic-Systems/process-compose-flake";
+    proc-flake.url = "github:srid/proc-flake";
+
     # --- Modules: System ------------------------------------------
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     fprint-clear.url = "github:nixvital/fprint-clear";
@@ -453,9 +502,6 @@
     };
     # --- DevShells ------------------------------------------------
     nmd.url = "github:gvolpe/nmd";
-    devshell.url = "github:numtide/devshell";
-    devshell.inputs.nixpkgs.follows = "nixpkgs";
-    devenv.url = "github:cachix/devenv";
     microvm.url = "github:astro/microvm.nix";
     microvm.inputs.nixpkgs.follows = "nixpkgs";
     colmena.url = "github:zhaofengli/colmena";
