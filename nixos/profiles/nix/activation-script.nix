@@ -1,11 +1,62 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
 {
-  imports = [ ];
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  maxTerminalWidth = 60;
+
+  # TODO: Draw boxes
+  chars = {
+    horizontal = "─";
+    vertical = "│";
+    top-left = "╭";
+    top-right = "╮";
+    bottom-left = "╰";
+    bottom-right = "╯";
+  };
+  strlen = lib.lists.count true lib.strings.stringToChars;
+
+  drawBoxTopText = w: lineText: "${chars.top-left}${chars.vertical} ${lineText} ${lineText}${chars.top-right}";
+  drawBoxTop = w: lineText: "${chars.top-left}";
+  drawBoxMiddle = w: lineText: "${chars.vertical} ${((strlen lineText) - 4)} ${chars.vertical}";
+
+  drawBox = {
+    top = w: label: "${chars.top-left}${
+      lib.strings.fixedWidthString w chars.horizontal
+      (label || chars.horizontal)
+    }${chars.top-right}";
+    middle = lineText: "${chars.vertical} ${lineText} ${chars.vertical}";
+    bottom = w: "${chars.bottom-left}${
+      lib.strings.fixedWidthString w chars.horizontal chars.horizontal
+    }${chars.bottom-right}";
+  };
+
+  # TODO: Allow inserting word into line
+  fn-solid-line = ''
+    printf -- "─%.0s" $(seq $(tput cols))
+  '';
+in {
+  imports = [];
+  system.activationScripts = {
+    # TODO: Learn how to make sure first activation script.
+    aaa-begin = {
+      deps = [];
+      text = ''
+        ${fn-solid-line}
+        echo "NixOS System Activation"
+        ${fn-solid-line}
+      '';
+      supportsDryActivation = true;
+    };
+    zzz-end = {
+      #deps = [];
+      text = ''
+        ${fn-solid-line}
+      '';
+      supportsDryActivation = true;
+    };
+  };
 
   # --- System Activation Info -----------------------------
   # TODO: Show flake inputs diff
