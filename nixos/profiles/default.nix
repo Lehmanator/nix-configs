@@ -48,7 +48,7 @@
 
   # Mount /etc via overlay filesystem (faster activation)
   system.etc.overlay = {
-    enable = lib.mkDefault true;
+    enable = lib.mkDefault false;
     mutable = lib.mkDefault true;
   };
 
