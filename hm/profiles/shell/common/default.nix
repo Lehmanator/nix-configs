@@ -1,5 +1,4 @@
 {
-  inputs,
   config,
   lib,
   pkgs,
@@ -9,13 +8,17 @@
   imports = [
     ./abook.nix
     ./alias.nix
+    #./audio.nix
+    #./colors.nix
     ./fzf.nix
     ./ls.nix
     ./navi.nix
+    #./readline.nix
     ./tmux.nix
     ../../docs
     ../../pager
   ];
+
   programs.bash = {
     enableVteIntegration = true;
     historyControl = ["ignorespace"];
