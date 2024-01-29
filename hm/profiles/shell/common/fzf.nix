@@ -38,19 +38,20 @@
     #defaultCommand = "fd --type f";
     #defaultOptions = [
     #  "--height ${height}" "--border"
+    #  "--preview-window 'up:60%:wrap:cycle:hidden:border-rounded"
     #];
 
     # Key: ALT-T
     # TODO: Fix ALT-T not working
     changeDirWidgetCommand = "fd --type d";
-    changeDirWidgetOptions = ["--preview 'eza --tree {} | head -200'"];
+    changeDirWidgetOptions = ["--preview 'eza --icons=always --color=always --tree {} | head -200'"];
 
     # Key: CTRL-T
     fileWidgetCommand = "fd --type f";
     fileWidgetOptions = [
-      "-p" # Floating popup window
-      "--preview 'bat --color=always --style=changes {}'"
-      "--preview-window up:60%:wrap:cycle:hidden:border-rounded"
+      #"-p" # Floating popup window
+      "--preview 'bat --color always --style changes {}'"
+      #"--preview-window 'up:60%:wrap:cycle:hidden:border-rounded'"
       "--select-1" # Auto-select item when singular result
       "--exit-0" # Auto exit when list empty
     ];
