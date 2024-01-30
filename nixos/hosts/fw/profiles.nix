@@ -22,6 +22,7 @@
     #../../profiles/users/homed.nix
     ../../profiles/virt
     #../../profiles/virt/emulators/slippi.nix
+    ../../profiles/hercules-ci.nix
 
     # --- Disabled ---
     #../../profiles/hardware/fprintd.nix
