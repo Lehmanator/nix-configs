@@ -1,18 +1,17 @@
-{ inputs
-, nixosConfig
-, osConfig
-, config
-, lib
-, pkgs
-, ...
-}:
-let
+{
+  inputs,
+  nixosConfig,
+  osConfig,
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   inherit (pkgs) system;
   #system = pkgs.system;
   arch = lib.lists.elemAt (lib.strings.splitString "-" system) 0;
   platform = lib.lists.elemAt (lib.strings.splitString "-" system) 1;
-in
-{
+in {
   imports = [
     ./modules
 
@@ -33,13 +32,13 @@ in
     ./social
     ./virt
     ./xdg.nix
+    ./cachix-agent.nix
 
     # TODO: Conditionally load ./nixos.nix when system is NixOS-based
     #./_system/${system}
     #./_arch/${arch}
     #./_platform/${platform}
     #./_host/${osConfig.networking.hostName}
-
   ];
 
   home = {
@@ -47,7 +46,10 @@ in
     enableDebugInfo = true;
     enableNixpkgsReleaseCheck = true;
     #extraOutputsToInstall = [ "doc" "info" "devdoc" "dev" "bin" ];
-    sessionPath = with config.xdg.userDirs.extraConfig; [ XDG_APPS_DIR XDG_BIN_DIR ];
+    sessionPath = with config.xdg.userDirs.extraConfig; [
+      XDG_APPS_DIR
+      XDG_BIN_DIR
+    ];
     packages = [
       #pkgs.ripgrep-all   # Fast grep w/ ability to search in PDFs, eBooks, Office docs, archives, & more
       pkgs.repgrep # Interactive replacer for ripgrep
@@ -67,6 +69,8 @@ in
     home-manager.enable = true;
   };
 
-  services.home-manager.autoUpgrade = { enable = true; frequency = "weekly"; };
-
+  services.home-manager.autoUpgrade = {
+    enable = true;
+    frequency = "weekly";
+  };
 }
