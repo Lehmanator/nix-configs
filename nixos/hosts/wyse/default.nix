@@ -37,6 +37,7 @@
     #../../profiles/server/kubernetes/k3s-node-main.nix
     ../../profiles/users/homed.nix
     ../../profiles/virt
+    ../../profiles/cachix-agent.nix
     #../../profiles/virt/emulators/slippi.nix
 
     #../../profiles/hardware/display/displaylink.nix

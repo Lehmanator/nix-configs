@@ -22,6 +22,7 @@
     #../../profiles/users/homed.nix
     ../../profiles/virt
     #../../profiles/virt/emulators/slippi.nix
+    ../../profiles/cachix-agent.nix
     ../../profiles/hercules-ci.nix
 
     # --- Disabled ---
