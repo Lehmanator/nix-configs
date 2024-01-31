@@ -27,7 +27,6 @@
     #      inputs = {inherit inputs;};
     #    };
     #  };
-    #
     #  homeModules = inputs.omnibus.pops.homeProfiles.addLoadExtender {
     #    load = {
     #      src = ./hm/modules;
@@ -94,6 +93,7 @@
         inputs.devenv.flakeModule
         inputs.devshell.flakeModule
         #inputs.ez-configs.flakeModule
+        inputs.hercules-ci-effects.flakeModule
         inputs.nix-cargo-integration.flakeModule
         inputs.pre-commit-hooks-nix.flakeModule
         #inputs.process-compose-flake.flakeModule
@@ -101,12 +101,46 @@
         inputs.std.flakeModule
         inputs.treefmt-nix.flakeModule
       ];
+      # TODO: Restructure dirs
+      #ezConfigs = {
+      #  globalArgs = {
+      #    inherit inputs;
+      #    user = "sam";
+      #  };
+      #  home = {
+      #    configurationsDirectory = "./hm/users";
+      #    modulesDirectory = "./hm/modules";
+      #  };
+      #  nixos = {
+      #    modulesDirectory = "./nixos/profiles";
+      #    configurationsDirectory = "./nixos/hosts";
+      #  };
+      #  darwin = {
+      #    modulesDirectory = "./darwin/profiles";
+      #    configurationsDirectory = "./darwin/hosts";
+      #  };
+      #};
+      agenix-shell = {
+        identityPaths = ["$HOME/.ssh/id_rsa" "$HOME/.ssh/id_ed25519"];
+        #secretsPath = "/run/user/$(id -u)/agenix-shell/$(git rev-parse --show-toplevel | xargs basename)";
+        #secrets = {
+        #  <name> = {
+        #    file = "secrets/<name>.age";
+        #    path = "${config.agenix-shell.secretsPath}/<name>";
+        #    mode = "0400";
+        #  };
+        #};
+      };
       perSystem = {
         config,
         lib,
         pkgs,
         ...
       }: {
+        agenix-shell = {
+          package = pkgs.rage;
+          #installationScript = null;
+        };
         pre-commit = {
           check.enable = true;
           #devShell = null;
@@ -335,8 +369,6 @@
     dns.inputs.nixpkgs.follows = "nixpkgs"; # (optionally) };
     nix-github-actions.url = "github:nix-community/nix-github-actions";
     nix-github-actions.inputs.nixpkgs.follows = "nixpkgs";
-    jsonresume-nix.url = "github:TaserudConsulting/jsonresume-nix";
-    jsonresume-nix.inputs.flake-utils.follows = "flake-utils";
 
     # --- Modules: Flake-parts -------------------------------------
     flake-parts.url = "github:hercules-ci/flake-parts";
@@ -352,6 +384,7 @@
     devshell.url = "github:numtide/devshell";
     devshell.inputs.nixpkgs.follows = "nixpkgs";
     devenv.url = "github:cachix/devenv";
+    hercules-ci-effects.url = "github:hercules-ci/hercules-ci-effects";
     nix-cargo-integration.url = "github:yusdacra/nix-cargo-integration";
     pre-commit-hooks-nix.url = "github:cachix/pre-commit-hooks.nix";
     process-compose-flake.url = "github:Platonic-Systems/process-compose-flake";
@@ -499,6 +532,11 @@
     nix-installer = {
       url = "github:DeterminateSystems/nix-installer";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # --- Builders -------------------------------------------------
+    jsonresume-nix = {
+      url = "github:TaserudConsulting/jsonresume-nix";
+      inputs.flake-utils.follows = "flake-utils";
     };
     # --- DevShells ------------------------------------------------
     nmd.url = "github:gvolpe/nmd";
