@@ -16,6 +16,7 @@
   ];
 
   #nix = { };
+  nix.settings.nix-path = lib.mkBefore "nixpkgs=/etc/nix/inputs/nixpkgs";
 
   environment = {
     extraOutputsToInstall = ["bin"]; # [ "doc" "info" "devdoc" "dev" "bin" ];
