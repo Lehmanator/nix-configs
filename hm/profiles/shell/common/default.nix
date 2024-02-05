@@ -10,6 +10,7 @@
     ./alias.nix
     #./audio.nix
     #./colors.nix
+    ./fetchers.nix
     ./fzf.nix
     ./ls.nix
     ./navi.nix
