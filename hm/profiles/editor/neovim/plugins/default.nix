@@ -4,6 +4,7 @@
     ./auto-session.nix #     # Auto save/restore Vim sessions
     ./barbar.nix #           # Status bar
     ./comment-nvim.nix #     #
+    ./cursorline.nix #       # Cursor line/word highlight
     ./dap.nix #              # Diagnostics
     ./dashboard.nix #        # Startup screen
     ./emmet.nix #            # HTML tags
@@ -24,7 +25,6 @@
     ./nvim-bqf.nix #         #
     ./nvim-cmp.nix #         # Completion engine
     ./nvim-colorizer.nix #   # Color highlighter
-    ./nvim-cursorline.nix #  # Cursor line/word highlight
     #./nvim-lightbulb.nix #  # Code Actions
     ./nvim-tree.nix #        # File tree
     ./nvim-ufo.nix #         # Code folding UI
