@@ -10,11 +10,13 @@
     ./alias.nix
     #./audio.nix
     #./colors.nix
+    ./direnv.nix
     ./fetchers.nix
     ./fzf.nix
     ./ls.nix
     ./navi.nix
     #./readline.nix
+    ./starship.nix
     ./tmux.nix
     ../../docs
     ../../pager
@@ -26,29 +28,9 @@
   };
 
   # TODO: Move to separate file
-  programs.direnv = {
-    enable = true;
-    nix-direnv.enable = true;
-    config = {
-      global = {load_dotenv = true;};
-      whitelist = {
-        prefix = [
-          "/home/${user}/Code/Lehmanator" # Trust my personal projects
-          "/home/${user}/Code/forks" # # Trust projects I'm forking
-        ]; # "${config.xdg.userDirs.custom.}";
-        exact = [
-          "/home/${user}/.config/nixos/.envrc" # Trust NixOS config repo
-        ];
-      };
-    };
-  };
-
   programs.command-not-found.enable = !config.programs.direnv.enable;
   services.lorri.enable = !config.programs.direnv.nix-direnv.enable;
-  programs.starship = {
-    enable = true;
-    enableTransience = true;
-  };
+
   home.packages = [
     pkgs.cmatrix # Cool matrix screensaver program
     pkgs.figlet # Print ASCII art text
