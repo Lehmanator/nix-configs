@@ -3,7 +3,30 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+# https://github.com/unixorn/awesome-zsh-plugins
+# http://strcat.de/zsh/#tipps
+# TODO: [fast-syntax-highlighting](https://github.com/zdharma-continuum/fast-syntax-highlighting/)
+# TODO: https://github.com/chrissicool/zsh-256color
+# TODO: https://github.com/hchbaw/auto-fu.zsh
+# TODO: https://github.com/kalsowerus/zsh-bitwarden
+# TODO: https://github.com/bartboy011/cd-reminder
+# TODO: https://github.com/ael-code/zsh-colored-man-pages
+# TODO: https://github.com/zuxfoucault/colored-man-pages_mod
+# https://github.com/Tarrasch/zsh-colors
+# https://github.com/zpm-zsh/colors
+# https://github.com/zpm-zsh/colorize
+# https://github.com/rutchkiwi/copyzshell
+# https://github.com/anatolykopyl/doas-zsh-plugin
+# https://github.com/Senderman/doas-zsh-plugin # Equiv for sudo?
+# https://github.com/mroth/evalcache
+# https://github.com/gmatheu/shell-plugins # Explain-shell
+# https://github.com/QuarticCat/zsh-fastcache
+# https://github.com/smeagol74/zsh-fzf-pass
+# https://github.com/micakce/fzf-it
+# https://github.com/tom-power/fzf-tab-widgets
+# https://github.com/zsh-users/zsh-completions
+{
   programs.zsh = {
     prezto = {
       enable = false;
@@ -38,13 +61,21 @@
     };
 
     # TODO: Fetch plugins using nvfetcher & nixpkgs overlay ?
+    # TODO: Use plugins from nixpkgs?
     plugins = [
+      {
+        name = "fzf-tab";
+        src = pkgs.fetchFromGitHub {
+          owner = "Aloxaf";
+          repo = "fzf-tab";
+          rev = "b06e7574577cd729c629419a62029d31d0565a7a";
+          hash = "sha256-ilUavAIWmLiMh2PumtErMCpOcR71ZMlQkKhVOTDdHZw=";
+        };
+        file = "zsh/fzf-tab-completion.sh";
+      }
       #pkgs.zsh-fzf-tab
-
-      # Use ZSH inside nix-shell
-      #{name="zsh-nix-shell"; file="nix-shell.plugin.zsh"; src=pkgs.fetchFromGitHub {owner="chisui"; repo="zsh-nix-shell"; rev="v0.7.0"; hash="sha256-oQpYKBt0gmOSBgay2HgbXiDoZo5FoUKwyHSlUrOAP5E=";}; }
     ];
   };
 
-  home.packages = [ pkgs.zsh-fzf-tab ];
+  home.packages = [pkgs.zsh-fzf-tab];
 }
