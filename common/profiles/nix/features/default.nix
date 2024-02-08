@@ -1,20 +1,21 @@
-{ lib, config, pkgs, ... }:
 {
+  lib,
+  config,
+  pkgs,
+  ...
+}: {
   imports = [
+    ./auto-allocate-uids.nix
     ./ca-derivations.nix
+    ./cgroups.nix
+    #./dynamic-derivations.nix
     ./flakes.nix
     ./impure-derivations.nix
     ./recursive-nix.nix
   ];
 
   nix.settings = {
-    #auto-allocate-uids = lib.mkDefault pkgs.stdenv.isLinux;
-    #experimental-features = lib.mkIf pkgs.stdenv.isLinux [ "auto-allocate-uids" "cgroups" ];
-    extra-experimental-features = [
-      "fetch-closure"
-      "parse-toml-timestamps"
-      "read-only-local-store"
-    ];
+    extra-experimental-features = ["fetch-closure" "parse-toml-timestamps" "read-only-local-store"];
   };
 
   # --- Experimental Features ---
