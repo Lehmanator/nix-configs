@@ -33,6 +33,9 @@
   services.lorri.enable = !config.programs.direnv.nix-direnv.enable;
 
   home.packages = [
+    #pkgs.uutils-coreutils #        # Rust rewrite of GNU coreutils WITH prefix
+    pkgs.uutils-coreutils-noprefix # Rust rewrite of GNU coreutils WITHOUT prefix
+
     pkgs.cmatrix # Cool matrix screensaver program
     pkgs.figlet # Print ASCII art text
     pkgs.nix-zsh-completions # Completions for Nix, NixOS, NixOps, & ecosystem
