@@ -1,20 +1,27 @@
-{ inputs, config, lib, pkgs, ... }:
 {
-  imports = [ ];
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+# Use Nix package manager package with builtin flakes support
+{
   nix = {
-    # Use Nix package manager package with builtin flakes support
-    package = lib.mkDefault pkgs.nixFlakes; #pkgs.nixFlakes; #(nixUnstable for use-xdg-base-directories, nixFlakes for flakes support)
+    package = lib.mkDefault pkgs.nixUnstable;
     settings = {
       accept-flake-config = true;
-      experimental-features = [ "nix-command" "flakes" "repl-flake" ];
+      experimental-features = ["nix-command" "flakes" "repl-flake"];
       #use-flake-registry = true; #config.nix.settings.use-registries;
     };
   };
 
   environment = {
-    sessionVariables = let flakeDir = "~/.config/nixos"; in {
-      NIX_FLAKE_SYSTEM = lib.mkDefault flakeDir;
-      NIX_FLAKE_HOME = lib.mkDefault flakeDir;
+    sessionVariables = let
+      flakeDir = "$HOME/.config/nixos";
+    in {
+      NIX_BIN_DIR = "${config.nix.package}/bin";
+      FLAKE_SYSTEM = lib.mkDefault flakeDir;
+      FLAKE_HOME = lib.mkDefault flakeDir;
     };
 
     shellAliases = {
@@ -35,17 +42,16 @@
       nf-update = "nix flake update";
 
       # --- Flake Dirs ---
-      cfgd = "cd $NIX_FLAKE_SYSTEM";
-      flakeDir = "echo $NIX_FLAKE_SYSTEM";
-      flake-dir-system = "echo $NIX_FLAKE_SYSTEM";
-      flake-dir-home = "echo $NIX_FLAKE_HOME";
-      flake-cd-system = "cd $NIX_FLAKE_SYSTEM";
-      flake-cd-home = "cd $NIX_FLAKE_HOME";
-      nf-dir-system = "echo $NIX_FLAKE_SYSTEM";
-      nf-dir-home = "echo $NIX_FLAKE_HOME";
-      nf-cd-system = "cd $NIX_FLAKE_SYSTEM";
-      nf-cd-home = "cd $NIX_FLAKE_HOME";
+      cfgd = "cd $FLAKE_SYSTEM";
+      flakeDir = "echo $FLAKE_SYSTEM";
+      flake-dir-system = "echo $FLAKE_SYSTEM";
+      flake-dir-home = "echo $FLAKE_HOME";
+      flake-cd-system = "cd $FLAKE_SYSTEM";
+      flake-cd-home = "cd $FLAKE_HOME";
+      nf-dir-system = "echo $FLAKE_SYSTEM";
+      nf-dir-home = "echo $FLAKE_HOME";
+      nf-cd-system = "cd $FLAKE_SYSTEM";
+      nf-cd-home = "cd $FLAKE_HOME";
     };
   };
-
 }
