@@ -16,6 +16,7 @@
     ./ls.nix
     ./navi.nix
     #./readline.nix
+    ./ripgrep.nix
     ./starship.nix
     ./tmux.nix
     ../../docs
