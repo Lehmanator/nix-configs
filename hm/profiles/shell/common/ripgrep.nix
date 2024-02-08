@@ -6,9 +6,7 @@
 }: {
   programs.ripgrep = {
     enable = true;
-
-    # ripgrep w/ support: PDFs, eBooks, Office docs, zip, tarballs, & more
-    package = pkgs.ripgrep-all;
+    package = pkgs.ripgrep;
 
     # See: https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md#configuration-file
     arguments = [
@@ -46,8 +44,9 @@
   };
 
   home.packages = [
-    pkgs.vgrep # # Pager for grep / git-grep / ripgrep
     pkgs.repgrep # Interactive replacer for ripgrep
+    pkgs.ripgrep-all # ripgrep support: PDFs, eBooks, Office docs, zip, tarballs, & more
+    pkgs.vgrep # # Pager for grep / git-grep / ripgrep
   ];
 }
 # TODO: Create ./grep.nix with other grepper packages:
