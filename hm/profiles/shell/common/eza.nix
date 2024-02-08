@@ -1,16 +1,12 @@
 {
-  inputs,
-  config,
   lib,
   pkgs,
   ...
-}: let
-  program = "eza";
-  readable = {
-    size = true;
-    date = true;
-    perms = true;
-  };
+}:
+# TODO: Create separate nixosModule / hmModule with these options.
+# - Use option values to set config for all ls programs. `programs.ls = {}`
+# - Use `programs.ls.alias="eza"` to set `programs.eza.enableAliases=true`
+let
   sort = {
     dirs = "first";
     field = "name";
@@ -31,56 +27,38 @@
     links = true;
     symlinks = true;
     total = true;
+    hyperlink = true;
   };
 in {
-  # Sort Fields:
-  # Exa: accessed, changed, created, e|Extension, inode, modified, n|Name, size, type, none (Caps sort upper before lower)
-  # Lsd:                               extension,            time,   name, size, version
-
-  # Time Fields:
-  # Exa: modified, changed, accessed, and created
-  # Lsd:
-
-  # Exa Time Styles: default, iso, long-iso, full-iso
-  # Lsd:
-
-  # Toggle Opts:
-  # Exa:  always, never, automatic
-  # Lsd:  always, never, auto
-
-  # Blocks:
-  # Exa: permissions, size, user, date, name
-  # Lsd: permissions, user, group, size, date, name
-  # --- eza ---
   programs.eza = {
     enable = true;
-    enableAliases = program == "eza";
-    git = show.git;
-    icons = show.icons;
-    extraOptions = [
-      "--level=${builtins.toString view.depth}"
-      "--hyperlink"
-      (
-        if show.headers
-        then "--header"
-        else " "
-      )
-      #(
-      #  if show.color
-      #  then "--color-scale=gradient"
-      #  else ""
-      #)
-      #(if show.classify then "--classify"                else "")
-      (
-        if sort.ignored
-        then "--git-ignore"
-        else ""
-      )
-      (
-        if sort.dirs == "first"
-        then "--group-directories-first"
-        else ""
-      )
-    ];
+    enableAliases = true;
+    inherit (show) git icons;
+    extraOptions =
+      ["--level=${builtins.toString view.depth}"]
+      ++ lib.optional show.hyperlink "--hyperlink"
+      ++ lib.optional show.headers "--header"
+      ++ lib.optional sort.ignored "--git-ignore"
+      ++ lib.optional (sort.dirs == "first") "--group-directories-first"
+      #++ lib.optional classify "--classify"
+      #++ lib.optional color "--color-scale=gradient"
+      ;
   };
 }
+#readable = { size = true; date = true; perms = true; };
+# --- Sort Fields ---
+# eza: accessed, changed, created, e|Extension, inode, modified, n|Name, size, type, none (Caps sort upper before lower)
+# lsd:                               extension,            time,   name, size, version
+# --- Time Fields ---
+# eza: modified, changed, accessed, and created
+# lsd:
+# --- Time Styles ---
+# eza: default, iso, long-iso, full-iso
+# lsd:
+# --- Toggle Opts ---
+# exa:  always, never, automatic
+# lsd:  always, never, auto
+# --- Blocks ---
+# exa: permissions, size, user, date, name
+# lsd: permissions, user, group, size, date, name
+# pls:
