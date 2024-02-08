@@ -100,6 +100,7 @@
         #inputs.proc-flake.flakeModule
         inputs.std.flakeModule
         inputs.treefmt-nix.flakeModule
+        ./shells/nixos.nix
       ];
       # TODO: Restructure dirs
       #ezConfigs = {
@@ -141,6 +142,9 @@
           package = pkgs.rage;
           #installationScript = null;
         };
+
+        #devshells.default = config.devshells.nixos;
+
         pre-commit = {
           check.enable = true;
           #devShell = null;
