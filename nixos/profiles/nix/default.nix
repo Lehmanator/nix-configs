@@ -1,22 +1,23 @@
 {
-  config,
+  inputs,
   lib,
-  pkgs,
   ...
 }: {
   imports = [
-    ./activation-script.nix
+    #./activation-script.nix
     ./cachix.nix
     ./shell.nix
 
     #../../common/nix
     #../../linux/nix
-
     #./ssh-serve-store.nix
   ];
 
-  #nix = { };
-  nix.settings.nix-path = lib.mkBefore "nixpkgs=/etc/nix/inputs/nixpkgs";
+  # Set NIX_PATH to contain all my flake inputs (with nixpkgs & config sorted first)
+  nix.settings.nix-path = with lib.lists;
+    lib.intersperse ":" (builtins.map (i: "${i}=/etc/nix/inputs/${i}")
+      (["nixpkgs" "self"]
+        ++ (remove "nixpkgs" (remove "self" (builtins.attrNames inputs)))));
 
   environment = {
     extraOutputsToInstall = ["bin"]; # [ "doc" "info" "devdoc" "dev" "bin" ];
