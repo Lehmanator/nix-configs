@@ -31,12 +31,16 @@
         #};
       };
       flake = let
-        mkSystem = host: args:
+        mkSystem = {
+          host,
+          system ? "x86_64-linux",
+          user ? "sam",
+          ...
+        } @ args:
           inputs.nixpkgs.lib.nixosSystem (rec {
-              system = "x86_64-linux";
+              inherit system;
               specialArgs = {
-                inherit inputs;
-                user = "sam";
+                inherit inputs user;
                 # Instantiate all instances of nixpkgs in flake.nix to avoid creating new nixpkgs instances
                 # for every `import nixpkgs` call within submodules/subflakes. Saves time & RAM.
                 #  See:
@@ -65,11 +69,12 @@
               };
               modules = [./nixos/hosts/${host}];
             }
-            // args); # mapPopsExports pops // { inherit pops;
+            // args);
       in {
+        overlays = import ./nixos/overlays;
         nixosConfigurations = {
-          fw = mkSystem "fw" {};
-          wyse = mkSystem "wyse" {};
+          fw = mkSystem {host = "fw";};
+          wyse = mkSystem {host = "wyse";};
           #installer = nixos.lib.nixosSystem {
           #  specialArgs = { inherit inputs; user = "sam"; };
           #  modules = [ ./profiles/nixos/installer ];
@@ -127,8 +132,6 @@
         #    extraSpecialArgs = { inherit inputs; user = "guest"; };
         #  };
         #};
-
-        overlays = import ./nixos/overlays;
 
         #pops = {
         #  nixosModules = inputs.omnibus.pops.nixosModules.addLoadExtender {
