@@ -20,25 +20,9 @@
         final,
         ...
       }: {
-        #_module.args.pkgs = import nixpkgs {
-        #  inherit system;
-        #  config = {allowUnfree = true;};
-        #  overlays = [
-        #    inputs.nixpkgs-gnome-mobile.overlays.default
-        #    #(import ./nixos/overlays/gnome-mobile)
-        #  ];
-        #};
-        #apps = {inherit (config.packages) default;};
-        #overlayAttrs = { inherit (config.packages) gnome-shell-mobile gnome-shell-mobile-devel mutter-mobile mutter-mobile-devel ; };
         packages = {
-          #inherit (config.devshells) default;
-          #inherit
-          #  (pkgs)
-          #  gnome-shell-modile
-          #  gnome-shell-mobile-devel
-          #  mutter-mobile
-          #  mutter-mobile-devel
-          #  ;
+          inherit (inputs.disko.packages.${system}) disko disko-doc;
+          #fajita-images = self.flake.nixosConfigurations.fajita.config.mobile.outputs.android-fastboot-images;
         };
         #pops.omnibus = inputs.omnibus.pops.self.addLoadExtender {
         #  load.inputs = {
@@ -47,14 +31,11 @@
         #};
       };
       flake = let
-        #inherit (inputs.nixpkgs) lib;
-        #inherit (inputs.omnibus.lib.omnibus) mapPopsExports;
         mkSystem = host: args:
           inputs.nixpkgs.lib.nixosSystem (rec {
               system = "x86_64-linux";
               specialArgs = {
                 inherit inputs;
-                test = true;
                 user = "sam";
                 # Instantiate all instances of nixpkgs in flake.nix to avoid creating new nixpkgs instances
                 # for every `import nixpkgs` call within submodules/subflakes. Saves time & RAM.
@@ -104,11 +85,6 @@
                 _module.args = {
                   inherit inputs;
                   user = "sam";
-                  #pkgs = import inputs.nixos {
-                  #  system = "aarch64-linux";
-                  #  config = {allowUnfree = true;};
-                  #  overlays = [inputs.nixpkgs-gnome-mobile.overlays.default];
-                  #};
                 };
               }
               (import "${inputs.mobile-nixos}/lib/configuration.nix" {
@@ -129,11 +105,6 @@
                 _module.args = {
                   inherit inputs;
                   user = "sam";
-                  #pkgs = import inputs.nixos {
-                  #  system = "aarch64-linux";
-                  #  config = {allowUnfree = true;};
-                  #  overlays = [inputs.nixpkgs-gnome-mobile.overlays.default];
-                  #};
                 };
               }
               (import "${inputs.mobile-nixos}/lib/configuration.nix" {
@@ -150,17 +121,6 @@
         #    modules = [ ./hm/users/sam ];
         #    extraSpecialArgs = { inherit inputs; user = "sam"; };
         #  };
-        #  sammy = inputs.home.lib.homeManagerConfiguration {
-        #    pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        #    extraSpecialArgs = { inherit inputs; user = "sammy"; };
-        #    modules = [
-        #      ({ inputs, user, config, lib, pkgs, osConfig, modulesPath, ... }: {
-        #        home.stateVersion = "24.05";
-        #        home.username = "sammy";
-        #        home.homeDirectory = "/home/sammy";
-        #      })
-        #    ];
-        #  };
         #  guest = inputs.home.lib.homeManagerConfiguration {
         #    pkgs = nixpkgs.legacyPackages.x86_64-linux;
         #    #modules = [./hm/users/default];
@@ -169,11 +129,6 @@
         #};
 
         overlays = import ./nixos/overlays;
-        #packages = forAllSystems (s: {
-        #  fajita-images = inputs.self.nixosConfigurations.fajita.config.mobile.outputs.android-fastboot-images;
-        #});
-        #packages.x86_64-linux.fajita-fastboot-images =
-        #  inputs.self.nixosConfigurations.fajita.config.mobile.outputs.android.android-fastboot-images;
 
         #pops = {
         #  nixosModules = inputs.omnibus.pops.nixosModules.addLoadExtender {
@@ -203,25 +158,10 @@
         #  #});
         #};
       };
-      #// inputs.flake-utils.lib.eachDefaultSystem (system: let
-      #  #pkgs=inputs.nixpkgs.legacyPackages.${system};
-      #  pkgs = import inputs.nixpkgs {
-      #    inherit system;
-      #    overlays = [ self.overlays.gnome-mobile ];
-      #  };
-      #in {
-      #  packages = {
-      #    gnome-shell-mobile = pkgs.gnome-shell-mobile;
-      #    gnome-shell-mobile-devel = pkgs.gnome-shell-mobile-devel;
-      #    mutter-mobile = pkgs.mutter-mobile;
-      #    mutter-mobile-devel = pkgs.mutter-mobile-devel;
-      #  };
-      #});
     };
 
   # --- Disko ---
   # TODO: [Disko UI](https://gist.github.com/Mic92/b5b592c0c33d720cb07a070cb8911588)
-  #
   # TODO: [Disko `nix run`](https://github.com/nix-community/disko/pull/78)
   #
   # Write disk by running command:
