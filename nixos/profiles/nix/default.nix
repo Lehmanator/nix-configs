@@ -6,6 +6,7 @@
   imports = [
     #./activation-script.nix
     ./cachix.nix
+    ./nom.nix
     ./shell.nix
 
     #../../common/nix
