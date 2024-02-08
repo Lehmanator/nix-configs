@@ -19,11 +19,11 @@
       };
       settings.formatter = {
         nixpkgs-fmt.includes = [
-          #"./darwin/packages"
-          #"./hm/packages"
-          "./nixos/packages"
+          #"../darwin/packages"
+          #"../hm/packages"
+          "../nixos/packages"
         ];
-        nixfmt.excludes = [".nixos/packages"];
+        nixfmt.excludes = ["../nixos/packages" "../cells"];
       };
     };
   };

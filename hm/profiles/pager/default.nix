@@ -32,7 +32,13 @@
 
       # Note: bat uses sublime syntax for its themes.
       # Note: OneHalfDark & OneHalfLight change gutter foreground color
-      themes = {ansi-improved = builtins.readFile ./ansi-improved.tmTheme;};
+      themes = {
+        ansi-improved = {
+          src = ./.;
+          file = "ansi-improved.tmTheme";
+        };
+        #ansi-improved = builtins.readFile ./ansi-improved.tmTheme;
+      };
     };
     zsh.shellGlobalAliases = {
       BAT = "| bat";

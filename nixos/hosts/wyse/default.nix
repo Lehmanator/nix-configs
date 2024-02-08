@@ -14,7 +14,8 @@
     #./displays.nix # Handles hardware peripherals for external & internal displays
     #./managed.nix # Include configuration managed by apps: nixos-conf-editor & nix-software-center
 
-    (modulesPath + "/installer/scan/not-detected.nix")
+    nixos.nixosModules.notDetected
+    #(modulesPath + "/installer/scan/not-detected.nix")
     disko.nixosModules.disko
     srvos.nixosModules.desktop
     #srvos.nixosModules.mixins-nix-experimental

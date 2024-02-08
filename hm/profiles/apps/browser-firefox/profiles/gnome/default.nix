@@ -1,23 +1,22 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-let
-  isGnome = config.gtk.enable;
-in
 {
+  inputs,
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  isGnome = config.gtk.enable;
+in {
   # TODO: Recursively merge & override the default profile.
   programs.firefox.profiles.gnome = lib.mkIf isGnome {
     name = "GNOME";
-    isDefault = true; #config.services.xserver.;
+    isDefault = true; # config.services.xserver.;
     package = pkgs.firefox.override {
-      cfg.enableGnomeExtensions = true;
-      cfg.enableTridactylNative = true;
+      nativeMessagingHosts = [pkgs.tridactyl-native pkgs.gnome-browser-connector];
     };
 
-    extensions = #with inputs.nur.repos.rycee.firefox-addons; [
+    extensions =
+      # with inputs.nur.repos.rycee.firefox-addons; [
       with pkgs.nur.repos.rycee.firefox-addons; [
         gnome-shell-integration
         gsconnect
@@ -55,11 +54,8 @@ in
   };
 
   home.packages = [
-
     # https://github.com/rafaelmardojai/firefox-gnome-theme
     # TODO: Import this in userChrome / userContent
     pkgs.nur.repos.federicoschonborn.firefox-gnome-theme
-
   ];
-
 }

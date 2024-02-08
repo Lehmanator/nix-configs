@@ -1,12 +1,16 @@
-{ lib, ... }: {
-  generate-host-rules = { config, user, ... }: lib.generators.toYAML {
-    # sops decryption key list
-    keys = [
-      # HostKey: SSH RSA     -> GPG key      (ssh-to-pgg) -> GPG fingerprint
-      # HostKey: SSH ed25519 -> age key pair (ssh-to-age) -> age public key
-    ];
-    creation_rules =
-      let
+{lib, ...}: {
+  generate-host-rules = {
+    config,
+    user,
+    ...
+  }:
+    lib.generators.toYAML {
+      # sops decryption key list
+      keys = [
+        # HostKey: SSH RSA     -> GPG key      (ssh-to-pgg) -> GPG fingerprint
+        # HostKey: SSH ed25519 -> age key pair (ssh-to-age) -> age public key
+      ];
+      creation_rules = let
         configuration-types = [
           "common"
           "darwin"
@@ -27,8 +31,8 @@
         # Legal Paths:
         # Path words can start with a dot if len>1: `.hidden.file`
         #
-        regex-filename-prefix = "(\.?(([a-z]|[A-Z]|[0-9])+[|\.-_]?)+)?";
-        configurations-regex = "(" + (lib.lists.concatStringsSep "|" configuration-types) + ")";
+        regex-filename-prefix = "(.?(([a-z]|[A-Z]|[0-9])+[|.-_]?)+)?";
+        configurations-regex = "(${lib.lists.concatStringsSep "|" configuration-types})";
         file-extensions = [
           "asc"
           "auth.*"
@@ -50,25 +54,24 @@
           "toml"
           "yaml"
         ];
-        regex-extension = "(" + (lib.lists.concatStringsSep "|" file-extensions) + ")$";
-        regex-path-word = "[^/]+";
-        regex-filename = regex-path-word + "\." + regex-extension;
-        regex-nested-dirs = "(" + regex-path-word + "/)+";
-        regex-filepath-flat = regex-path-word + "/" + regex-filename;
-        regex-filepath-nested = regex-nested-dirs + "/" + regex-filename;
-        path-filename-regex = regex-path-word + "/" + regex-path-word + "\." + regex-extension;
-        path-subdir-regex = "(" + path-word-regex + "/)+";
-        path-nested-file-regex = path-subdir-regex + "/" + path-filename-regex;
-        path-single-dir-file-regex = "path
-        file-path-subdir-regex = "(" + path-word-regex + "/)+";
-        file-path-regex = file-path-subdir-regex + path-word-regex + "\." + file-extensions-regex + "$";
-        secret-path-host-shared = configurations-regex + "/secrets/" + file-path-regex;
-        secret-path-host-profile = configurations-regex + "/(profiles|suites)/" + file-path-regex;
-      in
-      [
+        #regex-extension = "(" + (lib.lists.concatStringsSep "|" file-extensions) + ")$";
+        #regex-path-word = "[^/]+";
+        #regex-filename = regex-path-word + "\." + regex-extension;
+        #regex-nested-dirs = "(" + regex-path-word + "/)+";
+        #regex-filepath-flat = regex-path-word + "/" + regex-filename;
+        #regex-filepath-nested = regex-nested-dirs + "/" + regex-filename;
+        #path-filename-regex = regex-path-word + "/" + regex-path-word + "\." + regex-extension;
+        #path-subdir-regex = "(" + path-word-regex + "/)+";
+        #path-nested-file-regex = path-subdir-regex + "/" + path-filename-regex;
+        #path-single-dir-file-regex = "path";
+        #file-path-subdir-regex = "(" + path-word-regex + "/)+";
+        #file-path-regex = file-path-subdir-regex + path-word-regex + "\." + file-extensions-regex + "$";
+        #secret-path-host-shared = configurations-regex + "/secrets/" + file-path-regex;
+        #secret-path-host-profile = configurations-regex + "/(profiles|suites)/" + file-path-regex;
+      in [
         {
-          path_regex = "(common|darwin|droid|nixos|robotnix|wsl)/secrets(/[^/]+)+\.(ya?ml|json|env|ini|bin|.*key|luks|asc|pem|.*ce?rt)$";
+          path_regex = "(common|darwin|droid|nixos|robotnix|wsl)/secrets(/[^/]+)+.(ya?ml|json|env|ini|bin|.*key|luks|asc|pem|.*ce?rt)$";
         }
       ];
-  };
+    };
 }

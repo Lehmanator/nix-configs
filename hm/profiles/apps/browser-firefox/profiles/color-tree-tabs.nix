@@ -1,10 +1,10 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-let
+{
+  inputs,
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   isGnome = config.gtk.enable;
 
   gnome-theme = builtins.fetchGit {
@@ -27,21 +27,22 @@ let
     url = "https://github.com/MrOtherGuy/firefox-csshacks";
     rev = "67a9e9f9c96e6d007b4c57f1dd7eaceaee135178";
   };
-in
-{
+in {
   # TODO: Recursively merge & override the default profile.
   programs.firefox.profiles.colors = lib.mkIf isGnome {
     name = "Colors";
-    isDefault = true; #config.services.xserver.;
+    isDefault = true; # config.services.xserver.;
     package = pkgs.firefox.override {
-      cfg.enableGnomeExtensions = true;
-      cfg.enableTridactylNative = true;
+      nativeMessagingHosts = [pkgs.tridactyl-native pkgs.gnome-browser-connector];
     };
 
     # --- Extensions ---
     # Sidebery
     # https://addons.mozilla.org/en-US/firefox/addon/adaptive-tab-bar-colour
-    extensions = with pkgs.nur.repos.rycee.firefox-addons; [ gnome-shell-integration gsconnect ];
+    extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+      gnome-shell-integration
+      gsconnect
+    ];
 
     # --- Settings ---
     # TODO: Load sidebery-data.json into Sidebery extension settings.
@@ -95,15 +96,11 @@ in
     userContent = ''
       @import url(${gnome-theme}/userContent.css);
     '';
-
   };
 
   home.packages = [
-
     # https://github.com/rafaelmardojai/firefox-gnome-theme
     # TODO: Import this in userChrome / userContent
     pkgs.nur.repos.federicoschonborn.firefox-gnome-theme
-
   ];
-
 }
