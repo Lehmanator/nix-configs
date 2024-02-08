@@ -46,13 +46,14 @@ in {
     devshells.nixos = {
       devshell = {
         name = "nixos";
+        # TODO: Use figlet
         motd = ''
 
-          ╭──────────────────────────────────────────────────────────╮
-          │                                                          │
-          │ {202} 🔨   Welcome to Lehmanator's NixOS configuration shell{reset}  │
-          │                                                          │
-          ╰──────────────────────────────────────────────────────────╯
+          ╭───────────────────────────────────────────────────────────╮
+          │                                                           │
+          │ {202} 🔨   Welcome to Lehmanator's NixOS configuration shell!{reset}  │
+          │                                                           │
+          ╰───────────────────────────────────────────────────────────╯
           $(type -p menu &>/dev/null && menu)
         '';
         startup = {
@@ -114,6 +115,12 @@ in {
           command = "nix flake show";
         }
         {
+          name = "host-info";
+          category = "info";
+          help = "display information about your host machine";
+          command = "${lib.getExe pkgs.fastfetch}";
+        }
+        {
           name = "update flake";
           category = "update";
           help = "Update flake inputs in flake.lock";
@@ -125,10 +132,19 @@ in {
           help = "Rebuild your config & switch to it";
           command = "sudo nixos-rebuild --flake .#$(hostname) switch";
         }
+        {
+          name = "watch";
+          category = "develop";
+          help = "Watch this repository & reload on changes";
+          command = "echo 'watching...'";
+        }
       ];
       # TODO: Split packages into Nix / NixOS shells
       # TODO: Import Nix devshell in NixOS devshell
       packages = [
+        pkgs.fastfetch
+
+        # --- NixOS ---
         pkgs.rfc # Util to read RFCs from command line
         pkgs.nix-bundle # Create bundles from Nixpkgs attributes
         pkgs.nix-du # Tool to determine which gc-roots take space in Nix store.

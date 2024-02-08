@@ -6,92 +6,13 @@
     nixos,
     home,
     nur,
+    flake-parts,
     ...
-  } @ inputs: let
-    inherit (inputs.nixpkgs) lib;
-    inherit (inputs.omnibus.lib.omnibus) mapPopsExports;
-    forAllSystems = lib.genAttrs [
-      "aarch64-linux"
-      "x86_64-linux"
-      #"riscv-linux"
-      "aarch64-darwin"
-      "x86_64-darwin"
-    ];
-    #pops = {
-    #  nixosModules = inputs.omnibus.pops.nixosModules.addLoadExtender {
-    #    load = {src = ./nixos/modules;};
-    #  };
-    #  nixosProfiles = inputs.omnibus.pops.nixosProfiles.addLoadExtender {
-    #    load = {
-    #      src = ./nixos/profiles;
-    #      inputs = {inherit inputs;};
-    #    };
-    #  };
-    #  homeModules = inputs.omnibus.pops.homeProfiles.addLoadExtender {
-    #    load = {
-    #      src = ./hm/modules;
-    #      inputs = {inherit inputs;};
-    #    };
-    #  };
-    #  homeProfiles = inputs.omnibus.pops.homeProfiles.addLoadExtender {
-    #    load = {
-    #      src = ./hm/profiles;
-    #      inputs = {inherit inputs;};
-    #    };
-    #  };
-    #  omnibus = forAllSystems (system:
-    #    inputs.omnibus.pops.self.addLoadExtender {
-    #      load.inputs = {
-    #        inputs = {nixpkgs = inputs.nixpkgs.legacyPackages.${system};};
-    #      };
-    #    });
-    #};
-    mkSystem = host: args:
-      lib.nixosSystem (rec {
-          system = "x86_64-linux";
-          specialArgs = {
-            inherit inputs;
-            test = true;
-            user = "sam";
-            # Instantiate all instances of nixpkgs in flake.nix to avoid creating new nixpkgs instances
-            # for every `import nixpkgs` call within submodules/subflakes. Saves time & RAM.
-            #  See:
-            #  - https://nixos-and-flakes.thiscute.world/nixos-with-flakes/downgrade-or-upgrade-packages
-            #  - https://nixos-and-flakes.thiscute.world/nixpkgs/multiple-nixpkgs
-            pkgs-stable = import inputs.nixpkgs-stable {
-              inherit system;
-              config.allowUnfree = true;
-            };
-            pkgs-unstable = import inputs.nixpkgs-unstable {
-              inherit system;
-              config.allowUnfree = true;
-            };
-            pkgs-master = import inputs.nixpkgs-master {
-              inherit system;
-              config.allowUnfree = true;
-            };
-            pkgs-staging = import inputs.nixpkgs-staging {
-              inherit system;
-              config.allowUnfree = true;
-            };
-            pkgs-staging-next = import inputs.nixpkgs-staging-next {
-              inherit system;
-              config.allowUnfree = true;
-            };
-          };
-          modules = [./nixos/hosts/${host}];
-        }
-        // args);
-    #mapPopsExports pops
-    #// {
-    #  inherit pops;
-  in
-    inputs.flake-parts.lib.mkFlake {inherit inputs;} {
-      systems = ["x86_64-linux" "aarch64-linux" "riscv64-linux"];
+  } @ inputs:
+    flake-parts.lib.mkFlake {inherit inputs self;} {
       imports = [
         inputs.agenix-shell.flakeModules.default
-        inputs.devenv.flakeModule
-        inputs.devshell.flakeModule
+        inputs.emanote.flakeModule
         #inputs.ez-configs.flakeModule
         inputs.hercules-ci-effects.flakeModule
         inputs.nix-cargo-integration.flakeModule
@@ -100,27 +21,10 @@
         #inputs.proc-flake.flakeModule
         inputs.std.flakeModule
         inputs.treefmt-nix.flakeModule
-        ./shells/nixos.nix
+        ./shells
       ];
-      # TODO: Restructure dirs
-      #ezConfigs = {
-      #  globalArgs = {
-      #    inherit inputs;
-      #    user = "sam";
-      #  };
-      #  home = {
-      #    configurationsDirectory = "./hm/users";
-      #    modulesDirectory = "./hm/modules";
-      #  };
-      #  nixos = {
-      #    modulesDirectory = "./nixos/profiles";
-      #    configurationsDirectory = "./nixos/hosts";
-      #  };
-      #  darwin = {
-      #    modulesDirectory = "./darwin/profiles";
-      #    configurationsDirectory = "./darwin/hosts";
-      #  };
-      #};
+      systems = ["x86_64-linux" "aarch64-linux" "riscv64-linux"];
+
       agenix-shell = {
         identityPaths = ["$HOME/.ssh/id_rsa" "$HOME/.ssh/id_ed25519"];
         #secretsPath = "/run/user/$(id -u)/agenix-shell/$(git rev-parse --show-toplevel | xargs basename)";
@@ -138,12 +42,20 @@
         pkgs,
         ...
       }: {
+        apps = {inherit (config) packages;};
+        packages = {inherit (config) devshells;};
+
         agenix-shell = {
           package = pkgs.rage;
           #installationScript = null;
         };
 
-        #devshells.default = config.devshells.nixos;
+        emanote.sites.notes = {
+          basePath = "./.notes";
+          baseUrl = "notes.lehman.run";
+          layersString = ["~/Notes"];
+          prettyUrls = true;
+        };
 
         pre-commit = {
           check.enable = true;
@@ -157,8 +69,97 @@
             };
           };
         };
+        treefmt-nix = {
+          programs = {
+            nixfmt.enable = true;
+            nixpkgs-fmt.enable = true;
+          };
+          settings.formatter = {
+            nixpkgs-fmt.includes = [
+              #"./darwin/packages"
+              #"./hm/packages"
+              "./nixos/packages"
+            ];
+            nixfmt.excludes = [".nixos/packages"];
+          };
+        };
       };
-      flake =
+      flake = let
+        inherit (inputs.nixpkgs) lib;
+        inherit (inputs.omnibus.lib.omnibus) mapPopsExports;
+        forAllSystems = lib.genAttrs [
+          "aarch64-linux"
+          "x86_64-linux"
+          #"riscv-linux"
+          "aarch64-darwin"
+          "x86_64-darwin"
+        ];
+        mkSystem = host: args:
+          lib.nixosSystem (rec {
+              system = "x86_64-linux";
+              specialArgs = {
+                inherit inputs;
+                test = true;
+                user = "sam";
+                # Instantiate all instances of nixpkgs in flake.nix to avoid creating new nixpkgs instances
+                # for every `import nixpkgs` call within submodules/subflakes. Saves time & RAM.
+                #  See:
+                #  - https://nixos-and-flakes.thiscute.world/nixos-with-flakes/downgrade-or-upgrade-packages
+                #  - https://nixos-and-flakes.thiscute.world/nixpkgs/multiple-nixpkgs
+                pkgs-stable = import inputs.nixpkgs-stable {
+                  inherit system;
+                  config.allowUnfree = true;
+                };
+                pkgs-unstable = import inputs.nixpkgs-unstable {
+                  inherit system;
+                  config.allowUnfree = true;
+                };
+                pkgs-master = import inputs.nixpkgs-master {
+                  inherit system;
+                  config.allowUnfree = true;
+                };
+                pkgs-staging = import inputs.nixpkgs-staging {
+                  inherit system;
+                  config.allowUnfree = true;
+                };
+                pkgs-staging-next = import inputs.nixpkgs-staging-next {
+                  inherit system;
+                  config.allowUnfree = true;
+                };
+              };
+              modules = [./nixos/hosts/${host}];
+            }
+            // args); # mapPopsExports pops // { inherit pops;
+        #pops = {
+        #  nixosModules = inputs.omnibus.pops.nixosModules.addLoadExtender {
+        #    load = {src = ./nixos/modules;};
+        #  };
+        #  nixosProfiles = inputs.omnibus.pops.nixosProfiles.addLoadExtender {
+        #    load = {
+        #      src = ./nixos/profiles;
+        #      inputs = {inherit inputs;};
+        #    };
+        #  };
+        #  homeModules = inputs.omnibus.pops.homeProfiles.addLoadExtender {
+        #    load = {
+        #      src = ./hm/modules;
+        #      inputs = {inherit inputs;};
+        #    };
+        #  };
+        #  homeProfiles = inputs.omnibus.pops.homeProfiles.addLoadExtender {
+        #    load = {
+        #      src = ./hm/profiles;
+        #      inputs = {inherit inputs;};
+        #    };
+        #  };
+        #  omnibus = forAllSystems (system:
+        #    inputs.omnibus.pops.self.addLoadExtender {
+        #      load.inputs = {
+        #        inputs = {nixpkgs = inputs.nixpkgs.legacyPackages.${system};};
+        #      };
+        #    });
+        #};
+      in
         {
           nixosConfigurations = {
             fw = mkSystem "fw" {};
@@ -253,6 +254,26 @@
             mutter-mobile-devel = pkgs.mutter-mobile-devel;
           };
         });
+
+      # TODO: Restructure dirs
+      #ezConfigs = {
+      #  globalArgs = {
+      #    inherit inputs;
+      #    user = "sam";
+      #  };
+      #  home = {
+      #    configurationsDirectory = "./hm/users";
+      #    modulesDirectory = "./hm/modules";
+      #  };
+      #  nixos = {
+      #    modulesDirectory = "./nixos/profiles";
+      #    configurationsDirectory = "./nixos/hosts";
+      #  };
+      #  darwin = {
+      #    modulesDirectory = "./darwin/profiles";
+      #    configurationsDirectory = "./darwin/hosts";
+      #  };
+      #};
     };
 
   # --- Disko ---
@@ -377,16 +398,17 @@
     # --- Modules: Flake-parts -------------------------------------
     flake-parts.url = "github:hercules-ci/flake-parts";
     agenix-shell.url = "github:aciceri/agenix-shell";
+    emanote.url = "github:srid/emanote";
     ez-configs.url = "github:ehllie/ez-configs";
+    flake-parts-website.url = "github:hercules-ci/flake.parts-website";
 
-    #flake.parts-website.url = "github:hercules-ci/flake.parts-website";
     # https://github.com/srid/nixos-flake
     flake-root.url = "github:srid/flake-root";
     nixid.url = "github:srid/nixid";
     treefmt-nix.url = "github:numtide/treefmt-nix";
-    treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
+    #treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
     devshell.url = "github:numtide/devshell";
-    devshell.inputs.nixpkgs.follows = "nixpkgs";
+    #devshell.inputs.nixpkgs.follows = "nixpkgs";
     devenv.url = "github:cachix/devenv";
     hercules-ci-effects.url = "github:hercules-ci/hercules-ci-effects";
     nix-cargo-integration.url = "github:yusdacra/nix-cargo-integration";
