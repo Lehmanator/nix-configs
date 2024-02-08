@@ -10,92 +10,47 @@
     ...
   } @ inputs:
     flake-parts.lib.mkFlake {inherit inputs self;} {
-      imports = [
-        inputs.agenix-shell.flakeModules.default
-        inputs.emanote.flakeModule
-        #inputs.ez-configs.flakeModule
-        inputs.hercules-ci-effects.flakeModule
-        inputs.nix-cargo-integration.flakeModule
-        inputs.pre-commit-hooks-nix.flakeModule
-        #inputs.process-compose-flake.flakeModule
-        #inputs.proc-flake.flakeModule
-        inputs.std.flakeModule
-        inputs.treefmt-nix.flakeModule
-        ./shells
-      ];
+      imports = [./parts];
       systems = ["x86_64-linux" "aarch64-linux" "riscv64-linux"];
-
-      agenix-shell = {
-        identityPaths = ["$HOME/.ssh/id_rsa" "$HOME/.ssh/id_ed25519"];
-        #secretsPath = "/run/user/$(id -u)/agenix-shell/$(git rev-parse --show-toplevel | xargs basename)";
-        #secrets = {
-        #  <name> = {
-        #    file = "secrets/<name>.age";
-        #    path = "${config.agenix-shell.secretsPath}/<name>";
-        #    mode = "0400";
-        #  };
-        #};
-      };
       perSystem = {
         config,
         lib,
         pkgs,
+        system,
+        final,
         ...
       }: {
-        apps = {inherit (config) packages;};
-        packages = {inherit (config) devshells;};
-
-        agenix-shell = {
-          package = pkgs.rage;
-          #installationScript = null;
+        #_module.args.pkgs = import nixpkgs {
+        #  inherit system;
+        #  config = {allowUnfree = true;};
+        #  overlays = [
+        #    inputs.nixpkgs-gnome-mobile.overlays.default
+        #    #(import ./nixos/overlays/gnome-mobile)
+        #  ];
+        #};
+        #apps = {inherit (config.packages) default;};
+        #overlayAttrs = { inherit (config.packages) gnome-shell-mobile gnome-shell-mobile-devel mutter-mobile mutter-mobile-devel ; };
+        packages = {
+          #inherit (config.devshells) default;
+          #inherit
+          #  (pkgs)
+          #  gnome-shell-modile
+          #  gnome-shell-mobile-devel
+          #  mutter-mobile
+          #  mutter-mobile-devel
+          #  ;
         };
-
-        emanote.sites.notes = {
-          basePath = "./.notes";
-          baseUrl = "notes.lehman.run";
-          layersString = ["~/Notes"];
-          prettyUrls = true;
-        };
-
-        pre-commit = {
-          check.enable = true;
-          #devShell = null;
-          settings.hooks = {
-            # TODO: deadnix, mdl, mkdocs, nixfmt, nixpkgs-fmt, yamllint
-            actionlint = {
-              enable = true;
-              description = "GitHub Actions";
-              files = ".github/*.ya?ml$";
-            };
-          };
-        };
-        treefmt-nix = {
-          programs = {
-            nixfmt.enable = true;
-            nixpkgs-fmt.enable = true;
-          };
-          settings.formatter = {
-            nixpkgs-fmt.includes = [
-              #"./darwin/packages"
-              #"./hm/packages"
-              "./nixos/packages"
-            ];
-            nixfmt.excludes = [".nixos/packages"];
-          };
-        };
+        #pops.omnibus = inputs.omnibus.pops.self.addLoadExtender {
+        #  load.inputs = {
+        #    inputs = {nixpkgs = inputs.nixpkgs.legacyPackages.${system};};
+        #  };
+        #};
       };
       flake = let
-        inherit (inputs.nixpkgs) lib;
-        inherit (inputs.omnibus.lib.omnibus) mapPopsExports;
-        forAllSystems = lib.genAttrs [
-          "aarch64-linux"
-          "x86_64-linux"
-          #"riscv-linux"
-          "aarch64-darwin"
-          "x86_64-darwin"
-        ];
+        #inherit (inputs.nixpkgs) lib;
+        #inherit (inputs.omnibus.lib.omnibus) mapPopsExports;
         mkSystem = host: args:
-          lib.nixosSystem (rec {
+          inputs.nixpkgs.lib.nixosSystem (rec {
               system = "x86_64-linux";
               specialArgs = {
                 inherit inputs;
@@ -130,6 +85,96 @@
               modules = [./nixos/hosts/${host}];
             }
             // args); # mapPopsExports pops // { inherit pops;
+      in {
+        nixosConfigurations = {
+          fw = mkSystem "fw" {};
+          wyse = mkSystem "wyse" {};
+          #installer = nixos.lib.nixosSystem {
+          #  specialArgs = { inherit inputs; user = "sam"; };
+          #  modules = [ ./profiles/nixos/installer ];
+          #};
+          fajita = nixos.lib.nixosSystem {
+            system = "aarch64-linux";
+            specialArgs = {
+              inherit inputs;
+              user = "sam";
+            };
+            modules = [
+              {
+                _module.args = {
+                  inherit inputs;
+                  user = "sam";
+                  #pkgs = import inputs.nixos {
+                  #  system = "aarch64-linux";
+                  #  config = {allowUnfree = true;};
+                  #  overlays = [inputs.nixpkgs-gnome-mobile.overlays.default];
+                  #};
+                };
+              }
+              (import "${inputs.mobile-nixos}/lib/configuration.nix" {
+                device = "oneplus-fajita";
+              })
+              ./nixos/hosts/fajita
+              inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
+            ];
+          };
+          fajita-minimal = nixos.lib.nixosSystem {
+            system = "aarch64-linux";
+            specialArgs = {
+              inherit inputs;
+              user = "sam";
+            };
+            modules = [
+              {
+                _module.args = {
+                  inherit inputs;
+                  user = "sam";
+                  #pkgs = import inputs.nixos {
+                  #  system = "aarch64-linux";
+                  #  config = {allowUnfree = true;};
+                  #  overlays = [inputs.nixpkgs-gnome-mobile.overlays.default];
+                  #};
+                };
+              }
+              (import "${inputs.mobile-nixos}/lib/configuration.nix" {
+                device = "oneplus-fajita";
+              })
+              ./nixos/hosts/fajita/minimal.nix
+              inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
+            ];
+          };
+        };
+        #homeConfigurations = {
+        #  sam = inputs.home.lib.homeManagerConfiguration {
+        #    #pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        #    modules = [ ./hm/users/sam ];
+        #    extraSpecialArgs = { inherit inputs; user = "sam"; };
+        #  };
+        #  sammy = inputs.home.lib.homeManagerConfiguration {
+        #    pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        #    extraSpecialArgs = { inherit inputs; user = "sammy"; };
+        #    modules = [
+        #      ({ inputs, user, config, lib, pkgs, osConfig, modulesPath, ... }: {
+        #        home.stateVersion = "24.05";
+        #        home.username = "sammy";
+        #        home.homeDirectory = "/home/sammy";
+        #      })
+        #    ];
+        #  };
+        #  guest = inputs.home.lib.homeManagerConfiguration {
+        #    pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        #    #modules = [./hm/users/default];
+        #    extraSpecialArgs = { inherit inputs; user = "guest"; };
+        #  };
+        #};
+
+        overlays = import ./nixos/overlays;
+        #packages = forAllSystems (s: {
+        #  fajita-images = inputs.self.nixosConfigurations.fajita.config.mobile.outputs.android-fastboot-images;
+        #});
+        #packages.x86_64-linux.fajita-fastboot-images =
+        #  inputs.self.nixosConfigurations.fajita.config.mobile.outputs.android.android-fastboot-images;
+
         #pops = {
         #  nixosModules = inputs.omnibus.pops.nixosModules.addLoadExtender {
         #    load = {src = ./nixos/modules;};
@@ -152,128 +197,26 @@
         #      inputs = {inherit inputs;};
         #    };
         #  };
-        #  omnibus = forAllSystems (system:
-        #    inputs.omnibus.pops.self.addLoadExtender {
-        #      load.inputs = {
-        #        inputs = {nixpkgs = inputs.nixpkgs.legacyPackages.${system};};
-        #      };
-        #    });
+        #  #omnibus = forAllSystems (system:
+        #  #  inputs.omnibus.pops.self.addLoadExtender {
+        #  #    load.inputs = { inputs = {nixpkgs = inputs.nixpkgs.legacyPackages.${system};}; };
+        #  #});
         #};
-      in
-        {
-          nixosConfigurations = {
-            fw = mkSystem "fw" {};
-            wyse = mkSystem "wyse" {};
-            #installer = nixos.lib.nixosSystem {
-            #  specialArgs = { inherit inputs; user = "sam"; };
-            #  modules = [ ./profiles/nixos/installer ];
-            #};
-            fajita = nixos.lib.nixosSystem {
-              system = "aarch64-linux";
-              specialArgs = {
-                inherit inputs;
-                user = "sam";
-              };
-              modules = [
-                {
-                  _module.args = {
-                    inherit inputs;
-                    user = "sam";
-                  };
-                }
-                (import "${inputs.mobile-nixos}/lib/configuration.nix" {
-                  device = "oneplus-fajita";
-                })
-                ./nixos/hosts/fajita
-                inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
-              ];
-            };
-            fajita-minimal = nixos.lib.nixosSystem {
-              system = "aarch64-linux";
-              specialArgs = {
-                inherit inputs;
-                user = "sam";
-              };
-              modules = [
-                {
-                  _module.args = {
-                    inherit inputs;
-                    user = "sam";
-                  };
-                }
-                (import "${inputs.mobile-nixos}/lib/configuration.nix" {
-                  device = "oneplus-fajita";
-                })
-                ./nixos/hosts/fajita/minimal.nix
-                inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
-              ];
-            };
-          };
-          #homeConfigurations = {
-          #  sam = inputs.home.lib.homeManagerConfiguration {
-          #    #pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          #    modules = [ ./hm/users/sam ];
-          #    extraSpecialArgs = { inherit inputs; user = "sam"; };
-          #  };
-          #  sammy = inputs.home.lib.homeManagerConfiguration {
-          #    pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          #    extraSpecialArgs = { inherit inputs; user = "sammy"; };
-          #    modules = [
-          #      ({ inputs, user, config, lib, pkgs, osConfig, modulesPath, ... }: {
-          #        home.stateVersion = "24.05";
-          #        home.username = "sammy";
-          #        home.homeDirectory = "/home/sammy";
-          #      })
-          #    ];
-          #  };
-          #  guest = inputs.home.lib.homeManagerConfiguration {
-          #    pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          #    #modules = [./hm/users/default];
-          #    extraSpecialArgs = { inherit inputs; user = "guest"; };
-          #  };
-          #};
-
-          #overlays.gnome-mobile = import ./nixos/overlays/gnome-mobile;
-          #packages = forAllSystems (s: {
-          #  fajita-images = inputs.self.nixosConfigurations.fajita.config.mobile.outputs.android-fastboot-images;
-          #});
-          packages.x86_64-linux.fajita-fastboot-images =
-            inputs.self.nixosConfigurations.fajita.config.mobile.outputs.android.android-fastboot-images;
-        }
-        // inputs.flake-utils.lib.eachDefaultSystem (system: let
-          #pkgs=inputs.nixpkgs.legacyPackages.${system};
-          pkgs = import inputs.nixpkgs {
-            inherit system;
-            overlays = self.overlays.gnome-mobile;
-          };
-        in {
-          packages = {
-            gnome-shell-mobile = pkgs.gnome-shell-mobile;
-            gnome-shell-mobile-devel = pkgs.gnome-shell-mobile-devel;
-            mutter-mobile = pkgs.mutter-mobile;
-            mutter-mobile-devel = pkgs.mutter-mobile-devel;
-          };
-        });
-
-      # TODO: Restructure dirs
-      #ezConfigs = {
-      #  globalArgs = {
-      #    inherit inputs;
-      #    user = "sam";
+      };
+      #// inputs.flake-utils.lib.eachDefaultSystem (system: let
+      #  #pkgs=inputs.nixpkgs.legacyPackages.${system};
+      #  pkgs = import inputs.nixpkgs {
+      #    inherit system;
+      #    overlays = [ self.overlays.gnome-mobile ];
       #  };
-      #  home = {
-      #    configurationsDirectory = "./hm/users";
-      #    modulesDirectory = "./hm/modules";
+      #in {
+      #  packages = {
+      #    gnome-shell-mobile = pkgs.gnome-shell-mobile;
+      #    gnome-shell-mobile-devel = pkgs.gnome-shell-mobile-devel;
+      #    mutter-mobile = pkgs.mutter-mobile;
+      #    mutter-mobile-devel = pkgs.mutter-mobile-devel;
       #  };
-      #  nixos = {
-      #    modulesDirectory = "./nixos/profiles";
-      #    configurationsDirectory = "./nixos/hosts";
-      #  };
-      #  darwin = {
-      #    modulesDirectory = "./darwin/profiles";
-      #    configurationsDirectory = "./darwin/hosts";
-      #  };
-      #};
+      #});
     };
 
   # --- Disko ---

@@ -15,6 +15,6 @@
     pkgs,
     ...
   }: {
-    devshells.default = config.devshells.nixos;
+    #devshells.default = config.devshells.nixos;
   };
 }
