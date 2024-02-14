@@ -23,6 +23,23 @@
         packages = {
           inherit (inputs.disko.packages.${system}) disko disko-doc;
           #fajita-images = self.flake.nixosConfigurations.fajita.config.mobile.outputs.android-fastboot-images;
+          deploy =
+            nixpkgs.legacyPackages.${system}.writeText "cachix-deploy.json"
+            (builtins.toJSON {
+              agents =
+                inputs.nixpkgs.lib.mapAttrs
+                (host: cfg: cfg.config.system.build.toplevel)
+                (inputs.nixpkgs.lib.filterAttrs (host: cfg:
+                  cfg
+                  ? config
+                  && cfg.config ? system
+                  && cfg.config.system
+                  ? build
+                  && cfg.config.system.build ? toplevel
+                  && cfg.pkgs.stdenv.buildPlatform.system == system
+                  && cfg.config.services.cachix-agent.enable)
+                self.nixosConfigurations);
+            });
         };
         #pops.omnibus = inputs.omnibus.pops.self.addLoadExtender {
         #  load.inputs = {
@@ -35,11 +52,14 @@
           host,
           system ? "x86_64-linux",
           user ? "sam",
+          specialArgs ? {},
+          modules ? [],
           ...
         } @ args:
-          inputs.nixpkgs.lib.nixosSystem (rec {
-              inherit system;
-              specialArgs = {
+          inputs.nixpkgs.lib.nixosSystem {
+            inherit system;
+            specialArgs =
+              {
                 inherit inputs user;
                 # Instantiate all instances of nixpkgs in flake.nix to avoid creating new nixpkgs instances
                 # for every `import nixpkgs` call within submodules/subflakes. Saves time & RAM.
@@ -66,10 +86,10 @@
                   inherit system;
                   config.allowUnfree = true;
                 };
-              };
-              modules = [./nixos/hosts/${host}];
-            }
-            // args);
+              }
+              // specialArgs;
+            modules = [./nixos/hosts/${host}] ++ modules;
+          };
       in {
         overlays = import ./nixos/overlays;
         nixosConfigurations = {
@@ -208,6 +228,7 @@
     nixpkgs-staging.url = "github:NixOS/nixpkgs/staging";
     nixpkgs-staging-next.url = "github:NixOS/nixpkgs/staging-next";
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
+    nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-23.11-darwin";
     # --- System Types ---------------------------------------------
     nixos.url = "github:NixOS/nixpkgs/nixos-unstable"; # /gnome";
     nixos-stable.url = "github:NixOS/nixpkgs/nixos-23.05";
@@ -227,9 +248,19 @@
     nixos-generators.url = "github:nix-community/nixos-generators";
     nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
     # --- Image Builders: Non-Nix ----------------------------------
+    # --- Mobile ---------------------------------------------------
+    nixpkgs-gnome-mobile.url = "github:lehmanator/nixpkgs-gnome-mobile/develop";
+    nixos-mobile = {
+      url = "github:vlinkz/mobile-nixos/gnomelatest";
+      flake = false;
+    }; # url = "github:NixOS/mobile-nixos";
+    mobile-nixos = {
+      url = "github:lehmanator/mobile-nixos/update-firmware";
+      flake = false;
+    };
+    #mobile-nixos = { url = "github:NixOS/mobile-nixos/development"; flake = false; };
     # --- Extra Package Sets ---------------------------------------
     #nixpkgs-gnome.url = "github:NixOS/nixpkgs/gnome";
-    nixpkgs-gnome-mobile.url = "github:lehmanator/nixpkgs-gnome-mobile/develop";
     nixpkgs-gnome-apps.url = "github:chuangzhu/nixpkgs-gnome-apps";
     nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
     nixpkgs-android.url = "github:tadfisher/android-nixpkgs";
@@ -305,15 +336,6 @@
     # --- Modules: System ------------------------------------------
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     fprint-clear.url = "github:nixvital/fprint-clear";
-    nixos-mobile = {
-      url = "github:vlinkz/mobile-nixos/gnomelatest";
-      flake = false;
-    }; # url = "github:NixOS/mobile-nixos";
-    mobile-nixos = {
-      url = "github:lehmanator/mobile-nixos/update-firmware";
-      flake = false;
-    };
-    #mobile-nixos = { url = "github:NixOS/mobile-nixos/development"; flake = false; };
     srvos.url = "github:nix-community/srvos";
     # --- Modules: Filesystems -------------------------------------
     impermanence.url = "github:nix-community/impermanence";
