@@ -1,5 +1,11 @@
-{ inputs, lib, config, pkgs, user, ... }:
 {
+  inputs,
+  lib,
+  config,
+  pkgs,
+  user,
+  ...
+}: {
   imports = [
     inputs.agenix.nixosModules.age
     inputs.declarative-flatpak.nixosModules.declarative-flatpak
@@ -37,10 +43,10 @@
 
   sops = {
     defaultSopsFile = ./secrets/default.yaml;
-    age.sshKeyPaths = map (k: k.path) (builtins.filter (k: k.type == "ed25519") config.services.openssh.hostKeys);
-    secrets = {
-      github-token = { };
-    };
+    age.sshKeyPaths =
+      map (k: k.path) (builtins.filter (k: k.type == "ed25519")
+        config.services.openssh.hostKeys);
+    secrets = {github-token = {};};
   };
 
   services.flatpak = {
@@ -60,7 +66,7 @@
     generateNixPathFromInputs = true;
     linkInputs = true;
     settings = {
-      experimental-features = [ "nix-command" "flakes" "repl-flake" ];
+      experimental-features = ["nix-command" "flakes" "repl-flake"];
     };
   };
 
@@ -72,8 +78,18 @@
     isNormalUser = true;
     uid = 1000;
     password = "545352";
-    extraGroups = [ "dialout" "feedbackd" "networkmanager" "video" "wheel" "gdm" "flatpak" ];
-    openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB2M80EUw0wQaBNutE06VNgSViVot6RL0O6iv2P1ewWH ${user}@fw" ];
+    extraGroups = [
+      "dialout"
+      "feedbackd"
+      "networkmanager"
+      "video"
+      "wheel"
+      "gdm"
+      "flatpak"
+    ];
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB2M80EUw0wQaBNutE06VNgSViVot6RL0O6iv2P1ewWH ${user}@fw"
+    ];
   };
 
   services.openssh.enable = true;
@@ -90,11 +106,10 @@
       allowUnfree = true;
     };
     hostPlatform = "aarch64-linux";
-    overlays = [
-      inputs.fenix.overlays.default
-      inputs.nur.overlay
-    ];
+    overlays = [inputs.fenix.overlays.default inputs.nur.overlay];
   };
+  #nix.registry.self = inputs.self.outPath;
+  environment.etc."nix/inputs/self".source = inputs.self.outPath;
 
   # Reset IM_MODULE to fix on-screen keyboard
   environment.variables = {
@@ -114,7 +129,7 @@
         [org.gnome.mutter.dynamic-workspaces]
         enabled=true
       '';
-      extraGSettingsOverridePackages = [ pkgs.gnome.mutter ];
+      extraGSettingsOverridePackages = [pkgs.gnome.mutter];
     };
   };
   programs.calls.enable = true;
