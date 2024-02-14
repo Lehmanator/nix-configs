@@ -15,7 +15,7 @@
 
     # --- 3rd-Party Utils --------------------------------------------
     pkgs.cargo-about # Cargo plugin to generate list of all licenses for a crate
-    pkgs.cargo-audit # Audit Cargo.lock files for crates with security vulnerabilities
+    #pkgs.cargo-audit # Audit Cargo.lock files for crates with security vulnerabilities
     pkgs.cargo-benchcmp # A small utility to compare Rust micro-benchmarks
     pkgs.cargo-bisect-rustc # Bisects rustc, either nightlies or CI artifacts
     pkgs.cargo-bump # Increments the version number of the current project.
@@ -49,7 +49,7 @@
     pkgs.cargo-toml-lint # A simple linter for Cargo.toml manifests
     pkgs.cargo-typify # JSON Schema to Rust type converter
     pkgs.cargo-udeps # Find unused dependencies in Cargo.toml
-    pkgs.cargo-ui # A GUI for Cargo
+    #pkgs.cargo-ui # A GUI for Cargo
     pkgs.cargo-unused-features # A tool to find potential unused enabled feature flags and prune them
     pkgs.cargo-whatfeatures # A simple cargo plugin to get a list of features for a specific crate
     pkgs.cargo-workspaces # A tool for managing cargo workspaces and their crates, inspired by lerna
