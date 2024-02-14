@@ -17,7 +17,7 @@
       "--hidden"
 
       # Enable hyperlinks
-      "--hyperlink-format default" # for VSCode --hyperlink-format vscode
+      "--hyperlink-format=default" # for VSCode --hyperlink-format vscode
 
       # Prevent super long lines
       "--max-columns=150"
@@ -35,11 +35,11 @@
       # Run non-text files through preprocessor command (--pre <commandFile> --pre-glob='*.<ext>')
 
       # --- type definitions ---
-      "--type-add nix:{*.nix,flake.lock,_?sources.json}"
-      "--type-add notes:*.{org,md,markdown,txt,note}"
-      "--type-add rust:{Cargo.{lock,toml},rust-toolchain,*.{rs,rust-toolchain}}"
-      "--type-add script:*.{sh,bash,zsh,fish,py,nu}"
-      "--type-add web:*.{html,xhtml,js,jsx,mjs,css,scss,sass,tsx}"
+      "--type-add=nix:{*.nix,flake.lock,_?sources.json}"
+      "--type-add=notes:*.{org,md,markdown,txt,note}"
+      "--type-add=rust:{Cargo.{lock,toml},rust-toolchain,*.{rs,rust-toolchain}}"
+      "--type-add=script:*.{sh,bash,zsh,fish,py,nu}"
+      "--type-add=web:*.{html,xhtml,js,jsx,mjs,css,scss,sass,tsx}"
     ];
   };
 
