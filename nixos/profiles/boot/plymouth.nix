@@ -4,6 +4,7 @@
 {
   #imports = [ ./quiet.nix ];
   boot = {
+    # https://gitlab.freedesktop.org/plymouth/plymouth/-/blob/main/themes/bgrt/bgrt.plymouth.desktop?ref_type=heads
     plymouth = {
       enable = lib.mkDefault true;
       font = "${pkgs.cantarell-fonts}/share/fonts/cantarell/Cantarell-VF.otf"; #  # Console font.

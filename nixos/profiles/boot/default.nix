@@ -1,7 +1,7 @@
 { config, lib, pkgs, user, ... }:
 {
   imports = [
-    ./plymouth.nix
+    #./plymouth.nix   # TODO: Re-enable after fixing bootsplash not having LUKS unlock GUI
     ./systemd-boot.nix
     ./systemd-initrd.nix
 
