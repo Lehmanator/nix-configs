@@ -52,42 +52,42 @@
           host,
           system ? "x86_64-linux",
           user ? "sam",
-          specialArgs ? {},
+          # specialArgs ? {},
           modules ? [],
           ...
         } @ args:
-          inputs.nixpkgs.lib.nixosSystem {
+          (import ./lib/flake/lehmanatorSystem.nix {inherit inputs self;}) {
+            #inputs.nixpkgs.lib.nixosSystem {
             inherit system;
-            specialArgs =
-              {
-                inherit inputs user;
-                # Instantiate all instances of nixpkgs in flake.nix to avoid creating new nixpkgs instances
-                # for every `import nixpkgs` call within submodules/subflakes. Saves time & RAM.
-                #  See:
-                #  - https://nixos-and-flakes.thiscute.world/nixos-with-flakes/downgrade-or-upgrade-packages
-                #  - https://nixos-and-flakes.thiscute.world/nixpkgs/multiple-nixpkgs
-                pkgs-stable = import inputs.nixpkgs-stable {
-                  inherit system;
-                  config.allowUnfree = true;
-                };
-                pkgs-unstable = import inputs.nixpkgs-unstable {
-                  inherit system;
-                  config.allowUnfree = true;
-                };
-                pkgs-master = import inputs.nixpkgs-master {
-                  inherit system;
-                  config.allowUnfree = true;
-                };
-                pkgs-staging = import inputs.nixpkgs-staging {
-                  inherit system;
-                  config.allowUnfree = true;
-                };
-                pkgs-staging-next = import inputs.nixpkgs-staging-next {
-                  inherit system;
-                  config.allowUnfree = true;
-                };
-              }
-              // specialArgs;
+            specialArgs = {
+              inherit inputs user;
+              # Instantiate all instances of nixpkgs in flake.nix to avoid creating new nixpkgs instances
+              # for every `import nixpkgs` call within submodules/subflakes. Saves time & RAM.
+              #  See:
+              #  - https://nixos-and-flakes.thiscute.world/nixos-with-flakes/downgrade-or-upgrade-packages
+              #  - https://nixos-and-flakes.thiscute.world/nixpkgs/multiple-nixpkgs
+              pkgs-stable = import inputs.nixpkgs-stable {
+                inherit system;
+                config.allowUnfree = true;
+              };
+              pkgs-unstable = import inputs.nixpkgs-unstable {
+                inherit system;
+                config.allowUnfree = true;
+              };
+              pkgs-master = import inputs.nixpkgs-master {
+                inherit system;
+                config.allowUnfree = true;
+              };
+              pkgs-staging = import inputs.nixpkgs-staging {
+                inherit system;
+                config.allowUnfree = true;
+              };
+              pkgs-staging-next = import inputs.nixpkgs-staging-next {
+                inherit system;
+                config.allowUnfree = true;
+              };
+            };
+            #// specialArgs;
             modules = [./nixos/hosts/${host}] ++ modules;
           };
       in {
@@ -361,6 +361,7 @@
     scalpel.url = "github:polygon/scalpel";
     scalpel.inputs.nixpkgs.follows = "nixpkgs";
     # --- Modules: Servers -----------------------------------------
+    hercules-ci-agent.url = "github:hercules-ci/hercules-ci-agent";
     # --- Modules: Configuration -----------------------------------
     stylix.url = "github:danth/stylix";
     arkenfox.url = "github:dwarfmaster/arkenfox-nixos";
