@@ -55,6 +55,36 @@
   # --- Plugins ---
   programs.nixvim.luaLoader.enable = true; # Experimental lua loader w/ byte-compilation cache
   programs.nixvim.plugins = {
+    # +--- Nix / NixOS --------------------------------------------------------+
+    # |                                                                        |
+    # | nix-develop.nvim - Run `nix develop` without restarting Neovim.        |
+    # |                                                                        |
+    # | Repo: https://github.com/figsoda/nix-develop.nvim/                     |
+    # |                                                                        |
+    # | Commands:                                                              |
+    # | - :NixDevelop .#<devShellName> --impure                                |
+    # | - :NixShell nixpkgs#hello                                              |
+    # | - :RiffShell --project-dir foo                                         |
+    # +------------------------------------------------------------------------+
+    nix.enable = true;
+    nix-develop = {
+      enable = true;
+      #package = pkgs.vimPlugins.nix-develop-nvim;
+
+      # These attrs will be added to the table parameter for the setup function.
+      # Typically, it can override NixVim’s default settings.
+      extraOptions = {
+      };
+
+      # Env vars to ignore?
+      ignoredVariables = {};
+
+      # Env vars to split w/ separator?
+      separatedVariables = {};
+    };
+
+
+    # --- Browser ----------------------
     # Integrate browser textboxes with Neovim config
     #firenvim.enable = lib.mkDefault true;
 
