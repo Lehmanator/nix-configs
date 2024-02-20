@@ -10,6 +10,8 @@
     "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
   ];
 
+  security.sudo-rs.enable = lib.mkImageMediaOverride false;
+
   boot = {
     kernelParams = lib.mkAfter ["noquiet"];
     # TODO: installer does not support systemd initrd yet
@@ -33,6 +35,9 @@
   networking.hostName =
     lib.mkImageMediaOverride "${config.system.build.installHostname}-installer";
 
+  # TODO: Move to package file. Import here. Also import in devShell.
+  # TODO: Make pretty.
+  # TODO: Inform user about defining SYSTEM_CLOSURE, INSTALL_HOSTNAME, & lehmanator-install
   environment.systemPackages = with pkgs; [
     (writeShellApplication {
       name = "lehmanator-install";
@@ -90,4 +95,17 @@
       '';
     })
   ];
+
+  #system.build = {
+  #  installHostname = config.networking.hostName;
+  #  installClosure = config.system.build.toplevel;
+  #  installDiskoScript = config.system.build.diskoScript;
+  #  #installerSystem = installerConfiguration;
+  #  installer = let
+  #    isoName = config.isoImage.isoName;
+  #    isoPath = "${config.system.build.isoImage}/iso/${isoName}";
+  #  in
+  #    pkgs.runCommandLocal isoName {inherit isoPath;}
+  #    ''ln -s "$isoPath" $out'';
+  #};
 }
