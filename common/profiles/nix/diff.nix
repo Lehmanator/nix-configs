@@ -4,18 +4,23 @@
   pkgs,
   ...
 }: let
+  # TODO: Wrap all diff commands in pretty tables with `column` command.
+  # TODO: Enforce all columns same width.
+  #
+  # --- Diff Hook --------------------------------
+  # Runs on every activation/build?
+  # TODO: Fix build failure to encode character \9472
+  #diffHook = pkgs.writeShellApplication {
+  #  name = "pretty-nix-diff-hook";
+  #  runtimeInputs = [];
+  #  text = mkWrapper "nix-diff" "${
+  #    lib.getExe pkgs.nix-diff
+  #  } --color always --skip-already-compared --word-oriented --environment --squash-text-diff";
+  #};
+  #
+  # Wrap commands in pretty box using unicode box chars.
   mkWrapper = import ../../../lib/shell/wrap-command-box.nix {inherit pkgs;};
 in {
-  # TODO: Save state of flake config dir from last build/activation, then diff the file tree.
-  # TODO: pkgs.writeShellApplication ?
-  nix.settings = {
-    run-diff-hook = true;
-    diff-hook = "${
-      lib.getExe pkgs.nix-diff
-    } --color always --skip-already-compared --word-oriented --squash-text-diff ";
-    # mkWrapper "nix-diff"
-  };
-
   system.activationScripts = {
     diff-closures = {
       supportsDryActivation = true;
@@ -55,5 +60,21 @@ in {
     #  '';
     #};
   };
+
+  # TODO: Split activationScripts b/w system & user?
+  # TODO: Diff system environment & home-manager environment separately?
   #system.userActivationScripts.nix-diff = {};
+
+  # TODO: Save state of flake config dir from last build/activation, then diff the file tree.
+  # TODO: pkgs.writeShellApplication ?
+  #nix.settings = {
+  #  run-diff-hook = true;
+  #  diff-hook = diffHook;
+  #  # mkWrapper "nix-diff"
+  #  #''
+  #  #  ${lib.getExe pkgs.nix-diff} --color always --skip-already-compared --word-oriented --environment --squash-text-diff
+  #  #'';
+  #};
+
+  #environment.systemPackages = [diffHook];
 }
