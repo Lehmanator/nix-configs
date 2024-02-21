@@ -43,8 +43,9 @@
   imports = [
     #inputs.nixvim.homeManagerModules.nixvim
     #../editorconfig.nix
-    ./keymaps.nix
+    ./clipboard.nix
     ./colorschemes
+    ./keymaps.nix
     ./langs
     ./plugins
     ./styles

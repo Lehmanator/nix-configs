@@ -17,6 +17,7 @@
     ./hardware
     ./locale
     ./network
+    ./neovim.nix
     ./nix
     ./security
     ./shell

@@ -18,25 +18,11 @@
         pkgs,
         system,
         final,
+        inputs',
         ...
-      }: let
-        nixvimModule = {
-          inherit pkgs;
-          module = import ./profiles/nixvim;
-          extraSpecialArgs = {inherit inputs system self;};
-        };
-        neovim =
-          inputs.nixvim.legacyPackages.${system}.makeNixvimWithModule
-          nixvimModule;
-      in {
-        checks = {
-          nixvim =
-            inputs.nixvim.lib.${system}.check.mkTestDerivationFromNixvimModule
-            nixvimModule;
-        };
+      }: {
         packages = {
           inherit (inputs.disko.packages.${system}) disko disko-doc;
-          inherit neovim;
           #fajita-images = self.flake.nixosConfigurations.fajita.config.mobile.outputs.android-fastboot-images;
           deploy =
             nixpkgs.legacyPackages.${system}.writeText "cachix-deploy.json"
