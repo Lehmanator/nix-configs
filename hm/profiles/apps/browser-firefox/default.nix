@@ -1,12 +1,15 @@
-{ modulesPath
-, inputs
-, config
-, lib
-, pkgs
-, ...
-}:
 {
+  modulesPath,
+  inputs,
+  config,
+  osConfig,
+  lib,
+  pkgs,
+  ...
+}: {
   imports = [
+    #./policies.nix
+
     # --- Profiles ---
     # NOTE: Profiles should load: bookmarks, extensions, search, settings, styles, etc.
     # TODO: `./profiles/gaming.nix`
@@ -15,7 +18,6 @@
     # TODO: `./profiles/dev/app.nix`
     # TODO: `./profiles/dev/web.nix`
     ./profiles
-
 
     # --- Bookmarks ---
     # TODO: `./bookmarks/cloud.nix`                   # Bookmarks for my cloud services
@@ -32,15 +34,19 @@
   programs.firefox = {
     enable = true;
 
-    #enableGnomeExtensions = true;
-    package = if (pkgs.system != "x86_64-linux") then pkgs.firefox else inputs.flake-firefox-nightly.packages.${pkgs.system}.firefox-bin;
-    #package = pkgs.firefox.override {
-    #  cfg.enableGnomeExtensions = config.gtk.enable;  #config.services.xserver.desktopManager.gnome.enable;
-    #  cfg.enableTridactylNative = true;
-    #};
-  };
+    #finalPackage =
+    package =
+      if (pkgs.system != "x86_64-linux")
+      then
+        pkgs.firefox.override {
+          nativeMessagingHosts =
+            [pkgs.tridactyl-native]
+            ++ lib.optional osConfig.services.gnome.gnome-browser-connector.enable
+            pkgs.gnome-browser-connector;
+        }
+      else inputs.flake-firefox-nightly.packages.${pkgs.system}.firefox-bin;
 
-  home.packages = lib.mkIf config.gtk.enable [
-    #pkgs.nur.repos.federicoschonborn.firefox-gnome-theme
-  ];
+    # Deprecated
+    #enableGnomeExtensions = lib.mkIf osConfig.services.gnome.gnome-browser-connector.enable true;
+  };
 }

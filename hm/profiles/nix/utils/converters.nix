@@ -19,7 +19,7 @@
     pkgs.deadnix # Find unused code
     pkgs.dep2nix # Convert Gopkg.lock to deps.nix
     pkgs.elm2nix # Elm
-    pkgs.go2nix # Go apps packaging for Nix
+    #pkgs.go2nix # Go apps packaging for Nix (Archived upstream)
     pkgs.mix2nix # Generate Nix expressions from mix.lock
     pkgs.nc4nix # Packaging helper for Nextcloud apps
     pkgs.node2nix # Generate Nix expressions to build NPM packages

@@ -12,7 +12,7 @@
     pkgs.endeavour #   # To-do manager (https://gitlab.gnome.org/World/Endeavour)
     pkgs.formiko #     # reStructuredText editor & live preview
     pkgs.furtherance # # https://github.com/lakoliu/Furtherance
-    pkgs.gaphor #      # Simple modeling tool
+    #pkgs.gaphor #      # Simple modeling tool (broken as of 1/15/23: failing version check for dep jedi-0.19.1)
     pkgs.gnome-solanum # Pomodoro timer
     #pkgs.khronos #     # https://github.com/lainsce/khronos
     pkgs.rnote #       # Handwritten Notes (https://github.com/flxzt/rnote)
@@ -52,6 +52,9 @@
     "flathub:app/codes.loers.Punchclock//stable" #          # Punchclock   (https://gitlab.com/floers/punchclock)
     "flathub:app/com.vixalien.sticky//stable" #             # Sticky Notes (https://gitlab.com/vixalien/sticky)
     # - vNotes
+
+    # --- Diagrams ---
+    "flathub:app/org.gaphor.Gaphor//stable"
 
     # --- Health ---
     "flathub:app/io.github.diegopvlk.Dosage//stable" #      # Dosage ()

@@ -1,10 +1,13 @@
-{ self, inputs, cell
-, config, lib, pkgs
-, ...
-}:
 {
-  imports = [
-  ];
+  self,
+  inputs,
+  cell,
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
+  imports = [];
 
   programs.zsh = let
     #sudoProgram = if config.security.doas.enable then "doas" else if config.security.please.enable then "please" else "sudo";
@@ -23,10 +26,10 @@
     #  "cursor"
     #  "root"
     #];
-    #prezto.syntaxHighlighting.pattern = {
-    #  "rm*-rf*" = "fg=white,bold,bg=red";
-    #  "${sudoProgram} *" = "fg=black,bold,bg=yellow";
-    #};
+    prezto.syntaxHighlighting.pattern = {
+      "rm*-rf*" = "fg=white,bold,bg=red";
+      "${sudoProgram} *" = "fg=black,bold,bg=yellow";
+    };
     #syntaxHighlighting.styles = {
     #  builtin = "bg=blue";
     #  command = "bg=blue";
@@ -36,7 +39,5 @@
     syntaxHighlighting.enable = true;
     #syntaxHighlighting.package = pkgs.zsh-fast-syntax-highlighting;
     #syntaxHighlighting.styles = highlightStyles;
-
   };
-
 }

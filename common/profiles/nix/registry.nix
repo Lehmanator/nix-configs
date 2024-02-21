@@ -16,7 +16,7 @@
     #};
     settings = {
       use-registries = true;
-      flake-registry = true;
+      flake-registry = lib.mkDefault "https://channels.nixos.org/flake-registry.json";
     };
   };
 }

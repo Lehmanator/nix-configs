@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }:
 {
-  nix.settings.experimental-features = [ "cgroups" ];
+  lib,
+  pkgs,
+  ...
+}: {
+  nix.settings = lib.mkIf pkgs.stdenv.isLinux {
+    use-cgroups = true;
+    experimental-features = ["cgroups"];
+  };
 }

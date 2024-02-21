@@ -1,4 +1,9 @@
-{ inputs, config, lib, pkgs, ... }:
+{ inputs
+, config
+, lib
+, pkgs
+, ...
+}:
 let
   pkgs-common = with pkgs; [
     stdenv.cc.cc
@@ -18,12 +23,7 @@ let
     dbus-glib
     libudev0-shim
   ];
-  pkgs-gui-common = with pkgs; [
-    libGL
-    libva
-    libvdpau
-    libcanberra
-  ];
+  pkgs-gui-common = with pkgs; [ libGL libva libvdpau libcanberra ];
   pkgs-x11 = with pkgs; [
     xorg.libXcomposite
     xorg.libXtst
@@ -51,12 +51,8 @@ let
     libdbusmenu-gtk2
     libindicator-gtk2
   ];
-  pkgs-wayland = with pkgs; [
-    gdk-pixbuf
-  ];
-  pkgs-pipewire = with pkgs; [
-    pipewire.lib
-  ];
+  pkgs-wayland = with pkgs; [ gdk-pixbuf ];
+  pkgs-pipewire = with pkgs; [ pipewire.lib ];
 in
 {
   imports = [ ];
@@ -65,31 +61,39 @@ in
   # https://unix.stackexchange.com/questions/522822/different-methods-to-run-a-non-nixos-executable-on-nixos
   # https://reflexivereflection.com/posts/2015-02-28-deb-installation-nixos.html
   #nixpkgs.overlays = [inputs.nix-alien.overlays.default];
-  environment.systemPackages = [
-    #inputs.nix-alien.packages.${pkgs.stdenv.system}.nix-alien
-    #pkgs.nix-alien
+  environment.systemPackages =
+    [
+      #inputs.nix-alien.packages.${pkgs.stdenv.system}.nix-alien
+      #pkgs.nix-alien
 
-    # patchelf - Patch binaries to run in NixOS
-    pkgs.patchelf
+      # patchelf - Patch binaries to run in NixOS
+      pkgs.patchelf
 
-    (
-      let base = pkgs.appimageTools.defaultFhsEnvArgs; in
-      pkgs.buildFHSUserEnv (base // {
-        name = "fhs";
-        targetPkgs = pkgs: (base.targetPkgs pkgs) ++ [ pkgs.pkg-config ];
-        multiPkgs = pkgs: [ pkgs.dpkg ];
-        profile = "export FHS=1";
+      (
+        let
+          base = pkgs.appimageTools.defaultFhsEnvArgs;
+        in
+        pkgs.buildFHSUserEnv (base
+        // {
+          name = "fhs";
+          targetPkgs = pkgs: (base.targetPkgs pkgs) ++ [ pkgs.pkg-config ];
+          multiPkgs = pkgs: [ pkgs.dpkg ];
+          profile = "export FHS=1";
 
-        # TODO: Use system default shell?
-        runScript = if config.programs.zsh.enable then "zsh" else "bash";
-        extraOutputsToInstall = [ "dev" ];
-      })
-    )
-  ]
-  # steam-run - Quick way to run software w/o having to find libraries, etc. More complete than buildFHSUserEnv. Unfree libs included
-  # Usage: $ steam-run <binary>
-  ++ lib.optional (config.nixpkgs.config.allowUnfree && pkgs.system == "x86_64-linux") pkgs.steam-run
-  ;
+          # TODO: Use system default shell?
+          runScript =
+            if config.programs.zsh.enable
+            then "zsh"
+            else "bash";
+          extraOutputsToInstall = [ "dev" ];
+        })
+      )
+    ]
+    # steam-run - Quick way to run software w/o having to find libraries, etc. More complete than buildFHSUserEnv. Unfree libs included
+    # Usage: $ steam-run <binary>
+    ++ lib.optional
+      (config.nixpkgs.config.allowUnfree && pkgs.system == "x86_64-linux")
+      pkgs.steam-run;
 
   # --- Finding Libraries ----------------------------------
   # System-wide: Set env vars to use LD paths with standard set of libs.
@@ -147,7 +151,7 @@ in
       libxkbcommon
       systemd
       dbus
-      cups
+      #cups
       icu
       openssl
       nss
@@ -171,5 +175,4 @@ in
   # --- Finding Binaries -----------------------------------
   # Service that symlinks paths in the Nix store to their typical location in more conventional FHS Linux distros
   services.envfs.enable = true;
-
 }

@@ -4,14 +4,13 @@
 , pkgs
 , user
 , ...
-}:
-{
+}: {
   imports = [
     ../../security/apparmor.nix
     ./containerd.nix
     ./cri-o.nix
-    ./lxc.nix
-    ./lxd.nix
+    #./lxc.nix
+    #./lxd.nix
     #./lxd-image-server.nix
     ./podman.nix
   ];

@@ -1,12 +1,8 @@
-{ inputs
-, lib
-, ...
-}:
-{
+{lib, ...}: {
   programs.nixvim.plugins.lualine = {
     enable = true;
     alwaysDivideMiddle = true;
-    extensions = [ "fzf" ];
+    extensions = ["fzf"];
     globalstatus = true;
 
     sectionSeparators = {
@@ -20,26 +16,62 @@
       right = ""; # ";
     };
 
+    # TODO: winbar vs tabline?
     tabline = {
       # Top of editor
-      lualine_a = [{ name = "hostname"; separator = { left = ""; right = ""; }; }];
-      lualine_b = [ "branch" "diff" ];
-      lualine_x = [{ name = "tabs"; extraConfig = { use_mode_colors = true; }; }];
-      lualine_z = [ "diagnostics" ];
+      lualine_a = [
+        {
+          name = "hostname";
+          separator = {
+            left = "";
+            right = "";
+          };
+        }
+      ];
+      lualine_b = ["branch" "diff"];
+      lualine_x = [
+        {
+          # TODO: Do tabs show filenames or just index?
+          name = "tabs";
+          extraConfig = {use_mode_colors = true;};
+        }
+      ];
+      lualine_y = ["diagnostics"];
+      lualine_z = ["diagnostics"];
     };
+
     winbar = {
       # Top of splits
-      lualine_a = [{ name = "mode"; separator = { left = ""; right = ""; }; }];
-      lualine_b = [ "diff" ];
-      lualine_c = [{ name = "windows"; extraConfig = { use_mode_colors = true; }; }];
-      lualine_x = [ "branch" "diff" ];
-      lualine_y = [ "searchCount" ];
-      lualine_z = [ "selectionCount" ];
+      lualine_a = [
+        {
+          name = "mode";
+          separator = {
+            left = "";
+            right = "";
+          };
+        }
+      ];
+      lualine_b = ["diff"];
+      lualine_c = [
+        {
+          name = "windows";
+          extraConfig = {use_mode_colors = true;};
+        }
+      ];
+      lualine_x = ["branch" "diff"];
+      lualine_y = ["searchCount"];
+      lualine_z = ["selectionCount"];
     };
 
     sections = {
       lualine_a = [
-        { name = "mode"; separator = { left = ""; right = ""; }; }
+        {
+          name = "mode";
+          separator = {
+            left = "";
+            right = "";
+          };
+        }
       ];
       lualine_b = [
         #{ name = "branch";
@@ -48,7 +80,13 @@
         "diff"
       ];
       lualine_c = [
-        { name = "buffers"; extraConfig = { use_mode_colors = true; mode = 0; }; }
+        {
+          name = "buffers";
+          extraConfig = {
+            use_mode_colors = true;
+            mode = 0;
+          };
+        }
         #{ name="filetype"; extraConfig={colored=true; icon_only=true; icon.align="left";};}
         #{ name="filename"; extraConfig={file_status=true; newfile_status=true; shorting_target=45; path = 4;
         #  symbols={modified="~"; readonly="!"; unnamed="?"; newFile="+";};};
@@ -66,17 +104,25 @@
       ];
       lualine_y = [
         "searchcount"
-        "progress"
         #{ name = "progress";
         #}
       ];
       lualine_z = [
         {
+          name = "progress";
+          separator = {
+            left = "";
+            #right = "";
+          };
+        }
+        {
           name = "location";
-          separator = { left = ""; right = ""; };
+          separator = {
+            left = "";
+            right = "";
+          };
         }
       ];
     };
-
   };
 }

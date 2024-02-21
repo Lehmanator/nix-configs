@@ -67,4 +67,10 @@
 
   users.users.${user}.extraGroups = [ "networkmanager" ];
 
+  # Disable annoying failure on activation. TODO: Possible mitigations?
+  # - Reorder deps? (after/before)
+  # - Downgrade severity to warning?
+  systemd.services.NetworkManager-wait-online.enable = lib.mkDefault false;
+
+
 }

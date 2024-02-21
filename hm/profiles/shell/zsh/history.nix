@@ -1,13 +1,12 @@
-{ self
-, inputs
-, config
-, lib
-, pkgs
-, ...
-}:
 {
+  self,
+  inputs,
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   programs.zsh = {
-
     history = {
       path = "${config.xdg.dataHome}/zsh/history";
       extended = true;
@@ -19,8 +18,8 @@
         "rm -rf *"
         "echo * > *key*"
         "echo * > *secret*"
-        "echo \"*\" > *key*"
-        "echo \"*\" > *secret*"
+        ''echo "*" > *key*''
+        ''echo "*" > *secret*''
         "echo '*' > *key*"
         "echo '*' > *secret*"
         # TODO: LUKS commands w/ key passed in CLI
@@ -34,7 +33,5 @@
       #searchDownKey = "^[[B";
       #searchUpKey = "^[[A";
     };
-
   };
-
 }

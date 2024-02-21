@@ -6,14 +6,18 @@
 , ...
 }:
 {
-  imports = [ (inputs.nixpkgs + "/nixos/modules/services/hardware/sane_extra_backends/brscan4.nix") ]; # Brother Scanners
+  # Missing on aarch64-linux.
+  #imports = [
+  #  (inputs.nixpkgs + "/nixos/modules/services/hardware/sane_extra_backends/brscan4.nix")
+  #]; # Brother Scanners
+
   # --- Printing -----------------------------------------------------
   # --- Scanning -----------------------------------------------------
   # https://nixos.wiki/wiki/Scanners
   hardware.sane = {
     enable = true;
     extraBackends = [
-      pkgs.sane-airscan # Driverless Apple AirScan & Microsoft WSD
+      #pkgs.sane-airscan # Driverless Apple AirScan & Microsoft WSD
       pkgs.hplipWithPlugin # HP Scanners
       pkgs.epkowa # Epson Scanners
       pkgs.utsushi # Miscellaneous Scanners

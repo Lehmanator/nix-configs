@@ -1,8 +1,11 @@
-{ config, lib, pkgs, ... }:
 {
-  programs.fzf = {
-    fuzzyCompletion = true;
-    keybindings = true;
-  };
-
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
+  #programs.fzf = {
+  #  fuzzyCompletion = true;
+  #  keybindings = true;
+  #};
 }

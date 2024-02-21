@@ -1,17 +1,15 @@
-{ inputs
-, config
-, lib
-, pkgs
-, user
-, ...
-}:
 {
+  lib,
+  pkgs,
+  user,
+  ...
+}: {
   # TODO: Move NixOS-specific config to `../../nixos/nix/`
   imports = [
     ./cache
     ./features
-
     ./access-tokens.nix
+    ./diff.nix
     ./documentation.nix
     ./gc.nix
     ./nixpkgs.nix
@@ -61,44 +59,21 @@
     #./shell/updaters.nix
   ];
 
-  # --- Config: nix.conf ---------------
   nix = {
-    # Disable `nix-channel` command & state files are made available on the machine.
-    # TODO: Is the nix registry the successor to this functionality?
-    # - `/nix/var/nix/profiles/per-user/root/channels`
-    # - `/root/.nix-channels`
-    # - `$HOME/.nix-defexpr/channels`
     channel.enable = false;
-
-    # --- Packages -----------------------
-    # Use Nix package manager package with builtin flakes support
-    package = pkgs.nixUnstable; #pkgs.nixFlakes; #(nixUnstable for use-xdg-base-directories, nixFlakes for flakes support)
-
+    package = pkgs.nixUnstable;
     settings = {
-      use-xdg-base-directories = lib.mkDefault true;
+      allow-import-from-derivation = true;
+      use-xdg-base-directories = true;
 
-      # --- Users --------------------------
-      allowed-users = [ "*" ];
-      trusted-users = [ "root" "@wheel" "@builders" user ];
+      allowed-users = ["*"];
+      trusted-users = ["root" "@wheel" "@builders" user];
       build-users-group = lib.mkDefault "nixbld";
 
       keep-build-log = lib.mkDefault true;
       log-lines = lib.mkDefault 25;
       connect-timeout = lib.mkDefault 10;
-      warn-dirty = lib.mkDefault false; # Warn git unstaged/uncommitted files
-
-      # Expose extra system paths to Nix build sandbox
-      extra-sandbox-paths = [ ];
-
-      # --- Nix Plugins --------------------
-      #plugin-files = [
-      #  "${pkgs.nix-doc}/lib/libnix_doc_plugin.so"
-      #  "${pkgs.nix-plugins}/lib/nix/plugins/libnix-extra-builtins.so"
-      #];
+      warn-dirty = lib.mkDefault false;
     };
   };
-
-  # --- Nix Outputs --------------------
-  environment.extraOutputsToInstall = [ "bin" ]; #[ "doc" "info" "devdoc" "dev" "bin" ];
-
 }

@@ -1,18 +1,22 @@
-{ config, ... }:
+{ config, lib, pkgs, ... }:
 {
-  imports = [ ];
-
-  # TODO: Enable networking, disks in initrd / UEFI?
-
-  boot.loader.systemd-boot = {
-    extraEntries = { };
-    extraFiles = {
-      #"efi/<dirName>/<efiBinaryName>.efi" = "${pkgs.<efiBinaryPackage>}/<efiBinaryName>.efi";
-      #"efi/reboot-bootloader/no-plymouth.efi" = "${pkgs.systemd-boot}/systemd-boot.efi";  # TODO: Get real path
+  boot.loader = {
+    grub.memtest86 = {
+      enable = lib.mkDefault config.boot.loader.grub.enable;
+      params = [
+        #"console=tty50" # # Setup serial console.
+        #"btrace" #        # Enable boot trace
+        #"maxcpus=N" #     # Limit number of CPUs
+        #"onepass" #       # Run one pass & exit if no errors
+        #"tstlist=0,1,2" # # List of tests to run.
+        #"cpumask=..." #   # Set a CPU mask to select CPUs to use for testing.
+      ];
     };
-    memtest86 = {
-      enable = true;
+
+    systemd-boot.memtest86 = {
+      enable = lib.mkDefault config.boot.loader.systemd-boot.enable;
       entryFilename = "zz-memtest86";
     };
+
   };
 }

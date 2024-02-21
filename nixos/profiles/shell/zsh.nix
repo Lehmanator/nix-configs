@@ -1,20 +1,18 @@
-{ inputs
-, config
-, lib
-, pkgs
-, user
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  user,
+  ...
 }:
 # TODO: Consider scrapping most of this config in favor of home-manager.
 #  - NixOS options differ significantly from home-manager
 #  - Something is breaking aliases & more.
 {
-  imports = [ ];
-
   environment = {
-    pathsToLink = [ "/share/zsh" ]; # Enables completion for system packages
-    shells = [ pkgs.zsh ]; # Add ZSH to list of available shells
-    systemPackages = [ pkgs.zsh ];
+    pathsToLink = ["/share/zsh"]; # Enables completion for system packages
+    shells = [pkgs.zsh]; # Add ZSH to list of available shells
+    systemPackages = [pkgs.zsh];
   };
 
   users.defaultUserShell = pkgs.zsh; # ZSH default for users

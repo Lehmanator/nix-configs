@@ -1,5 +1,10 @@
-{ inputs, config, lib, pkgs, ... }:
 {
+  inputs,
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   imports = [
     ./aliases.nix
     ./diff.nix
@@ -13,16 +18,22 @@
     ./tui.nix
   ];
 
+  # https://nixos.wiki/wiki/Git
   programs.git = {
     enable = true;
     package = pkgs.gitAndTools.gitFull;
 
     # https://git-scm.com/docs/git-config
+    # https://git-scm.com/docs/git-config#Documentation/git-config.txt-pushautoSetupRemote
     extraConfig = {
       core.whitespace = "trailing-space,space-before-tab";
       column.ui = "auto,column,dense";
+      credential.helper = "${
+        pkgs.git.override {withLibsecret = true;}
+      }/bin/git-credential-libsecret";
       init.defaultBranch = "main";
       pull.rebase = false;
+      push.autoSetupRemote = true;
       status.submoduleSummary = true;
       url."git@github.com:".pushInsteadOf = "https://github.com/";
       url."git@gitlab.com:".pushInsteadOf = "https://gitlab.com/";
@@ -51,5 +62,4 @@
       # }
     ];
   };
-
 }

@@ -1,19 +1,14 @@
-{ self
-, inputs
-, config
-, lib
-, pkgs
-, ...
-}:
 {
-  imports = [
-  ];
-
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   programs.nixvim.plugins.indent-blankline = {
     # indent-blankline.vim - Show indentation guides
     enable = lib.mkDefault true;
     exclude = {
-      buftypes = [ "terminal" "nofile" "quickfix" "prompt" ];
+      buftypes = ["terminal" "nofile" "quickfix" "prompt"];
       filetypes = [
         "lspinfo"
         "packer"
@@ -23,7 +18,7 @@
         "gitcommit"
         "TelescopePrompt"
         "TelescopeResults"
-        "\'\'"
+        "''"
       ];
     };
 
@@ -40,11 +35,20 @@
       #highlight = "|hl-IblScope|";
       injectedLanguages = true;
       priority = 1024;
-      showExactScope = true; # Show underline on 1st & last lines of scope starting/ending @ exact start/end of scope, even if right of indent guide. D:false
+
+      # Show underline on 1st & last lines of scope starting/ending @ exact start/end of scope,
+      #   even if right of indent guide.
+      #  Default: false
+      showExactScope = true;
+
       showEnd = true;
-      showStart = true; # Applies highlight group `hl-IndentBlanklineContextStart` to first line in current context.
+
+      # Applies highlight group `hl-IndentBlanklineContextStart` to first line in current context.
+      showStart = true;
+
       exclude.language = []; # List of treesitter languages for which scope is disabled. (List<str>)
-      exclude.nodeType = { "*" = ["source_file" "program"]; # Wildcard: all langs
+      exclude.nodeType = {
+        "*" = ["source_file" "program"]; # Wildcard: all langs
         lua = ["chunk"];
         python = ["module"];
       };
@@ -55,7 +59,6 @@
     viewportBuffer.min = 30;
     #whitespace.highlight = "hl-IblWhitespace";
     whitespace.removeBlanklineTrail = true;
-
 
     #contextPatterns = [ "class" "^func" "method"
     #  "^if" "while" "for" "with" "try" "except" "arguments"
