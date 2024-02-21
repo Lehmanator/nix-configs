@@ -35,8 +35,9 @@
     };
 
     plugins.gitsigns = {
-      enable = true;
+      enable = config.programs.git.enable;
       #package = pkgs.vimPlugins.gitsigns;
+      gitPackage = config.programs.git.package;
 
       attachToUntracked = true; # Attach to untracked files. D=t
       #base = null;                 # Git object/revision to diff against. D='index'
@@ -44,10 +45,9 @@
 
       currentLineBlame = true;
       currentLineBlameOpts = {
-        delay =
-          1000; # Delay in ms before blame virtual text is displayed. D=1000
+        delay = 1000; # Delay (ms) before virt text displayed. D=1000
         ignoreWhitespace = true; # Ignore whitespace when running blame. D=f
-        virtTextPos = "eol"; # Opts: eol | overlay | right_align
+        virtTextPos = "right_align"; # *eol | overlay | right_align
         virtTextPriority = 100; # Opts: null | int                    . D=100
       };
 
@@ -85,8 +85,8 @@
         #untracked = {};
       };
 
-      trouble =
-        config.programs.nixvim.plugins.trouble.enable; # Use Trouble instead of QuickFix/LocationList window for setqflist()/setloclist()
+      # Use Trouble instead of QuickFix/LocationList window for setqflist()/setloclist()
+      trouble = config.programs.nixvim.plugins.trouble.enable;
 
       watchGitDir = {
         enable = true;

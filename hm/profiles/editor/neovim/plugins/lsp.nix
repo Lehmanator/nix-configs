@@ -1,13 +1,10 @@
-{ inputs
-, config
-, lib
-, ...
-}:
-let
-  isLspCmp = with config.programs.nixvim.plugins; lsp.enable && nvim-cmp.enable;
-  test = true;
-in
 {
+  config,
+  lib,
+  ...
+}: let
+  isLspCmp = with config.programs.nixvim.plugins; lsp.enable && nvim-cmp.enable;
+in {
   # --- Language Server Protocol -----
   programs.nixvim.plugins = {
     cmp-nvim-lsp.enable = lib.mkDefault isLspCmp;
@@ -20,25 +17,18 @@ in
 
       # --- Lua Hooks --------------------------------------
       # Note: These hooks may be able to be overridden per-server under: `plugins.lsp.servers.<server>.<option>`
-      ## Lua code that modifies inplace the  `capabilities` table.
-      #capabilities = ''
-      #'';
-      ## Lua function to be run when a new LSP buffer is attached. The argument `client` & `bufnr` is provided.
-      #onAttach = ''
-      #'';
-      ## Code to be run after loading the LSP. This is an internal option
-      #postConfig = ''
-      #'';
-      ## Code to be run before loading the LSP. Useful for requiring plugins
-      #preConfig = ''
-      #'';
-      ## Code to be run to wrap the setup args.
-      ##   Takes in an argument containing the previous results, & returns a new string of code.
-      ##   Option: List<LuaFunctionReturningString>
-      #setupWrappers = [
-      #  ''
-      #  ''
-      #];
+      # Lua code that modifies inplace the  `capabilities` table.
+      #capabilities = '' '';
+      # Lua function to be run when a new LSP buffer is attached. The argument `client` & `bufnr` is provided.
+      #onAttach = '' '';
+      # Code to be run after loading the LSP. This is an internal option
+      #postConfig = '' '';
+      # Code to be run before loading the LSP. Useful for requiring plugins
+      #preConfig = '' '';
+      # Code to be run to wrap the setup args.
+      #   Takes in an argument containing the previous results, & returns a new string of code.
+      #   Option: List<LuaFunctionReturningString>
+      #setupWrappers = [ '' '' ];
 
       # --- Language Servers -------------------------------
       # astrols:astro, bashls:bash, ccls:c/cpp,
@@ -65,8 +55,8 @@ in
           enable = true;
           settings = {
             diagnostics = {
-              excludedFiles = [ ];
-              ignored = [ ];
+              excludedFiles = [];
+              ignored = [];
             };
             #formatting.command = [""];
           };
@@ -93,7 +83,7 @@ in
     # lsp-lines - LSP multi-line diagnostics in-editor
     lsp-lines = {
       enable = true; # lib.mkDefault config.programs.nixvim.plugins.lsp.enable;
-      currentLine = true; # Only show diagnostics on current line
+      currentLine = false; # Only show diagnostics on current line
     };
 
     # lsp-format - LSP file formatting
@@ -140,7 +130,7 @@ in
       #borderStyle = "rounded";           # Deprecated
       #callhierarchy.layout = "float";    # Options: float | normal
       codeAction = {
-        extendGitSigns = true;
+        extendGitSigns = config.programs.nixvim.plugins.gitsigns.enable; # true;
         showServerName = true;
       };
       definition = {
@@ -163,17 +153,17 @@ in
         keys = {
           execAction = "o";
           quit = "q";
-          quitInShow = [ "q" "<ESC>" ];
+          quitInShow = ["q" "<ESC>"];
           toggleOrJump = "<CR>";
         };
       };
       finder = {
         default = "ref+imp";
-        filter = { };
+        filter = {};
         layout = "float";
         leftWidth = 0.3;
         maxHeight = 0.5;
-        methods = { tyd = "textDocument/typeDefinition"; };
+        methods = {tyd = "textDocument/typeDefinition";};
         rightWidth = 0.3;
         silent = false;
         keys = {
@@ -199,8 +189,8 @@ in
         virtualText = true;
       };
       lightbulb = {
-        enable = true;
-        sign = true;
+        enable = false;
+        sign = false;
         virtualText = true;
       };
       outline = {
@@ -208,7 +198,7 @@ in
         autoPreview = true;
         closeAfterJump = false;
         detail = true;
-        layout = "normal"; # layout="float";
+        layout = "float"; # "normal"; # layout="float";
         leftWidth = 0.3;
         maxHeight = 0.5;
         winPosition = "right";
@@ -242,7 +232,9 @@ in
         separator = "›";
         showFile = true;
       };
-      #ui={};
+      ui = {
+        #lines = ["┗" "┣" "┃" "━" "┏"];
+      };
     };
 
     # inc-rename - Incremental previewing LSP renaming
