@@ -12,8 +12,9 @@
       nix-alien.overlays.default
       nixpkgs-gnome-apps.overlays.default
       nur.overlay
-      nvfetcher.overlays.default
       ssbm-nix.overlay
+      
+      #nvfetcher.overlays.default  # nvfetcher included in nixpkgs now
 
       # --- Overlaying Alternative Package Sets ---
       #(final: prev: {       stable = flake-utils.lib.eachDefaultSystem (system: nixos-stable.legacyPackages.${system});    })

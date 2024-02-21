@@ -141,4 +141,5 @@
     gnumake
     lynis
   ];
+  environment.etc.machine-id.text = "9dfed52ef9f347a9ae559c23c06f9012";
 }

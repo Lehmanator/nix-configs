@@ -31,7 +31,7 @@
     #bunker
     flashcards
     #gadgetcontroller
-    iplan
+    #iplan
     #passes
     #phosh-osk-stub
     #pipeline
@@ -40,7 +40,8 @@
   ]);
 
   services.flatpak.packages = [
-    "flathub:app/com.mardojai.DiccionarioLengua//stable" # DiccionarioLengua
+    "flathub:app/ir.imansalmani.IPlan//stable" #            # IPlan        (https://github.com/)
+    "flathub:app/com.mardojai.DiccionarioLengua//stable" #  # DiccionarioLengua
     "flathub:app/dev.edfloreshz.Done//stable" #             # Done         (https://github.com/done-devs/done)
     "flathub:app/io.github.mrvladus.List//stable" #         # Errands      (https://github.com/mrvladus/List)
     "flathub:app/io.github.dgsasha.Remembrance//stable" #   # Reminders    (https://github.com/dgsasha/remembrance)
