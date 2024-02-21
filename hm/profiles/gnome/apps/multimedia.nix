@@ -65,7 +65,7 @@
       pkgs.gnome-obfuscate # # Remove metadata from images
       pkgs.halftone # # Give images pixel-art style
       pkgs.image-roll # # Basic GTK image viewer/editor
-      pkgs.imaginer # # Create images using ML
+      #pkgs.imaginer # # Create images using ML (broken: 2024-02-14)
       # --- View ------
       pkgs.identity # # Compare multiple versions of an image or video
 
