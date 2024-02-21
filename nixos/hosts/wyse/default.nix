@@ -39,6 +39,7 @@
     ../../profiles/users/homed.nix
     ../../profiles/virt
     ../../profiles/cachix-agent.nix
+    #../../profiles/installer.nix
     #../../profiles/virt/emulators/slippi.nix
 
     #../../profiles/hardware/display/displaylink.nix
@@ -46,6 +47,7 @@
     #../../profiles/virt/windows
     #../../../common/profiles/editor
   ];
+  #security.sudo-rs.enable = lib.mkForce false;
 
   boot = {
     binfmt.emulatedSystems = [
