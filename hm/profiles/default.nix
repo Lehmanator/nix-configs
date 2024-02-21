@@ -6,24 +6,22 @@
   lib,
   pkgs,
   ...
-}: let
-  inherit (pkgs) system;
-  #system = pkgs.system;
-  arch = lib.lists.elemAt (lib.strings.splitString "-" system) 0;
-  platform = lib.lists.elemAt (lib.strings.splitString "-" system) 1;
-in {
+}: {
   imports = [
     ./modules
 
-    ./crypto
     ./apps
+    ./cachix-agent.nix
+    ./crypto
     ./gnome
-    ./editor
+    ./editorconfig.nix
     ./fonts.nix
     ./git
+    ./helix
     ./languages/nodejs.nix
     ./languages/python.nix
     ./languages/rust.nix
+    ./neovim.nix
     ./nix
     ./ollama.nix
     ./roles/dev
@@ -33,7 +31,6 @@ in {
     ./social
     ./virt
     ./xdg.nix
-    ./cachix-agent.nix
 
     # TODO: Conditionally load ./nixos.nix when system is NixOS-based
     #./_system/${system}
