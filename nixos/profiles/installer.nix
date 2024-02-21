@@ -200,5 +200,9 @@
   programs.git = {
     enable = true;
     package = lib.mkImageMediaOverride pkgs.gitAndTools.gitFull;
+    extraConfig = {init.defaultBranch = "main";};
   };
+
+  # TODO: Make sure SSH keys are present in installation environment. (for git auth)
+  # TODO: Also set SSH keys for `nixos` user? ...or just disable `nixos` user & user main system user?
 }
