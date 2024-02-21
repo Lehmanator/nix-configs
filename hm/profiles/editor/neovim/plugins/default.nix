@@ -1,43 +1,47 @@
-{ inputs, config, lib, pkgs, ... }:
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   imports = [
-    ./auto-session.nix #     # Auto save/restore Vim sessions
-    ./barbar.nix #           # Status bar
-    ./comment-nvim.nix #     #
-    ./cursorline.nix #       # Cursor line/word highlight
-    ./dap.nix #              # Diagnostics
-    ./dashboard.nix #        # Startup screen
-    ./emmet.nix #            # HTML tags
-    ./floaterm.nix #         # Floating terminal
-    ./gitmessenger.nix #     # Display Git log / message from last commit under cursor
-    ./gitsigns.nix #         # Git sign column
+    ./auto-session.nix # # Auto save/restore Vim sessions
+    ./barbar.nix # # Status bar
+    ./comment-nvim.nix # #
+    ./cursorline.nix # # Cursor line/word highlight
+    ./dap.nix # # Diagnostics
+    ./dashboard.nix # # Startup screen
+    ./emmet.nix # # HTML tags
+    ./floaterm.nix # # Floating terminal
+    ./gitmessenger.nix # # Display Git log / message from last commit under cursor
+    ./gitsigns.nix # # Git sign column
     ./indent-blankline.nix # # Indent new lines
-    ./lsp.nix #              # Language server protocol
-    ./lualine.nix #          # Statusline
-    ./luasnip.nix #          # Snippets
+    ./lsp.nix # # Language server protocol
+    ./lualine.nix # # Statusline
+    ./luasnip.nix # # Snippets
     ./markdown-preview.nix # # Render Markdown previews
-    ./neogit.nix #           # Magit for neovim
-    ./neorg.nix #            # Organization notes
-    ./noice.nix #            # Experimental UI
-    ./notify.nix #           # Notification UI
-    ./none-ls.nix #         # Integration w/ LSP
-    ./nvim-autopairs.nix #   # Pair matching
-    ./nvim-bqf.nix #         #
-    ./nvim-cmp.nix #         # Completion engine
-    ./nvim-colorizer.nix #   # Color highlighter
+    ./neogit.nix # # Magit for neovim
+    ./neorg.nix # # Organization notes
+    ./noice.nix # # Experimental UI
+    ./notify.nix # # Notification UI
+    ./none-ls.nix # # Integration w/ LSP
+    ./nvim-autopairs.nix # # Pair matching
+    ./nvim-bqf.nix # #
+    ./nvim-cmp.nix # # Completion engine
+    ./nvim-colorizer.nix # # Color highlighter
     #./nvim-lightbulb.nix #  # Code Actions
-    ./nvim-tree.nix #        # File tree
-    ./nvim-ufo.nix #         # Code folding UI
-    ./ollama.nix #           # Ollama LLM prompting
-    ./rust-tools.nix #       # Rust utils
-    ./tagbar.nix #           # Bar for tags
-    ./telescope.nix #       # Search result UIs
-    ./todo-comments.nix #    # Highlight todos & more
-    ./treesitter.nix #       # Syntax trees
-    ./trouble.nix #          # Pretty UIs: diagnostics, refs, telescope, quickfix, location lists
-    ./vim-matchup.nix #      # Highlight matching pairs
-    ./which-key.nix #        # UI to show next keymaps
-    ./yanky.nix #            # Improved Yanking
+    ./nvim-tree.nix # # File tree
+    ./nvim-ufo.nix # # Code folding UI
+    ./ollama.nix # # Ollama LLM prompting
+    ./rust-tools.nix # # Rust utils
+    ./tagbar.nix # # Bar for tags
+    ./telescope.nix # # Search result UIs
+    ./todo-comments.nix # # Highlight todos & more
+    ./treesitter.nix # # Syntax trees
+    ./trouble.nix # # Pretty UIs: diagnostics, refs, telescope, quickfix, location lists
+    ./vim-matchup.nix # # Highlight matching pairs
+    ./which-key.nix # # UI to show next keymaps
+    ./yanky.nix # # Improved Yanking
 
     # TODO: Move plugins to separate file
     #./netman.nix            # Access network resources in Neovim
@@ -54,7 +58,8 @@
   ];
 
   # --- Plugins ---
-  programs.nixvim.luaLoader.enable = true; # Experimental lua loader w/ byte-compilation cache
+  programs.nixvim.luaLoader.enable =
+    true; # Experimental lua loader w/ byte-compilation cache
   programs.nixvim.plugins = {
     # +--- Nix / NixOS --------------------------------------------------------+
     # |                                                                        |
@@ -74,8 +79,7 @@
 
       # These attrs will be added to the table parameter for the setup function.
       # Typically, it can override NixVim’s default settings.
-      extraOptions = {
-      };
+      extraOptions = {};
 
       # Env vars to ignore?
       ignoredVariables = {};
@@ -84,6 +88,9 @@
       separatedVariables = {};
     };
 
+    # --- Snippets ---------------------
+    friendly-snippets.enable = true;
+    helm.enable = true;
 
     # --- Browser ----------------------
     # Integrate browser textboxes with Neovim config
@@ -97,7 +104,8 @@
     # Access network resources in Neovim
     netman = {
       enable = lib.mkDefault false;
-      neoTreeIntegration = config.programs.nixvim.plugins.neo-tree.enable; #true;
+      neoTreeIntegration =
+        config.programs.nixvim.plugins.neo-tree.enable; # true;
     };
 
     # Tab indents to proper level based on syntax
@@ -112,7 +120,12 @@
     # --- Runners ----------------------
     sniprun = {
       enable = lib.mkDefault true;
-      display = [ "VirtualTextOk" "LongTempFloatingWindowOk" "NvimNotifyOk" "TerminalErr" ];
+      display = [
+        "VirtualTextOk"
+        "LongTempFloatingWindowOk"
+        "NvimNotifyOk"
+        "TerminalErr"
+      ];
       #liveModeToggle = "on";
       #replEnable = [];
     };
@@ -152,7 +165,6 @@
   };
 
   programs.nixvim.extraPlugins = with pkgs.vimPlugins; [
-    nix-develop-nvim
     statix
     #telescope-manix  # Nix documentation & option search integration with Telescope.nvim
     vim-addon-nix # TODO: Handled by LSP?
@@ -161,5 +173,4 @@
     vim2nix
     sved # synctex support b/w Vim/Neovim & Evince # TODO: iff systemConfig.programs.evince.enable=true;
   ];
-
 }
