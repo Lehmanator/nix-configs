@@ -50,7 +50,7 @@
     pkgs.cargo-typify # JSON Schema to Rust type converter
     pkgs.cargo-udeps # Find unused dependencies in Cargo.toml
     #pkgs.cargo-ui # A GUI for Cargo
-    pkgs.cargo-unused-features # A tool to find potential unused enabled feature flags and prune them
+    #pkgs.cargo-unused-features # A tool to find potential unused enabled feature flags and prune them
     pkgs.cargo-whatfeatures # A simple cargo plugin to get a list of features for a specific crate
     pkgs.cargo-workspaces # A tool for managing cargo workspaces and their crates, inspired by lerna
     pkgs.cargo-xbuild # Automatically cross-compiles the sysroot crates core, compiler_builtins, and alloc
@@ -77,7 +77,7 @@
     pkgs.cargo-outdated # A cargo subcommand for displaying when Rust dependencies are out of date
     pkgs.cargo-rdme # Cargo command to create the README.md from your crate's documentation
     pkgs.cargo-release # Cargo subcommand "release": everything about releasing a rust crate
-    pkgs.cargo-update # A cargo subcommand for checking and applying updates to installed executables
+    #pkgs.cargo-update # A cargo subcommand for checking and applying updates to installed executables
     pkgs.cargo-valgrind # Cargo subcommand "valgrind": runs valgrind and collects its output in a helpful manner
     pkgs.cargo-wasi # A lightweight Cargo subcommand to build code for the wasm32-wasi target
     pkgs.cargo-watch # A Cargo subcommand for watching over Cargo project's source
