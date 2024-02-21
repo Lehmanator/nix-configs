@@ -14,9 +14,16 @@ in {
     activationScripts = {
       aaa-begin = {
         deps = [];
-        text = mkWrapper "NixOS System Activation" ''
-          ${lib.getExe pkgs.figlet} "${config.networking.hostName}"
-        '';
+        text =
+          ''
+            echo
+          ''
+          + mkWrapper "NixOS System Activation" ''
+            echo '│ '
+            ${pkgs.figlet}/bin/figlet 'NixOS:   ${config.networking.hostName}' -f o8 -w "$(( COLUMNS - 8 ))" | ${
+              lib.getExe pkgs.gnused
+            } 's/^/│ /'
+          '';
       };
       aaa-end = {
         deps = ["aaa-begin"];
