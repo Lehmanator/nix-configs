@@ -25,6 +25,7 @@ in {
     ./languages/python.nix
     ./languages/rust.nix
     ./nix
+    ./ollama.nix
     ./roles/dev
     ./roles/sysadmin
     ./search

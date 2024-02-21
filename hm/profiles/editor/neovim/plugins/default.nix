@@ -28,6 +28,7 @@
     #./nvim-lightbulb.nix #  # Code Actions
     ./nvim-tree.nix #        # File tree
     ./nvim-ufo.nix #         # Code folding UI
+    ./ollama.nix #           # Ollama LLM prompting
     ./rust-tools.nix #       # Rust utils
     ./tagbar.nix #           # Bar for tags
     ./telescope.nix #       # Search result UIs
