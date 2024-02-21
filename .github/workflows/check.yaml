@@ -1,0 +1,34 @@
+# https://github.com/marketplace/actions/publish-nix-flakes-to-flakehub
+# https://github.com/marketplace/actions/magic-nix-cache
+name: Flake Check
+on:
+  push:
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
+      - '.*'
+      - './**'
+  pull_request:
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
+      - '.*'
+      - './**'
+
+jobs:
+  check:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: DeterminateSystems/nix-installer-action@main
+        with:
+          diagnostic-endpoint: ""
+        #  github-token: ${{ github.token }}
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+        with:
+          diagnostic-endpoint: "" # Disables telemetry
+          upstream-cache: https://lehmanator.cachix.org  # Uses binary cache
+      - uses: DeterminateSystems/flake-checker-action@main
+        with:
+          send-statistics: false
+      - run: nix flake check
