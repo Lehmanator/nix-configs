@@ -18,6 +18,7 @@
         pkgs,
         system,
         final,
+        inputs',
         ...
       }: {
         packages = {
