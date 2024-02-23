@@ -1,8 +1,4 @@
-{
-  inputs,
-  self,
-  ...
-}: {
+{inputs, ...}: {
   imports = [inputs.pre-commit-hooks-nix.flakeModule];
   perSystem = {
     config,

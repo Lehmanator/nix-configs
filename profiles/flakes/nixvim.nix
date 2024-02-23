@@ -8,7 +8,7 @@
   }: let
     nixvimModule = {
       inherit pkgs;
-      module = import ../profiles/nixvim;
+      module = import ../nixvim;
       extraSpecialArgs = {inherit inputs;};
     };
   in {
@@ -17,5 +17,5 @@
     packages.nvim =
       inputs'.nixvim.legacyPackages.makeNixvimWithModule nixvimModule;
   };
-  flake = {nixvimModules = {default = ../profiles/nixvim;};};
+  flake = {nixvimModules = {default = ../nixvim;};};
 }

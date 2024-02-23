@@ -46,7 +46,7 @@
                       selfSystem.config.system.build.toplevel;
                   }
                   #self.nixosModules.installer
-                  ../../nixos/profiles/installer.nix
+                  ../../profiles/nixos/installer.nix
                   installer
                 ];
               };

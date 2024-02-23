@@ -1,8 +1,4 @@
-{
-  inputs,
-  self,
-  ...
-}: {
+{inputs, ...}: {
   imports = [inputs.treefmt-nix.flakeModule];
   perSystem = {
     config,
@@ -11,7 +7,6 @@
     ...
   }: {
     treefmt = {
-      #package = pkgs.treefmt;
       projectRootFile = "flake.nix";
       programs = {
         nixfmt.enable = true;
@@ -21,9 +16,11 @@
         nixpkgs-fmt.includes = [
           #"../darwin/packages"
           #"../hm/packages"
-          "../nixos/packages"
+          #"../../pkgs/darwin"
+          #"../../pkgs/hm"
+          "../../pkgs/nixos"
         ];
-        nixfmt.excludes = ["../nixos/packages" "../cells"];
+        nixfmt.excludes = ["../pkgs/nixos" "../../cells"];
       };
     };
   };

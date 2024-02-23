@@ -7,7 +7,7 @@
     ...
   }: {
     emanote.sites.notes = {
-      basePath = "../.notes";
+      basePath = "../../.notes";
       baseUrl = "notes.lehman.run";
       #layers = [ "../docs" ];
       layers = [];
