@@ -2,12 +2,12 @@
   # TODO: Organize into profiles, modules, shells
   imports = [
     inputs.devshell.flakeModule
-    #../shells/base.nix
-    #../shells/common.nix
-    ../shells/git.nix
-    #../shells/nix.nix
-    ../shells/nixos.nix
-    #../shells/rust.nix
+    #../profiles/devshells/base.nix
+    #../profiles/devshells/common.nix
+    #../profiles/devshells/nix.nix
+    #../profiles/devshells/rust.nix
+    ../devshells/git.nix
+    ../devshells/nixos.nix
   ];
   perSystem = {
     config,

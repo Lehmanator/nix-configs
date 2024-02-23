@@ -89,17 +89,13 @@
               };
             };
             #// specialArgs;
-            modules = [./nixos/hosts/${host}] ++ modules;
+            modules = [./hosts/${host}] ++ modules;
           };
       in {
-        overlays = import ./nixos/overlays;
+        overlays = import ./overlays/nixos;
         nixosConfigurations = {
           fw = mkSystem {host = "fw";};
           wyse = mkSystem {host = "wyse";};
-          #installer = nixos.lib.nixosSystem {
-          #  specialArgs = { inherit inputs; user = "sam"; };
-          #  modules = [ ./profiles/nixos/installer ];
-          #};
           fajita = nixos.lib.nixosSystem {
             system = "aarch64-linux";
             specialArgs = {
@@ -116,7 +112,7 @@
               (import "${inputs.mobile-nixos}/lib/configuration.nix" {
                 device = "oneplus-fajita";
               })
-              ./nixos/hosts/fajita
+              ./hosts/fajita
               inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
             ];
           };
@@ -136,7 +132,7 @@
               (import "${inputs.mobile-nixos}/lib/configuration.nix" {
                 device = "oneplus-fajita";
               })
-              ./nixos/hosts/fajita/minimal.nix
+              ./hosts/fajita/minimal.nix
               inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
             ];
           };
@@ -144,35 +140,35 @@
         #homeConfigurations = {
         #  sam = inputs.home.lib.homeManagerConfiguration {
         #    #pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        #    modules = [ ./hm/users/sam ];
+        #    modules = [ ./users/sam ];
         #    extraSpecialArgs = { inherit inputs; user = "sam"; };
         #  };
         #  guest = inputs.home.lib.homeManagerConfiguration {
         #    pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        #    #modules = [./hm/users/default];
+        #    #modules = [./users/default];
         #    extraSpecialArgs = { inherit inputs; user = "guest"; };
         #  };
         #};
 
         #pops = {
         #  nixosModules = inputs.omnibus.pops.nixosModules.addLoadExtender {
-        #    load = {src = ./nixos/modules;};
+        #    load = {src = ./modules/nixos;};
         #  };
         #  nixosProfiles = inputs.omnibus.pops.nixosProfiles.addLoadExtender {
         #    load = {
-        #      src = ./nixos/profiles;
+        #      src = ./profiles/nixos;
         #      inputs = {inherit inputs;};
         #    };
         #  };
         #  homeModules = inputs.omnibus.pops.homeProfiles.addLoadExtender {
         #    load = {
-        #      src = ./hm/modules;
+        #      src = ./modules/nixos;
         #      inputs = {inherit inputs;};
         #    };
         #  };
         #  homeProfiles = inputs.omnibus.pops.homeProfiles.addLoadExtender {
         #    load = {
-        #      src = ./hm/profiles;
+        #      src = ./profiles/hm;
         #      inputs = {inherit inputs;};
         #    };
         #  };

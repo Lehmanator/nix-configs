@@ -23,7 +23,7 @@ creation_rules:
   # Decrypt with all host keys (user keys optional)
   # - <type>/profiles/**/secrets.yaml
   # - <type>/secrets/**/*.yaml
-  - path_regex: (common|darwin|droid|nixos|robotnix|wsl)/profiles/([^/]+/)+secrets\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
+  - path_regex: profiles/(common|darwin|droid|nixos|robotnix|wsl)/([^/]+/)+secrets\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
     key_groups:
       - age:
           - *age-host-fw-ssh-ed25519
@@ -31,7 +31,7 @@ creation_rules:
           #- *age-host-fajita-ssh-ed25519
           - *age-user-sam-ssh-ed25519
           - *age-backup
-  - path_regex: (common|darwin|droid|nixos|robotnix|wsl)/secrets/([^/]+/)*[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
+  - path_regex: secrets/(common|darwin|droid|nixos|robotnix|wsl)/([^/]+/)*[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
     key_groups:
       - age:
           - *age-host-fw-ssh-ed25519
@@ -41,7 +41,7 @@ creation_rules:
           - *age-backup
 
   # --- Host Secrets: Per-Host ---------------------------------------
-  - path_regex: nixos/hosts/fw/secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
+  - path_regex: hosts/fw/secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
     key_groups:
       - age:
           - *age-host-fw-ssh-ed25519
@@ -51,14 +51,14 @@ creation_rules:
         #- *age-host-fw-ssh-ed25519
         #- *gpg-host-fw-ssh-rsa
         #- *gpg-user-sam-primary
-  - path_regex: nixos/hosts/wyse/secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
+  - path_regex: hosts/wyse/secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
     key_groups:
       - age:
           - *age-host-wyse-ssh-ed25519
           #- *age-host-fw-ssh-ed25519
           - *age-user-sam-ssh-ed25519
           - *age-backup
-  - path_regex: nixos/hosts/[^/]+/secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
+  - path_regex: hosts/[^/]+/secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
     key_groups:
       - age:
           - *age-host-fw-ssh-ed25519
@@ -74,14 +74,14 @@ creation_rules:
   # Decrypt with all user keys
   # - hm/profiles/**/secrets.yaml
   # - hm/secrets/**/*.yaml
-  - path_regex: hm/profiles/([^/]+/)+secrets\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
+  - path_regex: profiles/hm/([^/]+/)+secrets\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
     key_groups:
       - age:
           - *age-user-sam-ssh-ed25519
           #- *age-user-sammy-ssh-ed25519
           #- *age-user-guest-ssh-ed25519
           - *age-backup
-  - path_regex: hm/secrets/([^/]+/)*[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
+  - path_regex: users/secrets/([^/]+/)*[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
     key_groups:
       - age:
           - *age-user-sam-ssh-ed25519
@@ -90,7 +90,7 @@ creation_rules:
           - *age-backup
 
   # --- User Secrets: Per-User ---------------------------------------
-  - path_regex: hm/users/sam/secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
+  - path_regex: users/sam/secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
     key_groups:
       - age:
           - *age-host-fw-ssh-ed25519
@@ -100,7 +100,7 @@ creation_rules:
         #- *age-host-fw-ssh-ed25519
         #- *gpg-host-fw-ssh-rsa
         #- *gpg-user-sam-primary
-  - path_regex: hm/users/[^/]+/secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
+  - path_regex: users/[^/]+/secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
     key_groups:
       - age:
           - *age-host-fw-ssh-ed25519
