@@ -13,7 +13,7 @@
     };
   in {
     checks.nixvim =
-      inputs'.nixvim.lib.check.mkTestDerivationFromNixvimModule nixvimModule;
+      inputs.nixvim.lib.${pkgs.system}.check.mkTestDerivationFromNixvimModule nixvimModule;
     packages.nvim =
       inputs'.nixvim.legacyPackages.makeNixvimWithModule nixvimModule;
   };
