@@ -4,26 +4,24 @@
   ...
 }: {
   imports = [inputs.ez-configs.flakeModule];
-
-  # TODO: Restructure dirs
   ezConfigs = {
     globalArgs = {
       inherit inputs self;
       user = "sam";
     };
     home = {
-      configurationsDirectory = "../hm/users";
-      modulesDirectory = "../hm/modules";
+      configurationsDirectory = "../../users";
+      modulesDirectory = "../../modules/hm";
       extraSpecialArgs = {};
     };
     nixos = {
-      modulesDirectory = "../nixos/profiles";
-      configurationsDirectory = "../nixos/hosts";
+      modulesDirectory = "../../modules/nixos";
+      configurationsDirectory = "../../hosts";
       hosts = {fajita = {system = "aarch64-linux";};};
     };
     darwin = {
-      modulesDirectory = "../darwin/profiles";
-      configurationsDirectory = "../darwin/hosts";
+      modulesDirectory = "../../modules/darwin";
+      configurationsDirectory = "../../hosts/darwin";
     };
   };
 }
