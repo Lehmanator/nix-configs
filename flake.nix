@@ -22,7 +22,7 @@
         ...
       }: {
         packages = {
-          inherit (inputs.disko.packages.${system}) disko disko-doc;
+          firefox-gnome-theme = pkgs.callPackage ./pkgs/nixos/themes/firefox-gnome-theme.nix {};
           #fajita-images = self.flake.nixosConfigurations.fajita.config.mobile.outputs.android-fastboot-images;
           deploy =
             nixpkgs.legacyPackages.${system}.writeText "cachix-deploy.json"
@@ -42,11 +42,6 @@
                 self.nixosConfigurations);
             });
         };
-        #pops.omnibus = inputs.omnibus.pops.self.addLoadExtender {
-        #  load.inputs = {
-        #    inputs = {nixpkgs = inputs.nixpkgs.legacyPackages.${system};};
-        #  };
-        #};
       };
       flake = let
         mkSystem = {
@@ -57,7 +52,8 @@
           modules ? [],
           ...
         } @ args:
-          (import ./lib/flake/lehmanatorSystem.nix {inherit inputs self;}) {
+          #inputs.self.lib.nixos.lehmanatorSystem {
+          (import ./lib/nixos/lehmanatorSystem.nix {inherit inputs self;}) {
             #inputs.nixpkgs.lib.nixosSystem {
             inherit system;
             specialArgs = {
@@ -67,23 +63,8 @@
               #  See:
               #  - https://nixos-and-flakes.thiscute.world/nixos-with-flakes/downgrade-or-upgrade-packages
               #  - https://nixos-and-flakes.thiscute.world/nixpkgs/multiple-nixpkgs
-              pkgs-stable = import inputs.nixpkgs-stable {
-                inherit system;
-                config.allowUnfree = true;
-              };
-              pkgs-unstable = import inputs.nixpkgs-unstable {
-                inherit system;
-                config.allowUnfree = true;
-              };
+              # stable, unstable, master, staging, staging-next
               pkgs-master = import inputs.nixpkgs-master {
-                inherit system;
-                config.allowUnfree = true;
-              };
-              pkgs-staging = import inputs.nixpkgs-staging {
-                inherit system;
-                config.allowUnfree = true;
-              };
-              pkgs-staging-next = import inputs.nixpkgs-staging-next {
                 inherit system;
                 config.allowUnfree = true;
               };
@@ -92,6 +73,13 @@
             modules = [./hosts/${host}] ++ modules;
           };
       in {
+        #lib = inputs.haumea.lib.load {
+        #  src = ./lib;
+        #  inputs = {
+        #    inherit inputs self;
+        #    inherit (inputs.nixpkgs) lib;
+        #  };
+        #};
         overlays = import ./overlays/nixos;
         nixosConfigurations = {
           fw = mkSystem {host = "fw";};
@@ -150,33 +138,6 @@
         #  };
         #};
 
-        #pops = {
-        #  nixosModules = inputs.omnibus.pops.nixosModules.addLoadExtender {
-        #    load = {src = ./modules/nixos;};
-        #  };
-        #  nixosProfiles = inputs.omnibus.pops.nixosProfiles.addLoadExtender {
-        #    load = {
-        #      src = ./profiles/nixos;
-        #      inputs = {inherit inputs;};
-        #    };
-        #  };
-        #  homeModules = inputs.omnibus.pops.homeProfiles.addLoadExtender {
-        #    load = {
-        #      src = ./modules/nixos;
-        #      inputs = {inherit inputs;};
-        #    };
-        #  };
-        #  homeProfiles = inputs.omnibus.pops.homeProfiles.addLoadExtender {
-        #    load = {
-        #      src = ./profiles/hm;
-        #      inputs = {inherit inputs;};
-        #    };
-        #  };
-        #  #omnibus = forAllSystems (system:
-        #  #  inputs.omnibus.pops.self.addLoadExtender {
-        #  #    load.inputs = { inputs = {nixpkgs = inputs.nixpkgs.legacyPackages.${system};}; };
-        #  #});
-        #};
       };
     };
 
@@ -289,6 +250,10 @@
     std.url = "github:divnix/std";
     hive.url = "github:divnix/hive";
     omnibus.url = "github:GTrunSec/omnibus";
+    haumea = {
+      url = "github:nix-community/haumea";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # --- Libs: Packaging ------------------------------------------
     nixpak.url = "github:nixpak/nixpak";
@@ -317,23 +282,28 @@
     # --- Modules: Flake-parts -------------------------------------
     flake-parts.url = "github:hercules-ci/flake-parts";
     agenix-shell.url = "github:aciceri/agenix-shell";
+    #treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
+    devenv.url = "github:cachix/devenv";
+    devshell.url = "github:numtide/devshell";
+    #devshell.inputs.nixpkgs.follows = "nixpkgs";
+    dream2nix.url = "github:nix-community/dream2nix";
     emanote.url = "github:srid/emanote";
     ez-configs.url = "github:ehllie/ez-configs";
     flake-parts-website.url = "github:hercules-ci/flake.parts-website";
-
     # https://github.com/srid/nixos-flake
     flake-root.url = "github:srid/flake-root";
-    nixid.url = "github:srid/nixid";
-    treefmt-nix.url = "github:numtide/treefmt-nix";
-    #treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
-    devshell.url = "github:numtide/devshell";
-    #devshell.inputs.nixpkgs.follows = "nixpkgs";
-    devenv.url = "github:cachix/devenv";
+    haskell-flake.url = "github:srid/haskell-flake";
     hercules-ci-effects.url = "github:hercules-ci/hercules-ci-effects";
+    mission-control.url = "github:Platonic-Systems/mission-control";
+    nixid.url = "github:srid/nixid";
     nix-cargo-integration.url = "github:yusdacra/nix-cargo-integration";
+    ocaml-flake.url = "github:9glenda/ocaml-flake";
     pre-commit-hooks-nix.url = "github:cachix/pre-commit-hooks.nix";
     process-compose-flake.url = "github:Platonic-Systems/process-compose-flake";
     proc-flake.url = "github:srid/proc-flake";
+    pydev.url = "github:oceansprint/pydev";
+    treefmt-nix.url = "github:numtide/treefmt-nix";
+
 
     # --- Modules: System ------------------------------------------
     nixos-hardware.url = "github:NixOS/nixos-hardware";

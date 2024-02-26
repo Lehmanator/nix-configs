@@ -1,7 +1,8 @@
 {
   inputs,
   ...
-}: {
+}:
+{
   imports = [
     inputs.flake-parts.flakeModules.easyOverlay
     inputs.hercules-ci-effects.flakeModule
@@ -13,6 +14,7 @@
     ./agenix-shell.nix
     #./devenv.nix
     ./devshell.nix
+    ./disko
     #./easyOverlay.nix
     #./ez-configs.nix
     ./emanote.nix
@@ -27,4 +29,17 @@
     #./std.nix
     ./treefmt.nix
   ];
+
+  perSystem = {config, lib, pkgs, system, ...}:
+  let
+    inherit (inputs.haumea.lib) load;
+  in
+  {
+    #lib = load {
+    #  src = ../../lib;
+    #  loader =
+    #};
+  };
+  flake = {
+  };
 }
