@@ -16,6 +16,7 @@
     ../../profiles/nixos/hardware/peripherals/logitech.nix
     #../../profiles/nixos/hardware/peripherals/printers.nix
     #../../profiles/nixos/hardware/peripherals/scanners.nix
+    ../../profiles/nixos/network/tailscale/mullvad.nix
     ../../profiles/nixos/security
     ../../profiles/nixos/security/apparmor.nix
     #../../profiles/nixos/server/kubernetes/k3s-node-main.nix

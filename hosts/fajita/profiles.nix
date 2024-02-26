@@ -9,6 +9,7 @@
     ../../profiles/nixos
     ../../profiles/nixos/desktop/flatpak.nix
     ../../profiles/nixos/mobile
+    ../../profiles/nixos/network/tailscale/mullvad.nix
     #../../profiles/nixos/desktop
     #../../profiles/nixos/desktop/de/gnome
     #../../profiles/nixos/virt/emulators/slippi.nix

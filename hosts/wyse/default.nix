@@ -31,6 +31,7 @@
     ../../profiles/nixos/hardware/fwupd.nix
     ../../profiles/nixos/hardware/peripherals/logitech.nix
     ../../profiles/nixos/hardware/usb.nix
+    ../../profiles/nixos/network/tailscale/subnet-router.nix
     ../../profiles/nixos/security/apparmor.nix
     #../../profiles/nixos/server/kubernetes/k3s-node-main.nix
     ../../profiles/nixos/users/homed.nix
