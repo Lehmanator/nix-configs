@@ -132,6 +132,11 @@ in {
           help = "Watch this repository & reload on changes";
           command = "echo 'watching...'";
         }
+        { name = "tree";
+          category = "info";
+          help = "show a tree of Nix store path dependencies";
+          command = lib.getExe pkgs.nix-tree;
+        }
       ];
       # TODO: Split packages into Nix / NixOS shells
       # TODO: Import Nix devshell in NixOS devshell
