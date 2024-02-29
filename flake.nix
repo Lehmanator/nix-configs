@@ -31,11 +31,9 @@
                 inputs.nixpkgs.lib.mapAttrs
                 (host: cfg: cfg.config.system.build.toplevel)
                 (inputs.nixpkgs.lib.filterAttrs (host: cfg:
-                  cfg
-                  ? config
+                  cfg ? config
                   && cfg.config ? system
-                  && cfg.config.system
-                  ? build
+                  && cfg.config.system ? build
                   && cfg.config.system.build ? toplevel
                   && cfg.pkgs.stdenv.buildPlatform.system == system
                   && cfg.config.services.cachix-agent.enable)
@@ -48,7 +46,6 @@
           host,
           system ? "x86_64-linux",
           user ? "sam",
-          # specialArgs ? {},
           modules ? [],
           ...
         } @ args:
@@ -73,14 +70,7 @@
             modules = [./hosts/${host}] ++ modules;
           };
       in {
-        #lib = inputs.haumea.lib.load {
-        #  src = ./lib;
-        #  inputs = {
-        #    inherit inputs self;
-        #    inherit (inputs.nixpkgs) lib;
-        #  };
-        #};
-        overlays = import ./overlays/nixos;
+        #overlays = import ./overlays/nixos;
         nixosConfigurations = {
           fw = mkSystem {host = "fw";};
           wyse = mkSystem {host = "wyse";};

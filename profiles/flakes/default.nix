@@ -22,6 +22,7 @@
     #./hercules-ci.nix
     #./nix-cargo-integration.nix
     #./nixid.nix
+    ./nixos
     ./nixvim.nix
     ./pre-commit-hooks.nix
     #./process-compose-flake.nix
