@@ -7,7 +7,8 @@
   ...
 }: {
   sops = {
-    defaultSopsFile = ../../../users/${user}/secrets/default.yaml;
+    defaultSopsFile = inputs.self + /users/${user}/secrets/default.yaml;
+    #defaultSopsFile = ../../../users/${user}/secrets/default.yaml;
     keepGenerations = 10;
 
     age = {
@@ -30,6 +31,11 @@
 
     secrets = {test-user-secret = {};};
   };
+
+  # Restart user sops-nix.service unit on home-manager activation.
+  home.activation.setupEtc = config.lib.dag.entryAfter [ "writeBoundary" ] ''
+    /run/current-system/sw/bin/systemctl start --user sops-nix
+  '';
 
   home.packages =
     [

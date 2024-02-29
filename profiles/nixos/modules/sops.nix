@@ -8,8 +8,8 @@
   imports = [inputs.sops-nix.nixosModules.sops];
 
   sops = {
-    defaultSopsFile =
-      ../../../hosts/${config.networking.hostName}/secrets/default.yaml;
+    defaultSopsFile = inputs.self + /hosts/${config.networking.hostName}/secrets/default.yaml;
+      #../../../hosts/${config.networking.hostName}/secrets/default.yaml;
 
     age = {
       sshKeyPaths =
