@@ -9,9 +9,11 @@
     flake-parts,
     ...
   } @ inputs:
-    flake-parts.lib.mkFlake {inherit inputs self;} {
+  flake-parts.lib.mkFlake { inherit inputs self; }
+    {
       imports = [./profiles/flakes];
       systems = ["x86_64-linux" "aarch64-linux" "riscv64-linux"];
+
       perSystem = {
         config,
         lib,
@@ -22,8 +24,9 @@
         ...
       }: {
         packages = {
-          firefox-gnome-theme = pkgs.callPackage ./pkgs/nixos/themes/firefox-gnome-theme.nix {};
-          #fajita-images = self.flake.nixosConfigurations.fajita.config.mobile.outputs.android-fastboot-images;
+          #system-repl = pkgs.callPackage ./pkgs/nixos/system-repl {};
+          #firefox-gnome-theme = pkgs.callPackage ./pkgs/nixos/themes/firefox-gnome-theme.nix {};
+        #  #fajita-images = self.flake.nixosConfigurations.fajita.config.mobile.outputs.android-fastboot-images;
           deploy =
             nixpkgs.legacyPackages.${system}.writeText "cachix-deploy.json"
             (builtins.toJSON {
