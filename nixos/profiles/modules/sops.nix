@@ -1,18 +1,24 @@
-{ inputs
-, config
-, lib
-, pkgs
-, user
-, ...
-}:
 {
+  inputs,
+  config,
+  lib,
+  pkgs,
+  user,
+  ...
+}: {
   # TODO: Make devShell with pkgs.sops installed
-  imports = [ inputs.sops-nix.nixosModules.sops ];
+  imports = [inputs.sops-nix.nixosModules.sops];
 
   sops = {
-    defaultSopsFile = ../../hosts/${config.networking.hostName}/secrets/default.yaml;
+    defaultSopsFile =
+      inputs.self
+      + /hosts/${config.networking.hostName}/secrets/default.yaml;
+    #defaultSopsFile = ../../hosts/${config.networking.hostName}/secrets/default.yaml;
+
     age = {
-      sshKeyPaths = map (k: k.path) (builtins.filter (k: k.type == "ed25519") config.services.openssh.hostKeys);
+      sshKeyPaths =
+        map (k: k.path) (builtins.filter (k: k.type == "ed25519")
+          config.services.openssh.hostKeys);
       #sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
       #generateKey = true; keyFile = "/var/lib/sops-nix/sops-host-age.privkey";
     };
@@ -24,7 +30,7 @@
     #};
 
     secrets = {
-      test-host-secret = { };
+      test-host-secret = {};
       #user-default-password = { group = "users"; };
       #user-root-password    = { owner = "root"; group = "root"; };
       ## TODO: Move to NixOS profile for disk encryption
@@ -40,24 +46,23 @@
   ];
 
   # --- Packages ---
-  environment.systemPackages = [
-    pkgs.age
-    pkgs.rage
-    pkgs.sops
-    pkgs.kustomize-sops
-    pkgs.terraform-providers.sops
+  environment.systemPackages =
+    [
+      pkgs.age
+      pkgs.rage
+      pkgs.sops
+      pkgs.kustomize-sops
+      pkgs.terraform-providers.sops
 
-    pkgs.ssh-to-age
+      pkgs.ssh-to-age
+    ]
+    ++ (with inputs.sops-nix.packages.${pkgs.system}; [
+      sops-import-keys-hook
+      sops-init-gpg-key
+      sops-install-secrets
+      ssh-to-pgp
 
-  ] ++ (with inputs.sops-nix.packages.${pkgs.system}; [
-
-    sops-import-keys-hook
-    sops-init-gpg-key
-    sops-install-secrets
-    ssh-to-pgp
-
-    #lint           # Broken build
-    #sops-pgp-hook  # Deprecated
-  ]);
-
+      #lint           # Broken build
+      #sops-pgp-hook  # Deprecated
+    ]);
 }
