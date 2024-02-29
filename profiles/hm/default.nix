@@ -1,10 +1,10 @@
-{
-  nixosConfig,
-  osConfig,
-  config,
-  lib,
-  pkgs,
-  ...
+{ inputs
+, nixosConfig
+, osConfig
+, config
+, lib
+, pkgs
+, ...
 }: {
   imports = [
     ./modules
@@ -58,6 +58,9 @@
 
       pkgs.ntfs3g
       #pkgs.rustup
+
+      # TODO: Fix
+      #inputs.self.packages.${pkgs.system}.system-repl
     ];
   };
 
