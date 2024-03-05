@@ -6,8 +6,11 @@
   ...
 }: {
   home = {
-    sessionVariables.EDITOR = "nvim";
-    packages = [pkgs.fd pkgs.universal-ctags];
+    sessionVariables.EDITOR = lib.getExe inputs.self.packages.${pkgs.system}.nvim; #"nvim";
+    packages = [
+      inputs.self.packages.${pkgs.system}.nvim
+      pkgs.fd pkgs.universal-ctags
+    ];
   };
 
   programs.git.extraConfig = {
