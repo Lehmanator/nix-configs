@@ -23,7 +23,7 @@
     enable = true;
     options = {
       number = true;
-      relativeNumber = true;
+      relativenumber = true;
       shiftwidth = 2;
     };
     plugins = {
