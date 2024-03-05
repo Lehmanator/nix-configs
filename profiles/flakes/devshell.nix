@@ -1,4 +1,4 @@
-{inputs, ...}: {
+{ inputs, ... }: {
   # TODO: Organize into profiles, modules, shells
   imports = [
     inputs.devshell.flakeModule
@@ -7,14 +7,9 @@
     #../profiles/devshells/nix.nix
     #../profiles/devshells/rust.nix
     ../devshells/git.nix
-    ../devshells/nixos.nix
   ];
-  perSystem = {
-    config,
-    lib,
-    pkgs,
-    ...
-  }: {
-    devShells.default = config.devShells.nixos;
-  };
+  perSystem = { config, lib, pkgs, ... }:
+    {
+      #devShells.default = config.devShells.nixos;
+    };
 }
