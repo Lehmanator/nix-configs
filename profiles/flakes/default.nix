@@ -1,8 +1,7 @@
-{
-  inputs,
-  ...
-}:
-{
+{inputs, ...}: let
+  inherit (inputs.haumea.lib) load loaders matchers transformers;
+  print-loader = inputs: path: toString path;
+in {
   imports = [
     inputs.flake-parts.flakeModules.easyOverlay
     inputs.hercules-ci-effects.flakeModule
@@ -22,25 +21,63 @@
     #./hercules-ci.nix
     #./nix-cargo-integration.nix
     #./nixid.nix
-    ./nixos
     ./nixvim.nix
     ./pre-commit-hooks.nix
     #./process-compose-flake.nix
     #./proc-flake.nix
-    #./std.nix
+    ./std.nix
     ./treefmt.nix
   ];
 
-  perSystem = {config, lib, pkgs, system, ...}:
-  let
-    inherit (inputs.haumea.lib) load;
-  in
-  {
+  perSystem = {
+    config,
+    lib,
+    pkgs,
+    system,
+    ...
+  }: {
     #lib = load {
     #  src = ../../lib;
     #  loader =
     #};
   };
   flake = {
+    #lib = {
+    #  loaders = {
+    #    #callSources =
+    #    #profileModule =
+    #    #
+    #  };
+    #  matchers = {
+    #    #defaultOnly =
+    #    #excludeDefault =
+    #  };
+    #  transformers = {
+    #    #prefix =
+    #    #pathSeparator =
+    #  };
+    #};
+    loaders = {
+      path = load {
+        src = ../nixvim;
+        loader = loaders.path;
+      };
+      default = load {
+        src = ../nixvim;
+        loader = loaders.default;
+      };
+      scoped = load {
+        src = ../nixvim;
+        loader = loaders.scoped;
+      };
+      verbatim = load {
+        src = ../nixvim;
+        loader = loaders.verbatim;
+      };
+      print = load {
+        src = ../nixvim;
+        loader = print-loader;
+      };
+    };
   };
 }

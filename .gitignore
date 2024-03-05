@@ -1,4 +1,6 @@
 # --- Build Artifacts ---
+.data/
+.cache/
 .direnv/
 **/result
 result

@@ -1,5 +1,5 @@
 {
-  description = "Personal Nix & NixOS configurations";
+  description = "Personal Nix / NixOS configs, along with custom NixOS modules, packages, libs, & more!";
   outputs = {
     self,
     nixpkgs,
@@ -9,8 +9,7 @@
     flake-parts,
     ...
   } @ inputs:
-  flake-parts.lib.mkFlake { inherit inputs self; }
-    {
+    flake-parts.lib.mkFlake {inherit inputs self;} {
       imports = [./profiles/flakes];
       systems = ["x86_64-linux" "aarch64-linux" "riscv64-linux"];
 
@@ -26,7 +25,7 @@
         packages = {
           #system-repl = pkgs.callPackage ./pkgs/nixos/system-repl {};
           #firefox-gnome-theme = pkgs.callPackage ./pkgs/nixos/themes/firefox-gnome-theme.nix {};
-        #  #fajita-images = self.flake.nixosConfigurations.fajita.config.mobile.outputs.android-fastboot-images;
+          #  #fajita-images = self.flake.nixosConfigurations.fajita.config.mobile.outputs.android-fastboot-images;
           deploy =
             nixpkgs.legacyPackages.${system}.writeText "cachix-deploy.json"
             (builtins.toJSON {
@@ -34,9 +33,11 @@
                 inputs.nixpkgs.lib.mapAttrs
                 (host: cfg: cfg.config.system.build.toplevel)
                 (inputs.nixpkgs.lib.filterAttrs (host: cfg:
-                  cfg ? config
+                  cfg
+                  ? config
                   && cfg.config ? system
-                  && cfg.config.system ? build
+                  && cfg.config.system
+                  ? build
                   && cfg.config.system.build ? toplevel
                   && cfg.pkgs.stdenv.buildPlatform.system == system
                   && cfg.config.services.cachix-agent.enable)
@@ -52,8 +53,10 @@
           modules ? [],
           ...
         } @ args:
-          #inputs.self.lib.nixos.lehmanatorSystem {
-          (import ./lib/nixos/lehmanatorSystem.nix {inherit inputs self;}) {
+        #inputs.self.lib.nixos.lehmanatorSystem {
+          (import ./nix/hive/lib/lehmanatorSystem.nix {
+            inherit inputs self;
+          }) {
             #inputs.nixpkgs.lib.nixosSystem {
             inherit system;
             specialArgs = {
@@ -130,7 +133,6 @@
         #    extraSpecialArgs = { inherit inputs; user = "guest"; };
         #  };
         #};
-
       };
     };
 
@@ -240,7 +242,24 @@
       inputs.flake-utils.follows = "flake-utils";
     };
     # --- Libs: Organization ---------------------------------------
-    std.url = "github:divnix/std";
+    std = {
+      url = "github:divnix/std";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        arion.follows = "arion";
+        devshell.follows = "devshell";
+        makes.follows = "makes";
+        microvm.follows = "microvm";
+        n2c.follows = "nix2container";
+        nixago.follows = "nixago";
+        nixago-ext.follows = "nixago";
+        terranix.follows = "terranix";
+      };
+    };
+    makes.url = "github:fluidattacks/makes";
+    nix2container.url = "github:nlewo/nix2container";
+    terranix.url = "github:terranix/terranix";
+
     hive.url = "github:divnix/hive";
     omnibus.url = "github:GTrunSec/omnibus";
     haumea = {
@@ -296,7 +315,6 @@
     proc-flake.url = "github:srid/proc-flake";
     pydev.url = "github:oceansprint/pydev";
     treefmt-nix.url = "github:numtide/treefmt-nix";
-
 
     # --- Modules: System ------------------------------------------
     nixos-hardware.url = "github:NixOS/nixos-hardware";

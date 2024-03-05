@@ -21,10 +21,10 @@
     #../../profiles/nixos/server/kubernetes/k3s-node-main.nix
     ../../profiles/nixos/virt
     #../../profiles/nixos/virt/emulators/slippi.nix
-    self.nixosModules.apparmor
-    self.nixosModules.cachix-agent
-    self.nixosModules.hercules-ci
-    #self.nixosModules.homed
+    self.nixosProfiles.apparmor
+    self.nixosProfiles.cachix-agent
+    self.nixosProfiles.hercules-ci
+    #self.nixosProfiles.homed
 
     # --- Disabled ---
     #../../profiles/nixos/hardware/fprintd.nix
