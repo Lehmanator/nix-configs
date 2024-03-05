@@ -4,12 +4,11 @@
   pkgs,
   ...
 }: {
-  plugins = {
-    emmet = {
-      enable = false;
-      leader = null;
-      mode = null; # i | n | v | a
-      settings = null;
+  plugins.emmet = {
+    enable = false;
+    settings = {
+      #leader_key = null;
+      #mode = null; # i | n | v | a
     };
   };
 }

@@ -1,13 +1,15 @@
-{ inputs
-, ...
-}:
 {
-
+  inputs,
+  config,
+  ...
+}: {
   # TODO: Compare neogit vs. fugitive
   plugins.neogit = {
     enable = true;
-    autoRefresh = true;
-    integrations.diffview = true;
+    settings = {
+      autoRefresh = true;
+      integrations.diffview = config.plugins.diffview.enable;
+    };
 
     #commitPopup.kind = null;
     #disableBuiltinNotifications = null; disableCommitConfirmation = null; disableContextHighlighting = null;
@@ -16,5 +18,4 @@
     #mappings.status = null;
     #useMagitKeybindings = null;
   };
-
 }
