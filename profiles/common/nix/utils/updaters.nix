@@ -1,12 +1,11 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   environment = {
     shellAliases = {
       nix-nurl = "nurl";
       n-nurl = "nurl";
 
-      nix-nvfetcher = "nvfetcher";
-      n-nvfetch = "nvfetcher";
+      #nix-nvfetcher = "nvfetcher";
+      #n-nvfetch = "nvfetcher";
     };
 
     systemPackages = [

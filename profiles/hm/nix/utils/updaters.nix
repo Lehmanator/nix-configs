@@ -1,8 +1,4 @@
-{
-  inputs,
-  pkgs,
-  ...
-}: {
+{ inputs, pkgs, ... }: {
   home.packages = [
     # --- Package Updaters ---
     pkgs.niv # Nix project dependency management
