@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   imports = [ ./utils ];
 
@@ -6,6 +6,7 @@
   environment.shellAliases = {
     # --- Nix-Command ---
     n = "nix";
+    ns = "nix search nixpkgs | ${lib.getExe pkgs.bat} --plain --color=always";
 
     n-build = "nix build";
     nb = "nix build";
