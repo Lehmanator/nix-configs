@@ -28,7 +28,7 @@ in {
         #(homeConfigurations "homeConfigurations")
         #(nixosConfigurations "nixosConfigurations")
         (blockTypes.functions "nixosProfiles")
-        #(functions "nixosModules")
+        (blockTypes.functions "nixosModules")
         #(functions "nixosSuites")
         #(functions "homeProfiles")
         #(functions "homeModules")
@@ -61,6 +61,7 @@ in {
       #lib = [ "utils" "library" ];
       devshellProfiles = [["repo" "devshellProfiles"]];
       diskoProfiles = [["hive" "diskoProfiles"]];
+      nixosModules = [["hive" "nixosModules"]];
       nixosProfiles = [["hive" "nixosProfiles"]];
     };
 
