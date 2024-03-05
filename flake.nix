@@ -392,7 +392,10 @@
       url = "github:nix-community/nixago-extensions";
       inputs.nixpkgs.follows = "nixpkgs";
     }; # TODO: Collect lib
+
     # --- Packages: Nix --------------------------------------------
+    nuenv.url = "github:DeterminateSystems/nuenv"; # Nushell Derivations
+
     # --- Nix Utils ------------------------------------------------
     nix-health.url = "github:srid/nix-health"; # nix-health: Show health of your Nix system
     kubenix.url = "github:hall/kubenix";
@@ -411,10 +414,6 @@
     };
     nix-auto-changelog = {
       url = "github:loophp/nix-auto-changelog";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nuenv = {
-      url = "github:DeterminateSystems/nuenv";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     rnix-parser = {

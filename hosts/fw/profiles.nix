@@ -5,7 +5,7 @@
   inputs,
   ...
 }: {
-  imports = [
+  imports = with inputs; [
     ../../profiles/nixos
     ../../profiles/nixos/boot
     ../../profiles/nixos/desktop
@@ -18,13 +18,13 @@
     #../../profiles/nixos/hardware/peripherals/scanners.nix
     ../../profiles/nixos/network/tailscale/mullvad.nix
     ../../profiles/nixos/security
-    ../../profiles/nixos/security/apparmor.nix
     #../../profiles/nixos/server/kubernetes/k3s-node-main.nix
-    #../../profiles/nixos/users/homed.nix
     ../../profiles/nixos/virt
     #../../profiles/nixos/virt/emulators/slippi.nix
-    ../../profiles/nixos/cachix-agent.nix
-    ../../profiles/nixos/hercules-ci.nix
+    self.nixosModules.apparmor
+    self.nixosModules.cachix-agent
+    self.nixosModules.hercules-ci
+    #self.nixosModules.homed
 
     # --- Disabled ---
     #../../profiles/nixos/hardware/fprintd.nix

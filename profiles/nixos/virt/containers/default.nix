@@ -1,12 +1,13 @@
-{ inputs
-, config
-, lib
-, pkgs
-, user
-, ...
+{
+  inputs,
+  config,
+  lib,
+  pkgs,
+  user,
+  ...
 }: {
   imports = [
-    ../../security/apparmor.nix
+    inputs.self.nixosProfiles.apparmor
     ./containerd.nix
     ./cri-o.nix
     #./lxc.nix
@@ -27,7 +28,7 @@
         #pkgs.cni-plugin-flannel  # IPv4 network b/w multiple nodes in a cluster. Not how containers are networked to host, only how traffic is transported b/w hosts.
       ];
       # Configuration for containers.conf
-      settings = { };
+      settings = {};
     };
     ociSeccompBpfHook.enable = false; # TODO: What is this?
     # Signature verification policy file.
@@ -41,9 +42,9 @@
       #};
     };
     registries = {
-      block = [ ]; # List of registries to block
-      insecure = [ ]; # List of insecure repositories
-      search = [ "docker.io" "quay.io" "gcr.io" "ghcr.io" ];
+      block = []; # List of registries to block
+      insecure = []; # List of insecure repositories
+      search = ["docker.io" "quay.io" "gcr.io" "ghcr.io"];
     };
     # Configuration: storage.conf
     storage.settings = {

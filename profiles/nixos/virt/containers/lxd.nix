@@ -1,14 +1,15 @@
-{ inputs
-, config
-, lib
-, pkgs
-, user
-, ...
+{
+  inputs,
+  config,
+  lib,
+  pkgs,
+  user,
+  ...
 }:
 # LXD - Daemon that manages containers. Users in `lxd` group can interact w/ daemon (to start/stop containers) using the `lxc` command line tool & others.
 {
   imports = [
-    #../../security/apparmor.nix  # LXD service complains about missing AppArmor support (WARN)
+    #inputs.self.nixosProfiles.apparmor  # LXD service complains about missing AppArmor support (WARN)
     #./lxc.nix                    # Interfacing w/ LXD can be done w/ LXC (or other utils, but you will probs use LXC)
     #./lxd-image-server.nix       # Creates, manages, & mirrors a simplestreams lxd image server on top of nginx.
   ];
@@ -26,22 +27,27 @@
 
   networking.hostId = "aa38a832"; # Required by ZFS. Use: head -c 8 /etc/machine-id
 
-  users.users.${user}.extraGroups = [ "lxd" ]; #users.extraGroups.lxd.members = [user];  users.groups.lxd.members = [user];
+  users.users.${user}.extraGroups = [
+    "lxd"
+  ]; # users.extraGroups.lxd.members = [user];  users.groups.lxd.members = [user];
 
   virtualisation.lxd = {
     enable = true;
     agent.enable = true; # Enable LXD agent. Default=false
     #package = pkgs.lxd;                                          # Package for LXD
-    lxcPackage = pkgs.lxc; #config.virtualisation.lxc.package; # Package for LXC. Required for AppArmor profiles.
+    lxcPackage =
+      pkgs.lxc; # config.virtualisation.lxc.package; # Package for LXC. Required for AppArmor profiles.
 
     # Enables various settings to avoid common pitfalls when running containers requiring too many file operations. Fixes errors like: "Too many open files" or "neighbour: ndisc_cache: neighbor table overflow".
     #   See: https://lxd.readthedocs.io/en/latest/production-setup/
     recommendedSysctlSettings = true;
 
-    startTimeout = 180; # LXD daemon in lxd.service will timeout after this many seconds. Default=600
+    startTimeout =
+      180; # LXD daemon in lxd.service will timeout after this many seconds. Default=600
     ui.enable = true; # Experimental UI for LXD  # TODO: Figure out how to use
     #ui.package = pkgs.ui;  #
-    zfsSupport = false; #config.boot.zfs.enabled;  # Whether ZFS pools are supported. Note: Requires zfsSupport in kernel/initram
+    zfsSupport =
+      false; # config.boot.zfs.enabled;  # Whether ZFS pools are supported. Note: Requires zfsSupport in kernel/initram
   };
 
   # --- ZFS Storage Pools ---

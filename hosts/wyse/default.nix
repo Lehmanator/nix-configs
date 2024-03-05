@@ -32,12 +32,14 @@
     ../../profiles/nixos/hardware/peripherals/logitech.nix
     ../../profiles/nixos/hardware/usb.nix
     ../../profiles/nixos/network/tailscale/subnet-router.nix
-    ../../profiles/nixos/security/apparmor.nix
     #../../profiles/nixos/server/kubernetes/k3s-node-main.nix
-    ../../profiles/nixos/users/homed.nix
     ../../profiles/nixos/virt
-    ../../profiles/nixos/cachix-agent.nix
-    #../../profiles/nixos/installer.nix
+
+    self.nixosProfiles.apparmor
+    self.nixosProfiles.cachix-agent
+    self.nixosProfiles.homed
+    #self.nixosProfiles.installer
+
     #../../profiles/nixos/virt/emulators/slippi.nix
     #../../profiles/nixos/hardware/display/displaylink.nix
     #../../profiles/nixos/hardware/tpm1.2.nix

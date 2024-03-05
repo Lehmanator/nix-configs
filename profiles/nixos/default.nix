@@ -1,7 +1,11 @@
-{lib, ...}:
+{
+  inputs,
+  lib,
+  ...
+}:
 # TODO: Move all config that isn't NixOS-specific stuff to common file
 {
-  imports = [
+  imports = with inputs; [
     ../common
 
     ./modules
@@ -10,7 +14,6 @@
     ./hardware
     ./locale
     ./network
-    ./neovim.nix
     ./nix
     ./security
     ./shell
@@ -20,13 +23,14 @@
     #./installer
     #./virt
 
-    ./adb.nix
-    ./motd.nix
-    ./normalize.nix
-    ./sshd.nix
-    #./auto-upgrade.nix
-    #./specialization.nix
-    #./stylix.nix
+    self.nixosProfiles.adb
+    self.nixosProfiles.motd
+    self.nixosProfiles.neovim
+    self.nixosProfiles.normalize
+    self.nixosProfiles.sshd
+    #self.nixosProfiles.auto-upgrade
+    #self.nixosProfiles.specialization
+    #self.nixosProfiles.stylix
 
     #inputs.srvos.nixosModules.common
     #inputs.srvos.nixosModules.mixins-nix-experimental

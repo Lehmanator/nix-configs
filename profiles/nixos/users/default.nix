@@ -1,9 +1,10 @@
-{ inputs
-, config
-, lib
-, pkgs
-, user
-, ...
+{
+  inputs,
+  config,
+  lib,
+  pkgs,
+  user,
+  ...
 }:
 #let
 #  mkUser = username: {
@@ -13,8 +14,8 @@
 #  };
 #in
 {
-  imports = [
-    #./home-manager.nix
-    ./primary.nix
+  imports = with inputs; [
+    #self.nixosProfiles.home-manager #./home-manager.nix
+    self.nixosProfiles.user-primary
   ];
 }
