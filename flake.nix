@@ -1,56 +1,72 @@
 {
   description =
     "Personal Nix / NixOS configs, along with custom NixOS modules, packages, libs, & more!";
-  outputs = { self, nixpkgs, nixos, home, nur, flake-parts, ... }@inputs:
+  outputs =
+    { self, nixpkgs, nixos, home, nur, flake-parts, std, omnibus, ... }@inputs:
     let
-      blockTypes = inputs.nixpkgs.lib.recursiveUpdate
+      inherit (nixpkgs) lib;
+      inherit (omnibus.flake.inputs) climodSrc;
+      systems = [ "x86_64-linux" "aarch64-linux" "riscv64-linux" ];
+      blockTypes = lib.recursiveUpdate
         inputs.std.blockTypes # anything, arion, containers, data, devshells, files, functions, installables, kubectl, microvms, namaka, nixago, nixostests, nomad, nvfetcher, pkgs, runnables, terra
 
         inputs.hive.blockTypes
         # {colemna,darwin,disko,home,nixos}Configurations
       ;
+      omnibusStd = (omnibus.pops.std {
+        inputs.inputs = { inherit (omnibus.flake.inputs) std; };
+      }).exports.default;
+      #flake-parts.lib.mkFlake { inherit inputs; } {
     in
-    flake-parts.lib.mkFlake { inherit inputs; } {
-      imports = [ inputs.std.flakeModule ./profiles/flakes ];
-      systems = [ "x86_64-linux" "aarch64-linux" "riscv64-linux" ];
+    omnibus.flake.inputs.flake-parts.lib.mkFlake { inherit inputs; } {
+      inherit systems;
+      imports = [
+        #inputs.std.flakeModule
+        omnibusStd.flakeModule
+        ./profiles/flakes
+      ];
 
-      std.grow = {
+      std.std = omnibusStd.mkStandardStd {
+        cellsFrom = ./nix;
+        inherit systems;
+        inputs = inputs // { inherit climodSrc; };
         nixpkgsConfig = { allowUnfree = true; };
-        #cellsFrom = ../../nix;
-        cellsFrom = inputs.self + /nix;
-        #cellsFrom = ../../nix;
-        cellBlocks = with blockTypes; [
-          #cellBlocks = with inputs.std.blockTypes; with inputs.hive.blockTypes; [
-          (blockTypes.installables "packages" { ci.build = true; })
-          (blockTypes.devshells "shells" { ci.build = true; })
-          (blockTypes.functions "devshellProfiles")
-          #(containers "containers" {ci.publish = true;})
-          #(colmenaConfigurations "colmenaConfigurations")
-          #(darwinConfigurations "darwinConfigurations")
-          (blockTypes.diskoConfigurations)
-          (blockTypes.functions "diskoProfiles")
-          #(homeConfigurations "homeConfigurations")
-          #(nixosConfigurations "nixosConfigurations")
-          (blockTypes.functions "nixosProfiles")
-          (blockTypes.functions "nixosModules")
-          #(functions "nixosSuites")
-          #(functions "homeProfiles")
-          #(functions "homeModules")
-          #(functions "blockTypes")
-          (nixago "configs")
-        ];
       };
+      #std.grow = {
+      #  #cellsFrom = inputs.self + /nix;
+      #  #cellsFrom = ../../nix;
+      #  cellBlocks = with blockTypes; [
+      #    #cellBlocks = with inputs.std.blockTypes; with inputs.hive.blockTypes; [
+      #    (blockTypes.installables "packages" { ci.build = true; })
+      #    (blockTypes.devshells "shells" { ci.build = true; })
+      #    (blockTypes.functions "devshellProfiles")
+      #    #(containers "containers" {ci.publish = true;})
+      #    #(colmenaConfigurations "colmenaConfigurations")
+      #    #(darwinConfigurations "darwinConfigurations")
+      #    (blockTypes.diskoConfigurations)
+      #    (blockTypes.functions "diskoProfiles")
+      #    #(homeConfigurations "homeConfigurations")
+      #    #(nixosConfigurations "nixosConfigurations")
+      #    (blockTypes.functions "nixosProfiles")
+      #    (blockTypes.functions "nixosModules")
+      #    #(functions "nixosSuites")
+      #    #(functions "homeProfiles")
+      #    #(functions "homeModules")
+      #    #(functions "blockTypes")
+      #    (nixago "configs")
+      #  ];
+      #};
 
       # Harvest: Standard outputs into Nix-CLI-compatible form (aka 'official' flake schema)
       std.harvest = {
-        devShells = [
-          [
-            "repo"
-            "shells"
-          ]
-          #  ["hive" "shells"]
-          #  ["kube" "shells"]
-        ];
+        #devShells = [
+        #  #[
+        #  "repo"
+        #  "shells"
+        #  #]
+        #  #  ["hive" "shells"]
+        #  #  ["kube" "shells"]
+        #];
         nixago = [ "repo" "configs" ];
         #packages = ["hive" "packages"];
         # a list of lists can "harvest" from multiple cells
@@ -65,7 +81,7 @@
         #lib = [ "utils" "library" ];
         devshellProfiles = [ [ "repo" "devshellProfiles" ] ];
         diskoProfiles = [ [ "hive" "diskoProfiles" ] ];
-        nixosModules = [ [ "hive" "nixosModules" ] ];
+        #nixosModules = [ "hive" "nixosModules" ];
         nixosProfiles = [ [ "hive" "nixosProfiles" ] ];
       };
       # Winnow: Like `harvest`, but with filters from the predicates of `winnowIf`.
