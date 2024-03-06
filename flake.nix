@@ -1,139 +1,197 @@
 {
-  description = "Personal Nix / NixOS configs, along with custom NixOS modules, packages, libs, & more!";
-  outputs = {
-    self,
-    nixpkgs,
-    nixos,
-    home,
-    nur,
-    flake-parts,
-    ...
-  } @ inputs:
-    flake-parts.lib.mkFlake {inherit inputs self;} {
-      imports = [./profiles/flakes];
-      systems = ["x86_64-linux" "aarch64-linux" "riscv64-linux"];
+  description =
+    "Personal Nix / NixOS configs, along with custom NixOS modules, packages, libs, & more!";
+  outputs = { self, nixpkgs, nixos, home, nur, flake-parts, ... }@inputs:
+    let
+      blockTypes = inputs.nixpkgs.lib.recursiveUpdate
+        inputs.std.blockTypes # anything, arion, containers, data, devshells, files, functions, installables, kubectl, microvms, namaka, nixago, nixostests, nomad, nvfetcher, pkgs, runnables, terra
 
-      perSystem = {
-        config,
-        lib,
-        pkgs,
-        system,
-        final,
-        inputs',
-        ...
-      }: {
+        inputs.hive.blockTypes
+        # {colemna,darwin,disko,home,nixos}Configurations
+      ;
+    in
+    flake-parts.lib.mkFlake { inherit inputs self; } {
+      imports = [ inputs.std.flakeModule ./profiles/flakes ];
+      systems = [ "x86_64-linux" "aarch64-linux" "riscv64-linux" ];
+
+      std.grow = {
+        nixpkgsConfig = { allowUnfree = true; };
+        #cellsFrom = ../../nix;
+        cellsFrom = inputs.self + /nix;
+        #cellsFrom = ../../nix;
+        cellBlocks = with blockTypes; [
+          #cellBlocks = with inputs.std.blockTypes; with inputs.hive.blockTypes; [
+          (blockTypes.installables "packages" { ci.build = true; })
+          (blockTypes.devshells "shells" { ci.build = true; })
+          (blockTypes.functions "devshellProfiles")
+          #(containers "containers" {ci.publish = true;})
+          #(colmenaConfigurations "colmenaConfigurations")
+          #(darwinConfigurations "darwinConfigurations")
+          (blockTypes.diskoConfigurations)
+          (blockTypes.functions "diskoProfiles")
+          #(homeConfigurations "homeConfigurations")
+          #(nixosConfigurations "nixosConfigurations")
+          (blockTypes.functions "nixosProfiles")
+          (blockTypes.functions "nixosModules")
+          #(functions "nixosSuites")
+          #(functions "homeProfiles")
+          #(functions "homeModules")
+          #(functions "blockTypes")
+          (nixago "configs")
+        ];
+      };
+
+      # Harvest: Standard outputs into Nix-CLI-compatible form (aka 'official' flake schema)
+      std.harvest = {
+        devShells = [
+          [
+            "repo"
+            "shells"
+          ]
+          #  ["hive" "shells"]
+          #  ["kube" "shells"]
+        ];
+        nixago = [ "repo" "configs" ];
+        #packages = ["hive" "packages"];
+        # a list of lists can "harvest" from multiple cells
+        #  [ "hive" "packages" ]
+        #  ["kube" "packages"]
+        #];
+      };
+
+      # Pick: Like `harvest` but remove the system for outputs that are system agnostic.
+      std.pick = {
+        #lib = [["hive" "lib"]];
+        #lib = [ "utils" "library" ];
+        devshellProfiles = [ [ "repo" "devshellProfiles" ] ];
+        diskoProfiles = [ [ "hive" "diskoProfiles" ] ];
+        nixosModules = [ [ "hive" "nixosModules" ] ];
+        nixosProfiles = [ [ "hive" "nixosProfiles" ] ];
+      };
+      # Winnow: Like `harvest`, but with filters from the predicates of `winnowIf`.
+      #std.winnow = {
+      #  packages = [ "app3" "packages" ];
+      #};
+      # WinnowIf: Set the predicates for `winnow`.
+      #std.winnowIf = {
+      #  packages = n: v: n=="foo";
+      #};
+      perSystem = { config, lib, pkgs, system, final, inputs', ... }: {
         packages = {
           #system-repl = pkgs.callPackage ./pkgs/nixos/system-repl {};
           #firefox-gnome-theme = pkgs.callPackage ./pkgs/nixos/themes/firefox-gnome-theme.nix {};
           #  #fajita-images = self.flake.nixosConfigurations.fajita.config.mobile.outputs.android-fastboot-images;
           deploy =
             nixpkgs.legacyPackages.${system}.writeText "cachix-deploy.json"
-            (builtins.toJSON {
-              agents =
-                inputs.nixpkgs.lib.mapAttrs
-                (host: cfg: cfg.config.system.build.toplevel)
-                (inputs.nixpkgs.lib.filterAttrs (host: cfg:
-                  cfg
-                  ? config
-                  && cfg.config ? system
-                  && cfg.config.system
-                  ? build
-                  && cfg.config.system.build ? toplevel
-                  && cfg.pkgs.stdenv.buildPlatform.system == system
-                  && cfg.config.services.cachix-agent.enable)
-                self.nixosConfigurations);
-            });
+              (builtins.toJSON {
+                agents = inputs.nixpkgs.lib.mapAttrs
+                  (host: cfg: cfg.config.system.build.toplevel)
+                  (inputs.nixpkgs.lib.filterAttrs
+                    (host: cfg:
+                      cfg ? config && cfg.config ? system && cfg.config.system
+                      ? build && cfg.config.system.build ? toplevel
+                      && cfg.pkgs.stdenv.buildPlatform.system == system
+                      && cfg.config.services.cachix-agent.enable)
+                    self.nixosConfigurations);
+              });
         };
       };
-      flake = let
-        mkSystem = {
-          host,
-          system ? "x86_64-linux",
-          user ? "sam",
-          modules ? [],
-          ...
-        } @ args:
-        #inputs.self.lib.nixos.lehmanatorSystem {
-          (import ./nix/hive/lib/lehmanatorSystem.nix {
-            inherit inputs self;
-          }) {
-            #inputs.nixpkgs.lib.nixosSystem {
-            inherit system;
-            specialArgs = {
-              inherit inputs user;
-              # Instantiate all instances of nixpkgs in flake.nix to avoid creating new nixpkgs instances
-              # for every `import nixpkgs` call within submodules/subflakes. Saves time & RAM.
-              #  See:
-              #  - https://nixos-and-flakes.thiscute.world/nixos-with-flakes/downgrade-or-upgrade-packages
-              #  - https://nixos-and-flakes.thiscute.world/nixpkgs/multiple-nixpkgs
-              # stable, unstable, master, staging, staging-next
-              pkgs-master = import inputs.nixpkgs-master {
-                inherit system;
-                config.allowUnfree = true;
+      flake =
+        let
+          mkSystem =
+            { host
+            , system ? "x86_64-linux"
+            , user ? "sam"
+            , modules ? [ ]
+            , ...
+            }@args:
+            #inputs.self.lib.nixos.lehmanatorSystem {
+            (import ./nix/hive/lib/lehmanatorSystem.nix {
+              inherit inputs self;
+            }) {
+              #inputs.nixpkgs.lib.nixosSystem {
+              inherit system;
+              specialArgs = {
+                inherit inputs user;
+                # Instantiate all instances of nixpkgs in flake.nix to avoid creating new nixpkgs instances
+                # for every `import nixpkgs` call within submodules/subflakes. Saves time & RAM.
+                #  See:
+                #  - https://nixos-and-flakes.thiscute.world/nixos-with-flakes/downgrade-or-upgrade-packages
+                #  - https://nixos-and-flakes.thiscute.world/nixpkgs/multiple-nixpkgs
+                # stable, unstable, master, staging, staging-next
+                pkgs-master = import inputs.nixpkgs-master {
+                  inherit system;
+                  config.allowUnfree = true;
+                };
               };
+              #// specialArgs;
+              modules = [ ./hosts/${host} ] ++ modules;
             };
-            #// specialArgs;
-            modules = [./hosts/${host}] ++ modules;
+        in
+        {
+          blockTypes = {
+            std = inputs.std.blockTypes;
+            hive = inputs.hive.blockTypes;
+            #all = blockTypes;
           };
-      in {
-        #overlays = import ./overlays/nixos;
-        nixosConfigurations = {
-          fw = mkSystem {host = "fw";};
-          wyse = mkSystem {host = "wyse";};
-          fajita = nixos.lib.nixosSystem {
-            system = "aarch64-linux";
-            specialArgs = {
-              inherit inputs;
-              user = "sam";
+          #overlays = import ./overlays/nixos;
+          nixosConfigurations = {
+            fw = mkSystem { host = "fw"; };
+            wyse = mkSystem { host = "wyse"; };
+            fajita = nixos.lib.nixosSystem {
+              system = "aarch64-linux";
+              specialArgs = {
+                inherit inputs;
+                user = "sam";
+              };
+              modules = [
+                {
+                  _module.args = {
+                    inherit inputs;
+                    user = "sam";
+                  };
+                }
+                (import "${inputs.mobile-nixos}/lib/configuration.nix" {
+                  device = "oneplus-fajita";
+                })
+                ./hosts/fajita
+                inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
+              ];
             };
-            modules = [
-              {
-                _module.args = {
-                  inherit inputs;
-                  user = "sam";
-                };
-              }
-              (import "${inputs.mobile-nixos}/lib/configuration.nix" {
-                device = "oneplus-fajita";
-              })
-              ./hosts/fajita
-              inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
-            ];
-          };
-          fajita-minimal = nixos.lib.nixosSystem {
-            system = "aarch64-linux";
-            specialArgs = {
-              inherit inputs;
-              user = "sam";
+            fajita-minimal = nixos.lib.nixosSystem {
+              system = "aarch64-linux";
+              specialArgs = {
+                inherit inputs;
+                user = "sam";
+              };
+              modules = [
+                {
+                  _module.args = {
+                    inherit inputs;
+                    user = "sam";
+                  };
+                }
+                (import "${inputs.mobile-nixos}/lib/configuration.nix" {
+                  device = "oneplus-fajita";
+                })
+                ./hosts/fajita/minimal.nix
+                inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
+              ];
             };
-            modules = [
-              {
-                _module.args = {
-                  inherit inputs;
-                  user = "sam";
-                };
-              }
-              (import "${inputs.mobile-nixos}/lib/configuration.nix" {
-                device = "oneplus-fajita";
-              })
-              ./hosts/fajita/minimal.nix
-              inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
-            ];
           };
+          #homeConfigurations = {
+          #  sam = inputs.home.lib.homeManagerConfiguration {
+          #    #pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          #    modules = [ ./users/sam ];
+          #    extraSpecialArgs = { inherit inputs; user = "sam"; };
+          #  };
+          #  guest = inputs.home.lib.homeManagerConfiguration {
+          #    pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          #    #modules = [./users/default];
+          #    extraSpecialArgs = { inherit inputs; user = "guest"; };
+          #  };
+          #};
         };
-        #homeConfigurations = {
-        #  sam = inputs.home.lib.homeManagerConfiguration {
-        #    #pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        #    modules = [ ./users/sam ];
-        #    extraSpecialArgs = { inherit inputs; user = "sam"; };
-        #  };
-        #  guest = inputs.home.lib.homeManagerConfiguration {
-        #    pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        #    #modules = [./users/default];
-        #    extraSpecialArgs = { inherit inputs; user = "guest"; };
-        #  };
-        #};
-      };
     };
 
   # --- Disko ---
@@ -232,7 +290,8 @@
     nix-stable-diffusion.inputs.nixpkgs.follows = "nixpkgs";
     nixified-ai.url = "github:nixified-ai/flake";
     nixified-ai.inputs.nixpkgs.follows = "nixpkgs";
-    nixpkgs-terraform-providers.url = "github:nix-community/nixpkgs-terraform-providers-bin";
+    nixpkgs-terraform-providers.url =
+      "github:nix-community/nixpkgs-terraform-providers-bin";
     nixpkgs-terraform-providers.inputs.nixpkgs.follows = "nixpkgs";
     fenix.url = "github:nix-community/fenix";
     fenix.inputs.nixpkgs.follows = "nixpkgs";
@@ -274,7 +333,8 @@
     flake-utils.url = "github:numtide/flake-utils";
     flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus";
     flake-utils-plus.inputs.flake-utils.follows = "flake-utils";
-    flake-check.url = "github:srid/check-flake"; # check-flake: Adds a #check package for building all checks for the current system
+    flake-check.url =
+      "github:srid/check-flake"; # check-flake: Adds a #check package for building all checks for the current system
     flake-compat = {
       url = "github:edolstra/flake-compat";
       flake = false;
@@ -350,13 +410,15 @@
     declarative-flatpak.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
-    ssbm-nix.url = "github:lytedev/ssbm-nix"; # Fork of: "github:djanatyn/ssbm-nix";
+    ssbm-nix.url =
+      "github:lytedev/ssbm-nix"; # Fork of: "github:djanatyn/ssbm-nix";
     # --- Packages: Pre-built Images -------------------------------
     nixos-images.url = "github:nix-community/nixos-images";
     # --- Packages: Package Management ------------------------------
     nur-update.url = "github:nix-community/nur-update"; # nur-update: Update NUR
     quick-nix-registry.url = "github:divnix/quick-nix-registry";
-    nixpkgs-graph-explorer.url = "github:tweag/nixpkgs-graph-explorer"; # nixpkgs-graph-explorer: CLI to explore nixpkgs graph
+    nixpkgs-graph-explorer.url =
+      "github:tweag/nixpkgs-graph-explorer"; # nixpkgs-graph-explorer: CLI to explore nixpkgs graph
     debnix.url = "github:ngi-nix/debnix";
     nurl = {
       url = "github:nix-community/nurl";
@@ -415,9 +477,11 @@
     nuenv.url = "github:DeterminateSystems/nuenv"; # Nushell Derivations
 
     # --- Nix Utils ------------------------------------------------
-    nix-health.url = "github:srid/nix-health"; # nix-health: Show health of your Nix system
+    nix-health.url =
+      "github:srid/nix-health"; # nix-health: Show health of your Nix system
     kubenix.url = "github:hall/kubenix";
-    fast-flake-update.url = "github:Mic92/fast-flake-update"; # Util to update `flake.lock` faster than `nix flake update`
+    fast-flake-update.url =
+      "github:Mic92/fast-flake-update"; # Util to update `flake.lock` faster than `nix flake update`
     harmonia = {
       url = "github:nix-community/harmonia";
       inputs.nixpkgs.follows = "nixpkgs";
