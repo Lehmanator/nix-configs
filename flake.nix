@@ -10,7 +10,7 @@
         # {colemna,darwin,disko,home,nixos}Configurations
       ;
     in
-    flake-parts.lib.mkFlake { inherit inputs self; } {
+    flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [ inputs.std.flakeModule ./profiles/flakes ];
       systems = [ "x86_64-linux" "aarch64-linux" "riscv64-linux" ];
 
