@@ -2,10 +2,10 @@
   inputs,
   cell,
 }: let
-  inherit (inputs.haumea.lib) load loaders matchers transformers;
+  inherit (inputs.haumea.lib) load loaders transformers;
 in
   load {
     src = ./nixosSuites;
     loader = loaders.verbatim;
-    transformer = transformers.liftDefaults;
+    transformer = transformers.liftDefault;
   }

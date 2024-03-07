@@ -59,20 +59,20 @@
 
       # Harvest: Standard outputs into Nix-CLI-compatible form (aka 'official' flake schema)
       std.harvest = {
-        #devShells = [
-        #  #[
-        #  "repo"
-        #  "shells"
-        #  #]
-        #  #  ["hive" "shells"]
-        #  #  ["kube" "shells"]
-        #];
+        diskoConfigurations = [ "hive" "diskoConfigurations" ];
+        devShells =
+          [ [ "repo" "shells" ] [ "hive" "shells" ] [ "kube" "shells" ] ];
         nixago = [ "repo" "configs" ];
-        #packages = ["hive" "packages"];
-        # a list of lists can "harvest" from multiple cells
-        #  [ "hive" "packages" ]
-        #  ["kube" "packages"]
-        #];
+        nixosModules = [ "hive" "nixosModules" ];
+        packages = [
+          [
+            "repo"
+            "packages"
+          ]
+          # a list of lists can "harvest" from multiple cells
+          [ "hive" "packages" ]
+          [ "kube" "packages" ]
+        ];
       };
 
       # Pick: Like `harvest` but remove the system for outputs that are system agnostic.
@@ -81,8 +81,13 @@
         #lib = [ "utils" "library" ];
         devshellProfiles = [ [ "repo" "devshellProfiles" ] ];
         diskoProfiles = [ [ "hive" "diskoProfiles" ] ];
-        #nixosModules = [ "hive" "nixosModules" ];
-        nixosProfiles = [ [ "hive" "nixosProfiles" ] ];
+        #nixosModules = [
+        #  [ "repo" "nixosModules" ]
+        #  [ "hive" "nixosModules" ]
+        #  [ "kube" "nixosModules" ]
+        #];
+        nixosProfiles =
+          [ [ "hive" "nixosProfiles" ] [ "kube" "nixosProfiles" ] ];
       };
       # Winnow: Like `harvest`, but with filters from the predicates of `winnowIf`.
       #std.winnow = {

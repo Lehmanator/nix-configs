@@ -1,19 +1,19 @@
 { inputs, cell, ... }:
-# TODO: Compose devShells
-#
-# Nix-based devShells:
-# - nixpkgs dev
-# - NUR dev
-# - NixOS config
-# - home-manager config
-# - nix-darwin config
-# - Nix flakes dev
-# - Nix non-flakes dev
-#
 let
-  inherit (inputs.nixpkgs) lib;
-  pkgs = inputs.nixpkgs;
+  l = nixpkgs.lib // builtins;
+  inherit (inputs) nixpkgs;
+  inherit (inputs.std) lib std;
+  pkgs = inputs.nixpkgs; # .legacyPackages;
 
+  # Nix-based devShells:
+  # - nixpkgs dev
+  # - NUR dev
+  # - NixOS config
+  # - home-manager config
+  # - nix-darwin config
+  # - Nix flakes dev
+  # - Nix non-flakes dev
+  #
   # TODO: Convert to Nixvim config.
   vim-snippet-updateNixFetchGit = ''
     " Helper to preserve the cursor location w/ filters
@@ -32,53 +32,52 @@ let
   # - VSCodium w/ config & plugins
   # - Nixvim w/ config & plugins
   # - Git repos w/ auto-pull/auto-updating
+  #l.mapAttrs (_: lib.dev.mkShell)
 in
-lib.mapAttrs (_: inputs.std.lib.dev.mkShell) {
-  nixos = {
-    name = "nixos";
-    imports = [ inputs.std.std.devshellProfiles.default ];
+lib.dev.mkShell {
+  name = "NixOS Configuration Shell";
+  imports = [ std.devshellProfiles.default ];
 
-    # TODO: Use figlet
-    motd = ''
-      ╭───────────────────────────────────────────────────────────╮
-      │                                                           │
-      │ {202} 🔨   Welcome to Lehmanator's NixOS configuration shell!{reset}  │
-      │                                                           │
-      ╰───────────────────────────────────────────────────────────╯
-      $(type -p menu &>/dev/null && menu)
-    '';
-    startup = {
-      aaa-begin = {
-        deps = [ ];
-        text = ''
-          read -r LINES COLUMNS < <(stty size)
-          printf -- "─%.0s" $(${pkgs.coreutils}/bin/seq $COLUMNS)
-          echo
-        '';
-      };
-      onefetch = {
-        deps = [ "aaa-begin" ];
-        # --no-merges --no-bots
-        text = ''
-          ${lib.getExe pkgs.onefetch} \
-            --no-color-palette \
-            --email \
-            --include-hidden \
-            --number-of-file-churns 8 \
-            --number-separator comma \
-            --type programming markup prose data
-        '';
-      };
-      pls = {
-        deps = [ "onefetch" ];
-        text = ''
-          ${lib.getExe pkgs.pls} --grid "true"
-        '';
-      };
-      starship = {
-        deps = [ "pls" ];
-        text = "";
-      };
+  # TODO: Use figlet
+  motd = l.mkForce ''
+    ╭───────────────────────────────────────────────────────────╮
+    │                                                           │
+    │ {202} 🔨   Welcome to Lehmanator's NixOS configuration shell!{reset}  │
+    │                                                           │
+    ╰───────────────────────────────────────────────────────────╯
+    $(type -p menu &>/dev/null && menu)
+  '';
+  devshell.startup = {
+    aaa-begin = {
+      deps = [ ];
+      text = ''
+        read -r LINES COLUMNS < <(stty size)
+        printf -- "─%.0s" $(${pkgs.coreutils}/bin/seq $COLUMNS)
+        echo
+      '';
+    };
+    onefetch = {
+      deps = [ "aaa-begin" ];
+      # --no-merges --no-bots
+      text = ''
+        ${l.getExe pkgs.onefetch} \
+          --no-color-palette \
+          --email \
+          --include-hidden \
+          --number-of-file-churns 8 \
+          --number-separator comma \
+          --type programming markup prose data
+      '';
+    };
+    pls = {
+      deps = [ "onefetch" ];
+      text = ''
+        ${l.getExe pkgs.pls} --grid "true"
+      '';
+    };
+    starship = {
+      deps = [ "pls" ];
+      text = "";
     };
   };
   commands = [
@@ -109,7 +108,7 @@ lib.mapAttrs (_: inputs.std.lib.dev.mkShell) {
       name = "host-info";
       category = "info";
       help = "display information about your host machine";
-      command = "${lib.getExe pkgs.fastfetch}";
+      command = "${l.getExe pkgs.fastfetch}";
     }
     {
       name = "update flake";
@@ -133,7 +132,7 @@ lib.mapAttrs (_: inputs.std.lib.dev.mkShell) {
       name = "tree";
       category = "info";
       help = "show a tree of Nix store path dependencies";
-      command = lib.getExe pkgs.nix-tree;
+      command = l.getExe pkgs.nix-tree;
     }
   ];
   # TODO: Split packages into Nix / NixOS shells
