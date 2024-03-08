@@ -1,12 +1,8 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
+{ config, lib, pkgs, ... }: {
   imports = [
     ./auto-session.nix # # Auto save/restore Vim sessions
     ./barbar.nix # # Status bar
+    ./cmp.nix # # Completion engine
     ./comment-nvim.nix # #
     ./cursorline.nix # # Cursor line/word highlight
     ./dap.nix # # Diagnostics
@@ -27,7 +23,6 @@
     ./none-ls.nix # # Integration w/ LSP
     ./nvim-autopairs.nix # # Pair matching
     ./nvim-bqf.nix # #
-    ./nvim-cmp.nix # # Completion engine
     ./nvim-colorizer.nix # # Color highlighter
     #./nvim-lightbulb.nix #  # Code Actions
     ./nvim-tree.nix # # File tree
@@ -96,13 +91,13 @@
 
       # These attrs will be added to the table parameter for the setup function.
       # Typically, it can override NixVim’s default settings.
-      extraOptions = {};
+      extraOptions = { };
 
       # Env vars to ignore?
-      ignoredVariables = {};
+      ignoredVariables = { };
 
       # Env vars to split w/ separator?
-      separatedVariables = {};
+      separatedVariables = { };
     };
 
     # --- Snippets ---------------------

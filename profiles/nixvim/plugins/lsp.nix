@@ -3,7 +3,7 @@
   lib,
   ...
 }: let
-  isLspCmp = config.plugins.lsp.enable && config.plugins.nvim-cmp.enable;
+  isLspCmp = config.plugins.lsp.enable && config.plugins.cmp.enable;
 in {
   # --- Language Server Protocol -----
   plugins = {

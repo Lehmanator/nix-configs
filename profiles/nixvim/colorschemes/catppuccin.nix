@@ -1,10 +1,4 @@
-{
-  inputs,
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
+{ inputs, config, lib, pkgs, ... }: {
   colorschemes.catppuccin = {
     #enable = lib.mkDefault false;
 
@@ -20,11 +14,11 @@
 
     # --- Styling, Highlights, & Overrides ---
     colorOverrides = {
-      all = {};
-      frappe = {};
-      latte = {};
-      macchiato = {};
-      mocha = {};
+      all = { };
+      frappe = { };
+      latte = { };
+      macchiato = { };
+      mocha = { };
     };
 
     #customHighlights = ''
@@ -39,18 +33,18 @@
 
     # TODO: Make some symbol classes bold & others italic
     styles = {
-      booleans = [];
-      comments = ["italic"];
-      conditionals = ["italic"];
-      functions = [];
-      keywords = ["bold"];
-      loops = [];
-      numbers = [];
-      operators = ["bold"];
-      properties = [];
-      strings = [];
-      types = [];
-      variables = [];
+      booleans = [ ];
+      comments = [ "italic" ];
+      conditionals = [ "italic" ];
+      functions = [ ];
+      keywords = [ "bold" ];
+      loops = [ ];
+      numbers = [ ];
+      operators = [ "bold" ];
+      properties = [ ];
+      strings = [ ];
+      types = [ ];
+      variables = [ ];
     };
 
     # TODO: All integrations
@@ -58,7 +52,7 @@
       aerial = true;
       barbar = true; # barbar.enable;
       beacon = true;
-      cmp = true; # nvim-cmp.enable;
+      cmp = true; # cmp.enable;
       coc_nvim = true;
       dap.enabled = true; # dap.enable;
       dap.enable_ui = true; # dap.extensions.dap-ui.enable;
@@ -116,16 +110,16 @@
       native_lsp = {
         enabled = true;
         underlines = {
-          errors = ["underline"];
-          hints = ["underline"];
-          information = ["underline"];
-          warnings = ["underline"];
+          errors = [ "underline" ];
+          hints = [ "underline" ];
+          information = [ "underline" ];
+          warnings = [ "underline" ];
         };
         virtual_text = {
-          errors = ["italic"];
-          hints = ["italic"];
-          information = ["italic"];
-          warnings = ["italic"];
+          errors = [ "italic" ];
+          hints = [ "italic" ];
+          information = [ "italic" ];
+          warnings = [ "italic" ];
         };
       };
       #telescope = {

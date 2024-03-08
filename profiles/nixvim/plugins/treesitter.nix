@@ -1,7 +1,8 @@
-{config, ...}: {
+{ config, ... }: {
   # --- Treesitter -------------------
   plugins = {
-    cmp-treesitter.enable = true; # Make nvim-cmp completion use ts source
+    cmp-treesitter.enable =
+      config.plugins.cmp.enable; # Make nvim-cmp completion use ts source
     nvim-autopairs.checkTs = true; # Make autopair matching use treesitter
 
     treesitter = {
@@ -61,18 +62,18 @@
       lspInterop = {
         enable = true;
         border = "rounded";
-        floatingPreviewOpts = {};
-        peekDefinitionCode = {};
+        floatingPreviewOpts = { };
+        peekDefinitionCode = { };
       };
       move.enable = true; # {...};
       select = {
         enable = true;
         includeSurroundingWhitespace = false;
-        keymaps = {};
+        keymaps = { };
         lookahead = true;
-        selectionModes = {};
+        selectionModes = { };
       };
-      swap = {enable = true;};
+      swap = { enable = true; };
     };
 
     rainbow-delimiters = {

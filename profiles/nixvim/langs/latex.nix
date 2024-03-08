@@ -1,10 +1,6 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+{ config, pkgs, ... }: {
   plugins = {
-    cmp-latex-symbols.enable = config.plugins.nvim-cmp.enable;
+    cmp-latex-symbols.enable = config.plugins.cmp.enable;
     lsp.servers.texlab.enable = config.plugins.lsp.enable;
     vimtex.enable = true;
   };

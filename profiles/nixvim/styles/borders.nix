@@ -43,7 +43,7 @@ in
       noice.presets.lsp_doc_border = borderStyle != "none";
       none-ls.border = borderChars;
       #nvim-bqf = borderChars;
-      nvim-cmp.window = {
+      cmp.window = {
         completion.border = borderChars;
         documentation.border = borderChars;
       };
