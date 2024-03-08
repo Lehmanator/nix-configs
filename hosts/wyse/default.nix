@@ -1,10 +1,4 @@
-{
-  inputs,
-  lib,
-  pkgs,
-  user,
-  ...
-}: {
+{ inputs, lib, pkgs, user, ... }: {
   imports = with inputs; [
     #./configuration.nix # System configuration
     ./disko.nix # Disk configuration
@@ -23,8 +17,7 @@
     nixos-hardware.nixosModules.common-pc-ssd
     nixos-hardware.nixosModules.common-cpu-intel
     ../../profiles/nixos
-    ../../profiles/nixos/boot
-    #../../profiles/nixos/boot/unl0kr.nix
+    ../../profiles/nixos/boot.nix
     ../../profiles/nixos/desktop
     ../../profiles/nixos/desktop/de/gnome
     ../../profiles/nixos/hardware/display
@@ -33,7 +26,7 @@
     ../../profiles/nixos/hardware/usb.nix
     ../../profiles/nixos/network/tailscale/subnet-router.nix
     #../../profiles/nixos/server/kubernetes/k3s-node-main.nix
-    ../../profiles/nixos/virt
+    ../../profiles/nixos/virt.nix
 
     self.nixosProfiles.apparmor
     self.nixosProfiles.cachix-agent
@@ -52,8 +45,8 @@
     binfmt.emulatedSystems = [
       "aarch64-linux" # "aarch64-darwin" "x86_64-darwin"
     ];
-    extraModulePackages = [];
-    kernelModules = ["kvm-intel"];
+    extraModulePackages = [ ];
+    kernelModules = [ "kvm-intel" ];
     initrd = {
       availableKernelModules = [
         "xhci_pci"
@@ -64,7 +57,7 @@
         "usb_storage"
         "sd_mod"
       ];
-      kernelModules = ["nvme"];
+      kernelModules = [ "nvme" ];
     };
     #loader.efi.efiSysMountPoint = "/boot/efi";
     loader.efi.efiSysMountPoint = lib.mkForce "/boot";
@@ -100,14 +93,15 @@
   users.users.${user} = {
     isNormalUser = true;
     description = "Sam Lehman";
-    extraGroups = ["wheel" "users" "dialout"];
+    extraGroups = [ "wheel" "users" "dialout" ];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB2M80EUw0wQaBNutE06VNgSViVot6RL0O6iv2P1ewWH ${user}@fw"
     ];
     #initialPassword = "nixos-installer-changeme";
   };
   qt.enable = true;
-  nix.settings.trusted-public-keys = ["hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs="];
+  nix.settings.trusted-public-keys =
+    [ "hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs=" ];
   programs = {
     git = {
       enable = true;

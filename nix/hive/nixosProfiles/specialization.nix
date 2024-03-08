@@ -1,11 +1,5 @@
-{ inputs, config, lib, pkgs, ... }:
-{
-  imports = [
-    #inputs.mobile.
-  ];
-
+{ inputs, config, lib, pkgs, ... }: {
   specialisation = {
-
     # Convert NixOS configuration into mobile-friendly version
     mobile = {
       inheritParentConfig = true;
@@ -22,8 +16,7 @@
     vm-guest = {
       inheritParentConfig = true;
       configuration = {
-        imports = [
-        ];
+        imports = [ ];
         system.nixos.tags = [ "virtualized" "vm" "vm-guest" ];
       };
     };
@@ -32,8 +25,7 @@
     guest-user = {
       inheritParentConfig = true;
       configuration = {
-        imports = [
-        ];
+        imports = [ ];
         system.nixos.tags = [ "guest-user" ];
       };
     };
@@ -42,8 +34,7 @@
     installer = {
       inheritParentConfig = true;
       configuration = {
-        imports = [
-        ];
+        imports = [ ];
         system.nixos.tags = [ "installer" "bootstrap" ];
       };
     };
@@ -52,9 +43,7 @@
     encrypted = {
       inheritParentConfig = true;
       configuration = {
-        imports = [
-          inputs.disko.nixosModules.disko
-        ];
+        imports = [ inputs.disko.nixosModules.disko ];
         system.nixos.tags = [ "encrypted" "fde" ];
       };
     };
@@ -80,11 +69,11 @@
         system.autoUpgrade = {
           enable = true;
           allowReboot = true;
-          flake = "github:PresqueIsleWineDev/nix-configs"; # TODO: Make sure correct
+          flake =
+            "github:PresqueIsleWineDev/nix-configs"; # TODO: Make sure correct
         };
         system.nixos.tags = [ "autoupgrade" "stable" ];
       };
     };
-
   };
 }

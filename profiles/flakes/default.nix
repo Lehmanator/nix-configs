@@ -27,6 +27,7 @@ in
     #./process-compose-flake.nix
     #./proc-flake.nix
     ./treefmt.nix
+    ../std
   ];
 
   #perSystem = { config, lib, pkgs, system, ... }:

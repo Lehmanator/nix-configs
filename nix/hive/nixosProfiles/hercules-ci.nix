@@ -1,12 +1,6 @@
-{
-  inputs,
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
+{ inputs, config, lib, pkgs, ... }: {
   imports = [
-    #./cachix.nix
+    #inputs.self.nixosProfiles.cachix
     inputs.hercules-ci-agent.nixosModules.agent-service
   ];
   services.hercules-ci-agent = {

@@ -1,23 +1,17 @@
-{ inputs, config, self, ... }:
-let inherit (inputs.haumea.lib) load loaders matchers transformers;
-in {
+{ inputs, config, self, ... }: {
   # Disko: systems=["aarch64-linux" "i686-linux" "riscv64-linux" "x86_64-linux"];
   perSystem = { config, lib, pkgs, system, ... }:
     let
-      inherit (inputs.disko.lib)
-        makeDiskImages makeDiskImagesScript create mount;
+      #inherit (inputs.disko.lib) makeDiskImages makeDiskImagesScript create mount;
       inherit (inputs.disko.packages.${system}) disko disko-doc;
     in
     {
       packages = {
-        # Make disko CLI & documentation available in flake outputs.
-        inherit disko disko-doc;
-
+        inherit disko
+          disko-doc; # Make disko CLI & documentation available in flake outputs.
         # Script to create new diskoConfiguration from existing / profiles.
-
         # Packages to build disk images for nixosConfigurations
         # TODO: Map diskoConfigurations.* to makeDiskImages
-
         # Packages to write scripts to build disk images for nixosConfigurations
         # TODO: Map diskoConfigurations.* to makeDiskImagesScript
       };

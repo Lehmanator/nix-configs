@@ -1,33 +1,25 @@
-{
-  inputs,
-  lib,
-  ...
-}:
+{ inputs, lib, ... }:
 # TODO: Move all config that isn't NixOS-specific stuff to common file
 {
   imports = with inputs; [
     ../common
 
-    ./modules
-
-    ./boot
     ./hardware
-    ./locale
     ./network
     ./nix
-    ./security
     ./shell
-    ./users
-    #./desktop
-    #./generators
-    #./installer
-    #./virt
+
+    ./boot.nix
+    ./modules.nix
+    ./security.nix
 
     self.nixosProfiles.adb
+    self.nixosProfiles.locale-est
     self.nixosProfiles.motd
     self.nixosProfiles.neovim
     self.nixosProfiles.normalize
     self.nixosProfiles.sshd
+    self.nixosProfiles.user-primary
     #self.nixosProfiles.auto-upgrade
     #self.nixosProfiles.specialization
     #self.nixosProfiles.stylix
@@ -39,7 +31,6 @@
     #inputs.nix-data.nixosModules.nix-data
     #inputs.nix-index.nixosModules.nix-index { programs.nix-index-database.comma.enable = true; }
     #./nix/activation-script.nix
-    #./boot
     #./home-manager.nix
     #../../users/homed.nix
   ];
@@ -54,7 +45,8 @@
   appstream.enable = true;
 
   # Always load modules: USB controller, NVMe controller, SATA controller, USB gadgets/peripherals
-  boot.initrd.availableKernelModules = ["xhci_pci" "nvme" "ahci" "usbhid" "usb_storage"];
+  boot.initrd.availableKernelModules =
+    [ "xhci_pci" "nvme" "ahci" "usbhid" "usb_storage" ];
 
   #environment.etc = let
   #  needsEscaping = s: null != builtins.match "[a-zA-Z0-9]+" s;

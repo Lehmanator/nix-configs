@@ -1,9 +1,4 @@
-{
-  inputs,
-  config,
-  pkgs,
-  ...
-}: {
+{ inputs, config, pkgs, user, ... }: {
   environment.systemPackages = with inputs; [
     pkgs.universal-ctags
 
@@ -11,9 +6,9 @@
       inherit pkgs;
       module = import self.nixvimModules.default;
       extraSpecialArgs = {
-        inherit inputs;
+        inherit inputs user;
         osConfig = config;
-        user = "sam";
+        #user = "sam";
       };
     })
 

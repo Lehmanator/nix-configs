@@ -1,6 +1,8 @@
 { inputs, cell, }@commonArgs:
 let
   inherit (inputs) omnibusStd;# cellsFrom cellsFrom' _pops ;
+  inherit (inputs.nixpkgs) lib;
+  inherit (inputs.omnibus) pops;
   cellName = builtins.baseNameOf ./.;
   #configTypes = [ "devshell" "disko" "flake" "hardware" "homeManager" "nixondroid" "nixos" "nixvim" "robotnix" ];
   #mkConfigTypes = t: {
@@ -14,34 +16,103 @@ let
   #    src = cellsFrom + /${cellName}/${t}Profiles;
   #  };
   #};
+  # TODO: Which pops are available in `mkBlocks`, omnibus, hivebus?
+  #
+  # mkBlocks: configs, data, devshellProfiles, jupyenv, packages, pops, scripts, shells, tasks
+  #
   # TODO: Kubernetes, containers, tests, checks, jupyenv, nixago, secrets
 in
-omnibusStd.mkBlocks.pops commonArgs {
-  configs = { src = ./configs; };
+lib.recursiveUpdate
+  (omnibusStd.mkBlocks.pops commonArgs {
+    configs = {
+      src = ./configs;
+      inputs = { inherit inputs cell; };
+    };
+    devshellProfiles = {
+      src = ./devshellProfiles;
+      inputs = { inherit inputs cell; };
+    };
+    packages = {
+      src = ./packages;
+      inputs = { inherit inputs cell; };
+    };
+    shells = {
+      src = ./shells;
+      inputs = { inherit inputs cell; };
+    };
 
-  devshellProfiles = { src = ./devshellProfiles; };
-  shells = { src = ./shells; };
+    homeModules = { src = ./homeModules; };
+    homeProfiles = {
+      src = ./homeProfiles;
+      type = "homeProfiles";
+    };
+    nixosModules = { src = ./nixosModules; };
+    nixosProfiles = {
+      src = ./nixosProfiles;
+      type = "nixosProfiles";
+    };
+    #nixosSuites = pops.nixosSuites.addLoadExtender {
+    #  load = {
+    #    src = ./nixosSuites;
+    #    inputs = { inherit inputs cell; };
+    #  };
+    #};
+    #nixosSuites = pops.nixosSuites { src = ./nixosSuites; };
+  })
+{
+  #}
 
-  diskoConfigurations = { src = ./diskoConfigurations; };
-  diskoProfiles = { src = ./diskoProfiles; };
+  lib = {
+    src = ./lib;
+    inputs = { inherit inputs cell; };
+  };
 
-  homeConfigurations = { src = ./homeConfigurations; };
-  homeProfiles = { src = ./homeProfiles; };
-  homeModules = { src = ./homeModules; };
-  homeSuites = { src = ./homeSuites; };
+  diskoConfigurations = {
+    src = ./diskoConfigurations;
+    inputs = { inherit inputs cell; };
+  };
+  diskoProfiles = {
+    src = ./diskoProfiles;
+    inputs = { inherit inputs cell; };
+  };
+  homeConfigurations = {
+    src = ./homeConfigurations;
+    inputs = { inherit inputs cell; };
+  };
+  #homeProfiles = {
+  #  src = ./homeProfiles;
+  #  inputs = { inherit inputs cell; };
+  #};
+  #homeModules = {
+  #  src = ./homeModules;
+  #  inputs = { inherit inputs cell; };
+  #};
+  homeSuites = {
+    src = ./homeSuites;
+    inputs = { inherit inputs cell; };
+  };
 
-  nixosConfigurations = { src = ./nixosConfigurations; };
-  nixosProfiles = { src = ./nixosProfiles; };
-  nixosModules = { src = ./nixosModules; };
-  nixosSuites = { src = ./nixosSuites; };
+  nixosConfigurations = {
+    src = ./nixosConfigurations;
+    inputs = { inherit inputs cell; };
+  };
 
-  nixvimConfigurations = { src = ./nixvimConfigurations; };
-  nixvimProfiles = { src = ./nixvimProfiles; };
-  nixvimModules = { src = ./nixvimModules; };
-  nixvimSuites = { src = ./nixvimSuites; };
-
-  lib = { src = ./lib; };
-  packages = { src = ./packages; };
+  nixvimConfigurations = {
+    src = ./nixvimConfigurations;
+    inputs = { inherit inputs cell; };
+  };
+  nixvimProfiles = {
+    src = ./nixvimProfiles;
+    inputs = { inherit inputs cell; };
+  };
+  nixvimModules = {
+    src = ./nixvimModules;
+    inputs = { inherit inputs cell; };
+  };
+  nixvimSuites = {
+    src = ./nixvimSuites;
+    inputs = { inherit inputs cell; };
+  };
 }
 ## Attr args should match that of Haumea load
 #omnibusStd.mkBlocks.pops commonArgs ({

@@ -143,7 +143,7 @@ in
   services.sshguard = {         # Service to block IP addresses attempting SSH brute force attacks.
     enable = true;              # Enable sshguard service
     #attack_threshold = 30;     # Block attacker after cumulative attack score exceeds threshold. Most attacks' scores = 10
-    blacklist_file = "/var/lib/sshguard/blacklist.db";
+    blacklist_file = "/var/lib/sshguard/blacklist.db"; # TODO: Add to impermanence
     blacklist_threshold = 120;  # Blacklist attacker after score exceeds threshold.
     blocktime = 120;            # Seconds to block attacker after exceeding threshold. Each subsequent block inc by 1.5x
     detection_time = 1000;      # Remember potential attackers for up to this many seconds before resetting score.

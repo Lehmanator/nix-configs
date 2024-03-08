@@ -1,23 +1,16 @@
-{ inputs
-, config
-, lib
-, pkgs
-, user
-, ...
-}:
-{
+{ inputs, config, lib, pkgs, user, ... }: {
   imports = [
-    #./dns
-    ./dns/resolvconf.nix
-    ./firewall.nix
-    ./networkmanager.nix
-    #./rxe.nix
-    #./systemd-networkd.nix
+    inputs.self.nixosProfiles.firewall
+    inputs.self.nixosProfiles.networkmanager
+    inputs.self.nixosProfiles.resolvconf
+    #inputs.self.nixosProfiles.rxe
+    #inputs.self.nixosProfiles.sits
+    #inputs.self.nixosProfiles.systemd-networkd
+    #inputs.self.nixosProfiles.ucarp
     ./tailscale
-    #./wifi
     ./wireguard
-    #./sits.nix
-    #./ucarp.nix
+    #./dns
+    #./wifi
 
     #./managers/connman.nix
     #./managers/networkd.nix
@@ -34,7 +27,8 @@
     #./vlans.nix
     #./vswitches.nix
   ];
-  hardware.wirelessRegulatoryDatabase = lib.mkDefault true; # Load regulatory DB at boot
+  hardware.wirelessRegulatoryDatabase =
+    lib.mkDefault true; # Load regulatory DB at boot
 
   networking = {
     # IPv6 <-> IPv4 address generation & translation
@@ -59,9 +53,9 @@
 
   # NetworkManager GTK4 lib
   # TODO: Conditional based on system desktop environment
-  environment.systemPackages = with config.services.xserver; lib.mkIf (desktopManager.gnome.enable || displayManager.gdm.enable) [
-    pkgs.libnma-gtk4
-  ];
+  environment.systemPackages = with config.services.xserver;
+    lib.mkIf (desktopManager.gnome.enable || displayManager.gdm.enable)
+      [ pkgs.libnma-gtk4 ];
 
   # Enable opportunistic TCP encryption.
   #  If other end supports, then encrypt traffic, else cleartext.
@@ -77,6 +71,6 @@
   #  users.tcpcryptd.group = "tcpcryptd";
   #  groups.tcpcryptd.members = lib.mkIf tcpcrypt.enable ["tcpcryptd" user ]; # Also create group
   #};
-  users.users.${user}.extraGroups = ["network"];
+  users.users.${user}.extraGroups = [ "network" ];
   #boot.kernel.sysctl."net.ipv4.tcp_ecn" = 0; # d:2
 }
