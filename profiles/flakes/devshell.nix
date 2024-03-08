@@ -6,10 +6,9 @@
     #../profiles/devshells/common.nix
     #../profiles/devshells/nix.nix
     #../profiles/devshells/rust.nix
-    ../devshells/git.nix
+    #../devshells/git.nix
   ];
-  perSystem = { config, lib, pkgs, ... }:
-    {
-      #devShells.default = config.devShells.nixos;
-    };
+  #perSystem = { config, lib, pkgs, ... }: {
+  #  devShells.default = config.devShells.nixos;
+  #};
 }
