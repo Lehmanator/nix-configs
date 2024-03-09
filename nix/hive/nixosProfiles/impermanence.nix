@@ -1,10 +1,5 @@
-{
-  inputs,
-  pkgs,
-  user,
-  ...
-}: {
-  imports = [inputs.impermanence.nixosModules.impermanence];
+{ inputs, pkgs, user, ... }: {
+  imports = [ inputs.impermanence.nixosModules.impermanence ];
 
   environment.persistence."/nix/persist" = {
     hideMounts = true;
@@ -28,42 +23,78 @@
       #{ file = "/etc/nix/id_rsa"; parentDirectory = { mode = "u=rwx,g=,o="; }; }
     ];
 
-    users.${user} = {
-      directories = [
-        "Backup"
-        "Books"
-        "Code"
-        "Documents"
-        "Downloads"
-        "Music"
-        "Pictures"
-        "Templates"
-        "Videos"
-
-        {
-          directory = ".gnupg";
-          mode = "0700";
-        }
-        {
-          directory = ".ssh";
-          mode = "0700";
-        }
-        {
-          directory = ".nixops";
-          mode = "0700";
-        }
-        {
-          directory = ".local/share/keyrings";
-          mode = "0700";
-        }
-        ".local/share/direnv"
-        ".mozilla"
-        ".pki"
-        ".kube"
-      ];
-    };
+    #users.${user} = {
+    #  directories = [
+    #    "Backup"
+    #    "Books"
+    #    "Code"
+    #    "Documents"
+    #    "Downloads"
+    #    "Music"
+    #    "Pictures"
+    #    "Templates"
+    #    "Videos"
+    #    {
+    #      directory = ".gnupg";
+    #      mode = "0700";
+    #    }
+    #    {
+    #      directory = ".ssh";
+    #      mode = "0700";
+    #    }
+    #    {
+    #      directory = ".nixops";
+    #      mode = "0700";
+    #    }
+    #    {
+    #      directory = ".local/share/keyrings";
+    #      mode = "0700";
+    #    }
+    #    ".local/share/direnv"
+    #    ".mozilla"
+    #    ".pki"
+    #    ".kube"
+    #  ];
+    #};
   };
 
   # Enable impermanence for home-manager too.
-  home-manager.sharedModules = [inputs.impermanence.homeManagerModules.impermanence];
+  home-manager.sharedModules = [
+    inputs.impermanence.nixosModules.home-manager
+    {
+      home.persistence."/nix/persist/home/${user}" = {
+        directories = [
+          "Backup"
+          "Books"
+          "Code"
+          "Documents"
+          "Downloads"
+          "Music"
+          "Pictures"
+          "Templates"
+          "Videos"
+          {
+            directory = ".gnupg";
+            mode = "0700";
+          }
+          {
+            directory = ".ssh";
+            mode = "0700";
+          }
+          {
+            directory = ".nixops";
+            mode = "0700";
+          }
+          {
+            directory = ".local/share/keyrings";
+            mode = "0700";
+          }
+          ".local/share/direnv"
+          ".mozilla"
+          ".pki"
+          ".kube"
+        ];
+      };
+    }
+  ];
 }

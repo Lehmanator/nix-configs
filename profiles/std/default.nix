@@ -4,7 +4,7 @@ let
   inherit (inputs.nixpkgs) lib;
   inherit (inputs.omnibus.flake.inputs) climodSrc std flake-parts;
   omnibusStd = (inputs.omnibus.pops.std {
-    inputs.inputs = inputs.omnibus.flake.inputs // inputs;
+    inputs.inputs = lib.recursiveUpdate inputs.omnibus.flake.inputs inputs;
   }).exports.default;
 in
 {
@@ -14,8 +14,12 @@ in
   std.std = omnibusStd.mkStandardStd {
     cellsFrom = ../../nix;
     inherit systems;
-    inputs = inputs // { inherit climodSrc; };
-    nixpkgsConfig = { allowUnfree = true; };
+    inputs = lib.recursiveUpdate inputs.omnibus.flake.inputs inputs;
+    # // { inherit climodSrc; };
+    nixpkgsConfig = {
+      allowUnfree = true;
+      overlays = [ inputs.nix-vscode-extensions.overlays.default ];
+    };
   };
 
   #std.grow = {
@@ -59,6 +63,7 @@ in
     omnibus = {
       inherit (inputs.omnibus) pops;
       std = omnibusStd;
+      inputs = lib.recursiveUpdate inputs.omnibus.flake.inputs inputs;
     };
     flakeModules.omnibusStd = omnibusStd.flakeModule;
   };

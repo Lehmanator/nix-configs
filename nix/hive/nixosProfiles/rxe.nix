@@ -1,12 +1,5 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-{
-  imports = [
-  ];
+{ inputs, config, lib, pkgs, ... }: {
+  imports = [ ];
 
   # Remote Direct Memory Access - high-throughput, low-latency connection by directly sharing memory w/o involving the OS of either machine.
   #  UDP port 4791 must be open on the respective ethernet interfaces.
@@ -18,6 +11,5 @@
     ];
   };
 
-  networking.firewall.allowUDPPorts = [ 4791 ];
-
+  networking.firewall.allowedUDPPorts = [ 4791 ];
 }

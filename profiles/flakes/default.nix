@@ -14,7 +14,7 @@ in
     ./agenix-shell.nix
     #./devenv.nix
     ./devshell.nix
-    ./disko
+    #./disko
     #./easyOverlay.nix
     #./ez-configs.nix
     ./emanote.nix
@@ -22,6 +22,7 @@ in
     #./hercules-ci.nix
     #./nix-cargo-integration.nix
     #./nixid.nix
+    ./nixpkgs-overlay.nix
     ./nixvim.nix
     ./pre-commit-hooks.nix
     #./process-compose-flake.nix

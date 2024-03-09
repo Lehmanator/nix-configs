@@ -1,22 +1,19 @@
-{ inputs
-, config
-, lib
-, pkgs
-, user
-  #, flatpak-repos ? { flathub = "https://flathub.org/repo/flathub.flatpakrepo"; }
-, ...
-}:
+{ inputs, config, lib, pkgs, user, ... }:
+#, flatpak-repos ? { flathub = "https://flathub.org/repo/flathub.flatpakrepo"; }
 {
   # --- Package Info Integration ---
+  appstream.enable = true;
   services = {
     flatpak.enable = true;
     packagekit.enable = true;
   };
-  appstream.enable = true;
 
   # --- Fonts ---
-  fonts.fontconfig.enable = true;
-  fonts.fontDir.enable = true;
+  fonts = {
+    fontconfig.enable = true;
+    fontDir.enable = true;
+  };
+
   # Rebuild font cache upon system activation
   #system.activationScripts.flatpakSystem.text = ''
   #  # TODO: Replace with primary user
@@ -24,9 +21,7 @@
   #  ln -s /run/current-system/sw/share/X11/fonts /home/sam/.local/share/fonts
   #'';
 
-
   # --- Flatpak CLI ---
-  users.users."${user}".extraGroups = [ "flatpak" ];
   environment.shellAliases = {
     fp = "flatpak";
     fpb = "flatpak build";
@@ -38,12 +33,12 @@
     fpu = "flatpak update";
   };
 
+  users.users."${user}".extraGroups = [ "flatpak" ];
   xdg.portal = {
     enable = true;
     xdgOpenUsePortal = true;
   };
 }
-
 #(lib.optionalAttrs (options?services.flatpak.packages) {
 #  imports = [ ./flatpak-apps.nix ];
 #  services.flatpak.remotes = flatpak-repos;

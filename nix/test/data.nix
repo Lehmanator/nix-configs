@@ -1,1 +1,1 @@
-{inputs, cell}: cell.pops.data.exports.default
+{inputs,cell}: cell.pops.data.exports.default

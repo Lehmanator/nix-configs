@@ -18,7 +18,7 @@
   services.accounts-daemon.enable = lib.mkDefault true; # AccountsService: access user account list & info via D-Bus
 
   # --- Packages -----------------------------------------------------
-  programs.evince.enable = lib.mkDefault true;
+  programs.evince.enable = true;
   programs.geary.enable = lib.mkDefault true;
   services.gnome.games.enable = lib.mkDefault true;
 

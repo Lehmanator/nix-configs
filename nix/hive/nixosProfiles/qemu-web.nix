@@ -1,4 +1,5 @@
 { inputs, config, lib, pkgs, ... }: {
+  imports = [ inputs.self.nixosProfiles.qemu ];
   # See: https://nixos.wiki/wiki/Libvirt
   # QEMU web clients:
   # - https://cgit.freedesktop.org/spice/spice-html5/

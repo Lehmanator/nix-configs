@@ -1,12 +1,15 @@
-{ inputs
-, config
-, lib
-, ...
-}:
-{
-  imports = with inputs.nixified-ai.nixosModules; [ invokeai textgen ];
+{ inputs, config, lib, pkgs, ... }:
+let gpu-oem = "amd"; # "nvidia"
+in {
+  imports = [
+    inputs.nixified-ai.nixosModules.invokeai
+    #inputs.nixified-ai.nixosModules.textgen
+  ];
   services.invokeai = {
     enable = lib.mkDefault true;
+
+    package = lib.mkDefault
+      inputs.nixified-ai.packages.${pkgs.system}."invokeai-${gpu-oem}";
     group = lib.mkDefault "invokeai";
     user = lib.mkDefault "invokeai";
     settings = {
@@ -17,6 +20,6 @@
     };
   };
 
-  environment.persistence."/nix/persist".directories = lib.mkIf config.services.invokeai.enable [ "/var/lib/invokeai" ];
-
+  # TODO: Conditional if module enabled
+  #environment.persistence."/nix/persist".directories = lib.mkIf config.services.invokeai.enable [ "/var/lib/invokeai" ];
 }

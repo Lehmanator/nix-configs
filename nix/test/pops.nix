@@ -5,7 +5,7 @@ inputs.omnibusStd.mkBlocks.pops commonArgs {
   packages = { src = ./packages; };
   shells = { src = ./shells; };
 
-  #data = { src = ./data; };
+  data = { src = ./data; };
   #jupyenv = { src = ./jupyenv; };
   #scripts = { src = ./scripts; };
   #tasks = { src = ./tasks; };

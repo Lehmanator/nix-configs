@@ -1,10 +1,8 @@
-{ inputs
-, lib
-, pkgs
-, ...
-}:
-{
-  imports = [ inputs.arion.nixosModules.arion ];
+{ inputs, lib, pkgs, ... }: {
+  imports = [
+    inputs.std.inputs.arion.nixosModules.arion
+    #inputs.arion.nixosModules.arion
+  ];
   virtualisation.arion = {
     backend = lib.mkDefault true;
     #backend = config.virtualisation.podman.enable;
@@ -16,5 +14,4 @@
     #  };
     #};
   };
-
 }

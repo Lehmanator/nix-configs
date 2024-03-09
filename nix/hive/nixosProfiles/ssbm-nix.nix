@@ -41,7 +41,7 @@
             enableJukebox = lib.mkDefault true;
             rootSlpPath = lib.mkDefault "${gamesPath}/Slippi";
             useMonthlySubfolders = lib.mkDefault false;
-            specateSlpPath = lib.mkDefault rootSlpPath + "/Spectate";
+            #specateSlpPath = lib.mkDefault rootSlpPath + "/Spectate";
           };
       };
     })

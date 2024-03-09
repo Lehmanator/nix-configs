@@ -1,11 +1,12 @@
 { inputs, config, lib, pkgs, ... }:
 {
-  boot.initrd.systemd = {
+  boot.initrd.systemd = with config.boot.loader; rec {
     #contents."/etc/hostname".text = config.networking.hostName;
-    enable = config.boot.loader.systemd-boot.enable; #    # d:false
-    enableTpm2 = lib.mkDefault config.boot.loader.systemd-boot.enable; ## d:false
+    #enable =  (systemd-boot.enable || lanzaboote.enable); #    # d:false
+    enable = systemd-boot.enable;
+    enableTpm2 = lib.mkDefault enable;
     emergencyAccess = lib.mkDefault false; # # true=unauthed-emerg-access,<str>=hashed-su-passwd (authed-emerg-access)
-    dbus.enable = lib.mkDefault config.boot.loader.systemd-boot.enable; # d:false
+    dbus.enable = lib.mkDefault enable;
     #extraBin = { umount=${pkgs.util-linux}/bin/umount; }; #            # Tools to add to `/bin`
     #extraConfig = "DefaultLimitCORE=infinity"; #                       # See: `man systemd-system.conf(5)`
     #initrdBin = []; #                                                  # Packages to include in `/bin` for stage1 emergency shell

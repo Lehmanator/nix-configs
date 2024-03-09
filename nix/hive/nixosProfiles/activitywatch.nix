@@ -1,5 +1,4 @@
-{ inputs, config, lib, pkgs, ... }:
-{
+{ inputs, cell, config, lib, pkgs, ... }: {
   # https://github.com/ActivityWatch/awesome-activitywatch
   # AFK:              https://github.com/ActivityWatch/aw-watcher-afk
   # Core:             https://github.com/ActivityWatch/aw-core
@@ -40,6 +39,18 @@
   # GTK App:          https://flathub.org/apps/com.gitlab.cunidev.Workflow
   # MacOS:            https://github.com/jca41/codewatch
   # QT App:
+
+  # TODO: Make services via nixosModules.activitywatch for watchers & server
+  environment.systemPackages = [
+    #cell.packages.aw-watcher-vim
+    #cell.packages.aw-watcher-vscode
+    pkgs.activitywatch
+    pkgs.aw-server-rust
+    pkgs.aw-qt
+    pkgs.aw-watcher-afk
+    pkgs.aw-watcher-window
+  ];
+
   # TODO: Fork web extension repo, modify hardcoded value
   programs.firefox.policies = {
     "3rdparty" = {
@@ -51,47 +62,48 @@
     };
   };
 
-start-sh = ''
-  #!/bin/bash
+  # TODO: Create package(s)
+  #start-sh = ''
+  #  #!/bin/bash
+  #
+  #  cd ~/.local/opt/activitywatch           # Put your ActivityWatch install folder here
+  #
+  #  ./aw-server/aw-server &
+  #  ./aw-watcher-afk/aw-watcher-afk &
+  #  ./aw-watcher-window/aw-watcher-window & # you can add --exclude-title here to exclude window title tracking for this session only
+  #
+  #  notify-send "ActivityWatch started"     # Optional, sends a notification when ActivityWatch is started
+  #'';
 
-  cd ~/.local/opt/activitywatch           # Put your ActivityWatch install folder here
+  #kill-sh = ''
+  #  #!/bin/bash
+  #  pkill aw-
+  #  notify-send "ActivityWatch killed"      # Optional, sends a notification when ActivityWatch is killed
+  #'';
 
-  ./aw-server/aw-server &
-  ./aw-watcher-afk/aw-watcher-afk &
-  ./aw-watcher-window/aw-watcher-window & # you can add --exclude-title here to exclude window title tracking for this session only
+  #aw-start-desktop = ''
+  #  [Desktop Entry]
+  #  Name=Start ActivityWatch
+  #  Comment=Start AW
+  #  Exec=~/.local/opt/activitywatch/start.sh
+  #  Hidden=false
+  #  Terminal=false
+  #  Type=Application
+  #  Version=1.0
+  #  Icon=activitywatch
+  #  Categories=Utility;
+  #'';
 
-  notify-send "ActivityWatch started"     # Optional, sends a notification when ActivityWatch is started
-'';
-
-kill-sh = ''
-  #!/bin/bash
-  pkill aw-
-  notify-send "ActivityWatch killed"      # Optional, sends a notification when ActivityWatch is killed
-'';
-
-aw-start-desktop = ''
-  [Desktop Entry]
-  Name=Start ActivityWatch
-  Comment=Start AW
-  Exec=~/.local/opt/activitywatch/start.sh
-  Hidden=false
-  Terminal=false
-  Type=Application
-  Version=1.0
-  Icon=activitywatch
-  Categories=Utility;
-'';
-
-aw-kill-desktop = ''
-  [Desktop Entry]
-  Name=Kill ActivityWatch
-  Comment=Kill AW
-  Exec=~/.local/opt/activitywatch/kill.sh
-  Hidden=false
-  Terminal=false
-  Type=Application
-  Version=1.0
-  Icon=activitywatch
-  Categories=Utility;
-'';
+  #aw-kill-desktop = ''
+  #  [Desktop Entry]
+  #  Name=Kill ActivityWatch
+  #  Comment=Kill AW
+  #  Exec=~/.local/opt/activitywatch/kill.sh
+  #  Hidden=false
+  #  Terminal=false
+  #  Type=Application
+  #  Version=1.0
+  #  Icon=activitywatch
+  #  Categories=Utility;
+  #'';
 }

@@ -1,5 +1,5 @@
 { inputs, config, lib, pkgs, user, ... }: {
-  imports = with inputs.self.nixosModules; [
+  imports = with inputs.self.nixosProfiles; [
     plymouth
     systemd-boot
     systemd-initrd

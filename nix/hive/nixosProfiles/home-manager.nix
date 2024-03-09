@@ -13,7 +13,7 @@
     useGlobalPkgs = true;
     useUserPackages = true;
     verbose = true;
-    users.${user} = inputs.self + /users/${user};
+    users.${user} = "${inputs.self}/users/${user}";
     #inputs.self.homeConfigurations."${user}@${config.networking.hostName}";
     #users.${user} = import ../homeConfigurations/${user};
     #users.${user} = import ../../../users/${user};

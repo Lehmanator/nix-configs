@@ -1,10 +1,5 @@
-{
-  inputs,
-  config,
-  lib,
-  ...
-}: {
-  imports = [inputs.robotnix.nixosModules.attestation-server];
+{ inputs, config, lib, ... }: {
+  imports = [ inputs.robotnix.nixosModules.attestation-server ];
 
   services.attestation-server = {
     enable = lib.mkDefault false;
@@ -29,12 +24,14 @@
     };
   };
 
-  environment.persistence."/nix/persist".directories = ["/var/lib/private/attestation"];
+  # TODO: Conditional on module loaded
+  #environment.persistence."/nix/persist".directories = ["/var/lib/private/attestation"];
+
   networking.firewall.allowedTCPPorts =
-    lib.mkDefault [config.services.attestation-server.port];
+    lib.mkDefault [ config.services.attestation-server.port ];
 
   sops.secrets = lib.mkIf config.services.attestation-server.enable {
-    attestation-signature-fingerprint = {};
-    attestation-avb-fingerprint = {};
+    attestation-signature-fingerprint = { };
+    attestation-avb-fingerprint = { };
   };
 }

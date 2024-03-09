@@ -44,28 +44,25 @@ lib.recursiveUpdate
     homeModules = { src = ./homeModules; };
     homeProfiles = {
       src = ./homeProfiles;
-      type = "homeProfiles";
+      type = "nixosProfiles";
     };
+    #homeSuites = { src = ./homeSuites; type = "nixosSuites"; };
+
     nixosModules = { src = ./nixosModules; };
     nixosProfiles = {
       src = ./nixosProfiles;
       type = "nixosProfiles";
     };
-    #nixosSuites = pops.nixosSuites.addLoadExtender {
-    #  load = {
-    #    src = ./nixosSuites;
-    #    inputs = { inherit inputs cell; };
-    #  };
-    #};
-    #nixosSuites = pops.nixosSuites { src = ./nixosSuites; };
+    #nixosSuites = { src = ./nixosSuites; type = "nixosProfilesOmnibus"; };
+
+    lib = inputs.omnibus.pops.load {
+      src = ./lib;
+      loader = inputs.haumea.lib.loaders.default;
+      inputs = { inherit inputs cell; };
+    };
   })
 {
   #}
-
-  lib = {
-    src = ./lib;
-    inputs = { inherit inputs cell; };
-  };
 
   diskoConfigurations = {
     src = ./diskoConfigurations;
@@ -87,10 +84,10 @@ lib.recursiveUpdate
   #  src = ./homeModules;
   #  inputs = { inherit inputs cell; };
   #};
-  homeSuites = {
-    src = ./homeSuites;
-    inputs = { inherit inputs cell; };
-  };
+  #homeSuites = {
+  #  src = ./homeSuites;
+  #  inputs = { inherit inputs cell; };
+  #};
 
   nixosConfigurations = {
     src = ./nixosConfigurations;

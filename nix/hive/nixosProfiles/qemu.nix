@@ -1,7 +1,6 @@
 { inputs, config, lib, pkgs, user, ... }: {
   imports = [
-    inputs.self.nixosProfiles.qemu-web
-    #./qemu-web.nix
+    #inputs.self.nixosProfiles.qemu-web
   ];
   #virtualisation.qemu = {
   #  guestAgent.enable = true;

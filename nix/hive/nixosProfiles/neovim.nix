@@ -4,7 +4,7 @@
 
     (nixvim.legacyPackages.${pkgs.system}.makeNixvimWithModule {
       inherit pkgs;
-      module = import self.nixvimModules.default;
+      module = import inputs.self.nixvimModules.default;
       extraSpecialArgs = {
         inherit inputs user;
         osConfig = config;

@@ -1,11 +1,13 @@
 {
   description =
     "Personal Nix / NixOS configs, along with custom NixOS modules, packages, libs, & more!";
-  outputs = { self, nixpkgs, nixos, home, omnibus, ... }@inputs:
+  outputs = { self, nixpkgs, nixos, home, omnibus, ... }@flake-inputs:
     let
       inherit (nixpkgs) lib;
       inherit (omnibus.flake.inputs) flake-parts;
-      systems = [ "x86_64-linux" "aarch64-linux" "riscv64-linux" ];
+      inputs = lib.recursiveUpdate omnibus.flake.inputs flake-inputs;
+      systems =
+        [ "x86_64-linux" "aarch64-linux" "riscv64-linux" "aarch64-darwin" ];
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
       inherit systems;
@@ -14,9 +16,6 @@
 
       perSystem = { config, lib, pkgs, system, final, inputs', ... }: {
         packages = {
-          #system-repl = pkgs.callPackage ./pkgs/nixos/system-repl {};
-          #firefox-gnome-theme = pkgs.callPackage ./pkgs/nixos/themes/firefox-gnome-theme.nix {};
-          #  #fajita-images = self.flake.nixosConfigurations.fajita.config.mobile.outputs.android-fastboot-images;
           deploy =
             nixpkgs.legacyPackages.${system}.writeText "cachix-deploy.json"
               (builtins.toJSON {
@@ -32,105 +31,172 @@
               });
         };
       };
-      flake =
-        let
-          mkSystem =
-            { host
-            , system ? "x86_64-linux"
-            , user ? "sam"
-            , modules ? [ ]
-            , ...
-            }@args:
-            (import ./nix/hive/lib/lehmanatorSystem.nix {
-              inherit inputs self;
-            }) {
-              inherit system;
-              # Instantiate all instances of nixpkgs in flake.nix to avoid creating new nixpkgs instances
-              # for every `import nixpkgs` call within submodules/subflakes. Saves time & RAM.
-              #  See:
-              #  - https://nixos-and-flakes.thiscute.world/nixos-with-flakes/downgrade-or-upgrade-packages
-              #  - https://nixos-and-flakes.thiscute.world/nixpkgs/multiple-nixpkgs
-              # stable, unstable, master, staging, staging-next
-              specialArgs = {
-                inherit inputs user;
-                debug = false;
-                pkgs-master = import inputs.nixpkgs-master {
-                  inherit system;
-                  config.allowUnfree = true;
-                };
-              };
-              modules = [ ./hosts/${host} ] ++ modules;
-            };
-        in
-        {
-          homeConfigurations."sam@minimal" =
-            inputs.home.lib.homeManagerConfiguration {
-              pkgs = inputs.nixpkgs;
-              modules = [
-                #./users/sam
-              ];
-              extraSpecialArgs = { inherit inputs; };
-            };
-          nixosConfigurations =
-            let user = "sam";
-            in {
-              minimal = nixos.lib.nixosSystem {
-                system = "x86_64-linux";
-                specialArgs = { inherit inputs user; };
-                modules = with inputs.self.nixosProfiles; [
-                  adb
-                  apparmor
-                  appimage
-                  cachix-agent
-                  declarative-flatpak
-                  flatpak
-                  gnome.default
-                  desktop
-                  home-manager
-                  pipewire
-                  sops
-                  systemd-boot
-                  user-primary
-                  #inputs.nur.nixosModules.nur
-                  ./hosts/fw/hardware-configuration.nix
-                  ./profiles/nixos/network
-                  {
-                    nixpkgs.config.allowUnfree = true;
-                    nixpkgs.overlays =
-                      [ inputs.nur.overlay inputs.fenix.overlays.default ];
-                    networking.hostName = "minimal";
-                    xdg.portal.enable = true;
-                  }
-                ];
-              };
-              fw = mkSystem { host = "fw"; };
-              wyse = mkSystem { host = "wyse"; };
-              fajita = nixos.lib.nixosSystem {
-                system = "aarch64-linux";
-                specialArgs = { inherit inputs user; };
-                modules = [
-                  { _module.args = { inherit inputs user; }; }
-                  (import "${inputs.mobile-nixos}/lib/configuration.nix" {
-                    device = "oneplus-fajita";
-                  })
-                  ./hosts/fajita
-                  inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
-                ];
-              };
-              fajita-minimal = nixos.lib.nixosSystem {
-                system = "aarch64-linux";
-                specialArgs = { inherit inputs user; };
-                modules = [
-                  { _module.args = { inherit inputs user; }; }
-                  (import "${inputs.mobile-nixos}/lib/configuration.nix" {
-                    device = "oneplus-fajita";
-                  })
-                  ./hosts/fajita/minimal.nix
-                  inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
-                ];
-              };
-            };
+      flake = {
+        homeConfigurations."sam@minimal" = home.lib.homeManagerConfiguration {
+          pkgs = nixpkgs;
+          modules = [
+            #./users/sam
+          ];
+          extraSpecialArgs = { inherit inputs; };
         };
+        nixosConfigurations =
+          let user = "sam";
+          in {
+            minimal = nixos.lib.nixosSystem {
+              system = "x86_64-linux";
+              specialArgs = { inherit inputs user; };
+              modules = with self.nixosProfiles; [
+                activitywatch
+                adb
+                agenix
+                apparmor
+                appimage
+                arion
+                auditd
+                cachix-agent
+                colmena
+                containerd
+                cri-o
+                #desktop
+                envfs
+                flake-utils-plus
+                flatpak-declarative
+                gdm
+                gnome.default
+                gtk
+                desktop
+                hercules-ci
+                home-manager
+                homed
+                kvm
+                lanzaboote
+                libreoffice
+                libvirt
+                locale-est
+                lxc
+                lxd
+                lxd-image-server
+                motd
+                neovim
+                networkmanager
+                nixos-generators
+                nixvim
+                normalize
+                nur
+                nushell
+                ollama
+                pipewire
+                plymouth
+                podman
+                polkit
+                printing
+                qemu
+                quick-nix-registry
+                resolvconf
+                robotnix
+                rxe
+                sits
+                sops
+                sshd
+                sudo-rs
+                systemd-boot
+                systemd-emergency
+                systemd-initrd
+                systemd-repart
+                test
+                unl0kr
+                ucarp
+                user-primary
+                vm-guest-windows
+                vm-host
+                waydroid
+                wayland
+                wine
+                xserver-base
+
+                #avahi # Conflict w/ systemd-resolved
+                bluetooth
+                dns-base
+                #dnscrypt-proxy # Conflict w/ systemd-resolved
+                fprintd
+                hosts-blocking
+                systemd-networkd-wireguard # Needs secret
+                systemd-resolved # Conflict w/ dnscrypt-proxy
+                tailscale
+                tailscale-mullvad-exit-node
+                tailscale-subnet-router
+                tpm2
+                wifi
+                #wifi-hotspot # Needs radio interface name & password secret
+                wireguard
+                wireguard-automesh
+
+                ./hosts/fw/hardware-configuration.nix
+
+                #harmonia # Wants secret
+                #impermanence # Wants user
+                #installer # ???
+                #iscsi-initiator # Not using
+                #kubenix # Needs fix
+                #microvm # Needs fix
+                #nix-index # ??
+                #nixified-ai # Dep broken
+                #nixos-images # Only loaded in images?
+                #qemu-web # Wants secret
+                #rygel # Needs fix to work with nftables
+                #secureboot # Incompatible with systemd-boot
+                #snowflake # No longer using
+                #specialization # Fixme
+                #ssbm-nix # Broken package
+                #stylix # Needs image path
+                #systemd-debug # Kernel patches cause long rebuild
+                #systemd-networkd # Needs options fix
+                #tor # Needs secret?
+
+                {
+                  nixpkgs.system = "x86_64-linux";
+                  nixpkgs.config.allowUnfree = true;
+                  nixpkgs.overlays =
+                    [ inputs.nur.overlay inputs.fenix.overlays.default ];
+                  networking.hostName = "minimal";
+                  xdg.portal.enable = true;
+                  #home-manager.users.sam = ./users/sam;
+                }
+              ];
+            };
+            fw = nixos.lib.nixosSystem {
+              system = "x86_64-linux";
+              specialArgs = { inherit inputs user; };
+              modules = [ ./hosts/fw ];
+            };
+            #fw = self.lib.mkSystem { host = "fw"; };
+            wyse = self.lib.mkSystem { host = "wyse"; };
+            fajita = nixos.lib.nixosSystem {
+              system = "aarch64-linux";
+              specialArgs = { inherit inputs user; };
+              modules = [
+                { _module.args = { inherit inputs user; }; }
+                (import "${inputs.mobile-nixos}/lib/configuration.nix" {
+                  device = "oneplus-fajita";
+                })
+                ./hosts/fajita
+                inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
+              ];
+            };
+            fajita-minimal = nixos.lib.nixosSystem {
+              system = "aarch64-linux";
+              specialArgs = { inherit inputs user; };
+              modules = [
+                { _module.args = { inherit inputs user; }; }
+                (import "${inputs.mobile-nixos}/lib/configuration.nix" {
+                  device = "oneplus-fajita";
+                })
+                ./hosts/fajita/minimal.nix
+                inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
+              ];
+            };
+          };
+      };
     };
 
   nixConfig = {
@@ -206,6 +272,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     impermanence.url = "github:nix-community/impermanence";
     lanzaboote = {
       url = "github:nix-community/lanzaboote";
@@ -278,6 +348,7 @@
       url = "github:nix-community/nixpkgs-terraform-providers-bin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    robotnix.url = "github:nix-community/robotnix";
 
     # --- MacOS ----------------------------------------------------
     nix-darwin = {

@@ -102,7 +102,8 @@
   ) (builtins.attrNames inputs.self.lib.addresses.machineId);
   #) (builtins.attrNames self.lib.addresses.machineId);
 
-  environment.persistence."/nix/persist".directories = lib.mkIf config.microvm.host.enable [ config.microvm.stateDir ];
+  # TODO: Conditional if module loaded
+  #environment.persistence."/nix/persist".directories = lib.mkIf config.microvm.host.enable [ config.microvm.stateDir ];
 
   # Flake updates from CI / Hydra jobs
   environment.systemPackages = let

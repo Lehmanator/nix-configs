@@ -8,6 +8,7 @@
 
     # Pick: Like `harvest` but remove the system for outputs that are system agnostic.
     pick = {
+      devshellProfiles = [ [ "kube" "devshellProfiles" ] ];
       pops = [ [ "kube" "pops" ] ];
       nixosModules = [ [ "kube" "nixosModules" ] ];
       nixosProfiles = [ [ "kube" "nixosProfiles" ] ];
