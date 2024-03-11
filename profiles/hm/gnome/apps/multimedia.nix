@@ -85,7 +85,7 @@
       pkgs.inkscape-with-extensions # # Vector graphics editor
       pkgs.krita # # Painting app
       # --- Video Editors ---
-      pkgs.blender # # 3D modeling & video rendering
+      #pkgs.blender # # 3D modeling & video rendering
       pkgs.boatswain # # Control Elgato Stream Deck devices
       pkgs.losslesscut-bin # # Swiss army knife of video editing
       #pkgs.pitivi # # Create/edit your own movies   # librosa dep broken 2024-01-27
