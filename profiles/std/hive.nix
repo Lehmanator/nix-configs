@@ -14,13 +14,21 @@
     pick = {
       devshellProfiles = [ [ "hive" "devshellProfiles" ] ];
       diskoProfiles = [ [ "hive" "diskoProfiles" ] ];
+
       lib = [ [ "hive" "lib" ] ];
       pops = [ [ "hive" "pops" ] ];
+
       homeModules = [ [ "hive" "homeModules" ] ];
       homeProfiles = [ [ "hive" "homeProfiles" ] ];
+      homeSuites = [ [ "hive" "homeSuites" ] ];
+
       nixosModules = [ [ "hive" "nixosModules" ] ];
       nixosProfiles = [ [ "hive" "nixosProfiles" ] ];
       nixosSuites = [ [ "hive" "nixosSuites" ] ];
+
+      nixvimModules = [ [ "hive" "nixvimModules" ] ];
+      nixvimProfiles = [ [ "hive" "nixvimProfiles" ] ];
+      nixvimSuites = [ [ "hive" "nixvimSuites" ] ];
     };
   };
 }

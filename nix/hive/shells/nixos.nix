@@ -36,7 +36,11 @@ let
 in
 lib.dev.mkShell {
   name = "NixOS Configuration Shell";
-  imports = [ std.devshellProfiles.default ];
+  imports = [
+    std.devshellProfiles.default
+    #inputs.self.devshellProfiles.nix-base
+    inputs.cells.repo.devshellProfiles.nix-base
+  ];
 
   # TODO: Use figlet
   motd = l.mkForce ''

@@ -1,20 +1,13 @@
-{
-  inputs,
-  config,
-  lib,
-  pkgs,
-  osConfig,
-  nixosConfig,
-  ...
-}: {
+{ inputs, config, lib, pkgs, osConfig, nixosConfig, ... }: {
   imports = [
-    ../../profiles/hm
-    ../../profiles/hm/devices/fajita.nix
-    ../../profiles/hm/devices/pinetime.nix
-    ../../profiles/hm/devices/sawfish.nix
+    inputs.self.homeProfiles.devices-fajita
+    inputs.self.homeProfiles.devices-nintendo-switch
+    inputs.self.homeProfiles.devices-pinetime
+    inputs.self.homeProfiles.devices-sawfish
+    inputs.self.homeSuites.developer-default
+    #../../profiles/hm
 
     ./git
-
     ./gpg.nix
     ./nix.nix
   ];

@@ -41,12 +41,22 @@ lib.recursiveUpdate
       inputs = { inherit inputs cell; };
     };
 
+    diskoProfiles = {
+      src = ./diskoProfiles;
+      type = "nixosProfiles";
+      #inputs = { inherit inputs cell; };
+    };
+
     homeModules = { src = ./homeModules; };
     homeProfiles = {
       src = ./homeProfiles;
       type = "nixosProfiles";
     };
-    #homeSuites = { src = ./homeSuites; type = "nixosSuites"; };
+    homeSuites = {
+      src = ./homeSuites;
+      type = "nixosProfiles";
+      #type = "nixosProfilesOmnibus";
+    };
 
     nixosModules = { src = ./nixosModules; };
     nixosProfiles = {
@@ -54,6 +64,25 @@ lib.recursiveUpdate
       type = "nixosProfiles";
     };
     #nixosSuites = { src = ./nixosSuites; type = "nixosProfilesOmnibus"; };
+
+    nixvimProfiles = {
+      src = ./nixvimProfiles;
+      type = "nixosProfiles";
+      #src = ./nixvim/profiles;
+      #inputs = { inherit inputs cell; };
+    };
+    nixvimModules = {
+      #src = ./nixvim/modules;
+      src = ./nixvimModules;
+      type = "nixosModules";
+      inputs = { inherit inputs cell; };
+    };
+    nixvimSuites = {
+      src = ./nixvimSuites;
+      #src = ./nixvim/suites;
+      type = "nixosProfilesOmnibus";
+      inputs = { inherit inputs cell; };
+    };
 
     lib = inputs.omnibus.pops.load {
       src = ./lib;
@@ -68,18 +97,10 @@ lib.recursiveUpdate
     src = ./diskoConfigurations;
     inputs = { inherit inputs cell; };
   };
-  diskoProfiles = {
-    src = ./diskoProfiles;
-    inputs = { inherit inputs cell; };
-  };
   homeConfigurations = {
     src = ./homeConfigurations;
     inputs = { inherit inputs cell; };
   };
-  #homeProfiles = {
-  #  src = ./homeProfiles;
-  #  inputs = { inherit inputs cell; };
-  #};
   #homeModules = {
   #  src = ./homeModules;
   #  inputs = { inherit inputs cell; };
@@ -96,18 +117,6 @@ lib.recursiveUpdate
 
   nixvimConfigurations = {
     src = ./nixvimConfigurations;
-    inputs = { inherit inputs cell; };
-  };
-  nixvimProfiles = {
-    src = ./nixvimProfiles;
-    inputs = { inherit inputs cell; };
-  };
-  nixvimModules = {
-    src = ./nixvimModules;
-    inputs = { inherit inputs cell; };
-  };
-  nixvimSuites = {
-    src = ./nixvimSuites;
     inputs = { inherit inputs cell; };
   };
 }
