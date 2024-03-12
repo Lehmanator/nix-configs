@@ -4,15 +4,17 @@
     harvest = {
       devShells = [ [ "repo" "shells" ] ];
       nixago = [ [ "repo" "configs" ] ];
-      packages = [ [ "repo" "packages" ] ];
+      #packages = [ [ "repo" "packages" ] ];
+      nixpkgs = [ [ "repo" "pkgs" ] ];
     };
 
     # Pick: Like `harvest` but remove the system for outputs that are system agnostic.
     pick = {
+      #nixago = [ [ "repo" "configs" ] ];
       devshellProfiles = [ [ "repo" "devshellProfiles" ] ];
-      #pops = [ [ "repo" "pops" ] ];
       nixosProfiles = [ [ "repo" "nixosProfiles" ] ];
       shells = [ [ "repo" "shells" ] ];
+      pops-repo = [ [ "repo" "pops" ] ];
     };
   };
 }

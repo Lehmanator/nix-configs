@@ -1,13 +1,5 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
+{ inputs , config , lib , pkgs , ... }:
 {
-  imports = [
-  ];
-
   programs.git.delta = {
     enable = true;
     #options = {
@@ -20,5 +12,4 @@
     #  whitespace-error-style = "22 reverse";
     #};
   };
-
 }

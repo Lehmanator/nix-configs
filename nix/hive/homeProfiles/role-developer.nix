@@ -1,11 +1,9 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-{
-  imports = [ ../../git ];
+{ inputs, cell, config, lib, pkgs, ... }: {
+  imports = [
+    #cell.homeProfiles.
+    #../../git
+    #../../../users/sam/git
+  ];
   home.packages = [
     #pkgs.nur.repos.federicoschonborn.devtoolbox  # Multiple developer tools in one GTK4 app (Broken 9/23: pkgs.python310.daltonlens (v0.1.5) miss setuptools_git)
     #pkgs.nur.repos.federicoschonborn.atoms       # Easily manage Linux chroots & containers

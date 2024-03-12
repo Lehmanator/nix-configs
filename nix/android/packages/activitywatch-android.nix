@@ -1,5 +1,6 @@
 { androidenv, activitywatch, aw-server-rust, lib, stdenv, fetchFromGitHub, }:
 androidenv.buildApp rec {
+  name = "activitywatch-android";
   pname = "activitywatch-android";
   version = "0.12.1";
 

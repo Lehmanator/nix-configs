@@ -1,11 +1,9 @@
-{
-  inputs,
-  cell,
-}:
+{ inputs, cell, }:
 {
   meta = rec {
     homepage = "https://github.com/siderolabs/conform";
-    description = "siderolabs/conform: Tool to enforce policies on your commits.";
+    description =
+      "siderolabs/conform: Tool to enforce policies on your commits.";
     longDescription = ''
       **${description}**
 
@@ -15,8 +13,7 @@
       blockType: `nixago`
     '';
   };
-}
-// (inputs.std.lib.dev.mkNixago inputs.std.data.configs.conform {
+} // (inputs.std.lib.dev.mkNixago inputs.std.data.configs.conform {
   # TODO: Find all options.
   data = {
     # TODO: What does this do?

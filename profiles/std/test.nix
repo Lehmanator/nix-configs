@@ -5,9 +5,10 @@
   };
   std.pick = {
     configs = [ [ "test" "configs" ] ];
+    data-repo = [ [ "test" "data" ] ];
     devshellProfiles = [ [ "test" "devshellProfiles" ] ];
     nixosModules = [ [ "test" "nixosModules" ] ];
     nixosProfiles = [ [ "test" "nixosProfiles" ] ];
-    popsTester = [ [ "test" "pops" ] ];
+    pops-test = [ [ "test" "pops" ] ];
   };
 }

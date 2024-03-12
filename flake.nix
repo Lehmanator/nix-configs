@@ -32,13 +32,13 @@
         };
       };
       flake = {
-        homeConfigurations."sam@minimal" = home.lib.homeManagerConfiguration {
-          pkgs = nixpkgs;
-          modules = [
-            #./users/sam
-          ];
-          extraSpecialArgs = { inherit inputs; };
-        };
+        #homeConfigurations."sam@minimal" = home.lib.homeManagerConfiguration {
+        #  pkgs = nixpkgs;
+        #  modules = [
+        #    #./users/sam
+        #  ];
+        #  extraSpecialArgs = { inherit inputs; };
+        #};
         nixosConfigurations =
           let user = "sam";
           in {

@@ -1,49 +1,49 @@
-{ inputs, nixosConfig, osConfig, config, lib, pkgs, ... }: {
+{ inputs, cell, nixosConfig, osConfig, config, lib, pkgs, ... }: {
   imports = [
-    inputs.self.homeProfiles.abook
-    inputs.self.homeProfiles.bat
-    inputs.self.homeProfiles.cachix-agent
-    inputs.self.homeProfiles.editorconfig
-    inputs.self.homeProfiles.eza
-    inputs.self.homeProfiles.direnv
-    inputs.self.homeProfiles.distrobox
-    inputs.self.homeProfiles.documentation
-    inputs.self.homeProfiles.fetchers
-    inputs.self.homeProfiles.fonts
-    inputs.self.homeProfiles.fzf
-    inputs.self.homeProfiles.git
-    inputs.self.homeProfiles.gpg
-    inputs.self.homeProfiles.helix
-    inputs.self.homeProfiles.helm
-    inputs.self.homeProfiles.k9s
-    inputs.self.homeProfiles.lang-nodejs
-    inputs.self.homeProfiles.lang-python
-    inputs.self.homeProfiles.lang-rust
-    inputs.self.homeProfiles.ls
-    inputs.self.homeProfiles.lsd
-    inputs.self.homeProfiles.navi
-    inputs.self.homeProfiles.neovim
-    inputs.self.homeProfiles.nix
-    inputs.self.homeProfiles.ollama
-    inputs.self.homeProfiles.pls
-    inputs.self.homeProfiles.recoll
-    inputs.self.homeProfiles.ripgrep
-    inputs.self.homeProfiles.shell-base
-    inputs.self.homeProfiles.shell-aliases
-    inputs.self.homeProfiles.social-dl
-    inputs.self.homeProfiles.social-sleuth
-    inputs.self.homeProfiles.starship
-    inputs.self.homeProfiles.tmux
-    inputs.self.homeProfiles.vm
-    inputs.self.homeProfiles.xdg
+    cell.homeProfiles.abook
+    cell.homeProfiles.bat
+    cell.homeProfiles.cachix-agent
+    cell.homeProfiles.editorconfig
+    cell.homeProfiles.eza
+    cell.homeProfiles.direnv
+    cell.homeProfiles.distrobox
+    cell.homeProfiles.documentation
+    cell.homeProfiles.fetchers
+    cell.homeProfiles.fonts
+    cell.homeProfiles.fzf
+    cell.homeProfiles.git
+    cell.homeProfiles.gpg
+    cell.homeProfiles.helix
+    cell.homeProfiles.helm
+    cell.homeProfiles.k9s
+    cell.homeProfiles.lang-nodejs
+    cell.homeProfiles.lang-python
+    cell.homeProfiles.lang-rust
+    cell.homeProfiles.ls
+    cell.homeProfiles.lsd
+    cell.homeProfiles.navi
+    cell.homeProfiles.neovim
+    cell.homeProfiles.nix
+    cell.homeProfiles.ollama
+    cell.homeProfiles.pls
+    cell.homeProfiles.recoll
+    cell.homeProfiles.ripgrep
+    cell.homeProfiles.shell-base
+    cell.homeProfiles.shell-aliases
+    cell.homeProfiles.social-dl
+    cell.homeProfiles.social-sleuth
+    cell.homeProfiles.starship
+    cell.homeProfiles.tmux
+    cell.homeProfiles.vm
+    cell.homeProfiles.xdg
 
     #./apps
     #./gnome
 
-    inputs.self.homeProfiles.role-developer
-    inputs.self.homeProfiles.role-admin-activedirectory
-    inputs.self.homeProfiles.role-admin-azure
-    inputs.self.homeProfiles.role-admin-windows
+    cell.homeProfiles.role-developer
+    cell.homeProfiles.role-admin-activedirectory
+    cell.homeProfiles.role-admin-azure
+    cell.homeProfiles.role-admin-windows
   ];
 
   home = {

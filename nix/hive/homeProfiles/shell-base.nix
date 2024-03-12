@@ -1,26 +1,26 @@
-{ inputs, config, lib, pkgs, ... }: {
+{ inputs, cell, config, lib, pkgs, ... }: {
   imports = [
     #inputs.home-extra-xhmm.homeManagerModules.console.program-variables
     #inputs.home-extra-xhmm.homeManagerModules.console.fish
-    inputs.self.homeProfiles.abook
-    inputs.self.homeProfiles.bat
-    inputs.self.homeProfiles.direnv
-    inputs.self.homeProfiles.documentation
-    inputs.self.homeProfiles.fetchers
-    inputs.self.homeProfiles.fzf
-    inputs.self.homeProfiles.ls
-    inputs.self.homeProfiles.navi
-    inputs.self.homeProfiles.nushell
-    inputs.self.homeProfiles.ripgrep
-    inputs.self.homeProfiles.starship
-    inputs.self.homeProfiles.shell-aliases
-    inputs.self.homeProfiles.tmux
-    inputs.self.homeProfiles.zsh
+    cell.homeProfiles.abook
+    cell.homeProfiles.bat
+    cell.homeProfiles.direnv
+    cell.homeProfiles.documentation
+    cell.homeProfiles.fetchers
+    cell.homeProfiles.fzf
+    cell.homeProfiles.ls
+    cell.homeProfiles.navi
+    cell.homeProfiles.nushell
+    cell.homeProfiles.ripgrep
+    cell.homeProfiles.starship
+    cell.homeProfiles.shell-aliases
+    cell.homeProfiles.tmux
+    cell.homeProfiles.zsh
 
-    #inputs.self.homeProfiles.bash
-    #inputs.self.homeProfiles.fish
-    #inputs.self.homeProfiles.readline
-    #inputs.self.homeProfiles.shell-colors
+    #cell.homeProfiles.bash
+    #cell.homeProfiles.fish
+    #cell.homeProfiles.readline
+    #cell.homeProfiles.shell-colors
   ];
 
   programs.bash = {
