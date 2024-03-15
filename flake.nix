@@ -9,7 +9,7 @@
       systems =
         [ "x86_64-linux" "aarch64-linux" "riscv64-linux" "aarch64-darwin" ];
     in
-    flake-parts.lib.mkFlake { inherit inputs; } {
+    flake-parts.lib.mkFlake { inherit inputs self; } {
       inherit systems;
       imports = [ ./profiles/flakes ];
       debug = true;
@@ -33,11 +33,12 @@
       };
       flake = {
         #homeConfigurations."sam@minimal" = home.lib.homeManagerConfiguration {
-        #  pkgs = nixpkgs;
-        #  modules = [
-        #    #./users/sam
-        #  ];
-        #  extraSpecialArgs = { inherit inputs; };
+        #  pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
+        #  modules = [ ./users/sam ];
+        #  extraSpecialArgs = {
+        #    inherit inputs;
+        #    user = "sam";
+        #  };
         #};
         nixosConfigurations =
           let user = "sam";

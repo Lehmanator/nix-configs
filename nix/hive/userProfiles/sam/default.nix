@@ -1,16 +1,22 @@
-{ inputs, config, lib, pkgs, osConfig, nixosConfig, ... }: {
+{ inputs, cell, config, lib, pkgs, osConfig, nixosConfig, ... }: {
   imports = [
-    inputs.self.homeSuites.developer-default
-    inputs.self.homeProfiles.device-fajita
-    inputs.self.homeProfiles.device-nintendo-switch
-    inputs.self.homeProfiles.device-pinetime
-    inputs.self.homeProfiles.device-sawfish
+    #cell.homeSuites.developer-default
+    cell.homeProfiles.device-fajita
+    cell.homeProfiles.device-nintendo-switch
+    cell.homeProfiles.device-pinetime
+    cell.homeProfiles.device-sawfish
     #../../profiles/hm
 
-    ./git
-    ./gpg.nix
-    ./nix.nix
+    cell.userProfiles.sam.gpg
+    cell.userProfiles.sam.git
+    #cell.userProfiles.sam.nix
+    #./git
+    #./gpg.nix
   ];
+
+  home.stateVersion = "23.11";
+
+  sops.secrets.github-token = { };
 
   #programs.gallery-dl.settings = {};
 

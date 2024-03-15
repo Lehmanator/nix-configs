@@ -1,19 +1,13 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-{
+{ inputs, cell, config, lib, pkgs, ... }: {
   # TODO: Reorganize this file
   # - OnePlus 6T (fajita)
   # - OnePlus 6  (enchilada)
   # - OnePlus (all)
   # - Android (all)
   imports = [
-    ./oem/oneplus.nix
-    ./os/android
-    ./os/postmarketos.nix
+    cell.homeProfiles.device-oneplus
+    cell.homeProfiles.device-android
+    cell.homeProfiles.device-postmarketos
   ];
 
   # --- Downloads ------------------------------------------
@@ -116,5 +110,4 @@
     # TODO: Create package for version `2.0.0` instead of `1.53.0` or `1.51.0`
     pkgs.pmbootstrap
   ];
-
 }

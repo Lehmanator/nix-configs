@@ -82,6 +82,7 @@ in
       (inputs.std.blockTypes.functions "homeModules")
       (inputs.std.blockTypes.functions "homeProfiles")
       (inputs.std.blockTypes.functions "homeSuites")
+      (inputs.std.blockTypes.functions "userProfiles")
 
       inputs.hive.blockTypes.nixosConfigurations
       (inputs.std.blockTypes.functions "nixosModules")

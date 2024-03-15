@@ -85,7 +85,7 @@ omnibusStd.mkBlocks.pops commonArgs {
     src = ./homeConfigurations;
     #type = "nixosProfiles";
     #loader = [ inputs.haumea.lib.matchers.nix inputs.haumea.lib.loaders.scoped ];
-    transformer = inputs.haumea.lib.transformers.liftDefault;
+    #transformer = inputs.haumea.lib.transformers.liftDefault;
     inputs = { inherit inputs cell; };
     #};
   };
@@ -94,7 +94,7 @@ omnibusStd.mkBlocks.pops commonArgs {
     src = ./homeProfiles;
     #loader = with inputs.haumea.lib; [ matchers.nix loaders.scoped ];
     type = "nixosProfiles";
-    #inputs = { inherit inputs cell; };
+    inputs = { inherit inputs cell; };
     #transformer = inputs.haumea.lib.transformers.liftDefault;
   };
   homeSuites = pops.homeProfiles.addLoadExtender {
@@ -103,6 +103,14 @@ omnibusStd.mkBlocks.pops commonArgs {
       type = "nixosProfiles";
       inputs = { inherit inputs cell; };
     }; # type = "nixosProfilesOmnibus";
+  };
+  userProfiles = pops.homeProfiles.addLoadExtender {
+    load = {
+      src = ./userProfiles;
+      type = "nixosProfilesOmnibus";
+      #transformer = inputs.haumea.lib.transformers.liftDefault;
+      inputs = { inherit inputs cell; };
+    };
   };
 
   # --- NixOS -------------------------------------------

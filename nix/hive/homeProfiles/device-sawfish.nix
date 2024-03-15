@@ -1,11 +1,4 @@
-{ self
-, inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-{
+{ inputs, config, lib, pkgs, ... }: {
   # --- Huawei Watch 2 (sawfish) ---
   # https://asteroidos.org/watches/sawfish
   #
@@ -28,10 +21,10 @@
   # fastboot continue
   #
 
-  imports = [
-    #./os/android-wear.nix
-    #./os/asteriodos.nix
-  ];
+  #imports = [
+  #  inputs.cell.homeProfiles.device-android-wear
+  #  inputs.cell.homeProfiles.device-asteroidos
+  #];
 
   home.packages = [
     pkgs.android-tools # Android SDK platform tools (ADB / fastboot)

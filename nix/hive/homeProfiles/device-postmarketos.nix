@@ -1,21 +1,13 @@
-{ inputs
-, config
-, lib
-, pkgs
-, user
-, ...
-}:
-{
-  imports = [ ];
-
+{ inputs, config, lib, pkgs, user, ... }: {
   home = {
     packages = [ pkgs.pmbootstrap ];
     shellAliases = {
-      pmb = "${pkgs.pmbootstrap}/bin/pmbootstrap";
+      pmb = lib.getExe pkgs.pmbootstrap;
       pmbI = "pmb init";
       pmbi = "pmb install --fde --add unl0kr";
       pmbc = "pmb config";
-      pmbf = "fastboot erase dtbo && pmb flasher flash_rootfs --partition=userdata && pmb flasher flash_kernel";
+      pmbf =
+        "fastboot erase dtbo && pmb flasher flash_rootfs --partition=userdata && pmb flasher flash_kernel";
       pmbp = "pmb pull";
       pmbu = "pmb update";
       pmbv = "pmb --version";
@@ -205,10 +197,7 @@
   #    org.gnome.NautilusPreviewer \
   #'';
 
-
   # TODO: Create pmbootstrap GitHub personal access token.
   # TODO: Configure pmbootstrap to use GitHub personal access token.
   #sops.secrets.github-token-pmbootstrap = {};
-
-
 }

@@ -41,9 +41,11 @@
       hardwareSuites = [ [ "hive" "hardwareSuites" ] ];
 
       homeConfigurations = [ [ "hive" "homeConfigurations" ] ];
+      #homeConfigurations = inputs.hive.collect inputs.self "homeConfigurations";
       homeModules = [ [ "hive" "homeModules" ] ];
       homeProfiles = [ [ "hive" "homeProfiles" ] ];
       homeSuites = [ [ "hive" "homeSuites" ] ];
+      userProfiles = [ [ "hive" "userProfiles" ] ];
 
       #nixosConfigurations = [ [ "hive" "nixosConfigurations" ] ];
       nixosModules = [ [ "hive" "nixosModules" ] ];

@@ -1,4 +1,11 @@
-{ inputs, cell, nixosConfig, osConfig, config, lib, pkgs, ... }: {
+{ inputs
+, cell
+, #, cell, nixosConfig, osConfig
+  config
+, lib
+, pkgs
+, ...
+}: {
   imports = [
     cell.homeProfiles.abook
     cell.homeProfiles.bat

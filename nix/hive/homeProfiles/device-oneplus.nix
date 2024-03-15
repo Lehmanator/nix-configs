@@ -1,17 +1,10 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-{
-  imports = [
-    #../os/android
-    #../os/postmarketos.nix
-  ];
+{ inputs, config, lib, pkgs, ... }: {
+  #imports = [
+  #  inputs.cell.homeProfiles.device-android
+  #  inputs.cell.homeProfiles.device-postmarketos
+  #];
 
-  home.packages = [
-  ];
+  home.packages = [ ];
 
   # TODO: Install Bottles with OnePlus MDM tool
   # TODO: Generic flasher scripts for OnePlus devices
