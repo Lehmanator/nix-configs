@@ -1,1 +1,1 @@
-{ inputs, cell, }: cell.pops.diskoProfiles.exports.default
+{ inputs, cell, }: cell.pops.diskoProfiles.exports.default or {}

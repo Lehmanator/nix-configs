@@ -1,11 +1,13 @@
+# Hive: `nixosProfiles`
+
 ## nixosModules
 
-https://github.com/fooker/dns.nix
-https://github.com/fooker/gather.nix
-https://github.com/fooker/ipam.nix
-https://github.com/fooker/nftables.nix
-https://github.com/fooker/retro.nix
-https://github.com/yvan-sraka/contracts
+<https://github.com/fooker/dns.nix>
+<https://github.com/fooker/gather.nix>
+<https://github.com/fooker/ipam.nix>
+<https://github.com/fooker/nftables.nix>
+<https://github.com/fooker/retro.nix>
+<https://github.com/yvan-sraka/contracts>
 
 ```
 
@@ -27,11 +29,12 @@ vmsh.nixosModules.linux-ioregionfd
 ```
 
 ## hmModules
+
 ## Overlays
+
 ## Packages
 
-https://github.com/frectonz/manifest-gen
-https://github.com/tsirysndr/repl
-https://github.com/TaserudConsulting/jsonresume-nix
-https://github.com/carlthome/ml-runtimes
-
+<https://github.com/frectonz/manifest-gen>
+<https://github.com/tsirysndr/repl>
+<https://github.com/TaserudConsulting/jsonresume-nix>
+<https://github.com/carlthome/ml-runtimes>

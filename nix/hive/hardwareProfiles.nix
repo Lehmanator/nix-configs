@@ -1,1 +1,1 @@
-{inputs,cell}: cell.pops.hardwareProfiles.exports.default
+{inputs,cell}: cell.pops.hardwareProfiles.exports.default or {}

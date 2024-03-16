@@ -1,1 +1,1 @@
-{inputs, cell}: cell.pops.lib.exports.default
+{inputs, cell}: cell.pops.lib.exports.default or {}

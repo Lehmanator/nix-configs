@@ -1,1 +1,1 @@
-{ inputs, cell, }: cell.pops.nixvimProfiles.exports.default
+{ inputs, cell, }: cell.pops.nixvimProfiles.exports.default or {}

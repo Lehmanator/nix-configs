@@ -1,1 +1,1 @@
-{inputs,cell}: cell.pops.devshellSuites.exports.default
+{ inputs, cell, }: cell.pops.devshellSuites.exports.default or { }

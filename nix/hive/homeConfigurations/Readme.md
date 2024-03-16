@@ -21,24 +21,27 @@ homeConfigurations = {
 
 File: `../homeConfigurations.nix`
 
-  - Old:
+- Old:
 
-    ```(nix)
-    { inputs, cell, }@commonArgs:
-    #let
-    #  inherit (inputs.haumea.lib) load loaders matchers transformers;
-    #in
-    #  load {
-    #    src = ./homeConfigurations;
-    #    loader = loaders.verbatim;
-    #    transformer = transformers.liftDefaults;
-    #  }
+  ```(nix)
+  { inputs, cell, }@commonArgs:
+  #let
+  #  inherit (inputs.haumea.lib) load loaders matchers transformers;
+  #in
+  #  load {
+  #    src = ./homeConfigurations;
+  #    loader = loaders.verbatim;
+  #    transformer = transformers.liftDefaults;
+  #  }
 
-    ```
+  ```
 
-  - New:
+- New:
 
-    ```(nix)
-    {inputs,cell}: cell.pops.homeConfigurations.exports.default
-    ```
+  ```(nix)
+  {inputs,cell}: cell.pops.homeConfigurations.exports.default
+  ```
 
+## Look into
+
+- `mkHome` (omnibus)
