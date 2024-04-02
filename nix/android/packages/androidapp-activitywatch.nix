@@ -7,8 +7,8 @@
   fetchFromGitHub,
 }:
 androidenv.buildApp rec {
-  name = "activitywatch-android";
-  pname = "activitywatch-android";
+  name = "androidapp-activitywatch";
+  pname = "androidapp-activitywatch";
   version = "0.12.1";
 
   #release = true;
@@ -34,6 +34,8 @@ androidenv.buildApp rec {
     license = licenses.mpl20;
     maintainers = with maintainers; [];
     mainProgram = "aw-android";
-    platforms = platforms.all;
+    #platforms = lists.remove "aarch64-darwin" platforms.unix;
+    #badPlatforms = ["aarch64-darwin"];
+    platforms = platforms.linux;
   };
 }
