@@ -112,7 +112,8 @@ in
     hardwareSuites = pops.nixosProfiles.addLoadExtender {
       load = {
         src = ./hardwareSuites;
-        type = "nixosProfilesOmnibus";
+        type = "nixosProfiles";
+        #type = "nixosProfilesOmnibus";
         inputs = {inherit inputs cell;};
       };
     };
