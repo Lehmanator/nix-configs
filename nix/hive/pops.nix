@@ -72,7 +72,7 @@ in
     devshellSuites = pops.nixosProfiles.addLoadExtender {
       load = {
         src = ./devshellSuites;
-        type = "nixosProfilesOmnibus";
+        #type = "nixosProfilesOmnibus";
         inputs = {inherit inputs cell;};
       };
     };
@@ -97,7 +97,8 @@ in
     diskoSuites = pops.nixosProfiles.addLoadExtender {
       load = {
         src = ./diskoSuites;
-        type = "nixosProfilesOmnibus";
+        type = "nixosProfiles";
+        #type = "nixosProfilesOmnibus";
       };
     };
 

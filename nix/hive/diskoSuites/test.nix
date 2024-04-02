@@ -1,6 +1,10 @@
-{ inputs, config, lib, pkgs, ... }: {
-  imports = [
-    inputs.cell.diskoProfiles.btrfs-luks.nix
-    inputs.cell.diskoProfiles.tmpfs-root
-  ];
+{
+  inputs,
+  cell,
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
+  imports = [cell.diskoProfiles.btrfs-luks.nix cell.diskoProfiles.tmpfs-root];
 }

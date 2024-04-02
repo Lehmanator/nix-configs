@@ -1,6 +1,10 @@
-{ inputs, config, lib, pkgs, ... }: {
-  imports = [
-    inputs.cell.devshellProfiles.benchmarking
-    inputs.cell.devshellProfiles.normalize
-  ];
+{
+  inputs,
+  cell,
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
+  imports = [cell.devshellProfiles.benchmarking cell.devshellProfiles.normalize];
 }
