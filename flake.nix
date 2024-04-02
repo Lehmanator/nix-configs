@@ -8,11 +8,11 @@
     ...
   } @ inputs: let
     inherit (nixpkgs) lib;
-    inherit (omnibus.flake.inputs) climodSrc flake-parts std;
+    inherit (omnibus.flake.inputs) arion climodSrc flake-parts std;
     systems = ["x86_64-linux" "aarch64-linux" "riscv64-linux"]; # "aarch64-darwin"];
     input-groups = {
-      all = lib.recursiveUpdate omnibus.flake.inputs inputs;
-      grow = inputs // {inherit climodSrc;};
+      all = lib.recursiveUpdate inputs omnibus.flake.inputs;
+      grow = inputs // {inherit arion climodSrc;};
       omnibus = omnibus.flake.inputs;
     };
     omnibusStd =
@@ -27,7 +27,8 @@
       #   nickel nil nix-fast-build nix-filter nix-std nixago nixcasks nuenv nur
       #   organist pre-commit-hooks ragenix snapshotter sops-nix srvos std
       #   system-manager systems topiary treefmt-nix typst
-      inputs = input-groups.grow;
+      #inputs = input-groups.grow;
+      inputs = input-groups.all;
       inherit systems;
       cellsFrom = ./nix;
       cellBlocks = with inputs; [
@@ -222,7 +223,7 @@
           std = omnibusStd;
           inputs = {
             inherit (input-groups) all grow;
-            upstream = input-groups.omnibus-upstream;
+            upstream = input-groups.omnibus;
             me = inputs;
           };
         };
@@ -691,6 +692,7 @@
     quick-nix-registry.url = "github:divnix/quick-nix-registry";
     yants.url = "github:divnix/yants";
 
+    arion.url = "github:hercules-ci/arion";
     colmena.url = "github:zhaofengli/colmena";
     nixago.url = "github:nix-community/nixago";
     nixago-exts.url = "github:nix-community/nixago-extensions";
