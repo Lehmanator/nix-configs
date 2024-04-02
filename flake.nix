@@ -9,7 +9,7 @@
   } @ inputs: let
     inherit (nixpkgs) lib;
     inherit (omnibus.flake.inputs) climodSrc flake-parts std;
-    systems = ["x86_64-linux" "aarch64-linux" "riscv64-linux" "aarch64-darwin"];
+    systems = ["x86_64-linux" "aarch64-linux" "riscv64-linux"]; # "aarch64-darwin"];
     input-groups = {
       all = lib.recursiveUpdate omnibus.flake.inputs inputs;
       grow = inputs // {inherit climodSrc;};
@@ -118,6 +118,7 @@
       ];
       nixpkgsConfig = {
         allowUnfree = true;
+        allowUnsupportedSystem = true;
         android_sdk.accept_license = true;
         overlays = [inputs.nix-vscode-extensions.overlays.default];
       };
@@ -141,12 +142,15 @@
           ];
           nixago = [["repo" "configs"]];
           nixpkgs-custom = [["repo" "pkgs"]];
-          #packages = [
-          #[ "android" "packages" ]
-          #[ "hive" "packages" ]
-          #["kube" "packages"]
-          #["test" "packages"]
-          #];
+          packages = [
+            [
+              "android"
+              "packages"
+            ]
+            #["hive" "packages"]
+            #["kube" "packages"]
+            #["test" "packages"]
+          ];
         };
         pick = {
           configs = [["test" "configs"]];
@@ -157,6 +161,7 @@
             ["repo" "devshellProfiles"]
             ["test" "devshellProfiles"]
           ];
+          devshellSuites = [["hive" "devshellSuites"]];
           diskoConfigurations = [["hive" "diskoConfigurations"]];
           diskoProfiles = [["hive" "diskoProfiles"]];
           diskoSuites = [["hive" "diskoSuites"]];
@@ -169,7 +174,6 @@
           userProfiles = [["hive" "userProfiles"]];
 
           lib = [["hive" "lib"]];
-          devshellSuites = [["hive" "devshellSuites"]];
           nixosModules = [
             ["android" "nixosModules"]
             ["hive" "nixosModules"]
@@ -200,13 +204,15 @@
         winnowIf = {packages = n: v: n != "vscodium";};
       };
       flake = {
-        # hive: {colemna,darwin,disko,home,nixos}Configurations
-        # std: anything, arion, containers, data, devshells, files, functions, installables,
-        #      kubectl, microvms, namaka, nixago, nixostests, nomad, nvfetcher, pkgs, runnables, terra
+        #         hive: {colemna,darwin,disko,home,nixos}Configurations
+        #          std: anything, arion, containers, data, devshells, files, functions, installables,
+        #               kubectl, microvms, namaka, nixago, nomad, pkgs, runnables, terra
+        # std-omnnibus: std + nixostests, nvfetcher,
         blockTypes = rec {
-          all = std // hive // omnibus;
+          all = hive // omnibus // std // std-omnibus;
           hive = inputs.hive.blockTypes;
           std = inputs.std.blockTypes;
+          std-omnibus = inputs.omnibus.flake.inputs.std.blockTypes;
           omnibus = omnibusStd.blockTypes;
         };
         omnibus = {
@@ -673,8 +679,11 @@
         #colmena.follows = "omnibus/";
         #colmena.url = "github:zhaofengli/colmena";
         #nixago.follows = "std/nixago";
-        nixago.inputs.nixago-exts.url = "github:nix-community/nixago-extensions";
         #nixago.inputs.nixago-exts.follows = "std/nixago/nixago-exts";
+        nixago = {
+          follows = "nixago";
+          inputs.nixago-exts.url = "github:nix-community/nixago-extensions";
+        };
       };
     };
     call-flake.url = "github:divnix/call-flake";
@@ -683,6 +692,8 @@
     yants.url = "github:divnix/yants";
 
     colmena.url = "github:zhaofengli/colmena";
+    nixago.url = "github:nix-community/nixago";
+    nixago-exts.url = "github:nix-community/nixago-extensions";
 
     # +-- edolstra ------------------------------------------------------------+
     # | flake-compat: flake compatibility layer for legacy Nix repos.          |
