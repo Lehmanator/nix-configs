@@ -1,12 +1,14 @@
 # --- Temporary Disable ---
+excl/
 nix/pops
 
 # --- Build Artifacts ---
-.data/
 .cache/
+.data/
 .direnv/
 **/result
 result
+tags
 
 # --- Local NUR Repos ---
 .nur/
