@@ -1,10 +1,11 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
 {
+  inputs,
+  cell,
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   # Note: System audio config in ../../../profiles/desktop/{default,pipewire}.nix
   #  This file is just for user utils that don't get installed for all users by default
 
@@ -14,10 +15,9 @@
     #./audio/pipewire.nix
     #./audio/pulseaudio.nix
     #./audio/pulseeffects.nix
-    ../shell/common/audio.nix # CLI controls for MPRIS & other audio sources
 
+    # Renamed below
+    cell.homeProfiles.playerctld
+    #../shell/common/audio.nix # CLI controls for MPRIS & other audio sources
   ];
-
 }
-
-

@@ -1,10 +1,10 @@
-{ inputs
-, cell
-, #, cell, nixosConfig, osConfig
-  config
-, lib
-, pkgs
-, ...
+{
+  inputs,
+  cell, # , cell, nixosConfig, osConfig
+  config,
+  lib,
+  pkgs,
+  ...
 }: {
   imports = [
     cell.homeProfiles.abook
@@ -18,9 +18,9 @@
     cell.homeProfiles.fetchers
     cell.homeProfiles.fonts
     cell.homeProfiles.fzf
-    cell.homeProfiles.git
+    cell.homeProfiles.git-base
     cell.homeProfiles.gpg
-    cell.homeProfiles.helix
+    #cell.homeProfiles.helix
     cell.homeProfiles.helm
     cell.homeProfiles.k9s
     cell.homeProfiles.lang-nodejs
@@ -30,7 +30,7 @@
     cell.homeProfiles.lsd
     cell.homeProfiles.navi
     cell.homeProfiles.neovim
-    cell.homeProfiles.nix
+    #cell.homeProfiles.nix.default
     cell.homeProfiles.ollama
     cell.homeProfiles.pls
     cell.homeProfiles.recoll
@@ -50,7 +50,7 @@
     cell.homeProfiles.role-developer
     cell.homeProfiles.role-admin-activedirectory
     cell.homeProfiles.role-admin-azure
-    cell.homeProfiles.role-admin-windows
+    cell.homeProfiles.role-admin-windows.all
   ];
 
   home = {

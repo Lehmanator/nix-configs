@@ -1,4 +1,11 @@
-{ androidenv, activitywatch, aw-server-rust, lib, stdenv, fetchFromGitHub, }:
+{
+  androidenv,
+  activitywatch,
+  aw-server-rust,
+  lib,
+  stdenv,
+  fetchFromGitHub,
+}:
 androidenv.buildApp rec {
   name = "activitywatch-android";
   pname = "activitywatch-android";
@@ -9,8 +16,9 @@ androidenv.buildApp rec {
   #keyAlias = "activitywatch";
   #keyStorePassword = "mykeystore";
   #keyAliasPassword = "myactivitywatchapp";
-  platformVersions = [ "34" ];
+  platformVersions = ["34"];
   includeNDK = true;
+  #android_sdk.accept_license = true;
 
   src = fetchFromGitHub {
     owner = "ActivityWatch";
@@ -24,7 +32,7 @@ androidenv.buildApp rec {
     description = "ActivityWatch for Android, using aw-server-rust as backend";
     homepage = "https://github.com/ActivityWatch/aw-android";
     license = licenses.mpl20;
-    maintainers = with maintainers; [ ];
+    maintainers = with maintainers; [];
     mainProgram = "aw-android";
     platforms = platforms.all;
   };

@@ -1,10 +1,9 @@
 {
-, config
-, lib
-, pkgs
-, ...
-}:
-{
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   ## Notes:
   ## - This file is to be used by `pkgs.nix-software-center`
   ## - Changing settings here may get overwritten
@@ -28,6 +27,4 @@
     pkgs.foliate
     pkgs.warp
   ];
-
-
 }

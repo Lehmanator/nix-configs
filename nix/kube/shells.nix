@@ -1,1 +1,5 @@
-{ inputs, cell, }: cell.pops.shells.exports.default
+{
+  inputs,
+  cell,
+}:
+cell.pops.shells.exports.default or {}

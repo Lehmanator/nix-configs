@@ -1,13 +1,4 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-{
-  imports = [
-  ];
-
+{ inputs , config , lib , pkgs , ... }: {
   # --- Address Book ---
   programs.abook = {
     enable = true;

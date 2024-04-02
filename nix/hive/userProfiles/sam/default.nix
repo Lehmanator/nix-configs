@@ -1,4 +1,13 @@
-{ inputs, cell, config, lib, pkgs, osConfig, nixosConfig, ... }: {
+{
+  inputs,
+  cell,
+  config,
+  lib,
+  pkgs,
+  osConfig,
+  nixosConfig,
+  ...
+}: {
   imports = [
     #cell.homeSuites.developer-default
     cell.homeProfiles.device-fajita
@@ -8,7 +17,7 @@
     #../../profiles/hm
 
     cell.userProfiles.sam.gpg
-    cell.userProfiles.sam.git
+    cell.userProfiles.sam.git.default
     #cell.userProfiles.sam.nix
     #./git
     #./gpg.nix
@@ -16,7 +25,7 @@
 
   home.stateVersion = "23.11";
 
-  sops.secrets.github-token = { };
+  sops.secrets.github-token = {};
 
   #programs.gallery-dl.settings = {};
 

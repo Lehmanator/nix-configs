@@ -1,5 +1,16 @@
 # Hive: `devShells`
 
+## Shells
+
+### `nixos`
+
+Main shell for using with NixOS / `home-manager`.
+
+## To-Do
+
+- [ ] Create `nix-direnv` file `.envrc` for each `cell` in `std` to activate default `devShell` for `cell`.
+  - e.g. Entering `<repo>/nix/hive` enters the `devShell` from `hive`, but entering `<repo>` enters a diff shell.
+
 Old, but saving here.
 
 From `devshells.nix`:

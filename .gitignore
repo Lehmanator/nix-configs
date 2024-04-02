@@ -1,3 +1,6 @@
+# --- Temporary Disable ---
+nix/pops
+
 # --- Build Artifacts ---
 .data/
 .cache/
@@ -40,7 +43,6 @@ ssh_*_key
 **/.keys
 
 # --- Private Info ---
-hosts.nix
 networks.nix
 users.nix
 

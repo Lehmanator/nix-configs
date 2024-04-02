@@ -1,16 +1,13 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-let
-  inherit (lib) mkIf;
-in
 {
-  imports = [
-  ];
-
+  inputs,
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  inherit (lib) mkIf;
+in {
+  imports = [];
 
   home.shellAliases = {
     # --- Directory Navigation ---
@@ -31,8 +28,12 @@ in
 
     # --- Programs ---------------
     w = "which -a";
-    ppath = "echo \"$PATH\" | tr  ':' '\n'";
-    pnixpath = "echo \"$NIX_PATH\" | tr : '\n'";
+    ppath = ''
+      echo "$PATH" | tr  ':' \'\n\'
+    '';
+    pnixpath = ''
+      echo "$NIX_PATH" | tr : \'\n\'
+    '';
 
     # --- Privileges -------------
     #s  = lib.mkIf config.security.sudo.enable "sudo";        # TODO: Make generic
@@ -49,6 +50,12 @@ in
     ip-address = "curl ipconfig.me";
 
     # --- Development ------------
+    # --- Nix CLI ----------------
+    # TODO: Move to homeProfiles.nix
+    repl-nixpkgs = "nix repl -f flake:nixpkgs";
+    repl-config = "nix repl -f flake:config"; # TODO: Make sure added to registry.
+    repl-omnibus = "nix repl -f flake:omnibus"; # TODO: Make sure added to registry.
+    repl-hive = "nix repl -f flake:hive"; # TODO: Make sure added to registry.
+    repl-std = "nix repl -f flake:std"; # TODO: Make sure added to registry.
   };
-
 }

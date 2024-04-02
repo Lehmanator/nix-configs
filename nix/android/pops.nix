@@ -1,8 +1,15 @@
-{ inputs, cell, }@commonArgs:
+{
+  inputs,
+  cell,
+} @ commonArgs:
 inputs.omnibusStd.mkBlocks.pops commonArgs {
   #configs = {src = ./configs; };
   #devshellProfiles = {src = ./devshellProfiles; };
   #nixosProfiles = {src = ./nixosProfiles; };
-  packages = { src = ./packages; };
-  #shells = {src = ./shells; };
+  nixosModules = {src = ./nixosModules;};
+  packages = {
+    src = ./packages;
+    inputs = {inherit inputs cell;};
+  };
+  #shells = {src = ./shells;};
 }

@@ -1,4 +1,11 @@
-{ inputs, cell, config, lib, pkgs, ... }: {
+{
+  inputs,
+  cell,
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   imports = [
     #inputs.home-extra-xhmm.homeManagerModules.console.program-variables
     #inputs.home-extra-xhmm.homeManagerModules.console.fish
@@ -15,7 +22,7 @@
     cell.homeProfiles.starship
     cell.homeProfiles.shell-aliases
     cell.homeProfiles.tmux
-    cell.homeProfiles.zsh
+    #cell.homeProfiles.zsh.default
 
     #cell.homeProfiles.bash
     #cell.homeProfiles.fish
@@ -25,18 +32,20 @@
 
   programs.bash = {
     enableVteIntegration = true;
-    historyControl = [ "ignorespace" ];
+    historyControl = ["ignorespace"];
   };
 
-  home.packages = [
-    pkgs.cmatrix
-    pkgs.figlet
-    pkgs.with-shell
-    inputs.self.packages.shell-script-mvlink
-  ] ++ lib.optionals config.zsh.enable [
-    pkgs.nix-zsh-completions
-    pkgs.zsh-nix-shell
-  ];
+  home.packages =
+    [
+      pkgs.cmatrix
+      pkgs.figlet
+      pkgs.with-shell
+      inputs.self.packages.shell-script-mvlink
+    ]
+    ++ lib.optionals config.zsh.enable [
+      pkgs.nix-zsh-completions
+      pkgs.zsh-nix-shell
+    ];
 
   # --- To-Dos -------------------------------------------------------
   #services.lorri.enableNotifications = true;

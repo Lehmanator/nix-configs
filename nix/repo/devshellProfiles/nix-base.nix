@@ -1,8 +1,19 @@
-{ inputs, config, lib, pkgs, ... }: {
-  imports = [ ];
+{
+  inputs,
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
+  # See also:
+  # - [Work on dotfiles w/o huge Nix build overhead](https://nixos-and-flakes.thiscute.world/best-practices/accelerating-dotfiles-debugging)
+  #   - [More Justfile NixOS stuff](https://nixos-and-flakes.thiscute.world/best-practices/simplify-nixos-related-commands)
+  #   - [ryan4yin/nix-config/Justfile](https://github.com/ryan4yin/nix-config/blob/main/Justfile)
 
-  commands = [ ];
-  env = [ ];
+  imports = [];
+
+  commands = [];
+  env = [];
 
   packages = [
     pkgs.cachix

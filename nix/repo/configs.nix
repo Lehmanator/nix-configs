@@ -1,1 +1,1 @@
-{ inputs, cell, }: cell.pops.configs.exports.default
+{ inputs, cell, }: cell.pops.configs.exports.default or {}

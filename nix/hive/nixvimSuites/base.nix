@@ -1,4 +1,9 @@
-{ inputs, pkgs, uiShape ? "rounded", ... }:
+{
+  inputs,
+  cell,
+  pkgs, # , uiShape ? "rounded"
+  ...
+}:
 # --- NixVim ---
 # Configures Neovim via Nix modules
 # https://github.com/pta2002/nixvim

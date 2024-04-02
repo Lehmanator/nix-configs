@@ -1,5 +1,8 @@
-{ inputs, cell, ... }:
-let
+{
+  inputs,
+  cell,
+  ...
+}: let
   l = nixpkgs.lib // builtins;
   inherit (inputs) nixpkgs;
   inherit (inputs.std) lib std;
@@ -34,7 +37,7 @@ let
   # - Git repos w/ auto-pull/auto-updating
   #l.mapAttrs (_: lib.dev.mkShell)
 in
-inputs.nix-alien.devShells.default
+  inputs.nix-alien.devShells.${pkgs.system}.default
 #lib.dev.mkShell {
 #  name = "nix-alien: Run foreign binaries";
 #  imports = [ std.devshellProfiles.default ];
