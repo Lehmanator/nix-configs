@@ -8,16 +8,16 @@
     ...
   } @ inputs: let
     inherit (nixpkgs) lib;
-    inherit (omnibus.flake.inputs) arion climodSrc flake-parts std;
+    inherit (omnibus.flake.inputs) climodSrc flake-parts std;
     systems = ["x86_64-linux" "aarch64-linux" "riscv64-linux"]; # "aarch64-darwin"];
     input-groups = {
       all = lib.recursiveUpdate inputs omnibus.flake.inputs;
-      grow = inputs // {inherit arion climodSrc;};
+      grow = inputs // {inherit climodSrc;};
       omnibus = omnibus.flake.inputs;
     };
     omnibusStd =
       (omnibus.pops.std {
-        inputs.inputs = input-groups.omnibus;
+        inputs.inputs = input-groups.all;
       })
       .exports
       .default;
@@ -58,9 +58,9 @@
           "git@github.com:lehmanator/nix-configs.git")
 
         # --- config types ---
-        hive.blockTypes.colmenaConfigurations
+        inputs.hive.blockTypes.colmenaConfigurations
 
-        hive.blockTypes.darwinConfigurations
+        inputs.hive.blockTypes.darwinConfigurations
         (std.blockTypes.functions "darwinModules")
         (std.blockTypes.functions "darwinProfiles")
         (std.blockTypes.functions "darwinSuites")
@@ -69,7 +69,7 @@
         (std.blockTypes.functions "devshellProfiles")
         (std.blockTypes.functions "devshellSuites")
 
-        hive.blockTypes.diskoConfigurations
+        inputs.hive.blockTypes.diskoConfigurations
         (std.blockTypes.functions "diskoProfiles")
         (std.blockTypes.functions "diskoSuites")
 
@@ -81,13 +81,13 @@
         (std.blockTypes.functions "hardwareProfiles")
         (std.blockTypes.functions "hardwareSuites")
 
-        hive.blockTypes.homeConfigurations
+        inputs.hive.blockTypes.homeConfigurations
         (std.blockTypes.functions "homeModules")
         (std.blockTypes.functions "homeProfiles")
         (std.blockTypes.functions "homeSuites")
         (std.blockTypes.functions "userProfiles")
 
-        hive.blockTypes.nixosConfigurations
+        inputs.hive.blockTypes.nixosConfigurations
         (std.blockTypes.functions "nixosModules")
         (std.blockTypes.functions "nixosProfiles")
         (std.blockTypes.functions "nixosSuites")
