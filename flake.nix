@@ -745,6 +745,11 @@
     hercules-ci-effects.url = "github:hercules-ci/hercules-ci-effects";
     hercules-ci-agent.url = "github:hercules-ci/hercules-ci-agent";
 
+    # +-- kirottu -------------------------------------------------------------+
+    # | anyrun: krunner-like program w/ hm module                              |
+    # +------------------------------------------------------------------------+
+    anyrun.url = "github:kirottu/anyrun";
+
     # +-- Mic92 ---------------------------------------------------------------+
     # | envfs: filesystem for Nix store to fix some FHS stuff                  |
     # | fast-flake-update: Updates `flake.lock` faster than `nix flake update` |
