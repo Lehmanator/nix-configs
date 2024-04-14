@@ -1,4 +1,5 @@
 { inputs
+, config
 , ...
 }:
 {
@@ -7,7 +8,7 @@
   programs.nixvim.plugins.neogit = {
     enable = true;
     autoRefresh = true;
-    integrations.diffview = true;
+    integrations.diffview = config.programs.nixvim.plugins.diffview.enable;
 
     #commitPopup.kind = null;
     #disableBuiltinNotifications = null; disableCommitConfirmation = null; disableContextHighlighting = null;

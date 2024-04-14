@@ -34,7 +34,6 @@
 
     none-ls.sources = {
       code_actions.statix.enable = true;
-      diagnostics.flake8.enable = true;
       formatting.black.enable = true;
     };
   };

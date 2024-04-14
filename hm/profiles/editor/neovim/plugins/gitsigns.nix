@@ -91,7 +91,6 @@
       watchGitDir = {
         enable = true;
         followFiles = true; # Switch to new location after `git mv`
-        interval = 2000; # ms b/w polls of the gitdir. D=1000
       };
 
       wordDiff = true; # Requires `diff_opts.internal = true`

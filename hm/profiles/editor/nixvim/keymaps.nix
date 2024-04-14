@@ -6,11 +6,9 @@
   pkgs,
   ...
 }: {
-  imports = [
-  ];
+  imports = [];
 
   programs.nixvim.plugins = {
-
     #dap.extensions.dap-ui = {
     #  elementMappings.<name> = {
     #    edit = "e";
@@ -123,18 +121,19 @@
 
     nvim-autopairs = {
       #ignoredNextChar = "[=[[%w%%%'%[%"%.%%$]]=]";
-      mapBs = true;  # Map <BS> key to delete pair
+      mapBs = true; # Map <BS> key to delete pair
       mapCH = false; # Map <C-h> key to delete pair
       mapCW = false; # Map <C-w> key to delete pair if possible
-      mapCr = true;  # Map <CR>  key to confirm the completion
+      mapCr = true; # Map <CR>  key to confirm the completion
       #pairs = null;
       disableInMacro = false;
       disableInReplaceMode = true;
-      disableInVisualblock = false;  # Disable when insert after visual block mode
+      disableInVisualblock =
+        false; # Disable when insert after visual block mode
     };
 
-    nvim-cmp = {
-      confirmation.getCommitCharacters = "function(commit_characters) return commit_characters end";  # You can append or exclude commitCharacters via this config option function. commitCharacters are defined by the LSP spec. Options: null | "<str>"
+    cmp.settings = {
+      confirmation.getCommitCharacters = "function(commit_characters) return commit_characters end"; # You can append or exclude commitCharacters via this config option function. commitCharacters are defined by the LSP spec. Options: null | "<str>"
       preselect = "Item"; # Item | None
       #mappingPresets = ["cmdline"]; #"[ \"insert\" \"cmdline\" ]";
       mapping = {
@@ -145,11 +144,11 @@
         # else
         #   cmp.complete() -- If cursor is inside a word, trigger menu
         "<CR>" = {
-          modes = ["i" "s" ];
+          modes = ["i" "s"];
           action = "cmp.mapping.confirm({ select = true })";
         };
         "<Tab>" = {
-          modes = [ "i" "s" ];
+          modes = ["i" "s"];
           action = ''
             function(fallback)
               if cmp.visible() then
@@ -171,7 +170,7 @@
           '';
         };
         "<S-Tab>" = {
-          modes = [ "i" "s" ];
+          modes = ["i" "s"];
           action = ''
             function(fallback)
               if cmp.visible() then
@@ -195,7 +194,6 @@
       #      end
       #    '';
       #  }
-
     };
 
     nvim-osc52.keymaps = {
@@ -252,25 +250,24 @@
     #};
     #treesitter-refactor.smartRename.keymaps.smartRename = "grr";  # Keymap to rename symbol under cursor
 
-    trouble.actionKeys = {
-      cancel        = "<esc>";
-      close         = "q";
-      closeFolds    = ["zM" "zm"];
-      hover         = "K";
-      jump          = ["<cr>" "<tab>"];
-      jumpClose     = ["o"];
-      next          = "j";
-      openFolds     = ["zR" "zr"];
-      openSplit     = ["<c-x>"];
-      openTab       = ["<c-t>"];
-      openVsplit    = ["<c-v>"];
-      preview       = "p";
-      previous      = "k";
-      refresh       = "r";
-      toggleFold    = ["zA" "za"];
-      toggleMode    = "m";                 # Toggle b/w modes: `workspace` & `document`
-      togglePreview = "P";                 # Toggle auto-preview
+    trouble.settings.actionKeys = {
+      cancel = "<esc>";
+      close = "q";
+      closeFolds = ["zM" "zm"];
+      hover = "K";
+      jump = ["<cr>" "<tab>"];
+      jumpClose = ["o"];
+      next = "j";
+      openFolds = ["zR" "zr"];
+      openSplit = ["<c-x>"];
+      openTab = ["<c-t>"];
+      openVsplit = ["<c-v>"];
+      preview = "p";
+      previous = "k";
+      refresh = "r";
+      toggleFold = ["zA" "za"];
+      toggleMode = "m"; # Toggle b/w modes: `workspace` & `document`
+      togglePreview = "P"; # Toggle auto-preview
     };
-
   };
 }

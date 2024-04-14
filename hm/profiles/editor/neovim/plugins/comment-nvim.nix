@@ -7,7 +7,6 @@
     enable = lib.mkDefault true;
     mappings = {
       basic = true;
-      extended = true;
       extra = true;
     };
     padding = false;

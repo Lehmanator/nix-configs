@@ -1,7 +1,4 @@
-{ inputs
-, ...
-}:
-{
+{inputs, ...}: {
   # --- Snippets ---------------------
   programs.nixvim.plugins = {
     cmp_luasnip.enable = true;
@@ -18,7 +15,6 @@
     };
     # TODO: Also set: nvim-cmp.mapping."<Tab>".action to expand snippet.
     # TODO: Abstract out snippet engine name. Make func to call installed snippet engine expansion method.
-    nvim-cmp.snippet.expand = "luasnip"; # luasnip | snippy | ultisnips | vsnip | function()
-
+    cmp.settings.snippet.expand = "luasnip"; # luasnip | snippy | ultisnips | vsnip | function()
   };
 }
