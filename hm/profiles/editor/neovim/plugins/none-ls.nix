@@ -131,8 +131,8 @@
         topiary.enable = false;
         treefmt.enable = true;
         usort.enable = false;
-        yamlfix.enable = true;
-        yamlfmt.enable = false;
+        yamlfix.enable = false;
+        yamlfmt.enable = true;
         zprint.enable = true;
         fantomas.enable = false;
         fantomas.package = null;

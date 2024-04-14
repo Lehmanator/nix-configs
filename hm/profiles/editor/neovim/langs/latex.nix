@@ -9,6 +9,8 @@
     lsp.servers.texlab.enable = config.programs.nixvim.plugins.lsp.enable;
     vimtex.enable = true;
   };
-  home.packages = [ pkgs.texlive.combined.scheme-medium ];  #-medium|-full
+  home.packages = [
+    #pkgs.texlive.combined.scheme-medium # Broken 4/14/24
+  ];  #-medium|-full
 }
 
