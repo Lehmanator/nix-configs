@@ -79,7 +79,6 @@
     #maxCacheTtl = null;
     #maxCacheTtlSsh = null;
     # TODO: Also set services.dbus.packages = [ pkgs.gcr ];
-    pinentryFlavor = "tty"; #"gnome3"; # gtk2 | gnome3 | curses | tty | qt | emacs
     verbose = true;
     extraConfig = ''
       allow-loopback-pinentry
