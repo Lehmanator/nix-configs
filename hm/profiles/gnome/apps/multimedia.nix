@@ -86,7 +86,7 @@
       pkgs.krita # # Painting app
       # --- Video Editors ---
       pkgs.blender # # 3D modeling & video rendering
-      pkgs.boatswain # # Control Elgato Stream Deck devices
+      #pkgs.boatswain # # Control Elgato Stream Deck devices # Broken: libpeas 4/14/24
       pkgs.losslesscut-bin # # Swiss army knife of video editing
       #pkgs.pitivi # # Create/edit your own movies   # librosa dep broken 2024-01-27
       pkgs.shotcut # # Video editor
