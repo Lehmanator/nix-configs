@@ -136,54 +136,54 @@
       confirmation.getCommitCharacters = "function(commit_characters) return commit_characters end"; # You can append or exclude commitCharacters via this config option function. commitCharacters are defined by the LSP spec. Options: null | "<str>"
       preselect = "Item"; # Item | None
       #mappingPresets = ["cmdline"]; #"[ \"insert\" \"cmdline\" ]";
-      mapping = {
-        # if cmp.visible() then
-        #   cmp.select_next_item(select_opts) -- If menu open, <Tab> moves to next item
-        # elseif col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
-        #   fallback()     -- Insert <Tab> char if line is "empty"
-        # else
-        #   cmp.complete() -- If cursor is inside a word, trigger menu
-        "<CR>" = {
-          modes = ["i" "s"];
-          action = "cmp.mapping.confirm({ select = true })";
-        };
-        "<Tab>" = {
-          modes = ["i" "s"];
-          action = ''
-            function(fallback)
-              if cmp.visible() then
-                cmp.select_next_item()
-              elseif luasnip.expandable() then
-                luasnip.expand()
-                -- expand_or_locally_jumpable() - Only jumps inside snippet region
-                -- expand_or_jumpable()         - Can jump outside snippet region
-              elseif luasnip.expand_or_locally_jumpable() then
-                luasnip.expand_or_jump()
-              elseif has_words_before() then
-                cmp.complete()
-              elseif check_backspace() then
-                fallback()
-              else
-                fallback()
-              end
-            end
-          '';
-        };
-        "<S-Tab>" = {
-          modes = ["i" "s"];
-          action = ''
-            function(fallback)
-              if cmp.visible() then
-                cmp.select_prev_item()
-              elseif luasnip.jumpable(-1) then
-                luasnip.jump(-1)
-              else
-                fallback()
-              end
-            end
-          '';
-        };
-      };
+      #mapping = {
+      #  # if cmp.visible() then
+      #  #   cmp.select_next_item(select_opts) -- If menu open, <Tab> moves to next item
+      #  # elseif col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
+      #  #   fallback()     -- Insert <Tab> char if line is "empty"
+      #  # else
+      #  #   cmp.complete() -- If cursor is inside a word, trigger menu
+      #  "<CR>" = {
+      #    modes = ["i" "s"];
+      #    action = "cmp.mapping.confirm({ select = true })";
+      #  };
+      #  "<Tab>" = {
+      #    modes = ["i" "s"];
+      #    action = ''
+      #      function(fallback)
+      #        if cmp.visible() then
+      #          cmp.select_next_item()
+      #        elseif luasnip.expandable() then
+      #          luasnip.expand()
+      #          -- expand_or_locally_jumpable() - Only jumps inside snippet region
+      #          -- expand_or_jumpable()         - Can jump outside snippet region
+      #        elseif luasnip.expand_or_locally_jumpable() then
+      #          luasnip.expand_or_jump()
+      #        elseif has_words_before() then
+      #          cmp.complete()
+      #        elseif check_backspace() then
+      #          fallback()
+      #        else
+      #          fallback()
+      #        end
+      #      end
+      #    '';
+      #  };
+      #  "<S-Tab>" = {
+      #    modes = ["i" "s"];
+      #    action = ''
+      #      function(fallback)
+      #        if cmp.visible() then
+      #          cmp.select_prev_item()
+      #        elseif luasnip.jumpable(-1) then
+      #          luasnip.jump(-1)
+      #        else
+      #          fallback()
+      #        end
+      #      end
+      #    '';
+      #  };
+      #};
       #snippet.expand = null;  # luasnip | snippy | ultisnips | vsnip | attrs<LuaFunctionString>
       #  { __raw = ''
       #      function(args)
@@ -204,13 +204,13 @@
     };
 
     telescope.keymapsSilent = false;
-    telescope.keymaps = {
-      "<leader>fg" = "live_grep";
-      "<C-p>" = {
-        action = "git_files";
-        desc = "Telescope Git Files";
-      };
-    };
+    #telescope.keymaps = {
+    #  "<leader>fg" = "live_grep";
+    #  "<C-p>" = {
+    #    action = "git_files";
+    #    desc = "Telescope Git Files";
+    #  };
+    #};
     #todo-comments.keymaps.todoTelescope = {
     #  key = "<C-t>";
     #  keywords = "TODO,FIX,FIXME,CHANGEME,ERROR,WIP";

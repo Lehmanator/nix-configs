@@ -67,7 +67,7 @@
         };
         settings = {
           find_cmd =
-            if config.programs.rg.enable
+            if config.programs.ripgrep.enable
             then "rg"
             else if config.programs.fd.enable
             then "fd"

@@ -37,7 +37,6 @@
         actionlint.enable = true;
         alex.enable = true;
         ansiblelint.enable = true;
-        bslint.enable = true;
         buf.enable = true;
         buildifier.enable = true;
         cfn_lint.enable = true;
@@ -55,9 +54,7 @@
         djlint.enable = false;
         dotenv_linter.enable = false;
         editorconfig_checker.enable = true;
-        erb_lint.enable = true;
         fish.enable = true;
-        gccdiag.enable = true;
         gdlint.enable = true;
         gitlint.enable = true;
         glslc.enable = true;
@@ -97,7 +94,6 @@
         buildifier.enable = true;
         cbfmt.enable = true;
         erb_format.enable = true;
-        erb_lint.enable = true;
         erlfmt.enable = true;
         findent.enable = false;
         fnlfmt.enable = true;
@@ -111,10 +107,8 @@
         markdownlint.enable = true;
         mdformat.enable = false;
         mix.enable = true;
-        nginx_beautifier.enable = true;
         nixfmt.enable = true;
         nixpkgs_fmt.enable = true;
-        packer.enable = true;
         phpcbf.enable = true;
         prettier = {
           enable = true;
@@ -123,13 +117,11 @@
         prettierd.enable = false;
         protolint.enable = false;
         pyink.enable = false;
-        remark.enable = true;
         rustywind.enable = true;
         shellharden.enable = true;
         shfmt.enable = true;
         sqlfluff.enable = false; # 1/15/23: fail dep=python3.11-diff-cover-8.0.1
-        sqlfmt.enable = true;
-        sqlformat.enable = false;
+        sqlformat.enable = true;
         stylelint.enable = false;
         styler.enable = false;
         stylua.enable = true;
