@@ -65,7 +65,6 @@
     pkgs.cargo-docset # Cargo subcommand to generate a Dash/Zeal docset for your Rust packages
     pkgs.cargo-duplicates # A cargo subcommand for displaying when different versions of a same dependency are pulled in
     pkgs.cargo-feature # Cargo plugin to manage dependency features
-    pkgs.cargo-graph # A cargo subcommand for creating GraphViz DOT files and dependency graphs
     pkgs.cargo-hack # Cargo subcommand to provide various options useful for testing and continuous integration
     pkgs.cargo-i18n # Rust Cargo sub-command and libraries to extract and build localization resources to embed in your application/library
     pkgs.cargo-info # Cargo subcommand to show crates info from crates.io
