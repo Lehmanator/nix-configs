@@ -225,18 +225,24 @@
   };
 
   inputs = {
-    # --- Main -----------------------------------------------------
+    # --- Main -------------------------------------------------------
+    nixpkgs.follows = "nixpkgs-unstable";
+    nixos.follows = "nixpkgs-unstable-staging";
+    stable.follows = "nixpkgs-stable";
+    unstable.follows = "nixpkgs-unstable";
+    # --- All --------------------------------------------------------
     # https://discourse.nixos.org/t/differences-between-nix-channels/13998
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/release-23.05";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/release-23.11";
+    nixpkgs-stable-staging.url = "github:NixOS/nixpkgs/staging-23.11";
+    nixpkgs-stable-staging-next.url = "github:NixOS/nixpkgs/staging-next-23.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixpkgs-staging.url = "github:NixOS/nixpkgs/staging";
-    nixpkgs-staging-next.url = "github:NixOS/nixpkgs/staging-next";
+    nixpkgs-unstable-staging.url = "github:NixOS/nixpkgs/staging";
+    nixpkgs-unstable-staging-next.url = "github:NixOS/nixpkgs/staging-next";
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
     nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-23.11-darwin";
-    # --- System Types ---------------------------------------------
+    # --- NixOS ------------------------------------------------------
     nixos.url = "github:NixOS/nixpkgs/nixos-unstable"; # /gnome";
-    nixos-stable.url = "github:NixOS/nixpkgs/nixos-23.05";
+    nixos-stable.url = "github:NixOS/nixpkgs/nixos-23.11";
     nixos-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     home.url = "github:nix-community/home-manager";
     home.inputs.nixpkgs.follows = "nixpkgs";
@@ -245,15 +251,15 @@
     system-manager.inputs.flake-utils.follows = "flake-utils";
     darwin.url = "github:lnl7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
-    # --- SnowflakeOS ----------------------------------------------
+    # --- SnowflakeOS ------------------------------------------------
     snowflake.url = "github:snowflakelinux/snowflake-modules";
     snow.url = "github:snowflakelinux/snow";
     nix-data.url = "github:snowflakelinux/nix-data";
-    # --- Image Builders: Nix --------------------------------------
+    # --- Image Builders: Nix ----------------------------------------
     nixos-generators.url = "github:nix-community/nixos-generators";
     nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
-    # --- Image Builders: Non-Nix ----------------------------------
-    # --- Mobile ---------------------------------------------------
+    # --- Image Builders: Non-Nix ------------------------------------
+    # --- Mobile -----------------------------------------------------
     nixpkgs-gnome-mobile.url = "github:lehmanator/nixpkgs-gnome-mobile/develop";
     nixos-mobile = {
       url = "github:vlinkz/mobile-nixos/gnomelatest";
