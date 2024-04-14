@@ -1,5 +1,4 @@
-{ inputs, ... }:
-let
+{inputs, ...}: let
   #mkNixvim = inputs.nixvim.lib
   inherit (inputs.haumea.lib) load loaders matchers transformers;
   # Wrap profile "module" with enable option
@@ -13,27 +12,31 @@ let
   #  };
   #  config = lib.mkIf cfg.enable (pcfg.config // builtins.removeAttrs pcfg ["imports" "options" "config"]);
   #};
-in
-{
-  perSystem = { config, pkgs, system, inputs', ... }:
-    let
-      nixvimModule = {
-        inherit pkgs;
-        module = import ../../nix/hive/nixvim/suites/base.nix;
-        extraSpecialArgs = { inherit inputs; };
-      };
-    in
-    {
-      checks = {
-        #nixvim = inputs'.nixvim.lib.check.mkTestDerivationFromNixvimModule nixvimModule;
-        nixvim =
-          inputs.nixvim.lib.${system}.check.mkTestDerivationFromNixvimModule
-            nixvimModule;
-      };
-      packages = {
-        nvim = inputs'.nixvim.legacyPackages.makeNixvimWithModule nixvimModule;
-      };
+in {
+  perSystem = {
+    config,
+    pkgs,
+    system,
+    inputs',
+    ...
+  }: let
+    nixvimModule = {
+      inherit pkgs;
+      module =
+        inputs.self.nixvimSuites.base; # import ../../nix/hive/nixvim/suites/base.nix;
+      extraSpecialArgs = {inherit inputs;};
     };
+  in {
+    checks = {
+      #nixvim = inputs'.nixvim.lib.check.mkTestDerivationFromNixvimModule nixvimModule;
+      nixvim =
+        inputs.nixvim.lib.${system}.check.mkTestDerivationFromNixvimModule
+        nixvimModule;
+    };
+    packages = {
+      nvim = inputs'.nixvim.legacyPackages.makeNixvimWithModule nixvimModule;
+    };
+  };
 
   #flake = {
   #  #lib = {

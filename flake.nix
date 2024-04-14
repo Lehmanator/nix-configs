@@ -5,33 +5,40 @@
     nixpkgs,
     nixos,
     omnibus,
+    hive,
     ...
   } @ inputs: let
     inherit (nixpkgs) lib;
     inherit (omnibus.flake.inputs) climodSrc flake-parts std;
-    systems = ["x86_64-linux" "aarch64-linux" "riscv64-linux"]; # "aarch64-darwin"];
+    inherit (std) harvest pick winnow;
+    inherit (hive) collect;
+    systems = ["x86_64-linux" "aarch64-linux" "riscv64-linux"];
+    omnibusStd =
+      (inputs.omnibus.pops.std {
+        inputs.inputs = {inherit (inputs.omnibus.flake.inputs) std;};
+      })
+      .exports
+      .default;
+
     input-groups = {
       all = lib.recursiveUpdate inputs omnibus.flake.inputs;
       grow = inputs // {inherit climodSrc;};
       omnibus = omnibus.flake.inputs;
     };
-    omnibusStd =
-      (omnibus.pops.std {
-        inputs.inputs = input-groups.all;
-      })
-      .exports
-      .default;
-    standardStd = omnibusStd.mkStandardStd {
+    growArgs = {
       # omnibus.flake.inputs: arion audioNix bird-nix-lib catppuccin-foliate
       #   climodSrc flake_env jupyenv makesSrc microvm n2c navi-tldr-pages
       #   nickel nil nix-fast-build nix-filter nix-std nixago nixcasks nuenv nur
       #   organist pre-commit-hooks ragenix snapshotter sops-nix srvos std
       #   system-manager systems topiary treefmt-nix typst
-      #inputs = input-groups.grow;
-      inputs = input-groups.all;
-      inherit systems;
+      inputs =
+        input-groups.all
+        // {
+          inherit omnibusStd;
+        }; # // {inherit cellsFrom;};
       cellsFrom = ./nix;
       cellBlocks = with inputs; [
+        (std.blockTypes.functions "pops")
         #(inputs.std.blockTypes.functions "blockTypes")
         # --- omnibus unused pops ---
         #  allData, darwinModules, darwinProfiles, devshellModules,
@@ -58,9 +65,9 @@
           "git@github.com:lehmanator/nix-configs.git")
 
         # --- config types ---
-        inputs.hive.blockTypes.colmenaConfigurations
+        hive.blockTypes.colmenaConfigurations
 
-        inputs.hive.blockTypes.darwinConfigurations
+        hive.blockTypes.darwinConfigurations
         (std.blockTypes.functions "darwinModules")
         (std.blockTypes.functions "darwinProfiles")
         (std.blockTypes.functions "darwinSuites")
@@ -69,7 +76,7 @@
         (std.blockTypes.functions "devshellProfiles")
         (std.blockTypes.functions "devshellSuites")
 
-        inputs.hive.blockTypes.diskoConfigurations
+        hive.blockTypes.diskoConfigurations
         (std.blockTypes.functions "diskoProfiles")
         (std.blockTypes.functions "diskoSuites")
 
@@ -81,13 +88,13 @@
         (std.blockTypes.functions "hardwareProfiles")
         (std.blockTypes.functions "hardwareSuites")
 
-        inputs.hive.blockTypes.homeConfigurations
+        hive.blockTypes.homeConfigurations
         (std.blockTypes.functions "homeModules")
         (std.blockTypes.functions "homeProfiles")
         (std.blockTypes.functions "homeSuites")
         (std.blockTypes.functions "userProfiles")
 
-        inputs.hive.blockTypes.nixosConfigurations
+        hive.blockTypes.nixosConfigurations
         (std.blockTypes.functions "nixosModules")
         (std.blockTypes.functions "nixosProfiles")
         (std.blockTypes.functions "nixosSuites")
@@ -124,276 +131,276 @@
         overlays = [inputs.nix-vscode-extensions.overlays.default];
       };
     };
-  in
-    flake-parts.lib.mkFlake {inherit inputs;} {
-      inherit systems;
-      imports = [omnibusStd.flakeModule];
-      debug = true;
-      std = {
-        std = standardStd;
-        harvest = {
-          darwinConfigurations = [["hive" "darwinConfigurations"]];
-          diskoConfigurations = [["hive" "diskoConfigurations"]];
-          nixosConfigurations = [["hive" "nixosConfigurations"]];
-          devShells = [
-            ["hive" "shells"]
-            ["kube" "shells"]
-            ["repo" "shells"]
-            ["test" "shells"]
-          ];
-          nixago = [["repo" "configs"]];
-          nixpkgs-custom = [["repo" "pkgs"]];
-          packages = [
-            [
-              "android"
-              "packages"
-            ]
-            #["hive" "packages"]
-            #["kube" "packages"]
-            #["test" "packages"]
-          ];
-        };
-        pick = {
-          configs = [["test" "configs"]];
-          data-repo = [["test" "data"]];
-          devshellProfiles = [
-            ["hive" "devshellProfiles"]
-            ["kube" "devshellProfiles"]
-            ["repo" "devshellProfiles"]
-            ["test" "devshellProfiles"]
-          ];
-          devshellSuites = [["hive" "devshellSuites"]];
-          diskoConfigurations = [["hive" "diskoConfigurations"]];
-          diskoProfiles = [["hive" "diskoProfiles"]];
-          diskoSuites = [["hive" "diskoSuites"]];
-          hardwareProfiles = [["hive" "hardwareProfiles"]];
-          hardwareSuites = [["hive" "hardwareSuites"]];
-          homeConfigurations = [["hive" "homeConfigurations"]];
-          homeModules = [["hive" "homeModules"]];
-          homeProfiles = [["hive" "homeProfiles"]];
-          homeSuites = [["hive" "homeSuites"]];
-          userProfiles = [["hive" "userProfiles"]];
+    soil = {
+      darwinConfigurations2 =
+        std.harvest self [["hive" "darwinConfigurations"]];
+      diskoConfigurations2 =
+        std.harvest self [["hive" "diskoConfigurations"]];
+      nixosConfigurations2 =
+        std.harvest self [["hive" "nixosConfigurations"]];
+      devShells = std.harvest self [
+        ["hive" "shells"]
+        ["kube" "shells"]
+        ["repo" "shells"]
+        ["test" "shells"]
+      ];
+      nixago = std.harvest self [["repo" "configs"]];
+      nixpkgs-custom = std.harvest self [["repo" "pkgs"]];
+      configs = std.pick self [["test" "configs"]];
+      data-repo = std.pick self [["test" "data"]];
+      darwinModules = std.pick self [["hive" "darwinModules"]];
+      darwinProfiles = std.pick self [["hive" "darwinProfiles"]];
+      darwinSuites = std.pick self [["hive" "darwinSuites"]];
+      devshellProfiles = std.pick self [
+        ["hive" "devshellProfiles"]
+        ["kube" "devshellProfiles"]
+        ["repo" "devshellProfiles"]
+        ["test" "devshellProfiles"]
+      ];
+      devshellModules = std.pick self [["hive" "devshellModules"]];
+      devshellSuites = std.pick self [["hive" "devshellSuites"]];
+      diskoConfigurations = std.pick self [["hive" "diskoConfigurations"]];
+      diskoProfiles = std.pick self [["hive" "diskoProfiles"]];
+      diskoSuites = std.pick self [["hive" "diskoSuites"]];
+      flakeConfigurations = std.pick self [["hive" "flakeConfigurations"]];
+      flakeModules = std.pick self [["hive" "flakeModules"]];
+      flakeProfiles = std.pick self [["hive" "flakeProfiles"]];
+      #flakeSuites = std.pick self [["hive" "flakeSuites"]];
+      hardwareProfiles = std.pick self [["hive" "hardwareProfiles"]];
+      hardwareSuites = std.pick self [["hive" "hardwareSuites"]];
+      homeConfigurations2 = std.pick self [["hive" "homeConfigurations"]];
+      homeModules = std.pick self [["hive" "homeModules"]];
+      homeProfiles = std.pick self [["hive" "homeProfiles"]];
+      homeSuites = std.pick self [["hive" "homeSuites"]];
+      userProfiles = std.pick self [["hive" "userProfiles"]];
+      lib = std.pick self [["hive" "lib"]];
+      nixosModules = std.pick self [
+        ["android" "nixosModules"]
+        ["hive" "nixosModules"]
+        ["kube" "nixosModules"]
+        ["test" "nixosModules"]
+      ];
+      nixosProfiles = std.pick self [
+        ["hive" "nixosProfiles"]
+        ["kube" "nixosProfiles"]
+        ["repo" "nixosProfiles"]
+        ["test" "nixosProfiles"]
+      ];
+      nixosSuites = std.pick self [["hive" "nixosSuites"]];
+      nixvimModules = std.pick self [["hive" "nixvimModules"]];
+      nixvimProfiles = std.pick self [["hive" "nixvimProfiles"]];
+      nixvimSuites = std.pick self [["hive" "nixvimSuites"]];
 
-          lib = [["hive" "lib"]];
-          nixosModules = [
-            ["android" "nixosModules"]
-            ["hive" "nixosModules"]
-            ["kube" "nixosModules"]
-            ["test" "nixosModules"]
-          ];
-          nixosProfiles = [
-            ["hive" "nixosProfiles"]
-            ["kube" "nixosProfiles"]
-            ["repo" "nixosProfiles"]
-            ["test" "nixosProfiles"]
-          ];
-          nixosSuites = [["hive" "nixosSuites"]];
-          nixvimModules = [["hive" "nixvimModules"]];
-          nixvimProfiles = [["hive" "nixvimProfiles"]];
-          nixvimSuites = [["hive" "nixvimSuites"]];
+      pops-hive = std.harvest self [["hive" "pops"]];
+      pops = std.pick self [
+        ["android" "pops"]
+        ["hive" "pops"]
+        ["kube" "pops"]
+        ["repo" "pops"]
+        ["test" "pops"]
+      ];
+      robotnixConfigurations =
+        std.pick self [["hive" "robotnixConfigurations"]];
+      robotnixModules = std.pick self [["hive" "robotnixModules"]];
+      robotnixProfiles = std.pick self [["hive" "robotnixProfiles"]];
+      robotnixSuites = std.pick self [["hive" "robotnixSuites"]];
 
-          pops-hive = [["hive" "pops"]];
-          pops = [
-            ["android" "pops"]
-            ["hive" "pops"]
-            ["kube" "pops"]
-            ["repo" "pops"]
-            ["test" "pops"]
-          ];
-        };
-        winnow = {packages = [["hive" "packages"]];};
-        winnowIf = {packages = n: v: n != "vscodium";};
+      packages =
+        std.winnow (n: v:
+          builtins.elem n ["theme-multi-mitsugen-material-u" "vscodium"])
+        self [
+          ["android" "packages"]
+          [
+            "hive"
+            "packages"
+          ]
+          #["hive" "packages"]
+          #["kube" "packages"]
+          #["test" "packages"]
+        ];
+    };
+    overrides = {
+      #         hive: {colemna,darwin,disko,home,nixos}Configurations
+      #          std: anything, arion, containers, data, devshells, files, functions, installables,
+      #               kubectl, microvms, namaka, nixago, nomad, pkgs, runnables, terra
+      # std-omnnibus: std + nixostests, nvfetcher,
+      blockTypes = rec {
+        all = hive // omnibus // std // std-omnibus;
+        hive = inputs.hive.blockTypes;
+        std = inputs.std.blockTypes;
+        std-omnibus = inputs.omnibus.flake.inputs.std.blockTypes;
       };
-      flake = {
-        #         hive: {colemna,darwin,disko,home,nixos}Configurations
-        #          std: anything, arion, containers, data, devshells, files, functions, installables,
-        #               kubectl, microvms, namaka, nixago, nomad, pkgs, runnables, terra
-        # std-omnnibus: std + nixostests, nvfetcher,
-        blockTypes = rec {
-          all = hive // omnibus // std // std-omnibus;
-          hive = inputs.hive.blockTypes;
-          std = inputs.std.blockTypes;
-          std-omnibus = inputs.omnibus.flake.inputs.std.blockTypes;
-          omnibus = omnibusStd.blockTypes;
+      darwinConfigurations = inputs.hive.collect self "darwinConfigurations";
+      homeConfigurations = inputs.hive.collect self "homeConfigurations";
+      nixosConfigurations = inputs.hive.collect self "nixosConfigurations";
+      nixosConfigurations3 = let
+        user = "sam";
+      in {
+        minimal = nixos.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = {inherit inputs user;};
+          modules = with self.nixosProfiles; [
+            activitywatch
+            adb
+            agenix
+            apparmor
+            appimage
+            arion
+            auditd
+            cachix-agent
+            colmena
+            containerd
+            cri-o
+            #desktop
+            envfs
+            flake-utils-plus
+            flatpak-declarative
+            gdm
+            gnome.default
+            gtk
+            desktop
+            hercules-ci
+            home-manager
+            homed
+            kvm
+            lanzaboote
+            libreoffice
+            libvirt
+            locale-est
+            lxc
+            lxd
+            lxd-image-server
+            motd
+            neovim
+            networkmanager
+            nixos-generators
+            nixvim
+            normalize
+            nur
+            nushell
+            ollama
+            pipewire
+            plymouth
+            podman
+            polkit
+            printing
+            qemu
+            quick-nix-registry
+            resolvconf
+            robotnix
+            rxe
+            sits
+            sops
+            sshd
+            sudo-rs
+            systemd-boot
+            systemd-emergency
+            systemd-initrd
+            systemd-repart
+            test
+            unl0kr
+            ucarp
+            user-primary
+            vm-guest-windows
+            vm-host
+            waydroid
+            wayland
+            wine
+            xserver-base
+
+            #avahi # Conflict w/ systemd-resolved
+            bluetooth
+            dns-base
+            #dnscrypt-proxy # Conflict w/ systemd-resolved
+            fprintd
+            hosts-blocking
+            systemd-networkd-wireguard # Needs secret
+            systemd-resolved # Conflict w/ dnscrypt-proxy
+            tailscale
+            tailscale-mullvad-exit-node
+            tailscale-subnet-router
+            tpm2
+            wifi
+            #wifi-hotspot # Needs radio interface name & password secret
+            wireguard
+            wireguard-automesh
+
+            ./hosts/fw/hardware-configuration.nix
+
+            #harmonia # Wants secret
+            #impermanence # Wants user
+            #installer # ???
+            #iscsi-initiator # Not using
+            #kubenix # Needs fix
+            #microvm # Needs fix
+            #nix-index # ??
+            #nixified-ai # Dep broken
+            #nixos-images # Only loaded in images?
+            #qemu-web # Wants secret
+            #rygel # Needs fix to work with nftables
+            #secureboot # Incompatible with systemd-boot
+            #snowflake # No longer using
+            #specialization # Fixme
+            #ssbm-nix # Broken package
+            #stylix # Needs image path
+            #systemd-debug # Kernel patches cause long rebuild
+            #systemd-networkd # Needs options fix
+            #tor # Needs secret?
+            {
+              nixpkgs = {
+                system = "x86_64-linux";
+                config.allowUnfree = true;
+                overlays = with inputs; [
+                  nur.overlay
+                  fenix.overlays.default
+                ];
+              };
+              networking.hostName = "minimal";
+              xdg.portal.enable = true;
+              #home-manager.users.sam = ./users/sam;
+            }
+          ];
         };
-        omnibus = {
-          inherit (omnibus) pops;
-          inherit (omnibusStd) flakeModule;
-          inherit standardStd;
-          std = omnibusStd;
-          inputs = {
-            inherit (input-groups) all grow;
-            upstream = input-groups.omnibus;
-            me = inputs;
-          };
+        #fw = self.lib.mkSystem { host = "fw"; };
+        fw = nixos.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = {inherit inputs user;};
+          modules = [./hosts/fw];
         };
-        #homeConfigurations."sam@minimal" = home-manager.lib.homeManagerConfiguration {
-        #  pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-        #  modules = [ ./users/sam ];
-        #  extraSpecialArgs = { inherit inputs; user = "sam"; };
-        #};
-        nixosConfigurations = let
-          user = "sam";
-        in {
-          minimal = nixos.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = {inherit inputs user;};
-            modules = with self.nixosProfiles; [
-              activitywatch
-              adb
-              agenix
-              apparmor
-              appimage
-              arion
-              auditd
-              cachix-agent
-              colmena
-              containerd
-              cri-o
-              #desktop
-              envfs
-              flake-utils-plus
-              flatpak-declarative
-              gdm
-              gnome.default
-              gtk
-              desktop
-              hercules-ci
-              home-manager
-              homed
-              kvm
-              lanzaboote
-              libreoffice
-              libvirt
-              locale-est
-              lxc
-              lxd
-              lxd-image-server
-              motd
-              neovim
-              networkmanager
-              nixos-generators
-              nixvim
-              normalize
-              nur
-              nushell
-              ollama
-              pipewire
-              plymouth
-              podman
-              polkit
-              printing
-              qemu
-              quick-nix-registry
-              resolvconf
-              robotnix
-              rxe
-              sits
-              sops
-              sshd
-              sudo-rs
-              systemd-boot
-              systemd-emergency
-              systemd-initrd
-              systemd-repart
-              test
-              unl0kr
-              ucarp
-              user-primary
-              vm-guest-windows
-              vm-host
-              waydroid
-              wayland
-              wine
-              xserver-base
-
-              #avahi # Conflict w/ systemd-resolved
-              bluetooth
-              dns-base
-              #dnscrypt-proxy # Conflict w/ systemd-resolved
-              fprintd
-              hosts-blocking
-              systemd-networkd-wireguard # Needs secret
-              systemd-resolved # Conflict w/ dnscrypt-proxy
-              tailscale
-              tailscale-mullvad-exit-node
-              tailscale-subnet-router
-              tpm2
-              wifi
-              #wifi-hotspot # Needs radio interface name & password secret
-              wireguard
-              wireguard-automesh
-
-              ./hosts/fw/hardware-configuration.nix
-
-              #harmonia # Wants secret
-              #impermanence # Wants user
-              #installer # ???
-              #iscsi-initiator # Not using
-              #kubenix # Needs fix
-              #microvm # Needs fix
-              #nix-index # ??
-              #nixified-ai # Dep broken
-              #nixos-images # Only loaded in images?
-              #qemu-web # Wants secret
-              #rygel # Needs fix to work with nftables
-              #secureboot # Incompatible with systemd-boot
-              #snowflake # No longer using
-              #specialization # Fixme
-              #ssbm-nix # Broken package
-              #stylix # Needs image path
-              #systemd-debug # Kernel patches cause long rebuild
-              #systemd-networkd # Needs options fix
-              #tor # Needs secret?
-              {
-                nixpkgs = {
-                  system = "x86_64-linux";
-                  config.allowUnfree = true;
-                  overlays = with inputs; [
-                    nur.overlay
-                    fenix.overlays.default
-                  ];
-                };
-                networking.hostName = "minimal";
-                xdg.portal.enable = true;
-                #home-manager.users.sam = ./users/sam;
-              }
-            ];
-          };
-          #fw = self.lib.mkSystem { host = "fw"; };
-          fw = nixos.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = {inherit inputs user;};
-            modules = [./hosts/fw];
-          };
-          wyse = self.lib.mkSystem {host = "wyse";};
-          fajita = nixos.lib.nixosSystem {
-            system = "aarch64-linux";
-            specialArgs = {inherit inputs user;};
-            modules = [
-              {_module.args = {inherit inputs user;};}
-              (import "${inputs.mobile-nixos}/lib/configuration.nix" {
-                device = "oneplus-fajita";
-              })
-              ./hosts/fajita
-              inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
-            ];
-          };
-          fajita-minimal = nixos.lib.nixosSystem {
-            system = "aarch64-linux";
-            specialArgs = {inherit inputs user;};
-            modules = [
-              {_module.args = {inherit inputs user;};}
-              (import "${inputs.mobile-nixos}/lib/configuration.nix" {
-                device = "oneplus-fajita";
-              })
-              ./hosts/fajita/minimal.nix
-              inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
-            ];
-          };
+        wyse = self.lib.mkSystem {host = "wyse";};
+        fajita = nixos.lib.nixosSystem {
+          system = "aarch64-linux";
+          specialArgs = {inherit inputs user;};
+          modules = [
+            {_module.args = {inherit inputs user;};}
+            (import "${inputs.mobile-nixos}/lib/configuration.nix" {
+              device = "oneplus-fajita";
+            })
+            ./hosts/fajita
+            inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
+          ];
+        };
+        fajita-minimal = nixos.lib.nixosSystem {
+          system = "aarch64-linux";
+          specialArgs = {inherit inputs user;};
+          modules = [
+            {_module.args = {inherit inputs user;};}
+            (import "${inputs.mobile-nixos}/lib/configuration.nix" {
+              device = "oneplus-fajita";
+            })
+            ./hosts/fajita/minimal.nix
+            inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
+          ];
         };
       };
     };
+    stdConfig = std.growOn growArgs soil overrides;
+
+    useFlakeParts = false;
+  in
+    if useFlakeParts
+    then (import ./parts.nix {inherit systems inputs growArgs overrides;})
+    else stdConfig;
 
   nixConfig = {
     connect-timeout = 10;
@@ -783,6 +790,11 @@
     };
     treefmt-nix.url = "github:numtide/treefmt-nix";
     #treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
+
+    # +-- Pinpox --------------------------------------------------------------+
+    # | lollypops: NixOS deployment tool.                                      |
+    # +------------------------------------------------------------------------+
+    lollypops.url = "github:pinpox/lollypops";
 
     # +-- Platonic-Systems ----------------------------------------------------+
     # | mission-control: flake-parts module for                                |

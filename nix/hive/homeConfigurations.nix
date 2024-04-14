@@ -30,7 +30,7 @@
 {
   sam = inputs.home-manager.lib.homeManagerConfiguration {
     #pkgs = inputs.nixpkgs.packages.x86_64-linux; # .legacyPackages;
-    pkgs = inputs.nixpkgs;
+    pkgs = inputs.nixpkgs; # .legacyPackages.${inputs.nixpkgs.system};
     modules = inputs.nixpkgs.lib.flatten [
       cell.homeSuites.developer-default
       cell.userProfiles.sam.default

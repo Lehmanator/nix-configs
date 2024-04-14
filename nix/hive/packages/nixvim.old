@@ -1,0 +1,8 @@
+{
+  inputs, # cell,
+  ...
+} @ args:
+inputs.nixvim.legacyPackages.makeNixvimWithModule {
+  module = inputs.cells.hive.nixvimSuites.base;
+  extraSpecialArgs = args;
+}

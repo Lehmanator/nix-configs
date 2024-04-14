@@ -22,13 +22,13 @@ in
     #./hercules-ci.nix
     #./nix-cargo-integration.nix
     #./nixid.nix
-    ./nixpkgs-overlay.nix
-    ./nixvim.nix
+    #./nixpkgs-overlay.nix
+    #./nixvim.nix
     ./pre-commit-hooks.nix
     #./process-compose-flake.nix
     #./proc-flake.nix
     ./treefmt.nix
-    ../std
+    #../std
   ];
 
   #perSystem = { config, lib, pkgs, system, ... }:

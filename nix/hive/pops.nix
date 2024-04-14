@@ -2,251 +2,178 @@
   inputs,
   cell,
 } @ commonArgs: let
-  inherit (inputs) omnibusStd; # cellsFrom cellsFrom' _pops ;
-  inherit (inputs.nixpkgs) lib;
-  inherit (inputs.omnibus) pops;
-  inherit (inputs.omnibus.pops) load homeProfiles nixosProfiles;
-  cellName = builtins.baseNameOf ./.;
-  # TODO: Which pops are available in `mkBlocks`, omnibus, hivebus?
-  #
-  # mkBlocks: configs, data, devshellProfiles, jupyenv, packages, pops, scripts, shells, tasks
-  #
+  inherit (inputs) omnibus omnibusStd cellsFrom cellsFrom' _pops;
   # TODO: Kubernetes, containers, tests, checks, jupyenv, nixago, secrets
   # TODO: Try: `src = cellsFrom + /${cellName}/packages;`
-  #lib.recursiveUpdate (
+  cellName = builtins.baseNameOf ./.;
+  # mkBlocks.pops:
+  #   configs, data, jupyenv, packages, pops, scripts, tasks
+  #         shells, devshellProfiles,
+  #    homeModules,     homeProfiles,
+  #   nixosModules,    nixosProfiles,
+  # pops: (mkBlocks.pops ++ [)
+  #   allData, example, hive, load, microvms, overlays, srvos, std,
+  #     darwinModules, darwinProfiles,
+  #   devshellModules,
+  #   flake-parts.module, flake-parts.profile, flake
+  #   systemManagerProfiles,
 in
-  omnibusStd.mkBlocks.pops commonArgs {
-    lib = pops.load {
-      src = ./lib;
-      loader = inputs.haumea.lib.loaders.default;
-      inputs = {
-        inherit inputs cell;
-        #inherit (inputs.nixpkgs) lib;
-        #pkgs = inputs.nixpkgs;
-      };
-    };
-    packages = with inputs.nix-vscode-extensions.extensions.${inputs.nixpkgs.system}; let
-      openvsx = open-vsx-release // open-vsx;
-      vscode-marketplace = vscode-marketplace-release // vscode-marketplace;
-      nixpkgs =
-        inputs.nixpkgs.legacyPackages.extend
-        inputs.nix-vscode-extensions.overlays.default;
-    in {
-      src = ./packages;
-      #loader = __inputs__: path:
-      #  ((__inputs__.inputs.nixpkgs.extend
-      #      (_: _: {inherit __inputs__;}))
-      #    .extend
-      #    inputs.nix-vscode-extensions.overlays.default)
-      #  .callPackage
-      #  path {};
-      inputs = {
-        inherit cell;
-        inherit inputs;
-        #inputs = inputs // {inherit nixpkgs;};
-        #open-vsx =
-        #inputs.nix-vscode-extensions.extensions.open-vsx #${inputs.nixpkgs.system}.open-vsx;
-        #inputs = (inputs // { nixpkgs = inputs.nixpkgs.extend inputs.nix-vscode-extensions.overlays.default; });
-        #inputs.nixpkgs // {
-        #  vscode-extensions-openvsx =
-        #    inputs.nix-vscode-extensions.extensions.${inputs.nixpkgs.system}.open-vsx;
-        #  vscode-extensions =
-        #    lib.fold (a: b: lib.recursiveUpdate a b)
-        #    inputs.nixpkgs.vscode-extensions
-        #    (with inputs.nix-vscode-extensions.extensions.${inputs.nixpkgs.system}; [
-        #      vscode-marketplace-release
-        #      vscode-marketplace
-        #      open-vsx-release
-        #      open-vsx
-        #    ]);
+  with inputs.omnibus.pops;
+    (omnibusStd.mkBlocks.pops commonArgs
+      {
+        #{
+        configs = {src = ./configs;};
+        data = {src = ./data;};
+        jupyenv = {src = ./jupyenv;};
+        #packages = {src = ./packages;};
+        #packages = inputs.omnibus.pops.packages {
+        #  src = ./packages;
+        #  inputs = {
+        #    inherit cell;
+        #    inputs = {inherit (inputs) nixpkgs;};
+        #  };
         #};
-      };
-    };
+        #pops = {src = ./pops;};
+        scripts = {
+          src = ./scripts;
+          inputs.inputs = {makesSrc = inputs.std.inputs.makes;};
+        };
+        tasks = {
+          src = ./tasks;
+          inputs.inputs = {makesSrc = inputs.std.inputs.makes;};
+        };
 
-    # --- DevShells -------------------------------------------
-    #devshellModules = { src = ./devshellModules; inputs = { inherit inputs cell; }; };
-    devshellProfiles = {
-      src = ./devshellProfiles;
-      inputs = {inherit inputs cell;};
-    };
-    devshellSuites = pops.nixosProfiles.addLoadExtender {
-      load = {
-        src = ./devshellSuites;
-        #type = "nixosProfilesOmnibus";
-        inputs = {inherit inputs cell;};
-      };
-    };
-    shells = {
-      src = ./shells;
-      inputs = {inherit inputs cell;};
-    };
+        # --- DevShells -------------------------------------------
+        shells = {src = ./devshells/configs;};
+        devshellProfiles = {
+          src = ./devshell/profiles;
+          inputs.inputs = {inherit (inputs.std.inputs) devshell;};
+        };
 
-    # --- Disko -------------------------------------------
-    diskoConfigurations = pops.nixosProfiles.addLoadExtender {
-      load = {
-        src = ./diskoConfigurations;
-        inputs = {inherit inputs cell;};
-      };
-    };
-    diskoProfiles = pops.nixosProfiles.addLoadExtender {
-      load = {
-        src = ./diskoProfiles;
-        type = "nixosProfiles";
-      }; # inputs = { inherit inputs cell; };
-    };
-    diskoSuites = pops.nixosProfiles.addLoadExtender {
-      load = {
-        src = ./diskoSuites;
-        type = "nixosProfiles";
-        #type = "nixosProfilesOmnibus";
-      };
-    };
+        # --- Home Manager -------------------------------------------
+        homeModules = {src = ./home/modules;};
+        homeProfiles = {
+          src = ./home/profiles;
+          transformer = [
+            inputs.haumea.lib.transformers.liftDefault
+            inputs.omnibus.lib.haumea.removeTopDefault
+          ];
+        };
+        # --- NixOS --------------------------------------------------
+        nixosModules = {src = ./nixos/modules;};
+        nixosProfiles = {src = ./nixos/profiles;};
 
-    # --- Hardware -------------------------------------------
-    hardwareProfiles = pops.nixosProfiles.addLoadExtender {
-      load = {
-        src = ./hardwareProfiles;
-        type = "nixosProfiles";
+        # --- Hive ---------------------------------------------
+        #hive = pops.hive; #. { src = ./hosts; };
+        #hive = pops.hive.addLoadExtender { load = { src = ./hosts; }; };
+      }
+      or {})
+    // {
+      packages = inputs.omnibus.pops.packages {
+        load = {
+          src = ./packages;
+          inputs = {inherit (inputs) nixpkgs;};
+        };
       };
-    };
-    hardwareSuites = pops.nixosProfiles.addLoadExtender {
-      load = {
-        src = ./hardwareSuites;
-        type = "nixosProfiles";
-        #type = "nixosProfilesOmnibus";
-        inputs = {inherit inputs cell;};
+      # --- Darwin ----------------------------------------------
+      darwinConfigurations = load {
+        src = ./darwin/configs;
+        type = "evalModules";
       };
-    };
+      darwinModules =
+        darwinModules.addLoadExtender {load.src = ./darwin/modules;};
+      darwinProfiles =
+        darwinProfiles.addLoadExtender {load.src = ./darwin/profiles;};
+      darwinSuites = darwinProfiles.addLoadExtender {load.src = ./darwin/suites;};
+      # --- DevShells -------------------------------------------
+      devshellModules =
+        devshellModules.addLoadExtender {load.src = ./devshell/modules;};
+      devshellSuites =
+        devshellProfiles.addLoadExtender {load.src = ./devshell/suites;};
 
-    # --- Home Manager -------------------------------------------
-    #homeConfigurations = pops.load {
-    #  #homeConfigurations = pops.nixosProfiles.addLoadExtender {
-    #  #homeConfigurations = pops.homeProfiles.addLoadExtender {
-    #  #  load = {
-    #  src = ./homeConfigurations;
-    #  #type = "nixosProfiles";
-    #  #loader = [ inputs.haumea.lib.matchers.nix inputs.haumea.lib.loaders.scoped ];
-    #  transformer = inputs.haumea.lib.transformers.liftDefault;
-    #  inputs = { inherit inputs cell; };
-    #  #};
-    #};
-    homeModules = {src = ./homeModules;};
-    homeProfiles = {
-      src = ./homeProfiles;
-      #loader = with inputs.haumea.lib; [ matchers.nix loaders.scoped ];
-      type = "nixosProfiles";
-      inputs = {inherit inputs cell;};
-      transformer = [
-        inputs.haumea.lib.transformers.liftDefault
-        inputs.omnibus.lib.haumea.removeTopDefault
-      ];
-      #transformer = inputs.haumea.lib.transformers.liftDefault;
-    };
-    homeSuites = pops.homeProfiles.addLoadExtender {
-      load = {
-        src = ./homeSuites;
-        type = "nixosProfiles";
-        inputs = {inherit inputs cell;};
-      }; # type = "nixosProfilesOmnibus";
-    };
-    userProfiles = pops.homeProfiles.addLoadExtender {
-      load = {
-        src = ./userProfiles;
-        type = "nixosProfilesOmnibus";
-        #transformer = inputs.haumea.lib.transformers.liftDefault;
-        inputs = {inherit inputs cell;};
-      };
-    };
+      # --- Disko -------------------------------------------
+      diskoConfigurations =
+        nixosProfiles.addLoadExtender {load.src = ./disko/configs;};
+      diskoProfiles =
+        nixosProfiles.addLoadExtender {load.src = ./disko/profiles;};
+      diskoSuites = nixosProfiles.addLoadExtender {load.src = ./disko/suites;};
 
-    # --- NixOS -------------------------------------------
-    nixosConfigurations = {
-      src = ./nixosConfigurations;
-      inputs = {inherit inputs cell;};
-    };
-    nixosModules = {src = ./nixosModules;};
-    nixosProfiles = {
-      src = ./nixosProfiles;
-      type = "nixosProfiles";
-    };
-    nixosSuites = pops.nixosProfiles.addLoadExtender {
-      load = {
-        src = ./nixosSuites;
-        type = "nixosProfilesOmnibus";
-      };
-    };
+      # --- flake-parts -------------------------------------
+      #flakeConfigurations = flakes.addLoadExtender {load.src = ./flake/configs;};
+      #flakeModules = flake-parts.modules.addLoadExtender {load.src = ./flake/modules;};
+      #flakeProfiles = flake-parts.profiles.addLoadExtender {load.src = ./flake/profiles;};
 
-    # --- Nixvim -------------------------------------------
-    #nixvimConfigurations = {
-    #  src = ./nixvimConfigurations;
-    #  inputs = { inherit inputs cell; };
-    #};
-    nixvimProfiles = pops.nixosProfiles.addLoadExtender {
-      load = {
-        # src = ./nixvim/profiles; inputs = { inherit inputs cell; };
-        src = ./nixvimProfiles;
-        type = "nixosProfiles";
-        inputs = commonArgs;
-      };
-    };
-    nixvimModules = pops.nixosModules.addLoadExtender {
-      load = {
-        src = ./nixvimModules;
-        type = "nixosModules";
-        inputs = commonArgs;
-      };
-    };
-    nixvimSuites = pops.nixosProfiles.addLoadExtender {
-      load = {
-        src = ./nixvimSuites;
-        type = "nixosProfiles";
-        #type = "nixosProfilesOmnibus";
-        inputs = commonArgs;
-      };
-    };
+      # --- Hardware -------------------------------------------
+      #hardwareConfigurations = load { src=./hardware/configs; type="evalModules";};
+      hardwareModules =
+        nixosModules.addLoadExtender {load.src = ./hardware/modules;};
+      hardwareProfiles =
+        nixosProfiles.addLoadExtender {load.src = ./hardware/profiles;};
+      hardwareSuites =
+        nixosProfiles.addLoadExtender {load.src = ./hardware/suites;};
 
-    # --- Hive ---------------------------------------------
-    #hive = pops.hive; #. { src = ./hosts; };
-    #hive = pops.hive.addLoadExtender { load = { src = ./hosts; }; };
-  }
+      # --- Home Manager -------------------------------------------
+      #hive = hive.addLoadExtender {load.src = ./hive;};
+      #homeConfigurations = load {
+      #  #homeConfigurations = nixosProfiles.addLoadExtender {
+      #  #homeConfigurations = homeProfiles.addLoadExtender {
+      #  #  load = {
+      #  src = ./home/configs;
+      #  #type = "nixosProfiles";
+      #  #loader = [ inputs.haumea.lib.matchers.nix inputs.haumea.lib.loaders.scoped ];
+      #  transformer = inputs.haumea.lib.transformers.liftDefault;
+      #  inputs = { inherit inputs cell; };
+      #  #};
+      #};
+      homeSuites = homeProfiles.addLoadExtender {load.src = ./home/suites;};
+      userProfiles = nixosProfiles.addLoadExtender {load.src = ./userProfiles;};
+      # --- NixOS -------------------------------------------
+      nixosConfigurations = {src = ./nixos/configs;};
+      nixosSuites = nixosProfiles.addLoadExtender {load.src = ./nixos/suites;};
+      # --- Nixvim -------------------------------------------
+      nixvimConfigurations = load {
+        src = ./nixvim/configs;
+        type = "evalModules";
+      };
+      nixvimProfiles =
+        nixosProfiles.addLoadExtender {load.src = ./nixvim/profiles;};
+      nixvimModules = nixosModules.addLoadExtender {load.src = ./nixvim/modules;};
+      nixvimSuites = nixosProfiles.addLoadExtender {load.src = ./nixvim/suites;};
+      # --- Robotnix -----------------------------------------
+      robotnixConfigurations = load {
+        src = ./robotnix/configs;
+        type = "evalModules";
+      };
+      robotnixModules =
+        nixosModules.addLoadExtender {load.src = ./robotnix/modules;};
+      robotnixProfiles =
+        nixosProfiles.addLoadExtender {load.src = ./robotnix/profiles;};
+      robotnixSuites =
+        nixosProfiles.addLoadExtender {load.src = ./robotnix/suites;};
+      # --- System-Manager -----------------------------------
+      #systemManagerConfigurations = load { src = ./systemManager/configs; type="evalModules"; };
+      #systemManagerModules = nixosModules.addLoadExtender {load.src = ./systemManager/modules;};
+      #systemManagerProfiles = systemManagerProfiles.addLoadExtender {load.src = ./systemManager/profiles;};
+      #systemManagerSuites = systemManagerProfiles.addLoadExtender {load.src = ./systemManager/suites;};
+      # --- WSL ----------------------------------------------
+      #wslConfigurations = load { src = ./wsl/configs; type="evalModules"; };
+      #wslModules = nixosModules.addLoadExtender {load.src = ./wsl/modules;};
+      #wslProfiles = nixosProfiles.addLoadExtender {load.src = ./wsl/profiles;};
+      #wslSuites = nixosProfiles.addLoadExtender {load.src = ./wsl/suites;};
+
+      lib = load {
+        src = ./lib;
+        loader = inputs.haumea.lib.loaders.default;
+        inputs = {
+          inherit inputs cell;
+          #inherit (inputs.nixpkgs) lib;
+          #pkgs = inputs.nixpkgs;
+        };
+      };
+      #overlays = overlays.addLoadExtender {load.src = ./overlays;};
+    }
 #
-#
-# --- OLD ATTEMPT ------------------------------------------
 ## Attr args should match that of Haumea load
-#
-#omnibusStd.mkBlocks.pops commonArgs ({
-#configs = { src = cellsFrom + /${cellName}/configs; };
-#containers = { src = cellsFrom + /${cellName}/configs; };
-#data = { src = cellsFrom' + /${cellName}/data; };
-#lib = { src = cellsFrom + /${cellName}/lib; };
-#pops = { src = cellsFrom + /${cellName}/pops; };
-#shells = { src = cellsFrom /${cellName}/shells; };
-#
-#robotnixConfigurations = { src = cellsFrom + /${cellName}/robotnixConfigurations; };
-#robotnixModules = { src = cellsFrom + /${cellName}/robotnixModules; };
-#robotnixProfiles = { src = cellsFrom + /${cellName}/robotnixProfiles; };
-#
-#devshells = { src = cellsFrom + /${cellName}/devshellModules; };
-#devshellModules = { src = cellsFrom + /${cellName}/devshellModules; };
-#devshellProfiles = {
-#  src = cellsFrom + /${cellName}/devshellProfiles;
-#  inputs.inputs = { inherit (inputs.std.inputs) devshell; };
-#};
-#
-#packages = {
-#  src = cellsFrom + /${cellName}/packages;
-#  debug = true;
-#  inputs.inputs = { inherit (inputs) nixpkgs; };
-#};
-#scripts = {
-#  src = cellsFrom + /${cellName}/scripts;
-#  inputs.inputs = { makesSrc = inputs.std.inputs.makes; };
-#};
-#tasks = {
-#  src = cellsFrom + /${cellName}/tasks;
-#  inputs.inputs = { makesSrc = inputs.std.inputs.makes; };
-#};
-#} // _pops)
-#
 #
 # --- HELPER LIBRARY ---------------------------------------
 #

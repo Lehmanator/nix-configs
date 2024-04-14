@@ -7,11 +7,14 @@
     ...
   }: {
     emanote.sites.notes = {
-      basePath = "../../.notes";
-      baseUrl = "notes.lehman.run";
-      #layers = [ "../docs" ];
-      layers = [];
-      layersString = ["$HOME/Notes"];
+      allowBrokenLinks = true;
+      baseUrl = "/";
+      layers = [
+        {
+          path = ./.;
+          pathString = "$HOME/Notes";
+        }
+      ];
       prettyUrls = true;
     };
   };

@@ -18,7 +18,7 @@
     cell.homeProfiles.fetchers
     cell.homeProfiles.fonts
     cell.homeProfiles.fzf
-    cell.homeProfiles.git-base
+    cell.homeProfiles.git.base
     cell.homeProfiles.gpg
     #cell.homeProfiles.helix
     cell.homeProfiles.helm

@@ -1,0 +1,39 @@
+{
+  lib,
+  python3,
+  fetchFromGitHub,
+}:
+python3.pkgs.buildPythonApplication rec {
+  pname = "theme-multi-mitsugen-material-u.nix";
+  version = "unstable-2023-06-06";
+  pyproject = true;
+
+  src = fetchFromGitHub {
+    owner = "DimitrisMilonopoulos";
+    repo = "mitsugen";
+    rev = "1554c2d72fe5e631a7f37d01179852549b7c8bd7";
+    hash = "sha256-MxUkbsWUIpJoTf4GiXpcoS+rJP34AJT5F5NphiV6LSI=";
+  };
+
+  nativeBuildInputs = [python3.pkgs.poetry-core];
+
+  propagatedBuildInputs = with python3.pkgs; [
+    #material
+    numpy
+    pillow
+    pydantic
+    pygobject
+    regex
+    rich
+  ];
+
+  pythonImportsCheck = ["mitsugen"];
+
+  meta = with lib; {
+    description = "Material You for Gnome and GTK4 and  GTK3";
+    homepage = "https://github.com/DimitrisMilonopoulos/mitsugen";
+    license = licenses.unfree; # FIXME: nix-init did not found a license
+    maintainers = with maintainers; [];
+    mainProgram = "theme-multi-mitsugen-material-u.nix";
+  };
+}
