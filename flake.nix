@@ -264,7 +264,8 @@
     # --- Modules: System ------------------------------------------
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     fprint-clear.url = "github:nixvital/fprint-clear";
-    srvos.url = "github:nix-community/srvos";
+    #srvos.url = "github:nix-community/srvos";
+    srvos.url = "github:Lehmanator/srvos";
     # --- Modules: Filesystems -------------------------------------
     impermanence.url = "github:nix-community/impermanence";
     disko.url = "github:nix-community/disko";
