@@ -1,0 +1,70 @@
+# TODO: Figure out desired directory structure.
+
+# --- Nix Config Component Classes ---
+# TODO: Look at `divnix/std`  to enumerate all classes.
+# TODO: Look at `divnix/hive` to enumerate all classes.
+# Environments: modules, profiles, suites, configurations
+# Installables: packages, apps
+# Runnables: scripts, <installables>
+# Imports: libs, data,
+"Type: Module":
+  - modules/**.nix
+  - common/modules/**.nix
+  - darwin/modules/**.nix
+  - hm/module/**.nix
+  - nixos/module/**.nix
+  - nixos/modules/**.nix
+  - nixvim/modules/**.nix
+  - wsl/modules/**.nix
+  - */modules/**.nix
+
+"Type: Profile":
+  - profiles/**.nix
+  - common/profiles/**.nix
+  - darwin/profiles/**.nix
+  - home/profiles/**.nix
+  - nixos/profiles/**.nix
+  - user/profiles/**.nix
+  - */profiles/**.nix
+
+"Type: Suite":
+  - */suites/**.nix
+
+"Type: Configuration":
+  - */configurations/**.nix
+
+"Type: Secret":
+  - */secret/**.nix
+
+"Type: Package":
+  - */packages/**.nix
+  - */pkgs/**.nix
+
+"Type: App":
+  - */apps/**.nix
+  - */apps.nix
+
+"Type: Overlay":
+  - */overlays/**.nix
+
+"Type: Snippet":
+  - snippets/**
+
+"Type: Documentation":
+  - docs/**
+  - **.md
+
+
+"Arch: x86_64":
+  - **/x86_64*.nix
+  - **/x86_64*/**.nix
+
+"OS: Linux":
+  - **/*-linux/**.nix
+  - **/*-linux.nix
+  - **/linux/**.nix
+  - **/linux.nix
+
+"System: x86_64-linux":
+  - **/x86_64-linux/**.nix
+  - **/x86_64-linux*.nix

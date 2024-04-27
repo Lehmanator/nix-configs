@@ -1,0 +1,26 @@
+name: update-flake-lock
+on:
+  workflow_dispatch: # allows manual triggering
+  schedule:
+    - cron: '0 0 * * 1, 4' # Run twice a week
+
+jobs:
+  lockfile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+      - name: Update flake.lock
+        uses: DeterminateSystems/update-flake-lock@main
+        with:
+          pr-assignees: Lehmanator
+          pr-reviewers: Lehmanator
+          token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
+          #sign-commits: true
+          #gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          #gpg-fingerprint: ${{ secrets.GPG_FINGERPRINT }} # specify subkey fingerprint (optional)
+          #gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
+
+

@@ -1,0 +1,108 @@
+# Also see https://github.com/Mic92/dotfiles/blob/master/nixos/.sops.yaml
+# for a more complex example.
+#
+# TODO: Implement .sops.yaml in Nix: https://github.com/TUM-DSE/doctor-cluster-config/blob/master/sops.yaml.nix
+#
+# List GPG key fingerprints: $ gpg --list-secret-keys
+#
+keys:
+  # --- Host ---
+  - &age-host-fw-ssh-ed25519 age14ussjg6kmjawm6zhfkspnujndx48a8yzlg6sew0gzyu74gpr8amq9g9udd
+  - &gpg-host-fw-ssh-rsa 68ee228d57b5b97c7f88dd33188b0095248cb8a0
+  #- &age-host-wyse-ssh-ed25519 age14ussjg6kmjawm6zhfkspnujndx48a8yzlg6sew0gzyu74gpr8amq9g9udd
+  - &age-host-wyse-ssh-ed25519 age1rlx8p27kd9tr4sft5zym6h2fwyu54gkce4q7c2t5nrtxd64jvd3qntk7f6
+  - &gpg-host-wyse-ssh-rsa 144323cfbd2f70139cd36059da23379472614d6c
+  # --- User ---
+  - &age-user-sam-ssh-ed25519 age18v7nxk3e5p2xjtpe7uxv2jz9zz624tkscpkcr6fepc0k6vvvfdgq5mduj8
+  - &gpg-user-sam-ssh-rsa 23e6e50809065aed145adb5aa4b65f3430feef6c
+  - &gpg-user-sam-primary DC1962D6560FF66BB16F99E0C47C146240410561
+  - &age-backup age19exrq2t6lkchn08mhmxvywcsq2eur6h0jpz4zqrtvkvume37c3ysx8usjq
+creation_rules:
+  # --- Host Secrets: Shared -----------------------------------------
+  # Decrypt with all host keys (user keys optional)
+  # - <type>/profiles/**/secrets.yaml
+  # - <type>/secrets/**/*.yaml
+  - path_regex: (common|darwin|droid|nixos|robotnix|wsl)/profiles/([^/]+/)+secrets\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
+    key_groups:
+      - age:
+          - *age-host-fw-ssh-ed25519
+          - *age-host-wyse-ssh-ed25519
+          #- *age-host-fajita-ssh-ed25519
+          - *age-user-sam-ssh-ed25519
+          - *age-backup
+  - path_regex: (common|darwin|droid|nixos|robotnix|wsl)/secrets/([^/]+/)*[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
+    key_groups:
+      - age:
+          - *age-host-fw-ssh-ed25519
+          - *age-host-wyse-ssh-ed25519
+          #- *age-host-fajita-ssh-ed25519
+          - *age-user-sam-ssh-ed25519
+          - *age-backup
+  # --- Host Secrets: Per-Host ---------------------------------------
+  - path_regex: (nixos/)?hosts/fw/secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
+    key_groups:
+      - age:
+          - *age-host-fw-ssh-ed25519
+          - *age-user-sam-ssh-ed25519
+          - *age-backup
+          #pgp:
+          #- *age-host-fw-ssh-ed25519
+          #- *gpg-host-fw-ssh-rsa
+          #- *gpg-user-sam-primary
+  - path_regex: nixos/hosts/wyse/secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
+    key_groups:
+      - age:
+          - *age-host-wyse-ssh-ed25519
+          #- *age-host-fw-ssh-ed25519
+          - *age-user-sam-ssh-ed25519
+          - *age-backup
+  - path_regex: nixos/hosts/[^/]+/secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
+    key_groups:
+      - age:
+          - *age-host-fw-ssh-ed25519
+          - *age-host-wyse-ssh-ed25519
+          - *age-user-sam-ssh-ed25519
+          - *age-backup
+        #pgp:
+        #- *age-host-fw-ssh-ed25519
+        #- *gpg-host-fw-ssh-rsa
+        #- *gpg-user-sam-primary
+  # --- User Secrets: Shared -----------------------------------------
+  # Decrypt with all user keys
+  # - hm/profiles/**/secrets.yaml
+  # - hm/secrets/**/*.yaml
+  - path_regex: hm/profiles/([^/]+/)+secrets\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
+    key_groups:
+      - age:
+          - *age-user-sam-ssh-ed25519
+          #- *age-user-sammy-ssh-ed25519
+          #- *age-user-guest-ssh-ed25519
+          - *age-backup
+  - path_regex: hm/secrets/([^/]+/)*[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
+    key_groups:
+      - age:
+          - *age-user-sam-ssh-ed25519
+          #- *age-user-sammy-ssh-ed25519
+          #- *age-user-guest-ssh-ed25519
+          - *age-backup
+  # --- User Secrets: Per-User ---------------------------------------
+  - path_regex: hm/users/sam/secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
+    key_groups:
+      - age:
+          - *age-host-fw-ssh-ed25519
+          - *age-user-sam-ssh-ed25519
+          - *age-backup
+          #pgp:
+          #- *age-host-fw-ssh-ed25519
+          #- *gpg-host-fw-ssh-rsa
+          #- *gpg-user-sam-primary
+  - path_regex: hm/users/[^/]+/secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
+    key_groups:
+      - age:
+          - *age-host-fw-ssh-ed25519
+          - *age-user-sam-ssh-ed25519
+          - *age-backup
+        #pgp:
+        #- *age-host-fw-ssh-ed25519
+        #- *gpg-host-fw-ssh-rsa
+        #- *gpg-user-sam-primary

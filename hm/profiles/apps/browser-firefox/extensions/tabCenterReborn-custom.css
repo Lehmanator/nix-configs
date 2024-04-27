@@ -1,0 +1,41 @@
+/* --- Global Variables --------------------------------- */
+:root {
+  /* --- Existing --- */
+  --tab-height-compact: 28px;  /* Reduce tab height in compact mode */
+
+  /* --- Custom --- */
+  --tab-thumbnail-background: #00000000;  /* Transparent thumbnail background */
+}
+
+
+/* --- Tab Type Styles ---------------------------------- */
+/* --- Discarded/unloaded Tabs --- */
+.tab.discarded {
+  font-style: italic;
+}
+.tab.discarded .tab-title {
+  opacity: 0.4;  /* Default: 0.5 */
+}
+.tab.discarded .tab-meta-image {
+  opacity: 0.4;  /* Default: 0.5 */
+}
+
+/* --- Unread Tabs --- */
+.tab.unread {
+  /* color: red; */
+  opacity: 0.8;
+}
+
+/* --- Tab Styles --------------------------------------- */
+/* color for icon border + transparent icon bg */
+#tablist-wrapper:not(.shrinked) #tablist .tab-icon-wrapper,
+#tablist-wrapper:not(.shrinked) #pinnedtablist:not(.compact){
+  background-color: transparent;
+}
+
+/* color for thumbnail bg color */
+#tablist-wrapper:not(.shrinked) #tablist .tab-meta-image,
+#tablist-wrapper:not(.shrinked) #pinnedtablist:not(.compact) .tab-meta-image  {
+  background-color: transparent !important;
+}
+

@@ -1,0 +1,50 @@
+{
+  "policies": {
+    "3rdparty": {
+      "Extensions": {
+        "uBlock0@raymondhill.net": {
+          "adminSettings": {
+            "selectedFilterLists": [
+              "ublock-privacy",
+              "ublock-badware",
+              "ublock-filters",
+              "user-filters"
+            ]
+          }
+        }
+      }
+    },
+    "NewTabPage": true,
+    "OfferToSaveLoginsDefault": true,
+    "OverrideFirstRunPage": "about:newtab",
+    "PasswordManagerEnabled": true,
+    "PasswordManagerExceptions": ["https://example.org"],
+    "Permissions": {
+      "Camera": {
+        "Allow": ["https://piwine.com"],
+        "Block": ["https://facebook.com"],
+        "BlockNewRequests": false,
+        "Locked": false
+      },
+      "Microphone": {
+        "Allow": ["https://piwine.com"]
+      },
+      "Location": {
+        "Allow": ["https://piwine.com"]
+      },
+      "Notifications": {
+        "Allow": ["https://piwine.com"]
+      },
+      "Autoplay": {
+        "Allow": ["https://piwine.com"],
+        "Default": "block-audio-video",
+        "Locked": false
+      }
+    },
+    "PopupBlocking": {
+      "Allow": ["https://piwine.com"],
+      "Default": true,
+      "Locked": false
+    }
+  }
+}
