@@ -1,12 +1,6 @@
-{
-  inputs,
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
-  imports = [];
-  nixpkgs.overlays = [inputs.fenix.overlays.default];
+{ inputs, config, lib, pkgs, ... }: {
+  imports = [ ];
+  nixpkgs.overlays = [ inputs.fenix.overlays.default ];
   home.packages = [
     pkgs.fenix.complete.toolchain
     #pkgs.fenix.stable.completeToolchain
@@ -30,7 +24,7 @@
     pkgs.cargo-depgraph # Create dependency graphs for cargo projects using `cargo metadata` and graphviz
     pkgs.cargo-dist # A tool for building final distributable artifacts and uploading them to an archive
     pkgs.cargo-edit # A utility for managing cargo dependencies from the command line
-    pkgs.cargo-geiger # Detects usage of unsafe Rust in a Rust crate and its dependencies
+    #pkgs.cargo-geiger # Detects usage of unsafe Rust in a Rust crate and its dependencies # Broken: 2024-04-27
     pkgs.cargo-generate # A tool to generaet a new Rust project by leveraging a pre-existing git repository as a template
     pkgs.cargo-leptos # A build tool for the Leptos web framework
     pkgs.cargo-make # A Rust task runner and build tool
@@ -47,7 +41,7 @@
     pkgs.cargo-tauri # Build smaller, faster, and more secure desktop applications with a web frontend
     pkgs.cargo-temp # A CLI tool that allow you to create a temporary new Rust project using cargo with already installed dependencies
     pkgs.cargo-toml-lint # A simple linter for Cargo.toml manifests
-    pkgs.cargo-typify # JSON Schema to Rust type converter
+    #pkgs.cargo-typify # JSON Schema to Rust type converter # Broken: 2024-04-27
     pkgs.cargo-udeps # Find unused dependencies in Cargo.toml
     #pkgs.cargo-ui # A GUI for Cargo
     #pkgs.cargo-unused-features # A tool to find potential unused enabled feature flags and prune them
