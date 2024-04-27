@@ -1,10 +1,32 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
+{ config, lib, pkgs, ... }:
+let
+  inherit (lib) getExe mapAttrs';
+  inherit (lib.cli) toGNUCommandLineShell;
   # https://github.com/sharkdp/bat
+  args = rec {
+    base = {
+      color = "auto";
+      style = "plain";
+      paging = "auto";
+    };
+    cli = base // {
+      color = "always";
+      paging = "auto";
+    };
+    piped = base // {
+      paging = "never"; # no pager
+      style = "plain";
+    };
+    fzfpreview = piped // {
+      color = "always"; # Ignore pipe and show colors
+      line-range = ":5000"; # Limit max lines for perf reasons
+      style = "numbers";
+    };
+  };
+  cmd = builtins.mapAttrs (n: v: "bat " + (toGNUCommandLineShell { } v)) args;
+  #aliases = lib.mapAttrs' (n: v: "bat-${n}" v) cmd;
+in
+{
   # TODO: Split into ./less.nix, ./bat.nix
   imports = [
     #inputs.home-extra-xhmm.homeManagerModules.console.less
@@ -17,9 +39,16 @@
     bat = {
       enable = true;
       config = {
-        map-syntax = ["*.jenkinsfile:Groovy" "*.props:Java Properties"];
         pager = "less -FR";
         theme = "ansi-improved"; # "Monokai Extended Light"; "TwoDark";
+
+        # Map language syntaxes to filenames
+        map-syntax = [
+          "*.conf:INI"
+          "*.ignore:Git Ignore"
+          "*.jenkinsfile:Groovy"
+          "*.props:Java Properties"
+        ];
       };
       extraPackages = [
         pkgs.bat-extras.batdiff
@@ -41,46 +70,58 @@
       };
     };
     zsh.shellGlobalAliases = {
-      BAT = "| bat";
-      BCAT = "| bat";
+      BAT = "| ${cmd.base}";
+      BCAT = "| ${cmd.base}";
       BDIFF = "| batdiff";
       BGREP = "| batgrep";
-      BLOG = "| bat --paging=never --style=plain --language log";
+      BLOG = "| ${cmd.base} --language log";
       BMAN = "| batman";
       BWATCH = "| batwatch";
-      #"--help" = "--help | bat --language help --color=always --style=plain"; # Doesnt work
+      #"--help" = "--help | ${cmd.base} --language help" # Doesnt work
     };
   };
 
-  home = {
-    sessionVariables.MANPAGER =
-      lib.mkIf config.programs.bat.enable "sh -c 'col -bx | bat -l man -p'";
-    shellAliases = {
-      b = "bat";
-      bcat = "bat";
-      cab = "bat";
+  home = lib.mkIf config.programs.bat.enable {
+    sessionVariables = {
+      MANPAGER = "batman";
+      #MANPAGER = "sh -c 'col -bx | bat -l man -p'";
+      #BATPIPE_VIEWERS = "";
+      #BATPIPE_ENABLE_COLOR = "true";
+      #BATPIPE_INSIDE_LESS = "true";
+    };
+    shellAliases = rec {
+      #aliases // rec {
+      bat-cat = cmd.base;
+      b = bat-cat;
+      bcat = bat-cat;
+      cab = bat-cat;
 
-      bdiff = "batdiff";
-      difb = "batdiff";
+      bat-diff = "batdiff";
+      bdiff = bat-diff;
+      difb = bat-diff;
 
-      bgrep = "batgrep";
-      greb = "batgrep";
+      bat-grep = "batgrep";
+      bgrep = bat-grep;
+      greb = bat-grep;
 
-      bman = "batman";
-      mab = "batman";
+      bat-man = "batman";
+      bman = bat-man;
+      mab = bat-man;
 
-      btail = "tail | bat --paging=never --style=plain --color=always --language log";
-      taib = "tail | bat --paging=never --style=plain --color=always --language log";
+      bat-tail = "tail | ${cmd.base} --language log";
+      btail = bat-tail;
+      taib = bat-tail;
 
-      bwatch = "batwatch";
-      watcb = "batwatch";
+      bat-watch = "batwatch";
+      bwatch = bat-watch;
+      watcb = bat-watch;
 
-      batfzfpreview =
-        lib.mkIf config.programs.fzf.enable
-        "bat --color=always --style=numbers --line-range=:5000";
-
-      bathelp = "bat --language help --color=always --style=plain";
+      bat-help = cmd.base + "--language help";
+      bathelp = bat-help;
+      bhelp = bat-help;
       belp = "bat --language help --color=always --style=plain";
+
+      bat-fzfpreview = lib.mkIf config.programs.fzf.enable cmd.fzfpreview;
     };
   };
 }
