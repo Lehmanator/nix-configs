@@ -60,7 +60,7 @@
   };
   services.gnome = {
     at-spi2-core.enable = true; # Accessibility services / assistive technologies for GNOME platform
-    core-developer-tools.enable = true;
+    #core-developer-tools.enable = true;
     core-os-services.enable = true;
     core-shell.enable = true;
     core-utilities.enable = true;

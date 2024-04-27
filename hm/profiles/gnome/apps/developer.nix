@@ -17,7 +17,7 @@
     pkgs.blackbox-terminal #     # GTK4 terminal application
     pkgs.cambalache #            # Rapid application development for GTK4/GTK3
     pkgs.gitg #                  # Graphical Git client
-    pkgs.gnome-builder #         # IDE for developing GNOME apps
+    #pkgs.gnome-builder #         # IDE for developing GNOME apps # Broken 4/14/24
     pkgs.gnome-doc-utils #       # Documentation utils
     pkgs.gnome.dconf-editor #    # Dconf setting editor
     pkgs.gnome.devhelp #         # Developer documentation viewer

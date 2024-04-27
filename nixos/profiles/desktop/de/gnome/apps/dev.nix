@@ -29,7 +29,7 @@
   ];
 
   services.gnome = {
-    core-developer-tools.enable = true;
+    #core-developer-tools.enable = true;
     core-utilities.enable = true;
     gnome-remote-desktop.enable = true;
   };
