@@ -1,13 +1,11 @@
-{ inputs, config, lib, pkgs, ... }:
-{
-  imports = [
-  ];
+{ inputs, config, lib, pkgs, ... }: {
+  imports = [ ];
 
   targets.genericLinux.enable = true;
   home.sessionVariables.NIX_PATH = "nixpkgs=${inputs.nixpkgs}";
   nixpkgs.overlays = [ inputs.nur.overlay ];
   nix = {
-    package = pkgs.nixFlakes;
+    package = pkgs.nixUnstable;
     settings.experimental-features = [ "nix-command" "flakes" ];
     #registry.nixos.flake = inputs.nixos;
     #registry.darwin.flake = inputs.darwin;
@@ -24,5 +22,4 @@
   programs.zsh.envExtra = ''
     source "$HOME/.profile"
   '';
-
 }

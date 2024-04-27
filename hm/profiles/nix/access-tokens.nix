@@ -1,9 +1,8 @@
-{ inputs, config, lib, pkgs, ... }:
-{
+{ inputs, config, lib, pkgs, ... }: {
   #nix.settings.access-tokens = [];
-  #!include ${config.sops.secrets.github-token.path}
+  #!include /run/user/1000/secrets/github-token
   nix.extraOptions = ''
-    !include /run/user/1000/secrets/github-token
+    !include ${config.sops.secrets.github-token.path}
   '';
   sops.secrets.github-token = { };
 }

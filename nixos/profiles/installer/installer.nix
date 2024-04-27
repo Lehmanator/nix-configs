@@ -45,7 +45,7 @@ in
   nix = {
     package = pkgs.nixUnstable;
     settings = {
-      experimental-features = ["nix-command" "flakes" "repl-flake" "recursive-nix" "ca-derivations"];
+      experimental-features = ["nix-command" "flakes" "recursive-nix" "ca-derivations"];
       substituters = [
         "https://cache.nixos.org"
         "https://nix-community.cachix.org"

@@ -1,28 +1,23 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, pkgs, ... }:
 # Use Nix package manager package with builtin flakes support
 {
   nix = {
     package = lib.mkDefault pkgs.nixUnstable;
     settings = {
       accept-flake-config = true;
-      experimental-features = ["nix-command" "flakes" "repl-flake"];
+      experimental-features = [ "nix-command" "flakes" ];
       #use-flake-registry = true; #config.nix.settings.use-registries;
     };
   };
 
   environment = {
-    sessionVariables = let
-      flakeDir = "$HOME/.config/nixos";
-    in {
-      NIX_BIN_DIR = "${config.nix.package}/bin";
-      FLAKE_SYSTEM = lib.mkDefault flakeDir;
-      FLAKE_HOME = lib.mkDefault flakeDir;
-    };
+    sessionVariables =
+      let flakeDir = "$HOME/.config/nixos";
+      in {
+        NIX_BIN_DIR = "${config.nix.package}/bin";
+        FLAKE_SYSTEM = lib.mkDefault flakeDir;
+        FLAKE_HOME = lib.mkDefault flakeDir;
+      };
 
     shellAliases = {
       n-flake = "nix flake";

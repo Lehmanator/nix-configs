@@ -6,7 +6,7 @@
     install-iso = { inputs, config, lib, pkgs, ... }: {
       disko.enableConfig = false;
       nix.package = pkgs.nixUnstable;
-      nix.settings.experimental-features = [ "nix-command" "flakes" "repl-flake" ];
+      nix.settings.experimental-features = [ "nix-command" "flakes" ];
       users.users.${user} = {
         isNormalUser = true;
         extraGroups = [ "wheel" ];

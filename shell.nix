@@ -51,7 +51,7 @@
 
     NIX_ENFORCE_PURITY = 1;
     #NIX_CONFIG = "extra-experimental-features = nix-command flakes repl-flake recursive-nix";
-    nixConfig.experimental-features = ["nix-command" "flakes" "repl-flake" "recursive-nix"];
+    nixConfig.experimental-features = ["nix-command" "flakes" "recursive-nix"];
     nativeBuildInputs = [pkgs.home-manager pkgs.nixpkgs-fmt pkgs.nixUnstable];
   };
 
