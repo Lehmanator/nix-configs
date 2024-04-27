@@ -49,3 +49,12 @@ users.nix
 
 # --- Cache ---
 .*.cache
+.cache/
+tags
+
+# --- Data ---
+.data/
+.notes/
+
+# --- Manual Exclude ---
+excl/
