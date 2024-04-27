@@ -4,7 +4,7 @@
   user ? "sam",
   ...
 }: let
-  lehmanatorSystem = inputs.nixpkgs.lib.makeOverridable ({
+  lehmanatorSystem = inputs.nixos.lib.makeOverridable ({
     modules ? [],
     baseModules ? [],
     installer ? {},
@@ -14,7 +14,7 @@
       #inherit (self) inputs;
     },
   }: let
-    selfSystem = inputs.nixpkgs.lib.nixosSystem {
+    selfSystem = inputs.nixos.lib.nixosSystem {
       specialArgs = {
         inherit inputs self user;
         #inherit (self) inputs;
@@ -34,7 +34,7 @@
                     nixpkgs.buildPlatform =
                       selfSystem.config.nixpkgs.buildPlatform;
                   }
-                  (inputs.nixpkgs.lib.optionalAttrs
+                  (inputs.nixos.lib.optionalAttrs
                     (selfSystem.config.system.build ? diskoScript) {
                       system.build.installDiskoScript =
                         selfSystem.config.system.build.diskoScript;
