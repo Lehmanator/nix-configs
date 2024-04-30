@@ -1,129 +1,83 @@
 {
   description = "Personal Nix & NixOS configurations";
-  outputs = { self, nixpkgs, nixos, home, nur, flake-parts, ... }@inputs:
-    flake-parts.lib.mkFlake { inherit inputs self; } {
-      imports = [ ./parts ];
-      systems = [ "x86_64-linux" "aarch64-linux" "riscv64-linux" ];
-      perSystem = { config, lib, pkgs, system, final, ... }: {
-        packages = {
-          inherit (inputs.disko.packages.${system}) disko disko-doc;
-          deploy =
-            nixpkgs.legacyPackages.${system}.writeText "cachix-deploy.json"
-              (builtins.toJSON {
-                agents = inputs.nixpkgs.lib.mapAttrs
-                  (host: cfg: cfg.config.system.build.toplevel)
-                  (inputs.nixpkgs.lib.filterAttrs
-                    (host: cfg:
-                      cfg ? config && cfg.config ? system && cfg.config.system
-                      ? build && cfg.config.system.build ? toplevel
-                      && cfg.pkgs.stdenv.buildPlatform.system == system
-                      && cfg.config.services.cachix-agent.enable)
-                    self.nixosConfigurations);
-              });
-        };
-      };
-      flake =
-        let
-          mkSystem =
-            { host
-            , system ? "x86_64-linux"
-            , user ? "sam"
-            , # specialArgs ? {},
-              modules ? [ ]
-            , ...
-            }@args:
-            (import ./lib/flake/lehmanatorSystem.nix { inherit inputs self; }) {
-              inherit system;
-              specialArgs = {
-                inherit inputs user;
-                # Instantiate all instances of nixpkgs in flake.nix to avoid creating new nixpkgs instances
-                # for every `import nixpkgs` call within submodules/subflakes. Saves time & RAM.
-                #  - https://nixos-and-flakes.thiscute.world/nixos-with-flakes/downgrade-or-upgrade-packages
-                #  - https://nixos-and-flakes.thiscute.world/nixpkgs/multiple-nixpkgs
-                pkgs-stable = import inputs.nixpkgs-stable {
-                  inherit system;
-                  config.allowUnfree = true;
-                };
-                pkgs-unstable = import inputs.nixpkgs-unstable {
-                  inherit system;
-                  config.allowUnfree = true;
-                };
-                pkgs-master = import inputs.nixpkgs-master {
-                  inherit system;
-                  config.allowUnfree = true;
-                };
-                pkgs-staging = import inputs.nixpkgs-staging {
-                  inherit system;
-                  config.allowUnfree = true;
-                };
-                pkgs-staging-next = import inputs.nixpkgs-staging-next {
-                  inherit system;
-                  config.allowUnfree = true;
-                };
-              };
-              modules = [ ./nixos/hosts/${host} ] ++ modules;
-            };
-        in
-        {
-          overlays = import ./nixos/overlays;
-          nixosConfigurations = {
-            fw = mkSystem { host = "fw"; };
-            wyse = mkSystem { host = "wyse"; };
-            fajita = nixos.lib.nixosSystem {
-              system = "aarch64-linux";
-              specialArgs = {
-                inherit inputs;
-                user = "sam";
-              };
-              modules = [
-                {
-                  _module.args = {
-                    inherit inputs;
-                    user = "sam";
-                  };
-                }
-                (import "${inputs.mobile-nixos}/lib/configuration.nix" {
-                  device = "oneplus-fajita";
-                })
-                ./nixos/hosts/fajita
-                inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
-              ];
-            };
-            fajita-minimal = nixos.lib.nixosSystem {
-              system = "aarch64-linux";
-              specialArgs = {
-                inherit inputs;
-                user = "sam";
-              };
-              modules = [
-                {
-                  _module.args = {
-                    inherit inputs;
-                    user = "sam";
-                  };
-                }
-                (import "${inputs.mobile-nixos}/lib/configuration.nix" {
-                  device = "oneplus-fajita";
-                })
-                ./nixos/hosts/fajita/minimal.nix
-                inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
-              ];
-            };
+  outputs = { self, nixpkgs, omnibus, ... }@inputs:
+    let
+      inherit (nixpkgs) lib;
+      systems = [
+        "x86_64-darwin"
+        "x86_64-linux"
+        "aarch64-darwin"
+        "aarch64-linux"
+        "riscv64-linux"
+      ];
+      mergedInputs = inputs // omnibus.flake.inputs;
+      #stdPop = (omnibus.pops.std {
+      omnibusStd = (omnibus.pops.std {
+        inputs = {
+          #inputs = omnibus.flake.inputs;
+          inputs = {
+            inherit (omnibus.flake.inputs) std;
+            #omnibusStd =
           };
-          #homeConfigurations = {
-          #  sam = inputs.home.lib.homeManagerConfiguration {
-          #    #pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          #    modules = [ ./hm/users/sam ];
-          #    extraSpecialArgs = { inherit inputs; user = "sam"; };
-          #  };
-          #  guest = inputs.home.lib.homeManagerConfiguration {
-          #    pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          #    #modules = [./hm/users/default];
-          #    extraSpecialArgs = { inherit inputs; user = "guest"; };
-          #  };
-          #};
+          projectRoot = ./.;
         };
+        #inputs.inputs = { inherit (omnibus.flake.inputs) std; };
+        #inputs.inputs = mergedInputs;
+        #inputs.projectRoot = ./.;
+        #{
+        #  inherit (omnibus.flake) inputs;
+        #  inherit (inputs) haumea std;
+        #};
+      }).exports.default;
+      #omnibusStd = stdPop.exports.default;
+      #std = omnibusStd.mkStandardStd
+      cellBlocks = import ./cellBlocks {
+        inherit lib;
+        blockTypes = omnibusStd.blockTypes
+          // omnibus.flake.inputs.std.blockTypes // inputs.hive.blockTypes;
+      };
+    in
+    (omnibusStd.mkStandardStd
+      {
+        cellsFrom = omnibus.flake.inputs.std.incl ./nix [
+          "android"
+          "dev"
+          "game"
+          "hive"
+          "kube"
+          "pops"
+          "repo"
+          "test"
+          #"upstream"
+        ];
+        inherit systems;
+        inherit cellBlocks;
+        inputs = mergedInputs;
+        #pops = import ./pops {
+        #  inherit omnibus omnibusStd std self systems;
+        #  inputs = mergedInputs;
+        #};
+        # inputs = inputs // { inherit (omnibus.flake.inputs) std climodsrc flake-parts; };
+      }
+      {
+        packages = inputs.std.harvest self [ "android" "hive" "repo" ];
+        devShells = inputs.std.harvest self [ "dev" "hive" "kube" "repo" ];
+      }) // {
+      inherit cellBlocks;
     };
+  #std;
+  #import ./parts
+  #  {
+  #    inherit inputs omnibusStd self std stdPop systems;
+  #    inherit (omnibusStd) flakeModule;
+  #  } // std;
+  #{ std };
+  #// {
+  #  inherit (inputs.omnibus.inputs.flops.inputs.nixlib) lib;
+  #  eachSystem = lib.genAttrs ["x86_64-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" "riscv64-linux"];
+  #  pops = import ./pops.nix {inherit inputs; };
+  #  inherit
+  #};
 
   nixConfig = {
     connect-timeout = 10;
@@ -214,6 +168,7 @@
     std.url = "github:divnix/std";
     hive.url = "github:divnix/hive";
     omnibus.url = "github:GTrunSec/omnibus";
+    haumea.url = "github:nix-community/haumea";
 
     # --- Libs: Packaging ------------------------------------------
     nixpak.url = "github:nixpak/nixpak";
@@ -417,5 +372,8 @@
     nixos-conf-editor.url = "github:vlinkz/nixos-conf-editor";
     icicle.url = "github:snowflakelinux/icicle";
     multifirefox.url = "git+https://codeberg.org/wolfangaukang/multifirefox";
+    # --- Templates ------------------------------------------------
+    nix-templates.url = "github:MordragT/nix-templates";
+    dev-templates.url = "github:the-nix-way/dev-templates";
   };
 }
