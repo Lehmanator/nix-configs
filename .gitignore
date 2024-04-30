@@ -48,9 +48,18 @@ ssh_*_key
 networks.nix
 users.nix
 
-# --- Logging ---
+# --- Logging & Debugging ---
 **/logs
 *.log
+gdb.txt
 
 # --- Cache ---
 .*.cache
+
+# --- Manual Exclusion ---
+.notes
+lib/shell/glyphs.nix
+excl/
+*.excl.*
+**/*.excl.*
+
