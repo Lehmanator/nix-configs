@@ -1,148 +1,142 @@
 {
-  description = "Personal Nix / NixOS configs, along with custom NixOS modules, packages, libs, & more!";
-  outputs = {
-    self,
-    nixpkgs,
-    nixos,
-    omnibus,
-    ...
-  } @ inputs: let
-    inherit (nixpkgs) lib;
-    inherit (omnibus.flake.inputs) climodSrc flake-parts std;
-    systems = ["x86_64-linux" "aarch64-linux" "riscv64-linux"]; # "aarch64-darwin"];
-    input-groups = {
-      all = lib.recursiveUpdate inputs omnibus.flake.inputs;
-      grow = inputs // {inherit climodSrc;};
-      omnibus = omnibus.flake.inputs;
-    };
-    omnibusStd =
-      (omnibus.pops.std {
-        inputs.inputs = input-groups.all;
-      })
-      .exports
-      .default;
-    standardStd = omnibusStd.mkStandardStd {
-      # omnibus.flake.inputs: arion audioNix bird-nix-lib catppuccin-foliate
-      #   climodSrc flake_env jupyenv makesSrc microvm n2c navi-tldr-pages
-      #   nickel nil nix-fast-build nix-filter nix-std nixago nixcasks nuenv nur
-      #   organist pre-commit-hooks ragenix snapshotter sops-nix srvos std
-      #   system-manager systems topiary treefmt-nix typst
-      #inputs = input-groups.grow;
-      inputs = input-groups.all;
-      inherit systems;
-      cellsFrom = ./nix;
-      cellBlocks = with inputs; [
-        #(inputs.std.blockTypes.functions "blockTypes")
-        # --- omnibus unused pops ---
-        #  allData, darwinModules, darwinProfiles, devshellModules,
-        #  example, flake, flake-parts, hive, load, microvms,
-        #  overlays, self, srvos, std, systemManagerProfiles
-        # --- flake.outputs ---
-        # checks, hydraJobs, nixConfig, templates
-        (std.blockTypes.functions "lib")
-        (std.blockTypes.functions "overlays")
-        (std.blockTypes.files "templates")
-        (std.blockTypes.installables "packages" {ci.build = true;})
-
-        # --- std missing blockTypes ---
-        (std.blockTypes.arion "arion")
-        (std.blockTypes.files "files")
-        (std.blockTypes.kubectl "kubectl")
-        (std.blockTypes.microvms "microvms")
-        (std.blockTypes.namaka "namaka")
-        (omnibus.flake.inputs.std.blockTypes.nixostests "nixosTests")
-        (std.blockTypes.nomad "nomad")
-        (omnibus.flake.inputs.std.blockTypes.nvfetcher "nvfetcher")
-        (std.blockTypes.pkgs "pkgs")
-        (std.blockTypes.terra "terra"
-          "git@github.com:lehmanator/nix-configs.git")
-
-        # --- config types ---
-        inputs.hive.blockTypes.colmenaConfigurations
-
-        inputs.hive.blockTypes.darwinConfigurations
-        (std.blockTypes.functions "darwinModules")
-        (std.blockTypes.functions "darwinProfiles")
-        (std.blockTypes.functions "darwinSuites")
-
-        (std.blockTypes.functions "devshellModules")
-        (std.blockTypes.functions "devshellProfiles")
-        (std.blockTypes.functions "devshellSuites")
-
-        inputs.hive.blockTypes.diskoConfigurations
-        (std.blockTypes.functions "diskoProfiles")
-        (std.blockTypes.functions "diskoSuites")
-
-        (std.blockTypes.functions "flakeModules")
-        (std.blockTypes.functions "flakeProfiles")
-        (std.blockTypes.functions "flakeSuites")
-
-        (std.blockTypes.functions "hardwareConfigurations")
-        (std.blockTypes.functions "hardwareProfiles")
-        (std.blockTypes.functions "hardwareSuites")
-
-        inputs.hive.blockTypes.homeConfigurations
-        (std.blockTypes.functions "homeModules")
-        (std.blockTypes.functions "homeProfiles")
-        (std.blockTypes.functions "homeSuites")
-        (std.blockTypes.functions "userProfiles")
-
-        inputs.hive.blockTypes.nixosConfigurations
-        (std.blockTypes.functions "nixosModules")
-        (std.blockTypes.functions "nixosProfiles")
-        (std.blockTypes.functions "nixosSuites")
-
-        (std.blockTypes.functions "nixvimConfigurations")
-        (std.blockTypes.functions "nixvimModules")
-        (std.blockTypes.functions "nixvimProfiles")
-        (std.blockTypes.functions "nixvimSuites")
-
-        (std.blockTypes.functions "robotnixConfigurations")
-        (std.blockTypes.functions "robotnixModules")
-        (std.blockTypes.functions "robotnixProfiles")
-        (std.blockTypes.functions "robotnixSuites")
-
-        (std.blockTypes.functions "systemManagerConfigurations")
-        (std.blockTypes.functions "systemManagerModules")
-        (std.blockTypes.functions "systemManagerProfiles")
-        (std.blockTypes.functions "systemManagerSuites")
-
-        (std.blockTypes.functions "termuxConfigurations")
-        (std.blockTypes.functions "termuxModules")
-        (std.blockTypes.functions "termuxProfiles")
-        (std.blockTypes.functions "termuxSuites")
-
-        (std.blockTypes.functions "wslConfigurations")
-        (std.blockTypes.functions "wslModules")
-        (std.blockTypes.functions "wslProfiles")
-        (std.blockTypes.functions "wslSuites")
-      ];
-      nixpkgsConfig = {
-        allowUnfree = true;
-        allowUnsupportedSystem = true;
-        android_sdk.accept_license = true;
-        overlays = [inputs.nix-vscode-extensions.overlays.default];
+  description =
+    "Personal Nix / NixOS configs, along with custom NixOS modules, packages, libs, & more!";
+  outputs = { self, nixpkgs, nixos, omnibus, ... }@inputs:
+    let
+      inherit (nixpkgs) lib;
+      inherit (omnibus.flake.inputs) climodSrc flake-parts std;
+      systems =
+        [ "x86_64-linux" "aarch64-linux" "riscv64-linux" ]; # "aarch64-darwin"];
+      input-groups = {
+        all = lib.recursiveUpdate inputs omnibus.flake.inputs;
+        grow = inputs // { inherit climodSrc; };
+        omnibus = omnibus.flake.inputs;
       };
-    };
-  in
-    flake-parts.lib.mkFlake {inherit inputs;} {
+      omnibusStd = (omnibus.pops.std {
+        inputs.inputs = input-groups.all;
+      }).exports.default;
+      standardStd = omnibusStd.mkStandardStd {
+        # omnibus.flake.inputs: arion audioNix bird-nix-lib catppuccin-foliate
+        #   climodSrc flake_env jupyenv makesSrc microvm n2c navi-tldr-pages
+        #   nickel nil nix-fast-build nix-filter nix-std nixago nixcasks nuenv nur
+        #   organist pre-commit-hooks ragenix snapshotter sops-nix srvos std
+        #   system-manager systems topiary treefmt-nix typst
+        #inputs = input-groups.grow;
+        inputs = input-groups.all;
+        inherit systems;
+        cellsFrom = ./nix;
+        cellBlocks = with inputs; [
+          #(inputs.std.blockTypes.functions "blockTypes")
+          # --- omnibus unused pops ---
+          #  allData, darwinModules, darwinProfiles, devshellModules,
+          #  example, flake, flake-parts, hive, load, microvms,
+          #  overlays, self, srvos, std, systemManagerProfiles
+          # --- flake.outputs ---
+          # checks, hydraJobs, nixConfig, templates
+          (std.blockTypes.functions "lib")
+          (std.blockTypes.functions "overlays")
+          (std.blockTypes.files "templates")
+          (std.blockTypes.installables "packages" { ci.build = true; })
+
+          # --- std missing blockTypes ---
+          (std.blockTypes.arion "arion")
+          (std.blockTypes.files "files")
+          (std.blockTypes.kubectl "kubectl")
+          (std.blockTypes.microvms "microvms")
+          (std.blockTypes.namaka "namaka")
+          (omnibus.flake.inputs.std.blockTypes.nixostests "nixosTests")
+          (std.blockTypes.nomad "nomad")
+          (omnibus.flake.inputs.std.blockTypes.nvfetcher "nvfetcher")
+          (std.blockTypes.pkgs "pkgs")
+          (std.blockTypes.terra "terra"
+            "git@github.com:lehmanator/nix-configs.git")
+
+          # --- config types ---
+          inputs.hive.blockTypes.colmenaConfigurations
+
+          inputs.hive.blockTypes.darwinConfigurations
+          (std.blockTypes.functions "darwinModules")
+          (std.blockTypes.functions "darwinProfiles")
+          (std.blockTypes.functions "darwinSuites")
+
+          (std.blockTypes.functions "devshellModules")
+          (std.blockTypes.functions "devshellProfiles")
+          (std.blockTypes.functions "devshellSuites")
+
+          inputs.hive.blockTypes.diskoConfigurations
+          (std.blockTypes.functions "diskoProfiles")
+          (std.blockTypes.functions "diskoSuites")
+
+          (std.blockTypes.functions "flakeModules")
+          (std.blockTypes.functions "flakeProfiles")
+          (std.blockTypes.functions "flakeSuites")
+
+          (std.blockTypes.functions "hardwareConfigurations")
+          (std.blockTypes.functions "hardwareProfiles")
+          (std.blockTypes.functions "hardwareSuites")
+
+          inputs.hive.blockTypes.homeConfigurations
+          (std.blockTypes.functions "homeModules")
+          (std.blockTypes.functions "homeProfiles")
+          (std.blockTypes.functions "homeSuites")
+          (std.blockTypes.functions "userProfiles")
+
+          inputs.hive.blockTypes.nixosConfigurations
+          (std.blockTypes.functions "nixosModules")
+          (std.blockTypes.functions "nixosProfiles")
+          (std.blockTypes.functions "nixosSuites")
+
+          (std.blockTypes.functions "nixvimConfigurations")
+          (std.blockTypes.functions "nixvimModules")
+          (std.blockTypes.functions "nixvimProfiles")
+          (std.blockTypes.functions "nixvimSuites")
+
+          (std.blockTypes.functions "robotnixConfigurations")
+          (std.blockTypes.functions "robotnixModules")
+          (std.blockTypes.functions "robotnixProfiles")
+          (std.blockTypes.functions "robotnixSuites")
+
+          (std.blockTypes.functions "systemManagerConfigurations")
+          (std.blockTypes.functions "systemManagerModules")
+          (std.blockTypes.functions "systemManagerProfiles")
+          (std.blockTypes.functions "systemManagerSuites")
+
+          (std.blockTypes.functions "termuxConfigurations")
+          (std.blockTypes.functions "termuxModules")
+          (std.blockTypes.functions "termuxProfiles")
+          (std.blockTypes.functions "termuxSuites")
+
+          (std.blockTypes.functions "wslConfigurations")
+          (std.blockTypes.functions "wslModules")
+          (std.blockTypes.functions "wslProfiles")
+          (std.blockTypes.functions "wslSuites")
+        ];
+        nixpkgsConfig = {
+          allowUnfree = true;
+          allowUnsupportedSystem = true;
+          android_sdk.accept_license = true;
+          overlays = [ inputs.nix-vscode-extensions.overlays.default ];
+        };
+      };
+    in
+    flake-parts.lib.mkFlake { inherit inputs; } {
       inherit systems;
-      imports = [omnibusStd.flakeModule];
+      imports = [ omnibusStd.flakeModule ];
       debug = true;
       std = {
         std = standardStd;
         harvest = {
-          darwinConfigurations = [["hive" "darwinConfigurations"]];
-          diskoConfigurations = [["hive" "diskoConfigurations"]];
-          nixosConfigurations = [["hive" "nixosConfigurations"]];
+          darwinConfigurations = [ [ "hive" "darwinConfigurations" ] ];
+          diskoConfigurations = [ [ "hive" "diskoConfigurations" ] ];
+          nixosConfigurations = [ [ "hive" "nixosConfigurations" ] ];
           devShells = [
-            ["hive" "shells"]
-            ["kube" "shells"]
-            ["repo" "shells"]
-            ["test" "shells"]
+            [ "hive" "shells" ]
+            [ "kube" "shells" ]
+            [ "repo" "shells" ]
+            [ "test" "shells" ]
           ];
-          nixago = [["repo" "configs"]];
-          nixpkgs-custom = [["repo" "pkgs"]];
+          nixago = [ [ "repo" "configs" ] ];
+          nixpkgs-custom = [ [ "repo" "pkgs" ] ];
           packages = [
             [
               "android"
@@ -154,57 +148,59 @@
           ];
         };
         pick = {
-          configs = [["test" "configs"]];
-          data-repo = [["test" "data"]];
+          configs = [ [ "test" "configs" ] ];
+          data-repo = [ [ "test" "data" ] ];
           devshellProfiles = [
-            ["hive" "devshellProfiles"]
-            ["kube" "devshellProfiles"]
-            ["repo" "devshellProfiles"]
-            ["test" "devshellProfiles"]
+            [ "hive" "devshellProfiles" ]
+            [ "kube" "devshellProfiles" ]
+            [ "repo" "devshellProfiles" ]
+            [ "test" "devshellProfiles" ]
           ];
-          devshellSuites = [["hive" "devshellSuites"]];
-          diskoConfigurations = [["hive" "diskoConfigurations"]];
-          diskoProfiles = [["hive" "diskoProfiles"]];
-          diskoSuites = [["hive" "diskoSuites"]];
-          hardwareProfiles = [["hive" "hardwareProfiles"]];
-          hardwareSuites = [["hive" "hardwareSuites"]];
-          homeConfigurations = [["hive" "homeConfigurations"]];
-          homeModules = [["hive" "homeModules"]];
-          homeProfiles = [["hive" "homeProfiles"]];
-          homeSuites = [["hive" "homeSuites"]];
-          userProfiles = [["hive" "userProfiles"]];
+          devshellSuites = [ [ "hive" "devshellSuites" ] ];
+          diskoConfigurations = [ [ "hive" "diskoConfigurations" ] ];
+          diskoProfiles = [ [ "hive" "diskoProfiles" ] ];
+          diskoSuites = [ [ "hive" "diskoSuites" ] ];
+          hardwareProfiles = [ [ "hive" "hardwareProfiles" ] ];
+          hardwareSuites = [ [ "hive" "hardwareSuites" ] ];
+          homeConfigurations = [ [ "hive" "homeConfigurations" ] ];
+          homeModules = [ [ "hive" "homeModules" ] ];
+          homeProfiles = [ [ "hive" "homeProfiles" ] ];
+          homeSuites = [ [ "hive" "homeSuites" ] ];
+          userProfiles = [ [ "hive" "userProfiles" ] ];
 
-          lib = [["hive" "lib"]];
+          lib = [ [ "hive" "lib" ] ];
           nixosModules = [
-            ["android" "nixosModules"]
-            ["hive" "nixosModules"]
-            ["kube" "nixosModules"]
-            ["test" "nixosModules"]
+            [ "android" "nixosModules" ]
+            [ "hive" "nixosModules" ]
+            [ "kube" "nixosModules" ]
+            [ "test" "nixosModules" ]
           ];
           nixosProfiles = [
-            ["hive" "nixosProfiles"]
-            ["kube" "nixosProfiles"]
-            ["repo" "nixosProfiles"]
-            ["test" "nixosProfiles"]
+            [ "hive" "nixosProfiles" ]
+            [ "kube" "nixosProfiles" ]
+            [ "repo" "nixosProfiles" ]
+            [ "test" "nixosProfiles" ]
           ];
-          nixosSuites = [["hive" "nixosSuites"]];
-          nixvimModules = [["hive" "nixvimModules"]];
-          nixvimProfiles = [["hive" "nixvimProfiles"]];
-          nixvimSuites = [["hive" "nixvimSuites"]];
+          nixosSuites = [ [ "hive" "nixosSuites" ] ];
+          nixvimModules = [ [ "hive" "nixvimModules" ] ];
+          nixvimProfiles = [ [ "hive" "nixvimProfiles" ] ];
+          nixvimSuites = [ [ "hive" "nixvimSuites" ] ];
 
-          pops-hive = [["hive" "pops"]];
+          pops-hive = [ [ "hive" "pops" ] ];
           pops = [
-            ["android" "pops"]
-            ["hive" "pops"]
-            ["kube" "pops"]
-            ["repo" "pops"]
-            ["test" "pops"]
+            [ "android" "pops" ]
+            [ "hive" "pops" ]
+            [ "kube" "pops" ]
+            [ "repo" "pops" ]
+            [ "test" "pops" ]
           ];
         };
-        winnow = {packages = [["hive" "packages"]];};
-        winnowIf = {packages = n: v: n != "vscodium";};
+        winnow = { packages = [ [ "hive" "packages" ] ]; };
+        winnowIf = { packages = n: v: n != "vscodium"; };
       };
       flake = {
+        inherit inputs;
+
         #         hive: {colemna,darwin,disko,home,nixos}Configurations
         #          std: anything, arion, containers, data, devshells, files, functions, installables,
         #               kubectl, microvms, namaka, nixago, nomad, pkgs, runnables, terra
@@ -232,166 +228,166 @@
         #  modules = [ ./users/sam ];
         #  extraSpecialArgs = { inherit inputs; user = "sam"; };
         #};
-        nixosConfigurations = let
-          user = "sam";
-        in {
-          minimal = nixos.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = {inherit inputs user;};
-            modules = with self.nixosProfiles; [
-              activitywatch
-              adb
-              agenix
-              apparmor
-              appimage
-              arion
-              auditd
-              cachix-agent
-              colmena
-              containerd
-              cri-o
-              #desktop
-              envfs
-              flake-utils-plus
-              flatpak-declarative
-              gdm
-              gnome.default
-              gtk
-              desktop
-              hercules-ci
-              home-manager
-              homed
-              kvm
-              lanzaboote
-              libreoffice
-              libvirt
-              locale-est
-              lxc
-              lxd
-              lxd-image-server
-              motd
-              neovim
-              networkmanager
-              nixos-generators
-              nixvim
-              normalize
-              nur
-              nushell
-              ollama
-              pipewire
-              plymouth
-              podman
-              polkit
-              printing
-              qemu
-              quick-nix-registry
-              resolvconf
-              robotnix
-              rxe
-              sits
-              sops
-              sshd
-              sudo-rs
-              systemd-boot
-              systemd-emergency
-              systemd-initrd
-              systemd-repart
-              test
-              unl0kr
-              ucarp
-              user-primary
-              vm-guest-windows
-              vm-host
-              waydroid
-              wayland
-              wine
-              xserver-base
+        nixosConfigurations =
+          let user = "sam";
+          in {
+            minimal = nixos.lib.nixosSystem {
+              system = "x86_64-linux";
+              specialArgs = { inherit inputs user; };
+              modules = with self.nixosProfiles; [
+                activitywatch
+                adb
+                agenix
+                apparmor
+                appimage
+                arion
+                auditd
+                cachix-agent
+                colmena
+                containerd
+                cri-o
+                #desktop
+                envfs
+                flake-utils-plus
+                flatpak-declarative
+                gdm
+                gnome.default
+                gtk
+                desktop
+                hercules-ci
+                home-manager
+                homed
+                kvm
+                lanzaboote
+                libreoffice
+                libvirt
+                locale-est
+                lxc
+                lxd
+                lxd-image-server
+                motd
+                neovim
+                networkmanager
+                nixos-generators
+                nixvim
+                normalize
+                nur
+                nushell
+                ollama
+                pipewire
+                plymouth
+                podman
+                polkit
+                printing
+                qemu
+                quick-nix-registry
+                resolvconf
+                robotnix
+                rxe
+                sits
+                sops
+                sshd
+                sudo-rs
+                systemd-boot
+                systemd-emergency
+                systemd-initrd
+                systemd-repart
+                test
+                unl0kr
+                ucarp
+                user-primary
+                vm-guest-windows
+                vm-host
+                waydroid
+                wayland
+                wine
+                xserver-base
 
-              #avahi # Conflict w/ systemd-resolved
-              bluetooth
-              dns-base
-              #dnscrypt-proxy # Conflict w/ systemd-resolved
-              fprintd
-              hosts-blocking
-              systemd-networkd-wireguard # Needs secret
-              systemd-resolved # Conflict w/ dnscrypt-proxy
-              tailscale
-              tailscale-mullvad-exit-node
-              tailscale-subnet-router
-              tpm2
-              wifi
-              #wifi-hotspot # Needs radio interface name & password secret
-              wireguard
-              wireguard-automesh
+                #avahi # Conflict w/ systemd-resolved
+                bluetooth
+                dns-base
+                #dnscrypt-proxy # Conflict w/ systemd-resolved
+                fprintd
+                hosts-blocking
+                systemd-networkd-wireguard # Needs secret
+                systemd-resolved # Conflict w/ dnscrypt-proxy
+                tailscale
+                tailscale-mullvad-exit-node
+                tailscale-subnet-router
+                tpm2
+                wifi
+                #wifi-hotspot # Needs radio interface name & password secret
+                wireguard
+                wireguard-automesh
 
-              ./hosts/fw/hardware-configuration.nix
+                ./hosts/fw/hardware-configuration.nix
 
-              #harmonia # Wants secret
-              #impermanence # Wants user
-              #installer # ???
-              #iscsi-initiator # Not using
-              #kubenix # Needs fix
-              #microvm # Needs fix
-              #nix-index # ??
-              #nixified-ai # Dep broken
-              #nixos-images # Only loaded in images?
-              #qemu-web # Wants secret
-              #rygel # Needs fix to work with nftables
-              #secureboot # Incompatible with systemd-boot
-              #snowflake # No longer using
-              #specialization # Fixme
-              #ssbm-nix # Broken package
-              #stylix # Needs image path
-              #systemd-debug # Kernel patches cause long rebuild
-              #systemd-networkd # Needs options fix
-              #tor # Needs secret?
-              {
-                nixpkgs = {
-                  system = "x86_64-linux";
-                  config.allowUnfree = true;
-                  overlays = with inputs; [
-                    nur.overlay
-                    fenix.overlays.default
-                  ];
-                };
-                networking.hostName = "minimal";
-                xdg.portal.enable = true;
-                #home-manager.users.sam = ./users/sam;
-              }
-            ];
+                #harmonia # Wants secret
+                #impermanence # Wants user
+                #installer # ???
+                #iscsi-initiator # Not using
+                #kubenix # Needs fix
+                #microvm # Needs fix
+                #nix-index # ??
+                #nixified-ai # Dep broken
+                #nixos-images # Only loaded in images?
+                #qemu-web # Wants secret
+                #rygel # Needs fix to work with nftables
+                #secureboot # Incompatible with systemd-boot
+                #snowflake # No longer using
+                #specialization # Fixme
+                #ssbm-nix # Broken package
+                #stylix # Needs image path
+                #systemd-debug # Kernel patches cause long rebuild
+                #systemd-networkd # Needs options fix
+                #tor # Needs secret?
+                {
+                  nixpkgs = {
+                    system = "x86_64-linux";
+                    config.allowUnfree = true;
+                    overlays = with inputs; [
+                      nur.overlay
+                      fenix.overlays.default
+                    ];
+                  };
+                  networking.hostName = "minimal";
+                  xdg.portal.enable = true;
+                  #home-manager.users.sam = ./users/sam;
+                }
+              ];
+            };
+            #fw = self.lib.mkSystem { host = "fw"; };
+            fw = nixos.lib.nixosSystem {
+              system = "x86_64-linux";
+              specialArgs = { inherit inputs user; };
+              modules = [ ./hosts/fw ];
+            };
+            wyse = self.lib.mkSystem { host = "wyse"; };
+            fajita = nixos.lib.nixosSystem {
+              system = "aarch64-linux";
+              specialArgs = { inherit inputs user; };
+              modules = [
+                { _module.args = { inherit inputs user; }; }
+                (import "${inputs.mobile-nixos}/lib/configuration.nix" {
+                  device = "oneplus-fajita";
+                })
+                ./hosts/fajita
+                inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
+              ];
+            };
+            fajita-minimal = nixos.lib.nixosSystem {
+              system = "aarch64-linux";
+              specialArgs = { inherit inputs user; };
+              modules = [
+                { _module.args = { inherit inputs user; }; }
+                (import "${inputs.mobile-nixos}/lib/configuration.nix" {
+                  device = "oneplus-fajita";
+                })
+                ./hosts/fajita/minimal.nix
+                inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
+              ];
+            };
           };
-          #fw = self.lib.mkSystem { host = "fw"; };
-          fw = nixos.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = {inherit inputs user;};
-            modules = [./hosts/fw];
-          };
-          wyse = self.lib.mkSystem {host = "wyse";};
-          fajita = nixos.lib.nixosSystem {
-            system = "aarch64-linux";
-            specialArgs = {inherit inputs user;};
-            modules = [
-              {_module.args = {inherit inputs user;};}
-              (import "${inputs.mobile-nixos}/lib/configuration.nix" {
-                device = "oneplus-fajita";
-              })
-              ./hosts/fajita
-              inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
-            ];
-          };
-          fajita-minimal = nixos.lib.nixosSystem {
-            system = "aarch64-linux";
-            specialArgs = {inherit inputs user;};
-            modules = [
-              {_module.args = {inherit inputs user;};}
-              (import "${inputs.mobile-nixos}/lib/configuration.nix" {
-                device = "oneplus-fajita";
-              })
-              ./hosts/fajita/minimal.nix
-              inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
-            ];
-          };
-        };
       };
     };
 
@@ -610,7 +606,8 @@
       url = "github:berberman/nvfetcher";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    ssbm-nix.url = "github:lytedev/ssbm-nix"; # Fork of: "github:djanatyn/ssbm-nix";
+    ssbm-nix.url =
+      "github:lytedev/ssbm-nix"; # Fork of: "github:djanatyn/ssbm-nix";
     stylix.url = "github:danth/stylix";
 
     # --- Builders -------------------------------------------------
