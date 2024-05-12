@@ -10493,11 +10493,11 @@
         "flops": "flops_3"
       },
       "locked": {
-        "lastModified": 1714626259,
-        "narHash": "sha256-eaIhaSpj6N54uxolXgeX3cRu6OajVBMxGSaEuG3MkbM=",
+        "lastModified": 1715474356,
+        "narHash": "sha256-qVb4pGB55f34OMZUebdDWdYC2LWRhJeuoaOdzpoztf8=",
         "owner": "tao3k",
         "repo": "omnibus",
-        "rev": "2f9b002bee8ba2786eb9dca3bbd352e50d6f55fc",
+        "rev": "f4ccf034ba26427be82a6fc9a8ada14ed52ef0fb",
         "type": "github"
       },
       "original": {
@@ -11753,10 +11753,6 @@
         "sops-nix": "sops-nix_2",
         "srvos": "srvos",
         "ssbm-nix": "ssbm-nix",
-        "std": [
-          "hive",
-          "std"
-        ],
         "stylix": "stylix",
         "system-manager": "system-manager",
         "terraform-providers": "terraform-providers",
