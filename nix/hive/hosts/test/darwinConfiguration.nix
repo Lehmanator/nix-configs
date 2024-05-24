@@ -1,5 +1,5 @@
-{ super, inputs, cell, ... }@args: {
-  inherit (super.meta.nixosConfiguration) bee; # imports;
+{ inputs, cell, super, ... }@args: {
+  inherit (super.nixosConfiguration) bee; # imports;
   imports = [ ];
   homebrew = {
     enable = true;

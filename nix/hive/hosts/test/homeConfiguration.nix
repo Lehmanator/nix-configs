@@ -31,7 +31,7 @@
 #  home = home1 // { homeDirectory = "/home/${home1.username}"; };
 #in
 {
-  inherit (super.meta.nixosConfiguration) bee;
+  inherit (super.nixosConfiguration) bee;
 
   imports = with inputs; [ nix-flatpak.homeManagerModules.nix-flatpak ];
 
@@ -49,7 +49,7 @@
   #};
 
   home = rec {
-    inherit (super.meta.nixosConfiguration.system) stateVersion;
+    inherit (super.nixosConfiguration.system) stateVersion;
     #stateVersion = "24.05";
     username = "red";
     homeDirectory = "/home/${username}";
