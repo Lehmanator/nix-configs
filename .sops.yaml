@@ -17,12 +17,22 @@ keys:
   - &gpg-user-sam-ssh-rsa 23e6e50809065aed145adb5aa4b65f3430feef6c
   - &gpg-user-sam-primary DC1962D6560FF66BB16F99E0C47C146240410561
   - &age-backup age19exrq2t6lkchn08mhmxvywcsq2eur6h0jpz4zqrtvkvume37c3ysx8usjq
-
 creation_rules:
   # --- Host Secrets: Shared -----------------------------------------
   # Decrypt with all host keys (user keys optional)
   # - <type>/profiles/**/secrets.yaml
   # - <type>/secrets/**/*.yaml
+  - path_regex: nix/hive/nixos/secrets/([^/]+)+.*\.(ya?ml|json|env|ini|key|(age|gpg|luks|pgp|priv|ssh)key|bin)$
+    key_groups:
+      - age:
+          # TODO: Add host keys for all hosts
+          - *age-host-fw-ssh-ed25519
+          - *age-host-wyse-ssh-ed25519
+          #- *age-host-fajita-ssh-ed25519
+
+          # TODO: Remove user keys
+          - *age-user-sam-ssh-ed25519
+          - *age-backup
   - path_regex: profiles/(common|darwin|droid|nixos|robotnix|wsl)/([^/]+/)+secrets\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
     key_groups:
       - age:
@@ -39,7 +49,6 @@ creation_rules:
           #- *age-host-fajita-ssh-ed25519
           - *age-user-sam-ssh-ed25519
           - *age-backup
-
   # --- Host Secrets: Per-Host ---------------------------------------
   - path_regex: hosts/fw/secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
     key_groups:
@@ -47,10 +56,10 @@ creation_rules:
           - *age-host-fw-ssh-ed25519
           - *age-user-sam-ssh-ed25519
           - *age-backup
-        #pgp:
-        #- *age-host-fw-ssh-ed25519
-        #- *gpg-host-fw-ssh-rsa
-        #- *gpg-user-sam-primary
+          #pgp:
+          #- *age-host-fw-ssh-ed25519
+          #- *gpg-host-fw-ssh-rsa
+          #- *gpg-user-sam-primary
   - path_regex: hosts/wyse/secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
     key_groups:
       - age:
@@ -69,7 +78,6 @@ creation_rules:
         #- *age-host-fw-ssh-ed25519
         #- *gpg-host-fw-ssh-rsa
         #- *gpg-user-sam-primary
-
   # --- User Secrets: Shared -----------------------------------------
   # Decrypt with all user keys
   # - hm/profiles/**/secrets.yaml
@@ -88,7 +96,6 @@ creation_rules:
           #- *age-user-sammy-ssh-ed25519
           #- *age-user-guest-ssh-ed25519
           - *age-backup
-
   # --- User Secrets: Per-User ---------------------------------------
   - path_regex: users/sam/secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
     key_groups:
@@ -96,10 +103,10 @@ creation_rules:
           - *age-host-fw-ssh-ed25519
           - *age-user-sam-ssh-ed25519
           - *age-backup
-        #pgp:
-        #- *age-host-fw-ssh-ed25519
-        #- *gpg-host-fw-ssh-rsa
-        #- *gpg-user-sam-primary
+          #pgp:
+          #- *age-host-fw-ssh-ed25519
+          #- *gpg-host-fw-ssh-rsa
+          #- *gpg-user-sam-primary
   - path_regex: users/[^/]+/secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
     key_groups:
       - age:
