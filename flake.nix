@@ -28,7 +28,8 @@
         };
       l = import ./src/lib { inherit inputs; };
       p = import ./src/pops { inherit inputs debug l i; };
-      cells = [ "anadroid" "hive" "kube" "repo" "test" ]; # "firefox" "edit"
+      cells =
+        [ "anadroid" "firefox" "hive" "kube" "repo" "test" ]; # "firefox" "edit"
       omnibusStd = p.std.exports.default;
       omnibusStdArgs = {
         #standardStd = omnibusStd.mkStandardStd {
@@ -40,7 +41,7 @@
         #inputs = i.grow;
         inputs = i.all;
         inherit systems;
-        cellsFrom = std.incl ./nix ["android" "firefox" "hive" "kube" "repo" "test"];
+        cellsFrom = std.incl ./nix cells;
         cellBlocks = with std.blockTypes;
           [
             #(inputs.std.blockTypes.functions "blockTypes")
