@@ -42,93 +42,92 @@
         inputs = i.all;
         inherit systems;
         cellsFrom = std.incl ./nix cells;
-        cellBlocks = with std.blockTypes;
-          [
-            #(inputs.std.blockTypes.functions "blockTypes")
-            # --- omnibus unused pops ---
-            #  allData, darwinModules, darwinProfiles, devshellModules,
-            #  example, flake, flake-parts, hive, load, microvms,
-            #  overlays, self, srvos, std, systemManagerProfiles
-            # --- flake.outputs ---
-            # checks, hydraJobs, nixConfig, templates
-            (functions "lib")
-            (functions "overlays")
-            (files "templates")
-            (installables "packages" { ci.build = true; })
+        cellBlocks = with std.blockTypes; [
+          #(inputs.std.blockTypes.functions "blockTypes")
+          # --- omnibus unused pops ---
+          #  allData, darwinModules, darwinProfiles, devshellModules,
+          #  example, flake, flake-parts, hive, load, microvms,
+          #  overlays, self, srvos, std, systemManagerProfiles
+          # --- flake.outputs ---
+          # checks, hydraJobs, nixConfig, templates
+          (functions "lib")
+          (functions "overlays")
+          (files "templates")
+          (installables "packages" { ci.build = true; })
 
-            # --- std missing blockTypes ---
-            (arion "arion")
-            (files "files")
-            (kubectl "kubectl")
-            (microvms "microvms")
-            (namaka "namaka")
-            (nixostests "nixosTests")
-            (nomad "nomad")
-            (nvfetcher "nvfetcher")
-            (pkgs "pkgs")
-            (terra "terra" "git@github.com:Lehmanator/nix-configs.git")
+          # --- std missing blockTypes ---
+          (arion "arion")
+          (files "files")
+          (kubectl "kubectl")
+          (microvms "microvms")
+          (namaka "namaka")
+          (nixostests "nixosTests")
+          (nomad "nomad")
+          (nvfetcher "nvfetcher")
+          (pkgs "pkgs")
+          (terra "terra" "git@github.com:Lehmanator/nix-configs.git")
 
-            # --- config types ---
-            inputs.hive.blockTypes.colmenaConfigurations
+          # --- config types ---
+          inputs.hive.blockTypes.colmenaConfigurations
 
-            (functions "devshellModules")
-            (functions "devshellProfiles")
-            (functions "devshellSuites")
+          (functions "devshellModules")
+          (functions "devshellProfiles")
+          (functions "devshellSuites")
 
-            inputs.hive.blockTypes.diskoConfigurations
-            (functions "diskoProfiles")
-            (functions "diskoSuites")
+          inputs.hive.blockTypes.diskoConfigurations
+          (functions "diskoProfiles")
+          (functions "diskoSuites")
 
-            (functions "flakeModules")
-            (functions "flakeProfiles")
-            (functions "flakeSuites")
+          (functions "flakeModules")
+          (functions "flakeProfiles")
+          (functions "flakeSuites")
 
-            (functions "hardwareConfigurations")
-            (functions "hardwareModules")
-            (functions "hardwareProfiles")
-            (functions "hardwareSuites")
+          (functions "hardwareConfigurations")
+          (functions "hardwareModules")
+          (functions "hardwareProfiles")
+          (functions "hardwareSuites")
 
-            inputs.hive.blockTypes.homeConfigurations
-            (functions "homeModules")
-            (functions "homeProfiles")
-            (functions "homeSuites")
-            (functions "userProfiles")
+          inputs.hive.blockTypes.homeConfigurations
+          (functions "homeModules")
+          (functions "homeProfiles")
+          (functions "homeSuites")
+          (functions "userProfiles")
 
-            inputs.hive.blockTypes.nixosConfigurations
-            (functions "nixosModules")
-            (functions "nixosProfiles")
-            (functions "nixosSuites")
+          inputs.hive.blockTypes.nixosConfigurations
+          (functions "nixosModules")
+          (functions "nixosProfiles")
+          (functions "nixosSuites")
 
-            (functions "robotnixConfigurations")
-            (functions "robotnixModules")
-            (functions "robotnixProfiles")
-            (functions "robotnixSuites")
+          (functions "robotnixConfigurations")
+          (functions "robotnixModules")
+          (functions "robotnixProfiles")
+          (functions "robotnixSuites")
 
-            (functions "systemManagerConfigurations")
-            (functions "systemManagerModules")
-            (functions "systemManagerProfiles")
-            (functions "systemManagerSuites")
+          (functions "systemManagerConfigurations")
+          (functions "systemManagerModules")
+          (functions "systemManagerProfiles")
+          (functions "systemManagerSuites")
 
-            (functions "termuxConfigurations")
-            (functions "termuxModules")
-            (functions "termuxProfiles")
-            (functions "termuxSuites")
+          (functions "termuxConfigurations")
+          (functions "termuxModules")
+          (functions "termuxProfiles")
+          (functions "termuxSuites")
 
-            (functions "vimConfigurations")
-            (functions "vimModules")
-            (functions "vimProfiles")
-            (functions "vimSuites")
+          (functions "vimConfigurations")
+          (functions "vimModules")
+          (functions "vimProfiles")
+          (functions "vimSuites")
 
-            (functions "wslConfigurations")
-            (functions "wslModules")
-            (functions "wslProfiles")
-            (functions "wslSuites")
-          ] ++ l.optionals (builtins.elem "aarch64-darwin" systems) [
-            inputs.hive.blockTypes.darwinConfigurations
-            (std.blockTypes.functions "darwinModules")
-            (std.blockTypes.functions "darwinProfiles")
-            (std.blockTypes.functions "darwinSuites")
-          ];
+          (functions "wslConfigurations")
+          (functions "wslModules")
+          (functions "wslProfiles")
+          (functions "wslSuites")
+          #] ++ l.optionals (builtins.elem "aarch64-darwin" systems) [
+          inputs.hive.blockTypes.darwinConfigurations
+          (std.blockTypes.functions "darwinModules")
+          (std.blockTypes.functions "darwinProfiles")
+          (std.blockTypes.functions "darwinSuites")
+        ];
         nixpkgsConfig = {
           allowUnfree = true;
           allowUnsupportedSystem = false;
