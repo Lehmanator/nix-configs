@@ -7141,6 +7141,21 @@
         "type": "github"
       }
     },
+    "nix-flatpak": {
+      "locked": {
+        "lastModified": 1711997375,
+        "narHash": "sha256-KvU4gOtuFMS9Il67glRGtdNfguAINT9pCaXtvCL8uI8=",
+        "owner": "gmodena",
+        "repo": "nix-flatpak",
+        "rev": "45bf66f7068db79b552da864c0e87452be624d6c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "gmodena",
+        "repo": "nix-flatpak",
+        "type": "github"
+      }
+    },
     "nix-github-actions": {
       "inputs": {
         "nixpkgs": [
@@ -11737,6 +11752,7 @@
         "nix-darwin": "nix-darwin",
         "nix-data": "nix-data",
         "nix-fast-build": "nix-fast-build",
+        "nix-flatpak": "nix-flatpak",
         "nix-github-actions": "nix-github-actions_3",
         "nix-health": "nix-health",
         "nix-helm": "nix-helm",
