@@ -441,6 +441,7 @@
       url = "github:GermanBread/declarative-flatpak";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-flatpak = { url = "github:gmodena/nix-flatpak"; };
     nix-alien = {
       url = "github:thiagokokada/nix-alien";
       inputs.nixpkgs.follows = "nixpkgs";
