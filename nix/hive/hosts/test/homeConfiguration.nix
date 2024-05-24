@@ -1,4 +1,4 @@
-{ inputs, cell, self, ... }@args:
+{ inputs, cell, super, ... }@args:
 #builtins.trace ([ "HOME-TEST" ] ++ (builtins.attrNames self))
 #let
 #  nixosConfiguration =
@@ -29,12 +29,10 @@
 #      username = "wtf";
 #    };
 #  home = home1 // { homeDirectory = "/home/${home1.username}"; };
-#  #builtins.trace "hmBhole" {
-#  #  inherit (nixosConfiguration) bee;
-#  #  inherit home;
-#  #}
 #in
 {
+  inherit (super.meta.nixosConfiguration) bee;
+
   imports = with inputs; [ nix-flatpak.homeManagerModules.nix-flatpak ];
 
   #inherit (self.meta.nixosConfiguration) bee;
@@ -50,16 +48,10 @@
   #  homeDirectory = "/home/${username}";
   #};
 
-  bee = {
-    #inherit (inputs) darwin home;
-    inherit (inputs) home;
-    #inherit (self) system;
-    system = "x86_64-linux";
-    pkgs = cell.pkgs.unstable-with-overlays;
-  };
-  home = {
-    stateVersion = "24.05";
+  home = rec {
+    inherit (super.meta.nixosConfiguration.system) stateVersion;
+    #stateVersion = "24.05";
     username = "red";
-    homeDirectory = "/home/red";
+    homeDirectory = "/home/${username}";
   };
 }

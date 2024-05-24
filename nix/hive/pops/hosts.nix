@@ -13,6 +13,7 @@
 inputs.hivebus.pops.hosts.addLoadExtender {
   load = {
     src = inputs.omnibus.flake.inputs.std.incl ../hosts [
+      "darwin-test"
       #"fajita"
       #"fajita-minimal"
       #"fw"

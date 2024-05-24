@@ -69,11 +69,14 @@ in
       #cell.nixosProfiles.test
       cell.nixosProfiles.user-primary
 
-      cell.diskoConfigurations.wyse
+      cell.diskoConfigurations.test
     ];
-    xdg.portal = { enable = true; extraPortals=[bee.pkgs.xdg-desktop-portal-gtk]; };
+    xdg.portal = {
+      enable = true;
+      extraPortals = [ bee.pkgs.xdg-desktop-portal-gtk ];
+      configPackages = [ bee.pkgs.gnome.gnome-session ];
+    };
     #networking.hostName = "minimal";
     #home-manager.users.sam = ./users/sam;
-
   };
 }

@@ -1,44 +1,32 @@
-{ self, inputs, cell, ... }@args:
+{ self, super, root, inputs, cell, ... }@args:
 #builtins.trace ([ "TEST-META" ] ++ (builtins.attrNames args))
 {
   myargs = args;
   system = "x86_64-linux";
   specialArgs = { user = "sam"; };
+
+  # Colmena args: meta
+  # Args: allowApplyAll, description, machinesFile, name, nixpkgs, nodeNixpkgs, nodeSpecialArgs, specialArgs,
   colmena = {
+    description = "Lehmanator's Hive";
+    allowApplyAll = true;
     nixpkgs = { system = "x86_64-linux"; }; # Is this `nixpkgs.config`?
   };
   colmenaConfiguration = {
     inherit (self.nixosConfiguration) bee imports;
     deployment = {
       allowLocalDeployment = true;
+      buildOnTarget = false;
       tags = [ "test" ];
-      #buildOnTarget = false;
-      #replaceUnknownProfiles = true;
-      #keys = { };
-      #privilegeEscalationCommand = [ "sudo" "-H" "--" ];
-      #targetHost = "127.0.0.1";
-      #targetPort = null;
-      #targetUser = "root";
-      #sshOptions = [ ];
     };
   };
-  #homeConfiguration = {
-  #  inherit (self.nixosConfiguration) bee; # imports;
-  #  home = rec {
-  #    inherit (self.nixosConfiguration.system) stateVersion;
-  #    username = self.specialArgs.user;
-  #    homeDirectory = "/home/${username}";
-  #  };
-  #  imports = with inputs; [
-  #    nix-flatpak.homeManagerModules.nix-flatpak
-  #  ];
-  #};
   nixosConfiguration = {
     system.stateVersion = "24.05";
     bee = {
       #inherit (self) system;
       system = "x86_64-linux";
-      #inherit (inputs.omnibus.flake.inputs) darwin;
+      inherit (inputs) wsl;
+      inherit (inputs.omnibus.flake.inputs) darwin;
       home = inputs.home-manager;
       pkgs = cell.pkgs.unstable-with-overlays;
       #pkgs = import inputs.nixpkgs {
@@ -93,6 +81,8 @@
       # --- std ---
       cell.nixosModules.debug
       #inputs.cells.android.nixosModules.attestation-server
+
+      cell.diskoConfigurations.test
     ];
   };
 }
