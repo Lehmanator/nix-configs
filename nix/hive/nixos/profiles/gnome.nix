@@ -1,22 +1,21 @@
-# See all GNOME packages:
+# See all GNOME packages:j
 # - https://github.com/NixOS/nixpkgs/blob/master/pkgs/desktops/gnome/default.nix
 # - pkgs/desktops/gnome
 #   - All GNOME packages:  default.nix
 #   - GNOME Installer Env: installer.nix
 #   - Update GNOME:        updater.nix
-{ inputs, config, lib, pkgs, user, cell, ... }: {
+{ inputs, cell, config, lib, pkgs, user, ... }: {
   imports = [
     cell.nixosProfiles.flatpak
     cell.nixosProfiles.gdm
     cell.nixosProfiles.gtk
     cell.nixosProfiles.wayland
-
+    cell.nixosProfiles.gnome-extensions
     #../../xwayland.nix
-    #./extensions
-    cell.nixosProfiles.gnome.extensions
   ];
 
-  services.accounts-daemon.enable = lib.mkDefault true; # AccountsService: access user account list & info via D-Bus
+  services.accounts-daemon.enable = lib.mkDefault
+    true; # AccountsService: access user account list & info via D-Bus
 
   # --- Packages -----------------------------------------------------
   programs.evince.enable = true;

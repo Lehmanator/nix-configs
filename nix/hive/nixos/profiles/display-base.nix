@@ -1,10 +1,4 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-{
+{ inputs, config, lib, pkgs, ... }: {
   imports = [
     #./touchscreen.nix
     #../laptop.nix
@@ -12,10 +6,9 @@
     #../phone.nix
   ];
 
-  environment.systemPackages = [
-  ];
+  environment.systemPackages = [ ];
 
-  hardware.opengl = rec {
+  hardware.opengl = {
     enable = true;
     driSupport = true;
     driSupport32Bit = true;
@@ -34,5 +27,4 @@
     autorandr.enable = true;
     xserver.enable = true;
   };
-
 }

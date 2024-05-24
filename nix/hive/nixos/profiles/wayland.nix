@@ -1,5 +1,5 @@
-{ inputs, config, lib, pkgs, ... }: {
-  imports = [ inputs.self.nixosProfiles.xserver-base ];
+{ inputs, cell, config, lib, pkgs, ... }: {
+  imports = [ cell.nixosProfiles.xserver-base ];
   hardware.opengl.enable = true;
   #programs.wshowkeys.enable = true;
   services.xserver.displayManager.gdm.wayland = true;

@@ -4,9 +4,6 @@
 , ...
 }:
 {
-  imports = [
-  ];
-
   environment.systemPackages = with pkgs.gnomeExtensions; [
     blur-my-shell #              # Blur GNOME UI elements
     burn-my-windows #            # Change window open/close animations

@@ -1,14 +1,6 @@
-{ config
-, lib
-, pkgs
-, ...
-}:
+{ config, lib, pkgs, ... }:
 # GNOME Shell Extensions for the desktop & widgets
-
 {
-  imports = [
-  ];
-
   environment.systemPackages = with pkgs.gnomeExtensions; [
     # Create desktop shortcuts w/ right-click -> 'add to desktop'
     # TODO: Check if desktop-icons extension provides this functionality
@@ -34,5 +26,4 @@
     # Add overlays to wallpapers
     #wallpaper-overlay
   ];
-
 }

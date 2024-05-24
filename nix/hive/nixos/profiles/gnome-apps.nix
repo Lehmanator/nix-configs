@@ -1,11 +1,11 @@
-{ self, inputs, config, lib, pkgs, cell, ... }:
+{ inputs, cell, config, lib, pkgs, ... }:
 # Default apps for GNOME configuration
 {
   imports = [
     #./epiphany.nix
-    ./dev.nix
-    ./email.nix
-    ./remote.nix
+    #./dev.nix
+    #./email.nix
+    #./remote.nix
   ];
   environment.systemPackages = [
     pkgs.authenticator # GTK4 Two-Factor Auth code generator

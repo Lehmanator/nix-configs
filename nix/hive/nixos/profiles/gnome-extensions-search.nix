@@ -5,7 +5,6 @@
 , ...
 }:
 {
-  imports = [ ];
   environment.systemPackages = with pkgs.gnomeExtensions; [
     another-window-session-manager
     duckduckgo-search-provider

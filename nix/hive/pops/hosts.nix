@@ -1,5 +1,4 @@
 { inputs, cell, }@commonArgs:
-#let
 #mkHosts {
 #  hostsDir = ./hosts;
 #  pops = super.hostsInterface;
@@ -7,16 +6,13 @@
 #    load = { inputs = { inherit inputs; }; };
 #  };
 #};
-#
-#inputs.omnibus.pops.load {
-#in
 inputs.hivebus.pops.hosts.addLoadExtender {
   load = {
     src = inputs.omnibus.flake.inputs.std.incl ../hosts [
       "darwin-test"
       #"fajita"
       #"fajita-minimal"
-      #"fw"
+      "fw"
       "h1"
       "minimal"
       "test"

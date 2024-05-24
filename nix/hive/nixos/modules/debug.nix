@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }@args:
+{ inputs, cell, config, lib, pkgs, ... }@args:
 let cfg = config.debug;
 in {
   #imports = [ ];

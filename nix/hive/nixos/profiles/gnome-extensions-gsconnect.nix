@@ -1,22 +1,17 @@
-{ self
-, inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-let
-  implementation = "valent";
-in
-{
-  imports = [
-  ];
-
+{ inputs, config, lib, pkgs, ... }:
+let implementation = "valent";
+in {
   # Allow GSConnect thru firewall
   networking.firewall = {
     enable = true;
-    allowedTCPPortRanges = [{ from = 1714; to = 1764; }];
-    allowedUDPPortRanges = [{ from = 1714; to = 1764; }];
+    allowedTCPPortRanges = [{
+      from = 1714;
+      to = 1764;
+    }];
+    allowedUDPPortRanges = [{
+      from = 1714;
+      to = 1764;
+    }];
   };
 
   # Enable Firefox integration
@@ -29,10 +24,11 @@ in
 
   # Install implementation of GSConnect & shell-extension
   environment.systemPackages =
-    if (implementation == "valent") then [
-      pkgs.valent
-      #pkgs.gnomeExtensions.valent
-    ] else [
-      pkgs.gnomeExtensions.gsconnect
-    ];
+    if (implementation == "valent") then
+      [
+        pkgs.valent
+        #pkgs.gnomeExtensions.valent
+      ]
+    else
+      [ pkgs.gnomeExtensions.gsconnect ];
 }

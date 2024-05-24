@@ -5,9 +5,6 @@
 }:
 
 {
-  imports = [
-  ];
-
   environment.systemPackages = with pkgs.gnomeExtensions; [
     # Tasks lists in clock panel next to calendar
     # - Local tasks

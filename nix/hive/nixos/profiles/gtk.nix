@@ -1,10 +1,4 @@
-{ inputs
-, config
-, lib
-, pkgs
-, user
-, ...
-}:
+{ inputs, config, lib, pkgs, ... }:
 # Default settings for GTK-based desktops
 {
   environment.systemPackages = [
@@ -32,7 +26,6 @@
   # Use GTK4 pinentry
   #programs.ssh.askPassword = "${pkgs.gcr_4}/libexec/gcr4-ssh-askpass";
 }
-
 #(lib.optionalAttrs (options?services.flatpak.packages) {
 #  services.flatpak.packages = [
 #    "org.gtk.Gtk3theme.Adwaita-dark" "org.gtk.Gtk3theme.adw-gtk3" "org.gtk.Gtk3theme.adw-gtk3-dark"
