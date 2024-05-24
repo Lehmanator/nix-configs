@@ -62,4 +62,6 @@ lib/shell/glyphs.nix
 excl/
 *.excl.*
 **/*.excl.*
+**/nixosConfiguration.old
+**/layout.old
 
