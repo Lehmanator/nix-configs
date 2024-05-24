@@ -40,7 +40,7 @@
         #inputs = i.grow;
         inputs = i.all;
         inherit systems;
-        cellsFrom = ./nix;
+        cellsFrom = std.incl ./nix ["android" "firefox" "hive" "kube" "repo" "test"];
         cellBlocks = with std.blockTypes;
           [
             #(inputs.std.blockTypes.functions "blockTypes")
