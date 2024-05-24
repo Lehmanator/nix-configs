@@ -1,0 +1,376 @@
+{ inputs, super, lib, self, ... }:
+let
+  inherit (inputs) nixpkgs;
+  inherit (super.layouts) system;
+in
+import
+  (super.layouts.hive.bee.pkgs.path + "/nixos/lib/eval-config.nix")
+rec {
+  inherit system; # system = super.layouts.system;
+  #system = self.system;
+  pkgs = super.layouts.hive.bee.pkgs;
+  modules = lib.flatten [ super.layouts.nixosSuites ];
+  #bee = with inputs.omnibus.flake.inputs; {
+  #  home = home-manager;
+  #
+  #  # TODO: Use cell.pkgs.nixosUnstableWithOverlays
+  #  pkgs = import inputs.nixos-unstable {
+  #    inherit system; # system = self.system;
+  #    config = { allowUnfree = true; };
+  #
+  #    # TODO: load all overlays from inputs: overlays.*
+  #    # TODO:  Load overlay if missing overlays
+  #    # TODO:  Load only if len(overlays)<=2 && (overlays.default==overlays.<name>)
+  #    overlays = [ fenix.overlays.default nix-snapshotter.overlays.default ];
+  #  };
+  #
+  #  # nixosModules to load options from
+  #  # TODO: Load from all inputs: nixosModules.*
+  #  # - TODO: Load only if nixosModules.<name> == nixosModules.default & len(nixosModules) <= 2;
+  #  # - TODO: Load nixosModule if missing nixosModules
+  #
+  #  imports = with inputs.omnibus.flake.inputs; [
+  #    agenix.nixosModules.agenix
+  #    arion.nixosModules.arion
+  #    disko.nixosModules.default
+  #    home-manager.nixosModules.home-manager
+  #    impermanence.nixosModules.home-manager
+  #    impermanence.nixosModules.impermanence
+  #    nixos-hardware.nixosModules.framework-12th-gen-intel
+  #    snapshotter.nixosModules.default
+  #    sops-nix.nixosModules.sops
+  #  ];
+  #};
+
+  # TODO: Load from all inputs: packages.${system}.*
+  #environment.systemPackages = with inputs.omnibus.flake.inputs; [
+  #  home-manager.packages.${system}.docs-html
+  #  home-manager.packages.${system}.docs-json
+  #  home-manager.packages.${system}.docs-manpages
+  #  home-manager.packages.${system}.home-manager
+  #  nix-fast-build.packages.${system}.nix-fast-build
+  #];
+}
+#{
+#
+#  agenix = {
+#    checks.${system};
+#    darwinConfigurations={integration-aarch64.system; integration-x86_64.system};
+#    darwinModules.age;
+#    formatter.${system};
+#    homeManagerModules.age;
+#    nixosModules.age;
+#    overlays.default;
+#    packages={ default; agenix; doc; };
+#  };
+#
+#  arion = {
+#    checks.${system} = {nixosModuleWithDocker; test; testBuild; testWithPodman; };
+#    devShells = {default; haskell-package;};
+#    lib = {build; eval;};
+#    nixosModules.arion;
+#    overlays.default;
+#    packages = {default; arion; generated-antora-files; generated-option-doc-arion; haskell-package-arion-compose; overlay-test;};
+#  };
+#
+#  audioNix = {
+#    hmModule;
+#    nixosConfigurations.devcontainer;
+#    nixosModules.default;
+#    overlays.default
+#    packages = { amplocker; atlas2; bitwig-studio5; bitwig-studio5-1; bitwig-studio-latest; bitwig-studio-stable-latest; chow-centaur; chow-kickl chow-multitool; chow-phaser; chow-tape-model; libonnxruntime-neuralnote; neuralnote; paulxstretch; plugdata; shittyKit; vital; };
+#  };
+#
+#  bird-nix-lib = { ... };
+#  catppuccin-foliate = { ... };
+#  climodSrc = { ... };
+#
+#  darwin = { checks; darwinModules; overlays; lib; packages; templates; };
+#
+#  devshell = {
+#    apps.default;
+#    checks = {"tests.core.devshell.devshell-1"; "tests.core.devshell.devshell-load-profiles-1"; "tests.core.env.devshell-env-1"; "tests.core.modules-docs.modules-docs-1"; "tests.extra.language-c.language-c-1"; "tests.extra.language-c.language-c-2";"tests.extra.language-rust.simple"; "tools.extra.locale.simple"; };
+#    flakeModule;
+#    formatter;
+#    lib.importTOML;
+#    overlays.default;
+#    packages = { bench; docs; };
+#    templates = { default; flake-parts; toml; };
+#  };
+#
+#  disko = {
+#    lib = { config; create; createScript; createScriptNoDeps; deepMergeMap; defineHookVariables; deviceList; deviceNumbering; deviceType; disko; diskoNoDeps; diskoScript; diskoScriptNoDeps; format; formatScript; formatScriptNoDeps; indent; indexOf; jsonType={}; jsonTypes={}; makeDiskImages; makeDiskImagesScript; maybeStr; meta; mkCreateOption; mkHook; mkMountOption; mkSubType; mount; mountScript; mountScriptNoDeps; optionTypes = {}; packages; partitionType; serializeType; sortDevicesByDependencies; subType; testLib = {}; toplevel={}; types={}; typesSerializerLib ={}; writeCheckedBash; zapCreateMount;
+#    nixosConfigurations.testmachine;
+#    nixosModules.disko;
+#    packages = {disko; disko-doc; disko-install; };
+#  };
+#
+#  fenix = {
+#    overlays.default;
+#    packages = { combine;  beta; complete; default; latest; minimal; stable; (cargo; codegen-cranelift{,-preview},de{clippy,miri}{,-unwrapped,-preview{,-unwrapped}}; {,complete,default,minimal}Toolchain; reproducible-artifacts; rls{,-preview}; rust{-analysis,-analyzer{,-preview},-docs,-src,-std,c{,-co-dev,-docs,-unwrapped},fmt{,-preview}}; toolchain); targets; targets.<triple>.{beta,latest,stable}.rust-std; toolchainOf; from{Manifest,Toolchain}{,File,Name}
+#  };
+#
+#  flake-parts = {
+#    flakeModules = { easyOverlay; flakeModules; };
+#    lib = {defaultModule; evalFlakeModule; importApply; mkAliasOptionModule; mkDeferredModuleOption; mkDeferredModuleType; mkFlake; mkPerSystemOption; mkPerSystemType; mkSubmoduleOptions; mkTransposedPerSystemModule; };
+#    templates = { default; multi-module; unfree; };
+#  };
+#
+#  flake-utils = {
+#    lib = { allSystems; check-utils; defaultSystems; eachDefaultSystem; eachDefaultSystemMap; eachSystem; eachSystemMap; filterPackages; flattenTree; meld; mkApp; simpleFlake; system; };
+#     templates = { default; check-utils; each-system; simple-flake; };
+#  };
+#
+#  flake_env = {
+#    devShells.default;
+#    overlays.default;
+#    packages = { default; flake_env; };
+#  };
+#
+#  home-manager = {
+#    darwinModules = { default; home-manager; };
+#    nixosModules = { default; home-manager; };
+#    devShells = {};
+#    lib = {
+#      homeManagerConfiguration;
+#      hm = {
+#        assetions.assetPlatform;
+#        booleans.yesNo;
+#        dag={ empty; entriesAnywhere; entriesBefore; entriesBetween; entryAfter; entryAnywhere; entryBefore; entryBetween; isDag; isEntry; map; topoSort; };
+#        generators.toKDL;
+#        gvariant = { isArray; isDictionaryEntry; isGVariant; isMaybe; isTuple; mkArray; mkBoolean; mkDictionaryEntry; mkDouble; mkEmptyArray; mkInt16; mkInt32; mkInt64; mkJust; mkNothing; mkObjectpath; mkString; mkTuple; mkUchar; mkUint16; mkUint32; mkUint64; mkValue; mkVariant; types={arrayOf; boolean; dictionaryEntryOf; double; int16; int32; int64; maybeOf; string; tupleOf; uchar; uint16; uint32; uint64; variant; }; typeOf; };
+#        maintainers={};
+#        shell = { export; exportAll; };
+#        strings.storeFileName;
+#        types = { dagOf; fontType={}; gvariant={}; overlayFunction; selectorFunction; };
+#        zsh = { define; defineAll; export; exportAll; toZshValue; };
+#      };
+#    };
+#    packages = { docs-html; docs-json; docs-manpages; home-manager; };
+#  };
+#
+#  impermanence = {
+#    nixosModules = { impermanence; home-manager; };
+#  };
+#
+#  jupyenv = {
+#    apps.update-poetry-lock;
+#    checks.pre-commit;
+#    devShells.default;
+#    lib.${system} = { copyKernel{Logos,Spec}; createKernelSpec; eval; getKernelAttrsetFromPath; jupyterlabEnvWrapped; mapKernelsFromPath; mk{Jupyterlab{,Eval,New},Kernel} override; overrideDerivation; };
+#    packages = { default; docs; jupyterlab{,-all-example-kernels,-kernel-example-{bash,c,elm,go,haskell,javascript,julia,nix,ocaml,postgres,python,r,rust,scala,typescript,zsh}-minimal,-kernel-example-python-{minimal,native,science,stable},-new}; mkdocs; pub2nix-lock; update-poetry-lock; };
+#    templates.default;
+#  };
+#
+#  makesSrc = { ... };
+#
+#  microvm = { # https://github.com/astro/microvm
+#    apps.${system} = { graphics; qemu-vnc; vm; waypipe-client; };
+#    defaultTemplate;
+#    hydraJobs = {...};
+#    lib = {
+#      buildRunner; createVolumesScript; defaultFsType;
+#      hypervisors = {};
+#      hypervisorsWithNetwork = {};
+#      makeMacvtap; withDriveLetters;
+#    };
+#    nixosConfigurations = {
+#      {aarch64,x86_64}-linux-<name>-example{,-with-tap}
+#        (Names: cloud-hypervisor, crosvm, firecracker, kvmtool, qemu, stratovirt)
+#    };
+#    nixosModules = { host; microvm; };
+#    overlay;
+#    packages.${system} = {...};
+#    templates.microvm = {...};
+#  };
+#
+#  n2c = { # https://github.com/nlewo/nix2container
+#    packages.${system} = {
+#      examples = {...};
+#      nix2container = {buildImage, buildLayer, pullImage, pullImageFromManifest};
+#      nix2container-bin;
+#      skopeo-nix2container;
+#      tests = {...};
+#    };
+#  };
+#
+#  navi-tldr-pages = { ... };
+#
+#  nickel = {
+#    apps.default;
+#    checks = { benchmarks; checkRustDoc; clippy; lsp-nls; nickel-lang-cli; nickel-lang-core; nickelWasm; pre-commit; rustfmt; vscodeExtension; };
+#    devShells.${system} = { default; beta; infra; stable; };
+#    packages.${system} = { benchmarks; cargoArtifacts; default; dockerImage; lsp-nls; nickel-lang-cli; nickel-lang-core; nickel-static; nickelWasm; stdlibJson; stdlibMarkdown; userManual; vscodeExtension; };
+#  };
+#
+#  nil = {
+#    devShells.${system} = { default; full; fuzz; without-rust; };
+#    overlays = { coc-nil; nil; };
+#    packages = { default; coc-nil; nil; };
+#  };
+#
+#  nix-fast-build = {
+#    packages.${system}.nix-fast-build;
+#  };
+#
+#  nix-filter = {
+#    lib = {_hasPrefix; _hasSuffix; _pathIsDirectory; _toCleanPath; _toMatcher; and; debugMatch; filter; inDirectory; isDirectory; matchExt; matchName; or; or_; traceUnmatched;};
+#    overlays.default;
+#  };
+#
+#  nix-std = {
+#    checks.${system}.nix-std-test;
+#    lib = { applicative; bool={}; compose; const; false; fix; fixpoints={}; flip; for; function={}; functor={}; id; ifThenElse; list={}; map; monad={}; monoid={}; nonempty={}; not; nullable={}; optional={}; path={}; regex={}; semigroup={}; serde={}; set={}; string={}; true; tuple={}; types={}; version; };
+#  };
+#
+#  nixago = {
+#    checks.${system} = { cue.advanced; cue.basic; hook; nix.ini; nix.json; nix.toml; nix.yaml; };
+#    devShells.default;
+#    engines = { cue; nix; };
+#    lib.${system} = { commonHook; make; makeAll; makeHook; mkRequest; };
+#    templates.starter;
+#  };
+#
+#  nixcasks = { ... };
+#
+#  nixfmt = {
+#    devShells.default;
+#    packages = {default; nixfmt; nixfmt-deriver; nixfmt-shell; nixfmt-static; reuse;
+#  };
+#
+#  nixos = { ... };
+#  nixos-23_11 = { ... };
+#  nixos-hardware = { nixosModules={}; };
+#  nixpkgs = { ... };
+#
+#  nuenv = {
+#    devShells = {ci; default; nuenv; };
+#    lib.mkNushell;
+#    overlays.nuenv;
+#    packages = { default; direct; error; githubSrc; hello; helloNoDebug; nixcon; nuenv-commands; other; run-me; stdenv; };
+#  };
+#
+#  nur = {
+#    hmModules.nur;
+#    nixosModules.nur;
+#    overlay;
+#  };
+#
+#  organist = {
+#    apps = { regenerate-files; regenerate-lockfile; run-test; };
+#    devShells = { default; build; dev; };
+#    flake.outputsFromNickel;
+#    lib = { buildLockFile; buildLockFileContents; importNcl; override; overrideDerivation; regerateLockFileApp; };
+#    nickelOutputs = {files; flake; rawNickel; shells; system; };
+#    packages.nickel;
+#    templates.default;
+#  };
+#
+#  pre-commit-hooks = {
+#    devShell.${system};
+#    flakeModule;
+#    lib.${system}.run;
+#    packages = {}; # big list of linters / fixers / fmtters
+#  };
+#
+#  ragenix = {
+#    apps = {default; ragenix; update-manpage;};
+#    devShell.${system};
+#    darwinModules.age;
+#    nixosModules.age;
+#    overlays.default;
+#    packages = {default; ragenix;};
+#  };
+#
+#  snapshotter = { # https://github.com/pdtpartners/nix-snapshotter
+#    homeModules = {
+#      default={...};
+#      containerd-rootless = {...};
+#      k3s-rootless = {...};
+#      nix-snapshotter-rootless = {...};
+#      preload-containerd-rootless = {...};
+#    };
+#    k8sResources.$[system} = {
+#      redisPod={...};
+#      redisService={...};
+#    };
+#    nixosConfigurations = {
+#      vm = {...};
+#      vm-rootless = {...};
+#    };
+#    nixosModules = {
+#      default = {...};
+#      containerd = {...};
+#      containerd-rootless = {...};
+#      k3s = {...};
+#      k3s-rootless = {...};
+#      nix-snapshotter = {...};
+#      nix-snapshotter-rootless = {...};
+#      preload-containerd = {...};
+#      preload-containerd-rootless = {...};
+#    };
+#    overlays.default = {...};
+#    packages.${system} = {
+#      default={};
+#      image-hello={};
+#      image-redis={};
+#      image-redisWithShell={};
+#      nix-snapshotter={};
+#    };
+#  };
+#
+#  sops-nix = {
+#    devShells = { default; unit-tests; };
+#    homeManagerModules.sops;
+#    nixosModules = {
+#      sops = {...};
+#    };
+#    overlays.default;
+#    packages = { default; cross-build; lint; sops-import-keys-hook; sops-init-gpg-key; sops-install-secrets; sops-pgp-hook; sops-pgp-hook-test; ssh-to-pgp; unit-tests; };
+#  };
+#
+#  srvos = {
+#    devShells.mkdocs;
+#    nixosModules = { common; desktop; hardware-{amazon,hetzner-{cloud,cloud-arm,online-{amd,arm,ex101,intel}},vultr-{bare-metal,vm}}; mixins-{cloud-init,nginx,nix-experimental,systemd-boot,telegraf,terminfo,tracing,trusted-nix-caches}; roles-{github-actions-runner,nix-remote-builder,prometheus}; server; };
+#    packages = { docs; update-dev-private-narHash; };
+#  };
+#
+#  std = {
+#    __functor; dataWith; findTargets; grow; growOn; harvest; pick; winnow;
+#    __std={}; <system>={}; dmerge={}; incl = {}; yants = {};
+#    actions = { run; build; };
+#    blockTypes = { anything; arion; containers; data; devshells; files; functions; installables; kubectl; microvms; namaka; nixago; nixostests; nomad; nvfetcher; pkgs; runnables; terra; };
+#    devShells = { default; book; };
+#    flakeModule;
+#    packages = { default; std; };
+#    templates = { minimal; rust; };
+#  };
+#
+#  system-manager = {
+#    devShells.default;
+#    lib = { activaateProfileSnippet; backdoor; deactivateProfileSnippet; make-vm-test; makeSystemConfig; mkTestPreamble; mount_store; prepareUbuntuImage; prepopulateProfileSnippet; printAttrPos; };
+#    packages = { default; system-manager{,-clippy,-test,-unwrapped}; };
+#    systemConfigs.default;
+#  };
+#
+#  systems = { ... };
+#
+#  topiary = {
+#    devShells = {default; wasm;};
+#    lib.${system}.pre-commit-hook;
+#    packages = { default; client-app; topiary-playground; topiary-queries; };
+#  };
+#
+#  treefmt-nix = {
+#    flakeModule;
+#    lib = { all-modules; evalModule; mkConfigFile; mkWrapper; module-options; programs.modules; programs.names; };
+#  };
+#
+#  typst = {
+#    apps.default;
+#    devShells.default;
+#    overlays.default;
+#    packages = { default; typst-dev; };
+#  };
+#}
+#

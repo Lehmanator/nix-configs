@@ -1,0 +1,3 @@
+# `//hive/vimConfigurations`
+
+Nothing yet.

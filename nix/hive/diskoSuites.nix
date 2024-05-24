@@ -1,1 +1,1 @@
-{ inputs, cell, }@commonArgs: cell.pops.diskoSuites.exports.default or {}
+{ inputs, cell, }: cell.pops.diskoSuites.exports.default or { }
