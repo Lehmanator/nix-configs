@@ -50,7 +50,6 @@
 
   home = rec {
     inherit (super.nixosConfiguration.system) stateVersion;
-    #stateVersion = "24.05";
     username = "red";
     homeDirectory = "/home/${username}";
   };
