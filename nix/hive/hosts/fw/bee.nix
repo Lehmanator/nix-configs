@@ -31,7 +31,7 @@
       ragenix.overlays.default
       snapshotter.overlays.default
       sops-nix.overlays.default
-      typst.overlays.default
+      # typst.overlays.default # Broken: 2024-05-29
 
       # flake.nix
       inputs.nix-vscode-extensions.overlays.default

@@ -3,33 +3,34 @@ let
   # TODO: Move keys from <repo>/hosts/${host}/secrets/default.yaml to nix/hive/hosts/${host}/secrets/default.yaml
   # TODO: Edit path regex for hosts in <repo>/.sops.yaml
   # TODO: Uncomment next line and remove line after.
-  #hostDir = inputs.self + nix/hive/hosts/${config.networking.hostName};
-  hostDir = inputs.self + /hosts/${config.networking.hostName};
-  hostSecretsDir = hostDir + /secrets;
+  trace = x: builtins.trace x x;
+  # hostDir = trace (inputs.self.outPath + "/nix/hive/hosts/${config.networking.hostName}/secrets");
+  # hostDir = inputs.self + /hosts/${config.networking.hostName};
+  hostDir = ../../hosts + /${config.networking.hostName}/secrets;
 
   # TODO: Create secrets dir
   # TODO: Set sops.defaultSopsFile = sharedSecretsDir + /default.yaml
-  sharedDir = inputs.self + /nix/hive/nixos;
-  sharedSecretsDir = sharedDir + /secrets;
+  # sharedDir = trace (inputs.self.outPath + "/nix/hive/nixos/secrets");
+  sharedDir = ../secrets;
 
   getKeys = t:
     let
       keys = builtins.filter (k: k.type == t) config.services.openssh.hostKeys;
     in
     if builtins.length keys > 0 then
-      keys
+      builtins.map (e: e.path) keys
     else
       [ "/etc/ssh/ssh_host_${t}_key" ];
 in
 {
   # TODO: Make devShell with pkgs.sops installed
-  imports = [ inputs.sops-nix.nixosModules.sops ];
+  #imports = [ inputs.sops-nix.nixosModules.sops ];
 
   sops = {
-    defaultSopsFile = hostSecretsDir + /default.yaml;
+    defaultSopsFile = hostDir + /default.yaml;
     age = {
       sshKeyPaths = getKeys "ed25519";
-      generateKey = true;
+      # generateKey = true;
       #keyFile = "/var/lib/sops-nix/sops-host-age.privkey";
       #sshKeyPaths = map (k: k.path) (builtins.filter (k: k.type == "ed25519") config.services.openssh.hostKeys);
     };
@@ -41,8 +42,8 @@ in
     #};
 
     secrets = {
-      test-host-secret = { sopsFile = hostSecretsDir + /default.yaml; };
-      test-shared-secret = { sopsFile = sharedSecretsDir + /default.yaml; };
+      test-host-secret = { sopsFile = "${hostDir}/default.yaml"; };
+      test-shared-secret = { sopsFile = "${sharedDir}/default.yaml"; };
 
       #user-default-password = { group = "users"; };
       #user-root-password    = { owner = "root"; group = "root"; };
@@ -65,9 +66,9 @@ in
     sops-import-keys-hook
     sops-init-gpg-key
     sops-install-secrets
-    sops-pgp-hook # Deprecated
-    sops-pgp-hook-test
     lint # Broken build
+    # sops-pgp-hook # Deprecated
+    # sops-pgp-hook-test
   ])
     # --- Other Utils ---
     #++ lib.optional lib.nixos.hasKubernetes pkgs.kustomize-sops

@@ -14,6 +14,6 @@
     material-you-color-theming # # Material You palette from wallpaper applied to adwaita (breaks light/dark theme)
     rounded-window-corners #     # Round window corners (fix non-adwaita app inconsistency) (11/23: GNOME45 incompat)
     snowy #                      # Snow effect on your desktop
-    transparent-shell #          # Transparent top bar, dash, workspace view
+    # transparent-shell #          # Transparent top bar, dash, workspace view
   ];
 }

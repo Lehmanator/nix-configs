@@ -1,6 +1,9 @@
 { inputs, cell, self, super, }:
 let
+  inherit (super.bee) home pkgs;
+  inherit (pkgs) lib;
   modules = with inputs.omnibus.flake.inputs; [
+    home.nixosModules.home-manager
     cell.nixosModules.debug
 
     #inputs.cells.android.nixosModules.attestation-server
@@ -41,6 +44,9 @@ let
     locale-est
     peripherals-apple
     peripherals-logitech
+    pipewire
+    sops
+    systemd-boot
     tailscale-mullvad-exit-node
     tpm2
     #homed sops user-primary peripherals-printers peripherals-scanners server-k3s-node-main ssbm-nix
@@ -51,13 +57,15 @@ in
 rec {
   inherit (super) bee;
   system.stateVersion = super.meta.stateVersion;
+  networking.hostName = "fw";
 
   imports = with inputs;
-    bee.pkgs.lib.flatten [
+    pkgs.lib.flatten [
       { _module.args = super.specialArgs; }
-      { imports = [ ./hardware-configuration.nix ]; }
+      { imports = [ ./hardware-configuration.nix ] ++ profiles; }
 
       {
+        # sops.defaultSopsFile = inputs.self + /hosts/fw/secrets/default.yaml;
         #system.stateVersion = "24.05";
         boot = {
           initrd = {
@@ -101,6 +109,6 @@ rec {
           extraGroups = [ "wheel" "users" "dialout" ];
         };
       }
-    ] ++ profiles ++ modules;
+    ] ++ modules;
   #++ modules.cells ++ modules.inputs ++ modules.nixpkgs ++ modules.omnibus;
 }
