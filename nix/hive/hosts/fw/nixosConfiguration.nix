@@ -57,16 +57,19 @@ in
 rec {
   inherit (super) bee;
   system.stateVersion = super.meta.stateVersion;
-  networking.hostName = "fw";
+  environment = {
+    etc.machine-id.text = "aa38a832d16e436d8aab8bb0550d4810";
+  };
+  networking = {
+    hostName = "fw";
+    useDHCP = lib.mkDefault true;
+  };
 
   imports = with inputs;
     pkgs.lib.flatten [
       { _module.args = super.specialArgs; }
       { imports = [ ./hardware-configuration.nix ] ++ profiles; }
-
       {
-        # sops.defaultSopsFile = inputs.self + /hosts/fw/secrets/default.yaml;
-        #system.stateVersion = "24.05";
         boot = {
           initrd = {
             availableKernelModules =
@@ -79,18 +82,11 @@ rec {
           };
         };
         console.useXkbConfig = true;
-        environment = {
-          etc.machine-id.text = "aa38a832d16e436d8aab8bb0550d4810";
-        };
         hardware = {
           cpu.intel.updateMicrocode = lib.mkDefault true;
           enableAllFirmware = true;
           enableRedistributableFirmware = lib.mkDefault true;
           sensor.iio.enable = true;
-        };
-        networking = {
-          #hostName = "fw";
-          useDHCP = lib.mkDefault true;
         };
         nix.settings.extra-trusted-public-keys =
           [ "hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs=" ];
