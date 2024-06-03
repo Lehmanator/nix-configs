@@ -29,7 +29,7 @@
         #eslint_d.enable = true;
         #flake8.enable = true;
         gitlint.enable = true;
-        golangci_lint.enable = true;
+        # golangci_lint.enable = true; # Broken: 2024-05-28
         ktlint.enable = true;
         #luacheck.enable = true;
         markdownlint.enable = true;
@@ -49,9 +49,9 @@
         ##eslint_d.enable = true;
         #fnlfmt.enable = true;
         ##fourmolu.enable = true;
-        gofmt.enable = true;
-        goimports.enable = true;
-        golines.enable = true;
+        # gofmt.enable = true;
+        # goimports.enable = true;
+        # golines.enable = true;
         isort.enable = true;
         ##jq.enable = true;
         ktlint.enable = true;

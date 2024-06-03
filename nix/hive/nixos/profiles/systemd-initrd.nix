@@ -1,17 +1,41 @@
-{ inputs, config, lib, pkgs, ... }:
+{ config, lib, ... }:
+let
+  canUse = config.boot.loader.systemd-boot.enable || (config.boot ? "lanzaboot" && config.boot.lanzaboote.enable);
+in
 {
-  boot.initrd.systemd = with config.boot.loader; rec {
-    #contents."/etc/hostname".text = config.networking.hostName;
-    #enable =  (systemd-boot.enable || lanzaboote.enable); #    # d:false
-    enable = systemd-boot.enable;
+  boot.initrd.systemd = rec {
+    enable = canUse;
     enableTpm2 = lib.mkDefault enable;
-    emergencyAccess = lib.mkDefault false; # # true=unauthed-emerg-access,<str>=hashed-su-passwd (authed-emerg-access)
     dbus.enable = lib.mkDefault enable;
-    #extraBin = { umount=${pkgs.util-linux}/bin/umount; }; #            # Tools to add to `/bin`
-    #extraConfig = "DefaultLimitCORE=infinity"; #                       # See: `man systemd-system.conf(5)`
-    #initrdBin = []; #                                                  # Packages to include in `/bin` for stage1 emergency shell
-    #managerEnvironment = {SYSTEMD_LOG_LEVEL="debug";}; #               # Env vars of PID 1. Not passed to started units.
-    #additionalUpstreamUnits=["debug-shell.service" "systemd-quotacheck.service"]; # Enable builtin systemd units
-    #packages = [pkgs.systemd-cryptsetup-generator]; # Packages providing systemd units/hooks
+
+    # true=unauthed-emerg-access,<str>=hashed-su-passwd (authed-emerg-access)
+    emergencyAccess = lib.mkDefault false;
+
+    # Enable builtin systemd units
+    # additionalUpstreamUnits=[
+    #   "debug-shell.service"
+    #   "systemd-quotacheck.service"
+    #];
+
+    # contents."/etc/hostname".text = config.networking.hostName;
+
+    # Extra tools to add to `/bin` in initrd
+    # extraBin = {
+    #   umount=${pkgs.util-linux}/bin/umount;
+    # };
+
+    # See: `man systemd-system.conf(5)`
+    # extraConfig = "DefaultLimitCORE=infinity"; 
+
+    # Packages to include in `/bin` for stage1 emergency shell
+    # initrdBin = [];
+
+    # Env vars of PID 1. Not passed to started units.
+    # managerEnvironment = {
+    #   SYSTEMD_LOG_LEVEL="debug";
+    # };
+
+    # Packages providing systemd units/hooks
+    # packages = [pkgs.systemd-cryptsetup-generator];
   };
 }

@@ -3,17 +3,21 @@
     enable = true;
     #defaultEditor = true;
 
+    # TODO: Move to ./helix/ignores.nix
     # TODO: Share .gitignore from programs.git.ignores
     #ignores =[
     #  ".build/"
     #  "!.gitignore"
     #];
 
+    # TODO: Move to ./helix/<lang>/
+    # TODO: Split into ./helix/<langName>/{lsp,dap,treesitter,formatter,default}.nix
     # https://docs.helix-editor.com/languages.html
     #languages = {};
 
     # https://docs.helix-editor.com/configuration.html
     settings = {
+      # TODO: Split into ./helix/{completion,ui}.nix
       editor = {
         auto-completion = true;
         auto-format = true;
@@ -30,20 +34,21 @@
           select = "underline";
         };
         cursorline = true;
-        gutters = [ "diagnostics" "line-numbers" "spacer" "diff" ];
+        gutters.layout = [ "diagnostics" "spacer" "line-numbers" "spacer" "diff" ];
         idle-timeout = 250;
         indent-guides = {
           render = true;
-          skip-levels = 0;
+          skip-levels = 2;
         };
         insert-final-newline = false;
         line-number = "relative";
+        line-numbers.min-width = 2;
         lsp = {
+          enable = true;
           auto-signature-help = true;
           display-inlay-hints = true;
           display-messages = true;
           display-signature-help-docs = true;
-          enable = true;
           goto-reference-include-declaration = true;
           snippets = true;
         };
@@ -57,29 +62,11 @@
         };
         soft-wrap = { enable = true; };
         statusline = {
-          center = [ ];
-          left = [
-            "mode"
-            "spinner"
-            "file-name"
-            "version-control"
-            "read-only-indicator"
-            "file-modification-indicator"
-          ];
-          mode = {
-            insert = "INSERT";
-            normal = "NORMAL";
-            select = "SELECT";
-          };
-          right = [
-            "diagnostics"
-            "selections"
-            "primary-selection-length"
-            "register"
-            "separator"
-            "position"
-          ];
-          separator = "|";
+          separator = "·"; #"|";
+          mode = { insert = "insert"; normal = ""; select = "select"; };
+          left = ["mode" "total-line-numbers" "spacer" "separator" "spacer" "file-name" "read-only-indicator" "file-modification-indicator" "file-encoding"];
+          center = ["spinner" "spacer" "version-control" "spacer" "spacer" "diagnostics" "spacer" "workspace-diagnostics"];
+          right = ["file-type" "separator" "register" "primary-selection-length" "separator" "position" "separator" "spacer" "position-percentage" "mode"];
         };
         text-width = 80;
         whitespace = {
@@ -93,6 +80,8 @@
         };
         workspace-lsp-roots = [ ];
       };
+
+      # TODO: Move to ./helix/keys/{normal,insert,select,default}.nix
       keys = {
         insert = { esc = [ "collapse_selection" "normal_mode" ]; };
         normal = {
@@ -123,7 +112,7 @@
           C-j = "shrink_selection";
           C-k = "expand_selection";
           C-l = "select_next_sibling";
-          C-o = ":config-open";
+          C-o = "file_picker"; #":config-open";
           C-r = ":config-reload";
           D = [
             "extend_to_line_end"
@@ -141,6 +130,7 @@
           "^" = "goto_first_nonwhitespace";
           a = [ "append_mode" "collapse_selection" ];
           esc = [ "collapse_selection" "keep_primary_selection" ];
+          ret = ["command_mode"];
           i = [ "insert_mode" "collapse_selection" ];
           j = "move_line_down";
           k = "move_line_up";
@@ -240,10 +230,11 @@
           "}" = [ "extend_to_line_bounds" "goto_next_paragraph" ];
         };
       };
-      theme = "papercolor-dark";
+      theme = "adwaita-dark";
     };
   };
 
+  # TODO: Split into ./helix/themes/<themeName>.nix
   # https://docs.helix-editor.com/themes.html
   themes =
     let
@@ -275,7 +266,12 @@
 
   package = pkgs.helix;
 
-  # TODO: Add all LSP servers, DAP, TS grammars, formatters for favorite languages.
+  # TODO: Split this config into ./helix/<langName>/{lsp,dap,treesitter,formatter,default}.nix
+  # TODO: For all (favorite) languages, add their associated:
+  # - [ ] LSP servers
+  # - [ ] DAP
+  # - [ ] Tree-sitter grammars
+  # - [ ] Formatters
   extraPackages = lib.unique
     ((lib.flatten (builtins.attrValues pkgs.tree-sitter-grammars)) ++ [
       pkgs.ansible-language-server
@@ -320,7 +316,7 @@
       pkgs.godot3-mono-debug-server
       pkgs.godot3-mono-server
       pkgs.godot3-server
-      pkgs.golangci-lint-langserver
+      # pkgs.golangci-lint-langserver # Broken: 2024-05-29
       pkgs.gomarkdoc
       pkgs.gopls
       pkgs.gqlint

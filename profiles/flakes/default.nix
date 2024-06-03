@@ -5,7 +5,7 @@ let
 in
 {
   imports = [
-    inputs.flake-parts.flakeModules.easyOverlay
+    # inputs.flake-parts.flakeModules.easyOverlay
     inputs.hercules-ci-effects.flakeModule
     inputs.nix-cargo-integration.flakeModule
     #inputs.process-compose-flake.flakeModule

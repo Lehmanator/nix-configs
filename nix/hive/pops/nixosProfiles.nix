@@ -3,17 +3,15 @@ let
   inherit (inputs.nixpkgs) lib;
   mkModule = { name, conf, t ? "nixos", program ? null, }@profile:
     let
-      proname =
-        if program == null || program == "" then name else "${program}-${name}";
+      proname = if program == null || program == "" then name else "${program}-${name}";
     in
     { inputs, config, lib, pkgs, ... }:
     let cfg = config.profiles.${proname};
     in {
+     # TODO: Use lib.applyModuleArgsIfFunction key f args
       inherit (conf) imports;
-      options.profiles.${proname}.enable =
-        lib.mkEnableOption "Profile for ${program}: ${name}";
-      config = lib.mkIf cfg.enable
-        (builtins.removeAttrs conf [ "imports" "options" ]); # "config"
+      options.profiles.${proname}.enable = lib.mkEnableOption "Profile for ${program}: ${name}";
+      config = lib.mkIf cfg.enable (builtins.removeAttrs conf [ "imports" "options" ]); # "config"
       #{ # Insert profile contents here. };
     };
 in

@@ -1,24 +1,25 @@
 {
   inputs,
+  cell,
   lib,
   config,
   pkgs,
   ...
 }: {
   imports = [
-    inputs.self.homeProfiles.app-chromium
-    #inputs.self.homeProfiles.app-firefox
-    inputs.self.homeProfiles.app-torbrowser
-    inputs.self.homeProfiles.app-element
-    inputs.self.homeProfiles.app-pidgin
-    inputs.self.homeProfiles.app-signal
-    inputs.self.homeProfiles.app-libreoffice
+    cell.homeProfiles.app-chromium
+    #cell.homeProfiles.app-firefox
+    cell.homeProfiles.app-torbrowser
+    cell.homeProfiles.app-matrix
+    cell.homeProfiles.app-pidgin
+    cell.homeProfiles.app-signal
+    cell.homeProfiles.app-libreoffice
 
-    #inputs.self.homeProfiles.passwords
-    #inputs.self.homeProfiles.app-bitwarden
-    #inputs.self.homeProfiles.app-keepassxc
-    #inputs.self.homeProfiles.app-nextcloudpasswords
-    #inputs.self.homeProfiles.app-pass
+    #cell.homeProfiles.passwords
+    #cell.homeProfiles.app-bitwarden
+    #cell.homeProfiles.app-keepassxc
+    #cell.homeProfiles.app-nextcloudpasswords
+    #cell.homeProfiles.app-pass
   ];
 
   home.packages = [pkgs.hunspell pkgs.hunspellDicts.en_US pkgs.onlyoffice-bin];

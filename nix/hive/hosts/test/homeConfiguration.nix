@@ -33,7 +33,9 @@
 {
   inherit (super.nixosConfiguration) bee;
 
-  imports = with inputs; [ nix-flatpak.homeManagerModules.nix-flatpak ];
+  imports = with inputs; [
+    nix-flatpak.homeManagerModules.nix-flatpak
+  ] ++ cell.pops.homeProfiles.exports.exportModulesRecursive;
 
   #inherit (self.meta.nixosConfiguration) bee;
   #home = rec {

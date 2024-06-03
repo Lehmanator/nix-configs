@@ -1,10 +1,9 @@
-{ inputs, config, lib, pkgs, ... }: {
+{ cell, config, lib, pkgs, ... }: {
   imports = [
-    #inputs.self.nixosProfiles.resolvconf
-    #inputs.self.nixosProfiles.systemd-resolved
-    #./adblock.nix
-    #./encrypted.nix
-    #./avahi.nix     # Incompatible w/ systemd-resolved
+    cell.nixosProfiles.resolvconf
+    #cell.nixosProfiles.avahi.nix     # Incompatible w/ systemd-resolved
+    #cell.nixosProfiles.dnscrypt-proxy
+    #cell.nixosProfiles.systemd-resolved
   ];
 
   networking = {

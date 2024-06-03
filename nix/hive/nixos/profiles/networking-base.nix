@@ -1,17 +1,18 @@
-{ inputs, config, lib, pkgs, user, ... }: {
+{ inputs, cell, config, lib, pkgs, user, ... }: {
   imports = [
-    inputs.self.nixosProfiles.firewall
-    inputs.self.nixosProfiles.networkmanager
-    inputs.self.nixosProfiles.resolvconf
-    #inputs.self.nixosProfiles.rxe
-    #inputs.self.nixosProfiles.sits
-    #inputs.self.nixosProfiles.systemd-networkd
-    #inputs.self.nixosProfiles.ucarp
-    inputs.self.nixosProfiles.tailscale
-    inputs.self.nixosProfiles.tailscale-mullvad-exit-node
-    ./wireguard
-    #./dns
-    #./wifi
+    cell.nixosProfiles.firewall
+    cell.nixosProfiles.networkmanager
+    cell.nixosProfiles.dns-base
+    #cell.nixosProfiles.resolvconf
+    #cell.nixosProfiles.rxe
+    #cell.nixosProfiles.sits
+    #cell.nixosProfiles.systemd-networkd
+    #cell.nixosProfiles.ucarp
+    cell.nixosProfiles.tailscale
+    cell.nixosProfiles.tailscale-mullvad-exit-node
+    cell.nixosProfiles.wifi
+    cell.nixosProfiles.wifi-hotspot
+    cell.nixosProfiles.wireguard
 
     #./managers/connman.nix
     #./managers/networkd.nix

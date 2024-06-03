@@ -3,14 +3,11 @@ let
   # TODO: Move keys from <repo>/hosts/${host}/secrets/default.yaml to nix/hive/hosts/${host}/secrets/default.yaml
   # TODO: Edit path regex for hosts in <repo>/.sops.yaml
   # TODO: Uncomment next line and remove line after.
-  trace = x: builtins.trace x x;
-  # hostDir = trace (inputs.self.outPath + "/nix/hive/hosts/${config.networking.hostName}/secrets");
-  # hostDir = inputs.self + /hosts/${config.networking.hostName};
-  hostDir = ../../hosts + /${config.networking.hostName}/secrets;
 
-  # TODO: Create secrets dir
-  # TODO: Set sops.defaultSopsFile = sharedSecretsDir + /default.yaml
-  # sharedDir = trace (inputs.self.outPath + "/nix/hive/nixos/secrets");
+  # TODO: Use project root path (inputs.self.outPath isnt working?)
+  # hostDir   = inputs.self.outPath + "/nix/hive/hosts/${config.networking.hostName}/secrets";
+  # sharedDir = inputs.self.outPath + "/nix/hive/nixos/secrets";
+  hostDir   = ../../hosts + /${config.networking.hostName}/secrets;
   sharedDir = ../secrets;
 
   getKeys = t:
@@ -31,8 +28,8 @@ in
     age = {
       sshKeyPaths = getKeys "ed25519";
       # generateKey = true;
-      #keyFile = "/var/lib/sops-nix/sops-host-age.privkey";
-      #sshKeyPaths = map (k: k.path) (builtins.filter (k: k.type == "ed25519") config.services.openssh.hostKeys);
+      # keyFile = "/var/lib/sops-nix/sops-host-age.privkey";
+      # sshKeyPaths = map (k: k.path) (builtins.filter (k: k.type == "ed25519") config.services.openssh.hostKeys);
     };
 
     #gnupg = {
@@ -60,26 +57,27 @@ in
   ];
 
   # --- Packages ---
+  # TODO: Check if overlay package works & replace with `pkgs.*`
   environment.systemPackages = [ pkgs.age pkgs.rage pkgs.sops pkgs.ssh-to-age ]
     ++ (with inputs.sops-nix.packages.${pkgs.system}; [
     ssh-to-pgp
     sops-import-keys-hook
     sops-init-gpg-key
     sops-install-secrets
-    lint # Broken build
-    # sops-pgp-hook # Deprecated
+    # lint               # Broken build
+    # sops-pgp-hook      # Deprecated
     # sops-pgp-hook-test
   ])
     # --- Other Utils ---
-    #++ lib.optional lib.nixos.hasKubernetes pkgs.kustomize-sops
-    #++ lib.optional lib.nixos.hasTerraform pkgs.terraform-providers.sops
-    #++ lib.optional config.programs.git.enable pkgs.pre-commit-hook-ensure-sops
+    # ++ lib.optional lib.nixos.hasKubernetes pkgs.kustomize-sops
+    # ++ lib.optional lib.nixos.hasTerraform pkgs.terraform-providers.sops
+    # ++ lib.optional config.programs.git.enable pkgs.pre-commit-hook-ensure-sops
     # --- Editor Plugins ---
-    #++ lib.optional config.programs.neovim.enable pkgs.vimPlugins.nvim-sops
-    #++ lib.optional config.programs.vim.enable pkgs.vimPlugins.nvim-sops
-    #++ [
-    #pkgs.emacsPackages.sops
-    #pkgs.vscode-extensions.signageos.signageos-vscode-sops
-    #]
+    # ++ lib.optional config.programs.neovim.enable pkgs.vimPlugins.nvim-sops
+    # ++ lib.optional config.programs.vim.enable pkgs.vimPlugins.nvim-sops
+    # ++ [
+    #   pkgs.emacsPackages.sops
+    #   pkgs.vscode-extensions.signageos.signageos-vscode-sops
+    # ]
   ;
 }

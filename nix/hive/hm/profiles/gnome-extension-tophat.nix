@@ -1,15 +1,13 @@
-{ inputs, cell, config, lib, pkgs, ... }: {
+{ pkgs, ... }: {
   programs.gnome-shell.extensions = [{
-    package = pkgs.gnomeExtensions.ddterm;
+    package = pkgs.gnomeExtensions.tophat;
   }];
 
   # Make deps available.
   # TODO: Check if working properly
   home.packages = [
-    pkgs.gjs
-    pkgs.libhandy
-    pkgs.vte-gtk4
-    pkgs.vte
+    pkgs.gtop
+    pkgs.libgtop
   ];
 
   # TODO: Dconf settings

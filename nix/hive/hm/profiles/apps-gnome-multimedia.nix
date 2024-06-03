@@ -1,20 +1,9 @@
-{ inputs, osConfig, config, lib, pkgs, cell, ... }: {
+{ inputs, cell, osConfig, config, lib, pkgs, ... }: {
   imports = [
-    #./audio-recorders.nix
-    #./audio-editors.nix
-    #./audio-players.nix
-    cell.homeProfiles.apps-gnome-amberol
-    cell.homeProfiles.apps-gnome-cozy
-    cell.homeProfiles.apps-gnome-decibels
-
-    #./photo-recorders.nix
-    #./photo-editors.nix
-    #./photo-players.nix
-    cell.homeProfiles.apps-gnome-loupe
-
-    #./video-recorders.nix
-    #./video-editors.nix
-    #./video-players.nix
+    cell.homeProfiles.app-gnome-amberol
+    # cell.homeProfiles.app-gnome-cozy
+    cell.homeProfiles.app-gnome-decibels
+    cell.homeProfiles.app-gnome-loupe
   ];
 
   # TODO: Only enable mobile-friendly apps on phones/tablets

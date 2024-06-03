@@ -1,6 +1,8 @@
 { inputs, config, lib, pkgs, user, ... }:
 #, flatpak-repos ? { flathub = "https://flathub.org/repo/flathub.flatpakrepo"; }
 {
+  imports = [inputs.nix-flatpak.nixosModules.nix-flatpak];
+
   # --- Package Info Integration ---
   appstream.enable = true;
   services = {

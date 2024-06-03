@@ -1,4 +1,4 @@
-{ inputs, config, lib, pkgs, user, ... }:
+{ lib, ... }:
 {
   #imports = [ inputs.srvos.nixosModules.mixins-systemd-boot ];
   boot.loader.systemd-boot = {

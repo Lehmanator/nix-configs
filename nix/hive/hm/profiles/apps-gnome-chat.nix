@@ -1,24 +1,20 @@
-{ inputs, config, lib, pkgs, ... }: {
+{ inputs, cell, config, lib, pkgs, ... }: {
   imports = [
-    ../../apps/chat-pidgin
-    ../../apps/chat-discord
-    ../../apps/chat-twitch
+    #cell.homeProfiles.app-pidgin
+    #cell.homeProfiles.app-discord
+    #cell.homeProfiles.app-twitch
 
     # --- SMS ----------------
-    #../../apps/chat-sms
-    inputs.self.homeProfiles.app-gnome-chatty
+    # cell.homeProfiles.app-gnome-chatty
 
     # --- XMPP ---------------
-    #../../apps/chat-xmpp
-    inputs.self.homeProfiles.app-gnome-dino
+    cell.homeProfiles.app-gnome-dino
 
     # --- Signal -------------
-    ../../apps/chat-signal
-    inputs.self.homeProfiles.app-gnome-flare
+    # cell.homeProfiles.app-gnome-flare
 
     # --- Matrix -------------
-    ../../apps/chat-matrix
-    inputs.self.homeProfiles.app-gnome-fractal
+    # cell.homeProfiles.app-gnome-fractal
   ];
 
   home.packages = [

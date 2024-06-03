@@ -5,31 +5,21 @@
       debug = true;
       inherit (omnibus.flake.inputs) climodSrc flake-parts std;
       systems = [ "x86_64-linux" "aarch64-linux" ];
-
-      i =
-        #builtins.trace
-        #(builtins.concatStringsSep "\n" [
-        #  "flake.nix"
-        #  "system = ${builtins.currentSystem}"
-        #  "inputs = ${builtins.concatStringsSep "," (builtins.attrNames inputs)}"
-        #  ""
-        #])
-        {
-          inputsSelf = self;
-          inputsFlake = inputs;
-          inputsLoader = omnibus.lib.omnibus.loaderInputs;
-          inputsOmnibus = omnibus.flake.inputs;
-          inputsExtra = {
-            inherit (inputs.omnibus.flake.inputs) climodSrc flake-parts omnibus;
-          };
-          all = omnibus.flake.inputs // inputs;
-          grow = inputs // { inherit climodSrc; };
-          omnibus = omnibus.flake.inputs;
+      i = {
+        inputsSelf = self;
+        inputsFlake = inputs;
+        inputsLoader = omnibus.lib.omnibus.loaderInputs;
+        inputsOmnibus = omnibus.flake.inputs;
+        inputsExtra = {
+          inherit (inputs.omnibus.flake.inputs) climodSrc flake-parts omnibus;
         };
+        all = omnibus.flake.inputs // inputs;
+        grow = inputs // { inherit climodSrc; };
+        omnibus = omnibus.flake.inputs;
+      };
       l = import ./src/lib { inherit inputs; };
       p = import ./src/pops { inherit inputs debug l i; };
-      cells =
-        [ "anadroid" "firefox" "hive" "kube" "repo" "test" ]; # "firefox" "edit"
+      cells = [ "android" "firefox" "hive" "kube" "repo" "test" ]; # "edit"
       omnibusStd = p.std.exports.default;
       omnibusStdArgs = {
         #standardStd = omnibusStd.mkStandardStd {
@@ -142,7 +132,6 @@
       debug = true;
       std = {
         std = omnibusStd.mkStandardStd (omnibusStdArgs // { inherit inputs; });
-        #std = standardStd;
         harvest = {
           devShells = [
             [ "hive" "shells" ]
@@ -177,19 +166,19 @@
           devshellSuites = [ [ "hive" "devshellSuites" ] ];
 
           diskoConfigurations = [ [ "hive" "diskoConfigurations" ] ];
-          diskoProfiles = [ [ "hive" "diskoProfiles" ] ];
-          diskoSuites = [ [ "hive" "diskoSuites" ] ];
+          #diskoProfiles = [ [ "hive" "diskoProfiles" ] ];
+          #diskoSuites = [ [ "hive" "diskoSuites" ] ];
 
-          hardwareConfigurations = [ [ "hive" "hardwareConfigurations" ] ];
-          hardwareModules = [ [ "hive" "hardwareModules" ] ];
-          hardwareProfiles = [ [ "hive" "hardwareProfiles" ] ];
-          hardwareSuites = [ [ "hive" "hardwareSuites" ] ];
+          #hardwareConfigurations = [ [ "hive" "hardwareConfigurations" ] ];
+          #hardwareModules = [ [ "hive" "hardwareModules" ] ];
+          #hardwareProfiles = [ [ "hive" "hardwareProfiles" ] ];
+          #hardwareSuites = [ [ "hive" "hardwareSuites" ] ];
 
           homeConfigurations = [ [ "hive" "homeConfigurations" ] ];
           homeModules = [ [ "hive" "homeModules" ] ];
-          homeProfiles = [ [ "hive" "homeProfiles" ] ];
-          homeSuites = [ [ "hive" "homeSuites" ] ];
-          userProfiles = [ [ "hive" "userProfiles" ] ];
+          #homeProfiles = [ [ "hive" "homeProfiles" ] ];
+          #homeSuites = [ [ "hive" "homeSuites" ] ];
+          #userProfiles = [ [ "hive" "userProfiles" ] ];
 
           lib = [ [ "hive" "lib" ] ];
 
@@ -218,10 +207,10 @@
           ];
           pkgs = [ [ "hive" "pkgs" ] ];
 
-          vimConfigurations = [ [ "hive" "vimConfigurations" ] ];
-          vimModules = [ [ "hive" "vimModules" ] ];
-          vimProfiles = [ [ "hive" "vimProfiles" ] ];
-          vimSuites = [ [ "hive" "vimSuites" ] ];
+          #vimConfigurations = [ [ "hive" "vimConfigurations" ] ];
+          #vimModules = [ [ "hive" "vimModules" ] ];
+          #vimProfiles = [ [ "hive" "vimProfiles" ] ];
+          #vimSuites = [ [ "hive" "vimSuites" ] ];
         };
         winnow = { packages = [ [ "hive" "packages" ] ]; };
         winnowIf = { packages = n: v: n != "vscodium"; };
@@ -237,6 +226,8 @@
         ostd = omnibusStd;
         blockTypes = std.blockTypes // inputs.hive.blockTypes
           // omnibusStd.blockTypes;
+        exportModules = self.pops-hive.nixosModules.exports.exportModulesRecursive;
+        exportProfiles = self.pops-hive.nixosProfiles.exports.exportModulesRecursive;
       };
     };
 

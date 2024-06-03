@@ -1,12 +1,6 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
+{ inputs , cell , config , lib , pkgs , ... }:
 {
-  imports = [ inputs.self.homeProfiles.app-gnome-vaults ];
-    #./gnome-secrets
+  imports = [ cell.homeProfiles.app-gnome-vaults ];
 
   home.packages = [
     pkgs.authenticator #  # 2-Factor authenticator

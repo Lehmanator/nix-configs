@@ -1,25 +1,25 @@
-{
-  inputs,
-  config,
-  lib,
-  pkgs,
-  ...
-}: let
-  inherit (inputs.haumea.lib) load loaders matchers transformers;
+{ inputs, config, lib, pkgs, ... }:
+let inherit (inputs.haumea.lib) load loaders matchers transformers;
 in {
-  imports = [];
+  imports = [ ];
 
   # TODO: Are these loaded by default in home-manager?
-  home.packages = [
-    pkgs.nushellFull
-    pkgs.nushellPlugins.net
-    pkgs.nushellPlugins.regex
-    pkgs.nushellPlugins.query
-    pkgs.nushellPlugins.gstat
-    pkgs.nushellPlugins.formats
-    pkgs.nu_scripts
-    #pkgs.vscode-extensions.thenuprojectcontributors.vscode-nushell-lang
-  ];
+  home = {
+    packages = [
+      pkgs.nushellFull
+      pkgs.nushellPlugins.net
+      pkgs.nushellPlugins.regex
+      pkgs.nushellPlugins.query
+      pkgs.nushellPlugins.gstat
+      pkgs.nushellPlugins.formats
+      pkgs.nu_scripts
+      #pkgs.vscode-extensions.thenuprojectcontributors.vscode-nushell-lang
+    ];
+
+    # pkgs.snix-your-shell: nix / nix-shell wrapper for shells other than bash
+    file."${config.xdg.configHome}/nushell/nix-your-shell.nu".source =
+      pkgs.nix-your-shell.generate-config "nu";
+  };
 
   # https://www.nushell.sh/book/configuration.html#configuration
   # https://www.nushell.sh/cookbook/external_completers.html#troubleshooting
@@ -84,7 +84,8 @@ in {
         commands = "help commands";
         helps = "help --find";
         h = "help";
-        nixos-rebuild-debug = "sudo nixos-rebuild --show-trace --print-build-logs --verbose";
+        nixos-rebuild-debug =
+          "sudo nixos-rebuild --show-trace --print-build-logs --verbose";
       };
     };
   };

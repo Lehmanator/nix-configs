@@ -38,3 +38,10 @@ vmsh.nixosModules.linux-ioregionfd
 <https://github.com/tsirysndr/repl>
 <https://github.com/TaserudConsulting/jsonresume-nix>
 <https://github.com/carlthome/ml-runtimes>
+
+## To-Do
+
+- [ ] Create profile to create registry entries for each common flake output type (`nix.registry.<output>`)
+  - [ ] Create profile to override `nix.registry.templates` with merger of all inputs `templates` flake attrs.
+  - [ ] Create profile to create `nix.registry.shells` with merger of all inputs `devShells` flake attrs.
+  - [ ] Create profile to create `nix.registry.shells` with merger of all inputs `nixosModules` flake attrs.

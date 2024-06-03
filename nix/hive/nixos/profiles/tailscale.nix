@@ -1,25 +1,33 @@
-{ inputs
-, config
+{  config
 , lib
 , pkgs
 , user
 , ...
 }:
 let
-tailnet = "tail3dfa6.ts.net";
-tailnets = ["tail3dfa6.ts.net" "tail6a8f8.ts.net"];
-isFunnel = false;
-isRouter = true;
+  inherit (lib) mkBefore optional optionals;
+  hasGnome = config.services.xserver.desktopManager.gnome.enable;
+  hasSSH = config.services.openssh.enable;
+
+  tailnet = "tail3dfa6.ts.net";
+  tailnets = [tailnet]; # "tail6a8f8.ts.net"];
+  isFunnel = false;
+  isRouter = true;
 in
 {
   sops.secrets.tailscale-auth-keyfile = { };
+
   services = {
     nginx.tailscaleAuth.expectedTailnet = tailnet;
     tailscale = {
       enable = true;
       authKeyFile = config.sops.secrets.tailscale-auth-keyfile.path;
-      extraUpFlags = [ "--operator=${user}" ] ++ lib.optional config.services.openssh.enable "--ssh"
-        ++ lib.optional (config.services.tailscale.useRoutingFeatures == "both") "--accept-routes"
+      extraUpFlags = [
+        "--operator=${user}"
+        "--accept-routes"
+      ] ++ optionals hasSSH ["--ssh" "--advertise-tags tag:ssh"]
+        ++ optional (config.services.tailscale.useRoutingFeatures == "both") "--accept-routes"
+        ++ optional (config.services.tailscale.useRoutingFeatures == "client") "--accept-routes"
       ;
       interfaceName = "tailscale0";
       openFirewall = true;
@@ -31,18 +39,21 @@ in
   };
 
   # Use MagicDNS
-  networking = {
-    nameservers = lib.mkBefore [ "100.100.100.100" ]; # TODO: Make sure nameserver is always first: 100.100.100.100
+  networking = with config.services.tailscale; {
+    # TODO: Check to make sure nameserver is always first: 100.100.100.100
+    nameservers = mkBefore [ "100.100.100.100" ];
     firewall = {
       checkReversePath = "loose"; # Set by module
-      trustedInterfaces = [ config.services.tailscale.interfaceName ]; # Always allow traffic from Tailscale network
-      allowedUDPPorts = [ config.services.tailscale.port ] ++ lib.optionals isFunnel [ 443 8443 10000 ];
+      trustedInterfaces = [ interfaceName ]; # Always allow traffic from Tailscale network
+      allowedUDPPorts = [ port ] ++ optionals isFunnel [ 443 8443 10000 ];
     };
     search = tailnets;
   };
 
   #environment.persistence."/nix/persist".directories = ["/var/lib/tailscale"];
-  environment.systemPackages = lib.mkIf config.services.xserver.desktopManager.gnome.enable [
+  environment.systemPackages = [
+    pkgs.tailscale
+  ] ++ optionals hasGnome [
     #pkgs.gnomeExtensions.taildrop-send
     pkgs.gnomeExtensions.tailscale-qs
     pkgs.gnomeExtensions.tailscale-status
