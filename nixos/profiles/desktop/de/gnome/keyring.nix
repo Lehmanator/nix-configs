@@ -1,13 +1,5 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-{
-  imports = [
-  ];
-
+{ config, lib, pkgs, ... }: {
+  programs.seahorse.enable = config.services.gnome.gnome-keyring.enable;
   services = {
     accounts-daemon.enable = lib.mkDefault true; # AccountsService: access user account list & info via D-Bus
     gnome.gnome-keyring.enable = true; # GNOME Keyring daemon to handle user's security credentials.
@@ -15,11 +7,6 @@
     #dbus.packages = [
     #  pkgs.gcr_4 # GCR w/ tool UIs updated to GTK4
     #];
-  };
-
-  programs = {
-    seahorse.enable = config.services.gnome.gnome-keyring.enable;
-    #gnupg.agent.pinentryFlavor = lib.mkDefault "gnome3";
   };
 
   # Enable GNOME keyring PAM module for all services that unlock with password

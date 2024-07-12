@@ -1,12 +1,8 @@
-
 { inputs
 , config, lib, pkgs
 , ...
 }:
 {
-  imports = [
-  ];
-
   home.packages = [
     pkgs.adwaita-qt
     pkgs.qt6Packages.qt6ct
@@ -24,12 +20,12 @@
 
   # --- Pinentry ---
   programs.rbw.settings.pinentry = "gnome3";  # TODO: Use grc_4 like with gpg-agent
-  services.gpg-agent = {     # Use GTK4 pinentry (requires services.dbus.packages = [ pkgs.gcr_4 ];)
-    #pinentryFlavor = null;   # Overriding default to use GTK4. Default=gtk2, gnome3 (when gnome desktop enabled)
-    #extraConfig = ''
-    #  pinentry-program ${pkgs.gcr_4}/libexec/gcr4-ssh-askpass
-    #'';
-  };
+  # services.gpg-agent = {     # Use GTK4 pinentry (requires services.dbus.packages = [ pkgs.gcr_4 ];)
+  #   pinentryFlavor = null;   # Overriding default to use GTK4. Default=gtk2, gnome3 (when gnome desktop enabled)
+  #   extraConfig = ''
+  #     pinentry-program ${pkgs.gcr_4}/libexec/gcr4-ssh-askpass
+  #   '';
+  # };
 
   # --- Desktop Shell ---
   # Dunst: Notification Daemon
