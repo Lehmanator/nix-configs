@@ -1,8 +1,4 @@
-{
-  lib,
-  pkgs,
-  ...
-}:
+{ lib, pkgs, ... }:
 # TODO: Create separate nixosModule / hmModule with these options.
 # - Use option values to set config for all ls programs. `programs.ls = {}`
 # - Use `programs.ls.alias="eza"` to set `programs.eza.enableAliases=true`
@@ -32,7 +28,6 @@ let
 in {
   programs.eza = {
     enable = true;
-    enableAliases = true;
     inherit (show) git icons;
     extraOptions =
       ["--level=${builtins.toString view.depth}"]
