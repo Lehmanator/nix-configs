@@ -6,7 +6,7 @@
     #inputs.home-extra-xhmm.homeManagerModules.console.nano
     ./editorconfig.nix
     ./helix
-    ./neovim
+    #./neovim
     #./nixvim
   ];
 
