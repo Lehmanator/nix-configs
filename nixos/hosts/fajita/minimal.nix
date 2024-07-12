@@ -65,9 +65,7 @@
     generateRegistryFromInputs = true;
     generateNixPathFromInputs = true;
     linkInputs = true;
-    settings = {
-      experimental-features = ["nix-command" "flakes" "repl-flake"];
-    };
+    settings.experimental-features = ["nix-command" "flakes"];
   };
 
   appstream.enable = true;

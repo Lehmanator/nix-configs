@@ -35,6 +35,5 @@
   # parse-toml-timestamps = true; #  # Allow parsing of timestamps in `builtins.fromTOML`
   # read-only-local-store = true; #  # Allow the use of the `read-only` parameter in local store URIs.
   # recursive-nix = true; #          # Allow derivation builders to call Nix, thus building derivations recursively.
-  # repl-flake = true; #             # Allow passing installables to `nix repl`, makes interface consistent w/ other nix commands.
   # verified-fetches = true; #       # Enables verification of git commit signatures through the fetchGit built-in.
 }

@@ -32,7 +32,7 @@ If you have any insight on these, lemme know:
 - Secure Boot on everything via `lanzaboote`.
 - Ephemeral configs via `impermanence`.
 - Custom NixOS installer with:
-  - `experimental-features` enabled by default: `nix-command`, `flakes`, `repl-flake`, `recursive-nix`, `ca-derivations`.
+  - `experimental-features` enabled by default: `nix-command`, `flakes`, `recursive-nix`, `ca-derivations`.
   - Disko pre-loaded. devShell to select from `diskoConfigurations` & format disks before install.
   - Ready for full-disk-encryption & secure boot with resume from hibernate out of the box.
 

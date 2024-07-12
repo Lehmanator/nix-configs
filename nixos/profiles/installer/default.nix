@@ -10,7 +10,7 @@
   nix = {
     package = pkgs.nixVersions.latest;
     settings = {
-      extra-features = [ "nix-channel" "flakes" "repl-flake" ];
+      extra-features = [ "nix-channel" "flakes" ];
     };
   };
 

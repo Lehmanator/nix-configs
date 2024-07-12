@@ -10,7 +10,7 @@
     package = lib.mkDefault pkgs.nixVersions.latest;
     settings = {
       accept-flake-config = true;
-      experimental-features = ["nix-command" "flakes" "repl-flake"];
+      experimental-features = ["nix-command" "flakes"];
       #use-flake-registry = true; #config.nix.settings.use-registries;
     };
   };
