@@ -112,11 +112,9 @@
         pkgs.cargo-clone # Cargo subcommand to fetch source code of a Rust crate
         pkgs.cargo-deadlinks # Cargo subcommand to check rust documentation for broken links
         pkgs.cargo-deb # A cargo subcommand that generates Debian packages from information in Cargo.toml
-        pkgs.cargo-deps # Cargo subcommand for building dependency graphs of Rust projects
         pkgs.cargo-docset # Cargo subcommand to generate a Dash/Zeal docset for your Rust packages
         pkgs.cargo-duplicates # A cargo subcommand for displaying when different versions of a same dependency are pulled in
         pkgs.cargo-feature # Cargo plugin to manage dependency features
-        pkgs.cargo-graph # A cargo subcommand for creating GraphViz DOT files and dependency graphs
         pkgs.cargo-hack # Cargo subcommand to provide various options useful for testing and continuous integration
         pkgs.cargo-hf2 # Cargo Subcommand for Microsoft HID Flashing Library for UF2 Bootloaders
         pkgs.cargo-i18n # Rust Cargo sub-command and libraries to extract and build localization resources to embed in your application/library

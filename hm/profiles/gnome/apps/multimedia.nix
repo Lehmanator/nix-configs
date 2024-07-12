@@ -55,7 +55,6 @@
       # --- Photos -------------------------------------------
       # --- Capture ---
       #pkgs.cobang #                   # QR code scanner (build failing as of 1/15/23: dep=python3.11-kiss-headers-2.4.3)
-      pkgs.gnome.cheese # # GNOME camera app (old)
       pkgs.gnome-decoder # # GNOME QR code scanner & creator
       pkgs.megapixels # # GNOME camera app (mobile)
       pkgs.snapshot # # GNOME camera app (new)

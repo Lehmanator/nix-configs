@@ -1,13 +1,4 @@
-{ self
-, modulesPath
-, system
-, inputs
-, outputs
-, config
-, lib
-, pkgs
-, ...
-}:
+{ config, lib, pkgs, ... }:
 let
   cfg = config.services.xserver;
   gnomeProfile = "default";
@@ -69,46 +60,24 @@ in
     ../desktop
     ../desktop/gtk.nix
     ../desktop/wayland.nix
-    #../desktop/touchpad.nix
-
-
-    #./admin.nix
-    #./dev.nix
-
-    #./edit-audio.nix
-    #./edit-images.nix
-    #./edit-video.nix
-
-    #./emu-android.nix
-    #./emu-windows.nix
-
-    #./chat.nix
-    #./games.nix
-
     ./keyring.nix
     ./mobile.nix
     ./styles.nix
-
-    #./view-audio.nix
-    #./view-images.nix
-    #./view-video.nix
-
-    #../apps      # Desktop Environment agnostic apps
     ./apps # GNOME-specific apps
     ./extensions # GNOME Shell Extensions
   ];
 
   home.packages = with pkgs; [
+    gnome.gnome-boxes
     gnome.simple-scan
     gnome.totem
     gnome.vinagre
 
-    gnome.gnome-autoar
-    gnome.gnome-boxes
-    gnome.gnome-dictionary
-    gnome.gnome-font-viewer # Includes thumbnailer
-    gnome.gnome-packagekit
-    gnome.gnome-tweaks
+    gnome-autoar
+    gnome-dictionary
+    gnome-font-viewer # Includes thumbnailer
+    gnome-packagekit
+    gnome-tweaks
 
     gnome-connections
     #gnome-decoder

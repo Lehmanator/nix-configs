@@ -1,20 +1,14 @@
-{ inputs
-, config
-, lib
-, pkgs
-, user
-, ...
-}:
-# Default settings for GTK-based desktops
-{
+{ config, lib, pkgs, user, ... }: {
+  # Default settings for GTK-based desktops
+
   environment.systemPackages = [
     #pkgs.livecaptions # Build failing as of 1/15/24: failing dep=python3.11-onnx-1.15.0
     pkgs.plotinus
     pkgs.gcr
     pkgs.gcr_4
     pkgs.adw-gtk3
-    pkgs.gnome.adwaita-icon-theme
-    pkgs.gnome.gnome-themes-extra
+    pkgs.adwaita-icon-theme
+    pkgs.gnome-themes-extra
     pkgs.simp1e-cursors
     #pkgs.nur.repos.federicoschonborn.morewaita
   ];
