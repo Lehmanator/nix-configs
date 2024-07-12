@@ -18,7 +18,7 @@
     ...
   }: {
     agenix-shell = {
-      package = pkgs.rage;
+      # package = pkgs.rage;
       #installationScript = null;
     };
   };
