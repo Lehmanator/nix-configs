@@ -45,10 +45,12 @@
       evince
       gnome-music
       gnome-system-monitor
-      simple-scan
       totem
       yelp
-    ]) ++ [ pkgs.gnome-tour ];
+    ]) ++ [
+      pkgs.simple-scan
+      pkgs.gnome-tour 
+    ];
 
     # Reset IM_MODULE to fix on-screen keyboard
     variables = {

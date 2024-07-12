@@ -47,7 +47,6 @@
     pkgs.cargo-tauri # Build smaller, faster, and more secure desktop applications with a web frontend
     pkgs.cargo-temp # A CLI tool that allow you to create a temporary new Rust project using cargo with already installed dependencies
     pkgs.cargo-toml-lint # A simple linter for Cargo.toml manifests
-    pkgs.cargo-typify # JSON Schema to Rust type converter
     pkgs.cargo-udeps # Find unused dependencies in Cargo.toml
     #pkgs.cargo-ui # A GUI for Cargo
     #pkgs.cargo-unused-features # A tool to find potential unused enabled feature flags and prune them
@@ -79,7 +78,6 @@
     pkgs.cargo-valgrind # Cargo subcommand "valgrind": runs valgrind and collects its output in a helpful manner
     pkgs.cargo-wasi # A lightweight Cargo subcommand to build code for the wasm32-wasi target
     pkgs.cargo-watch # A Cargo subcommand for watching over Cargo project's source
-    pkgs.cargo-web # A Cargo subcommand for the client-side Web
     pkgs.cargo-wipe # Cargo subcommand "wipe": recursively finds and optionally wipes all "target" or "node_modules" folders
 
     # --- Frontends ---

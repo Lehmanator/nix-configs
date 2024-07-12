@@ -69,7 +69,7 @@ in
 
   home.packages = with pkgs; [
     gnome.gnome-boxes
-    gnome.simple-scan
+    simple-scan
     gnome.totem
     gnome.vinagre
 
