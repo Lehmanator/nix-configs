@@ -174,5 +174,5 @@ in
 
   # --- Finding Binaries -----------------------------------
   # Service that symlinks paths in the Nix store to their typical location in more conventional FHS Linux distros
-  services.envfs.enable = true;
+  services.envfs.enable = lib.mkDefault true;
 }
