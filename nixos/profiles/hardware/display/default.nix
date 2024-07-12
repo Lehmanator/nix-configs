@@ -1,23 +1,6 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-{
-  imports = [
-    #./touchscreen.nix
-    #../laptop.nix
-    #../tablet.nix
-    #../phone.nix
-  ];
-
-  environment.systemPackages = [
-  ];
-
+{ config, lib, pkgs, ... }: {
   hardware.opengl = rec {
     enable = true;
-    driSupport = true;
     driSupport32Bit = true;
     #extraPackages = [
     #  pkgs.intel-media-driver
@@ -34,5 +17,4 @@
     autorandr.enable = true;
     xserver.enable = true;
   };
-
 }
