@@ -1,15 +1,8 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-{
+{ config, lib, pkgs, ... }: {
   imports = [ ./xserver.nix ];
   hardware.opengl.enable = true;
   #programs.wshowkeys.enable = true;
   services.xserver.displayManager.gdm.wayland = true;
-  services.xserver.windowManager.qtile.backend = "wayland";
 
   # Try to force Electron apps to use Wayland
   environment.sessionVariables = {

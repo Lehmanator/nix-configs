@@ -103,7 +103,7 @@ in
   #  # TODO: Make into lib function & re-use
   #  # TODO: More libs
   #  NIX_LD_LIBRARY_PATH = with config; lib.makeLibraryPath            ( pkgs-common     # stdenv Linux libs
-  #    ++ lib.optional (programs.xwayland.enable || services.xserver.windowManager.qtile.backend == "wayland"
+  #    ++ lib.optional (programs.xwayland.enable
   #                  || programs.hyprland.enable || services.xserver.displayManager.gdm.wayland
   #                  || programs.miriway.enable
   #                  || programs.sway.enable                           ) pkgs-wayland    # Wayland if any desktop using it enabled
