@@ -28,8 +28,7 @@ in {
   # TODO: Follow system, fallback to pkgs.nixUnstable
   #nix = lib.recursiveUpdate osConfig.nix {
   nix = {
-    package =
-      lib.mkDefault pkgs.nixUnstable; # Needed for use-xdg-base-directories
+    package = lib.mkDefault pkgs.nixVersions.latest; # Needed for use-xdg-base-directories
     # TODO: Handle NixOS using system NIX_PATH when `home-manager.useGlobalPkgs=true`
     #settings.nix-path = lib.mkDefault [ "${config.xdg.configHome}/nix/inputs" ];
     #settings.nix-path = [ "${config.xdg.configHome}/nix/inputs" ];

@@ -61,7 +61,7 @@
 
   nix = {
     channel.enable = false;
-    package = pkgs.nixUnstable;
+    package = pkgs.nixVersions.latest;
     settings = {
       allow-import-from-derivation = true;
       use-xdg-base-directories = true;

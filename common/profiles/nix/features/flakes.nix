@@ -7,7 +7,7 @@
 # Use Nix package manager package with builtin flakes support
 {
   nix = {
-    package = lib.mkDefault pkgs.nixUnstable;
+    package = lib.mkDefault pkgs.nixVersions.latest;
     settings = {
       accept-flake-config = true;
       experimental-features = ["nix-command" "flakes" "repl-flake"];

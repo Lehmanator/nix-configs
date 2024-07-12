@@ -8,7 +8,7 @@
   ];
 
   nix = {
-    package = pkgs.nixUnstable;
+    package = pkgs.nixVersions.latest;
     settings = {
       extra-features = [ "nix-channel" "flakes" "repl-flake" ];
     };

@@ -12,7 +12,7 @@
 # ShellAliases default `nixos-rebuild` args:
 #
 # --flake /home/sam/.config/nixos#<HOST>
-# --fast  (to not rebuild pkgs.nixUnstable during every build)
+# --fast  (to not rebuild pkgs.nixVersions.latest during every build)
 #
 # TODO: Symlink /etc/nixos/flake.nix to contents of flake.
 let
