@@ -12,17 +12,20 @@
 
   programs.helix = {
     enable = true;
-
-    settings.theme = "a-shell";  # "adwaita-dark";
-
+    settings.theme = "adwaita-dark";
     settings.editor = {
       auto-completion = true;
       auto-format = true;
       auto-info = true;
+      auto-save = false;
       bufferline = "multiple";
       color-modes = true;
-      cursorline = true;
 
+      completion-replace = true;
+      completion-timeout = 250;
+      completion-trigger-len = 2;
+      
+      cursorline = true;
       cursor-shape = {
         insert = "bar";
         normal = "block";
@@ -30,8 +33,22 @@
       };
 
       file-picker.hidden = false;
-      indent-guides.render = true;
+      idle-timeout = 250;
+
+      gutters.layout = ["diagnostics" "spacer" "line-numbers" "spacer" "diff"];
+      indent-guides = {
+        render = true;
+        skip-levels = 2;
+      };
       line-number = "relative";
+      line-numbers.min-width = 2;
+
+      middle-click-paste = true;
+      mouse = true;
+      popup-border = "all";
+      preview-completion-insert = true;
+      smart-tab = { enable = true; supercede-menu = false; };
+      soft-wrap = { enable = true; };
 
       lsp = {
         enable = true;
