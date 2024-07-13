@@ -1,5 +1,1 @@
-{
-  inputs,
-  cell,
-}:
-cell.pops.nixosProfiles.exports.default or {}
+{ inputs, cell, }: cell.pops.nixosProfiles.exports.default or {}
