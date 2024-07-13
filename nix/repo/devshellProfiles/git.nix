@@ -27,6 +27,10 @@ in
       help = "display repository info";
       command = cmds.onefetch;
     }];
-    packages = [ pkgs.gitFull ];
+    packages = [ 
+      pkgs.gitFull
+      pkgs.lazygit
+      pkgs.gitui
+    ];
   };
 }

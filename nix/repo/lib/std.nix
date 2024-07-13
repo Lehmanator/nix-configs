@@ -9,7 +9,7 @@ in rec
 {
   # TODO: Pass in cell name from caller location.
   getBlock = {
-    nameByUnitType = u: t: "${u}${l.capitalize (l.pluralize t}";
+    nameByUnitType = u: t: "${u}${l.capitalize (l.pluralize t)}";
     targetsByUnitType = u: t: cell.${getBlock.nameByUnitType u t};
   };
   

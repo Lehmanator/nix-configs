@@ -14,8 +14,22 @@ in rec
   capitalizeWords = applyOperationToWords capitalize;
 
   # Make word plural
-  # TODO: Heuristics for exceptions
-  pluralize = str: str + "s";
+  # TODO: More heuristics for exceptions
   pluralizeWords = applyOperationToWords pluralize;
-  
+  pluralize = str:
+  let
+    vowels = ["a" "e" "i" "o" "u"]; #"y"
+    endings-es = ["x" "c" "ss" "sh"] ++ (builtins.map (v: "${v}s") vowels);
+    hasPluralIrregularEnd = s: l.any (e: l.hasSuffix "${e}es" s) endings-es;
+    hasIrregularEnd = s: l.any (e: l.hasSuffix "${e}" s) endings-es;
+  in
+    # TODO: Handle plurals that keep singular form.
+    # Plural w/ irregular ending
+    if hasPluralIrregularEnd str then str
+    # Singular w/ irregular ending
+    else if hasIrregularEnd str then str+"es"
+    # Plural w/ normal ending
+    else if l.hasSuffix "s" then str
+    # Singular w/ normal ending
+    else str + "s";
 }

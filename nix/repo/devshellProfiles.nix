@@ -1,5 +1,1 @@
-{
-  inputs,
-  cell,
-}:
-cell.pops.devshellProfiles.exports.default or {}
+{ inputs, cell, }: cell.pops.devshellProfiles.exports.default or {}

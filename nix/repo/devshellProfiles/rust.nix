@@ -6,17 +6,31 @@
   config,
   ...
 }: {
-  #imports = [inputs'.devshell.flakeModule];
-  commands = [];
-  #devshell = {};
+  # TODO: Split this file into?:
+  # - ./rust-dev-platform-{common,all,android,linux,windows}.nix
+  # - ./rust-dev-web.nix
+  # - ./rust-dev-kernel.nix
+  # - ./rust-nix.nix
+  # - [x] ./rust-docs.nix
+  # - ./rust-alternatives-coreutils.nix
+  # - ./rust-alternatives-extras.nix
+  # - ./rust-alternatives-full.nix
+  imports = [cell.devshellProfiles.rust-base];
+  commands = [
+    # TODO: crate2nix
+  ];
   env = [];
+  language.rust.tools = [ "llvm-tools" "rustc-dev" ];
   packages = [
-    #inputs.fenix.packages.complete.toolchain
-    #pkgs.fenix.stable.completeToolchain
-    #(pkgs.fenix.stable.withComponents [ "cargo" "clippy" "rust-src" "rustc" "rustfmt" ])
-    #pkgs.rust-analyzer-nightly
+    # --- Utils ------------------------------------------------------------
+    pkgs.rust-bindgen # Autogen Rust FFI bindings to C (& some C++) libs
+    pkgs.rust-code-analysis # Analyze & collect metrics on source code
+    pkgs.tokio-console # Debugger for async Rust code
+    pkgs.cargo-typify # Rust type generator from JSON Schema
+    pkgs.cxx-rs # Safe Rust FFI w/ C++
 
-    # --- 3rd-Party Utils --------------------------------------------
+    
+    # --- 3rd-Party Cargo Utils --------------------------------------------
     pkgs.cargo-about # Cargo plugin to generate list of all licenses for a crate
     pkgs.cargo-apk # Tool for creating Android packages
     pkgs.cargo-asm # Display the assembly or LLVM-IR generated for Rust source code
@@ -142,13 +156,6 @@
     pkgs.cauwugo # An alternative cargo frontend that implements dynamic shell completion for usual cargo commands
 
     # --- Other Utils ---
-    pkgs.build2 # build2 build system
     pkgs.crate2nix # A Nix build file generator for Rust crates.
-    pkgs.elf2nucleus # Integrate micronucleus into the cargo buildsystem, flash an AVR firmware from an elf file
-    pkgs.mrustc-minicargo # A minimalist builder for Rust
-    pkgs.panamax # Mirror rustup and crates.io repositories for offline Rust and cargo usage
-    pkgs.protoc-gen-prost-crate # A protoc plugin that generates Cargo crates and include files for `protoc-gen-prost`
-    pkgs.reindeer # Reindeer is a tool which takes Rust Cargo dependencies and generates Buck build rules
-    pkgs.rust-audit-info # A command-line tool to extract the dependency trees embedded in binaries by cargo-auditable
   ];
 }
