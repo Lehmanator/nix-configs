@@ -1,3 +1,4 @@
+{ inputs, cell }:
 { config, lib, pkgs
 , master ? false
 , rootless ? true
