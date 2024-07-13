@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }: {
   home.packages = [
-    pkgs.modem-broadband-provider-info
+    # pkgs.modem-broadband-provider-info
     pkgs.modem-manager-gui
     pkgs.pidginPackages.purple-mm-sms
   ] ++ lib.optionals config.gtk.enable [ pkgs.chatty ];

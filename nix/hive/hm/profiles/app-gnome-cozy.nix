@@ -1,10 +1,4 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-{
+{ config , lib , pkgs , ... }: {
   #home.packages = [pkgs.cozy]; # Audiobook player (outdated. GTK4 avail via flathub-beta)
 
   #imports = [inputs.declarative-flatpak.homeManagerModules.default];

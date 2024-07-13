@@ -1,25 +1,26 @@
-{ inputs, config, lib, pkgs, modulesPath, ... }:
+{ cell, config, lib, pkgs, ... }:
 {
   imports = [
-    ./bcachefs.nix
-    ./btrfs.nix
-    #./f2fs.nix # ???
-    #./fuse.nix # ???
-    #./luks.nix # ???
-    #./lvm2.nix
-    ./mdadm.nix
-    ./ntfs.nix
-    #./nvme.nix # ???
-    ./zfs.nix
+    cell.nixosProfiles.filesystems-bcachefs
+    cell.nixosProfiles.filesystems-btrfs
+    cell.nixosProfiles.filesystems-lvm2
+    cell.nixosProfiles.filesystems-mdadm
+    cell.nixosProfiles.filesystems-ntfs
+    # cell.nixosProfiles.filesystems-btrfs-disko
+    # cell.nixosProfiles.filesystems-zfs
+    # cell.nixosProfiles.filesystems-nvme
   ];
 
-  # --- FUSE ---
-  #boot.availableKernelModules=["fuse"];
-  #boot.kernelModules=["fuse"];
+  boot = {
+    hardwareScan = true;
+    initrd.includeDefaultModules = true;
+    #modprobeConfig.enable = true;
+    #extraModprobeConfig = ''
+    #'';
 
-  boot.hardwareScan = true;
-  boot.initrd.includeDefaultModules = true;
-  #boot.modprobeConfig.enable = true;
-  #boot.extraModprobeConfig = ''
-  #'';
+    # --- FUSE ---
+    #availableKernelModules=["fuse"];
+    #kernelModules=["fuse"];
+
+  };
 }

@@ -1,15 +1,6 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-{
+{ config , lib , pkgs , ... }: {
   # https://asteroidos.org
   # https://wiki.asteroidos.org
-  imports = [
-  ];
-
   home.packages = [
     pkgs.android-tools # Android SDK platform tools (ADB / fastboot)
     #pkgs.python311Packages.mpd2 # Python MPD lib

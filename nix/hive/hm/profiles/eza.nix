@@ -32,7 +32,7 @@ let
 in {
   programs.eza = {
     enable = true;
-    enableAliases = true;
+    # enableAliases = true;
     inherit (show) git icons;
     extraOptions =
       ["--level=${builtins.toString view.depth}"]

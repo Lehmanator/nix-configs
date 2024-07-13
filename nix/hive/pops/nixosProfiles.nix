@@ -1,6 +1,7 @@
 { inputs, cell, }@commonArgs:
 let
   inherit (inputs.nixpkgs) lib;
+  getInputsNixos = inputs.flops.flake.pops.default.setInitInputs (inputs.projectRoot + /nix/hive/nixos);
   mkModule = { name, conf, t ? "nixos", program ? null, }@profile:
     let
       proname = if program == null || program == "" then name else "${program}-${name}";
@@ -15,6 +16,7 @@ let
       #{ # Insert profile contents here. };
     };
 in
+# inputs.omnibus.pops.nixosProfiles.addLoadExtender { load = {
 {
   src = ../nixos/profiles;
   type = "nixosProfiles";
@@ -24,7 +26,9 @@ in
     user = "sam";
     username = "sam";
   };
+#};
 }
+
 #(inputs.omnibus.pops.nixosProfiles.addLoadExtender {
 #  #src = ../nixos/profiles;
 #  load = {

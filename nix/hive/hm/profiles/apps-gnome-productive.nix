@@ -1,13 +1,4 @@
-{ self
-, inputs
-, config
-, pkgs
-, lib
-, ...
-}:
-{
-  imports = [ ];
-
+{ inputs , config , pkgs , lib , ... }: {
   home.packages = [
     pkgs.endeavour #   # To-do manager (https://gitlab.gnome.org/World/Endeavour)
     pkgs.formiko #     # reStructuredText editor & live preview

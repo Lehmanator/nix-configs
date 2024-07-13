@@ -1,14 +1,7 @@
+{ cell, config, lib, pkgs, user, ... }:
 {
-  inputs,
-  config,
-  lib,
-  pkgs,
-  user,
-  ...
-}:
-# LXC - Linux Containers (LXC), provides tools for creating & managing system / application containers on Linux
-{
-  imports = [ inputs.self.nixosProfiles.apparmor ]; # LXD service complains about missing AppArmor support (WARN)
+  # LXC - Linux Containers (LXC), provides tools for creating & managing system / application containers on Linux
+  imports = [ cell.nixosProfiles.apparmor ]; # LXD service complains about missing AppArmor support (WARN)
   #boot.kernelModules = ["vhost_vsock"];         # TODO: Explain why kernel module added
   users.users.${user}.extraGroups = [ "lxc" ]; # users.extraGroups.lxc.members = [user];  users.groups.lxc.members = [user];
 

@@ -51,9 +51,6 @@
     pkgs.identity # # Compare multiple versions of an image or video
 
     # --- Videos -------------------------------------------
-    # --- Capture ------
-    #pkgs.obs-studio #              # Streaming & video recording suite
-    #  obs-studio-plugins.obs-3d-effect wlrobs obs-ndi obs-vaapi obs-nvfbc obs-teleport obs-hyperion droidcam-obs obs-vkcapture obs-gstreamer input-overlay multi-rtmp obs-source-clone obs-shaderfilter obs-source-record obs-livesplit-one looking-glass-obs obs-vintage-filter obs-command-source obs-move-transition obs-backgroundremoval advanced-scene-switcher obs-pipewire-audio-capture
     # --- Edit ------
     pkgs.video-trimmer # # GTK4 video trimming app
     # --- View ------

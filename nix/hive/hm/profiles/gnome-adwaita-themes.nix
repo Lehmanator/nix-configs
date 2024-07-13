@@ -1,14 +1,15 @@
 { inputs, config, lib, pkgs, ... }: {
-  home.packages = lib.mkIf config.gtk.enable [
+  home.packages = lib.mkIf config.gtk.enable ([
     pkgs.adwaita-icon-theme
     pkgs.adw-gtk3
     pkgs.gradience
     pkgs.nur.repos.federicoschonborn.morewaita
   ] ++ lib.optionals config.qt.enable [ pkgs.adwaita-qt pkgs.adwaita-qt6 ]
   ++ lib.optional config.programs.vscode.enable
-    pkgs.vscode-extensions.piousdeer.adwaita-theme ++ lib.optional
-    (config.programs.firefox.enable || config.programs.librewolf.enable)
-    pkgs.nur.repos.federicoschonborn.firefox-gnome-theme;
+    pkgs.vscode-extensions.piousdeer.adwaita-theme
+ ++ lib.optional (config.programs.firefox.enable || config.programs.librewolf.enable)
+    pkgs.nur.repos.federicoschonborn.firefox-gnome-theme
+  );
 
   # --- Qt Applications ---
   qt = lib.mkIf config.gtk.enable {

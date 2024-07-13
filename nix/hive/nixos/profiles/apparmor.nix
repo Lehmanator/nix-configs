@@ -1,4 +1,5 @@
 { inputs, config, lib, pkgs, ... }: {
+  # environment.persistence."/nix/persist".directories = ["/var/cache/apparmor"];
   security.apparmor = {
     enable = true;
 
@@ -24,8 +25,10 @@
     #};
   };
 
-  services.dbus.apparmor =
-    "enabled"; # enabled = enables mediation when supported in kernel | disabled = always disabled | required = fails when AppArmor not found in kernel
+  # disabled = always disabled
+  #  enabled = enables mediation when supported in kernel 
+  # required = fails when AppArmor not found in kernel
+  services.dbus.apparmor = "enabled";
 
   #security.pam.services.<name>.enableAppArmor = false;   # Enable support for attaching AppArmor profiles at the user/group level.
 

@@ -1,14 +1,4 @@
-{ inputs
-, config
-, lib
-, pkgs
-, osConfig
-, ...
-}:
-{
-  imports = [
-  ];
-
+{ config , lib , pkgs , osConfig , ... }: {
   #xdg.desktopEntries.secureboot-test = {
   #  name = "Secure Boot Test";
   #  type = "Application";

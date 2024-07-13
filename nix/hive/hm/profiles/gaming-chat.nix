@@ -1,8 +1,8 @@
-{ inputs, config, lib, pkgs, ... }:
+{ cell, config, lib, pkgs, ... }:
 {
   imports = [
-    ../apps/chat-discord
-    ../apps/chat-twitch
+    cell.homeProfiles.app-discord
+    cell.homeProfiles.app-twitch
   ];
 
 }

@@ -1,5 +1,5 @@
-{ inputs, config, lib, pkgs, ... }: {
-  imports = [ inputs.self.homeProfiles.app-sms ];
+{ cell, config, lib, pkgs, ... }: {
+  imports = [ cell.homeProfiles.app-sms ];
 
   home.packages = [ pkgs.mobile-broadband-provider-info ];
   services.flatpak.packages =

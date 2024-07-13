@@ -1,10 +1,11 @@
-{ config, lib, pkgs, prefix ? false, ... }:
+{ config, lib, pkgs, ... }:
 #
 # https://github.com/TaKO8Ki/awesome-alternatives-in-rust
 # https://gist.github.com/sts10/daadbc2f403bdffad1b6d33aff016c0a
 # https://lib.rs/command-line-utilities
 #
 let
+  prefix = false;
   swap-util = gu: ru: {
     home.shellAliases = {
       "${gu}" = lib.getExe pkgs.${ru}; # Unprefixed set to rust version
@@ -27,7 +28,6 @@ in
       pkgs.dog # DNS client
       pkgs.fselect # SQL-like queries for files.
       pkgs.git-cliff # Changelog generator following Conventional Commit spec
-      pkgs.gsv # CSV tool
       pkgs.hexyl # Hex viewer
       pkgs.htmlq # jq for HTML
       pkgs.miniserve # Webserver
@@ -37,6 +37,7 @@ in
       pkgs.skim # Fuzzy finder
       pkgs.topgrade # Update everything
       pkgs.xh # HTTP request util
+      pkgs.xsv # CSV tool
     ] ++ (if prefix then
       [ pkgs.uutils-coreutils ]
     else [

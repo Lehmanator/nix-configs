@@ -2,20 +2,29 @@
 , config
 , lib
 , pkgs
+, osConfig ? {}
 , ...
 }:
+let
+  hasAlsa = 
+    (lib.attrByPath ["services" "pipewire" "alsa" "enable"] false osConfig) ||
+    (lib.attrByPath ["services" "jack"     "alsa" "enable"] false osConfig) ||
+    ((lib.attrByPath ["sound" "enableOSSEmulation" ] false osConfig) && (lib.attrByPath ["sound" "enable"] false osConfig));
+  hasIw = ((lib.attrByPath ["networking" "networkmanager" "wifi" "backend"] false osConfig) == "iwd") ||
+    lib.attrByPath ["networking" "wireless" "iwd" "enable"] false osConfig;
+in
 {
-  imports = [
-  ];
-
   services.polybar = {
-    enable = true;
+    enable = lib.mkDefault true;
 
-    package = pkgs.polybar.override {
-      i3GapsSupport = true;
-      alsaSupport = true;
-      iwSupport = true;
-      githubSupport = true;
+    package = pkgs.polybarFull.override {
+      alsaSupport = hasAlsa;
+      githubSupport = config.programs.git.enable;
+      iwSupport = hasIw;
+      i3Support = true;
+      mpdSupport = true;
+      nlSupport = true;
+      pulseSupport = true;
     };
 
     config = {

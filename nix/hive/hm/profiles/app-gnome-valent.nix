@@ -1,10 +1,4 @@
-{ inputs
-, lib
-, pkgs
-, config
-, ...
-}:
-{
+{ lib , pkgs , config , ... }: {
   #imports = [inputs.declarative-flatpak.homeManagerModules.default ];
   #services.flatpak.packages = ["flathub:app///stable"];
 

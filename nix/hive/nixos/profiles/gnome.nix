@@ -40,13 +40,8 @@
     '';
 
     # Extra packages whose outputs are made available to GNOME
-    sessionPath = [
       # Deps: gnomeExtensions.ddterm
-      pkgs.gjs
-      pkgs.libhandy
-      pkgs.vte-gtk4
-      pkgs.vte
-    ];
+    sessionPath = [pkgs.gjs];
   };
 
   # Accessibility services / assistive technologies for GNOME platform

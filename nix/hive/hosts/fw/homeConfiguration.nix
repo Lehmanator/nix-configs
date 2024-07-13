@@ -1,12 +1,181 @@
-{ inputs, cell, super, }: {
+{ inputs, cell, super, }:
+let
+  modules = with inputs;
+    [
+      # emanote.homeManagerModule.default
+      # sops-nix.homeManagerModules.sops
+      nix-flatpak.homeManagerModules.nix-flatpak
+    ];
+  profiles = with cell.homeProfiles; [
+    abook
+    app-bitwarden
+    app-chromium
+    app-discord
+    app-facebook
+    app-gnome-amberol
+    app-gnome-calculator
+    app-gnome-cozy
+    app-gnome-decibels
+    app-gnome-dino
+    app-gnome-gradience
+    app-gnome-lemoa
+    app-gnome-lemonade
+    app-gnome-loupe
+    app-gnome-tuba
+    app-gnome-valent
+    app-gnome-vaults
+    app-libreoffice
+    app-matrix
+    app-pidgin
+    app-signal
+    app-sms
+    app-telegram
+    app-torbrowser
+    app-twitch
+    apps-base
+    apps-gnome-base
+    apps-gnome-chat
+    apps-gnome-dbus
+    apps-gnome-developer
+    apps-gnome-extras
+    apps-gnome-finance
+    apps-gnome-mobile
+    apps-gnome-multimedia
+    apps-gnome-productive
+    apps-gnome-reading
+    apps-gnome-security
+    apps-gnome-social
+    apps-gnome-translate
+    apps-microsoft
+    audio
+    bat
+    cachix-agent
+    chess
+    device-android
+    device-asteroidos
+    device-fajita
+    device-google
+    device-nintendo-switch
+    device-oneplus
+    device-pine64
+    device-pinetime
+    device-postmarketos
+    device-riscv
+    device-samsung
+    device-sawfish
+    direnv
+    distrobox
+    documentation
+    dolphin
+    editorconfig
+    # emanote
+    eza
+    fetchers
+    flatpak
+    fonts
+    fzf
+    # game-slippi
+    game-spacecadetpinball
+    gaming-chat
+    gaming-clips
+    # git/ aliases base diff fzf gh gitui hooks ignore mr sync tui
+    gnome-adwaita-themes
+    gnome-extension-ags
+    gnome-extension-ddterm
+    gnome-extension-forge
+    # gnome-extension-materialyoucolors
+    gnome-extension-searchprovider-browsertabs
+    gnome-extension-tophat
+    gnome-keyring
+    gnome-shell
+    gpg
+    gtk
+    helix
+    helm
+    k9s
+    lang-nodejs
+    lang-python
+    lang-rust
+    ls
+    lsd
+    media
+    mobile
+    myrepos
+    navi
+    neovim
+    nextcloud
+    nushell
+    # ollama-aichat
+    # ollama-smartcat
+    ollama
+    playerctld
+    pls
+    polybar
+    readline
+    recoll
+    retroarch
+    ripgrep
+    rofi
+    role-admin-activedirectory
+    role-admin-asterisk
+    role-admin-aws
+    role-admin-azure
+    role-admin-containers
+    role-admin-firewall
+    role-admin-kubernetes
+    role-admin-redis
+    role-admin-samba
+    role-admin-sip
+    role-admin-sysadmin
+    role-admin-virtualmachines
+    # role-admin-windows/ all compat default remote virt
+    role-creator-animator
+    role-creator-images
+    role-creator-music
+    role-creator-streamer
+    role-creator-video
+    # role-developer-android
+    role-developer
+    role-office-pdf
+    role-security-osint
+    role-security-pentest
+    role-student
+    rust-utils
+    ryujinx
+    secureboot-notify
+    shell-aliases
+    shell-base
+    shell-colors
+    social-dl
+    social-sleuth
+    # sops
+    # specialisations
+    ssh
+    starship
+    # stylix
+    sync
+    # test-host-environment
+    tmux
+    topgrade
+    touchpad
+    udiskie
+    vm
+    vscode
+    wayland
+    webscraper
+    xdg
+    yubikey
+    yuzu
+  ];
+in
+{
   inherit (super) bee;
   home = rec {
     inherit (super.meta) stateVersion;
     username = "sam";
     homeDirectory = "/home/${username}";
   };
-  imports = with inputs; [
-    { _module.args = super.specialArgs; }
-    nix-flatpak.homeManagerModules.nix-flatpak
-  ];
+  imports = with inputs;
+    [{ _module.args = super.specialArgs; } inputs.omnibus.src.hive.beeModule]
+    ++ modules ++ profiles;
 }

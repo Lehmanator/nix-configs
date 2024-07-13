@@ -1,19 +1,8 @@
-{ inputs
-, config
-, lib
-, pkgs
-, osConfig
-, ...
-}:
-{
-  imports = [
-  ];
-
+{  pkgs , ... }: {
   home.packages = [
     pkgs.bustle #    #
-    pkgs.d-spy #     #
+    pkgs.d-spy #     # Inspect D-Bus, replaces D-Feet
     pkgs.dbus-map #  # TODO: Move to CLI utils
-    pkgs.dfeet #     #
-    pkgs.sysprof #   #
+    pkgs.sysprof #   # GNOME system profiler
   ];
 }

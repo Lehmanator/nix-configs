@@ -1,21 +1,15 @@
-{
-  inputs,
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
+{ cell, config, lib, pkgs, ... }: {
   imports = [
-    ./aliases.nix
-    ./diff.nix
-    ./fzf.nix
-    ./gh.nix
-    ./gitui.nix
-    ./hooks.nix
-    ./ignore.nix
-    ./mr.nix
-    #./sync.nix
-    ./tui.nix
+    cell.homeProfiles.gh
+    cell.homeProfiles.git-aliases
+    cell.homeProfiles.git-diff
+    cell.homeProfiles.git-fzf
+    cell.homeProfiles.git-hooks
+    cell.homeProfiles.git-mr
+    cell.homeProfiles.git-sync
+    cell.homeProfiles.git-tui
+    cell.homeProfiles.gitignore
+    cell.homeProfiles.gitui
   ];
 
   # https://nixos.wiki/wiki/Git
@@ -29,7 +23,7 @@
       core.whitespace = "trailing-space,space-before-tab";
       column.ui = "auto,column,dense";
       credential.helper = "${
-        pkgs.git.override {withLibsecret = true;}
+        config.programs.git.package.override {withLibsecret = true;}
       }/bin/git-credential-libsecret";
       init.defaultBranch = "main";
       pull.rebase = false;

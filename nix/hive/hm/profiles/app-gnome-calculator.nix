@@ -1,14 +1,5 @@
-{ self, inputs,
-  config, lib, pkgs,
-  ...
-}:
-{
-  # --- App ---
-  home.packages = [
-    pkgs.gnome.gnome-calculator
-  ];
-
-  # --- Settings ---
+{  config, lib, pkgs, ... }: {
+  home.packages = [ pkgs.gnome.gnome-calculator ];
   dconf.settings."org/gnome/calculator" = {
     #button-mode = "programming";
     show-thousands = true;

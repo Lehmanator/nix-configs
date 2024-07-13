@@ -2,29 +2,18 @@
 , lib
 , pkgs
 , osConfig
-, nixosConfig
-, darwinConfig
+, nixosConfig ? {}
+, darwinConfig ? {}
 , ...
   #, flatpak-repos ? { flathub = "https://flathub.org/repo/flathub.flatpakrepo"; }
 }:
 let
-  os =
-    if (builtins.isAttrs nixosConfig && !(builtins.isAttrs osConfig)) then
-      nixosConfig
-    else if (builtins.isAttrs darwinConfig && !(builtins.isAttrs osConfig)) then
-      darwinConfig
-    else
-      osConfig;
-  noX11 =
-    if (lib.attrsets.hasAttrByPath [ "environment" "noXlibs" ] os) then
-      os.environment.noXlibs
-    else
-      false;
-  isXwayland =
-    if (lib.attrsets.hasAttrByPath [ "programs" "xwayland" "enable" ] os) then
-      os.programs.xwayland.enable
-    else
-      false;
+  os = if (builtins.isAttrs nixosConfig && !(builtins.isAttrs osConfig)) then nixosConfig
+    # else if (builtins.isAttrs darwinConfig && !(builtins.isAttrs osConfig)) then darwinConfig
+    else if (builtins.isAttrs osConfig) then osConfig
+    else {};
+  noX11 = (lib.attrsets.attrByPath [ "environment" "noXlibs" ] false os);
+  isXwayland = lib.attrsets.attrByPath [ "programs" "xwayland" "enable" ] false os;
   isWayland =
     lib.attrsets.hasAttrByPath [ "services" "xserver" "displayManager" ] os
     && (os.services.xserver.desktopManager.mate.enableWaylandSession
@@ -52,31 +41,24 @@ in
     enable = true;
     uninstallUnmanaged = false;
     remotes = [
-      {
-        name = "flathub";
-        location = "https://dl.flathub.org/repo/flathub.flatpakrepo";
-      }
-      {
-        name = "flathub-beta";
-        location = "https://flathub.org/beta-repo/flathub-beta.flatpakrepo";
-      }
-      {
-        name = "gnome-nightly";
-        location = "https://nightly.gnome.org/gnome-nightly.flatpakrepo";
-      }
+      { name = "flathub";       location = "https://dl.flathub.org/repo/flathub.flatpakrepo";        }
+      { name = "flathub-beta";  location = "https://flathub.org/beta-repo/flathub-beta.flatpakrepo"; }
+      { name = "gnome-nightly"; location = "https://nightly.gnome.org/gnome-nightly.flatpakrepo";    }
     ];
-    packages = [ ];
+    packages = [ 
+      { appId = "com.vscodium.codium"; origin="flathub"; }
+    ];
     overrides = {
       global = {
         # Force Wayland by default
-        Context.sockets = lib.mkIf isWayland [ ]
-          ++ lib.optional isWayland "wayland" ++ lib.optional noX11 "!x11"
-          ++ lib.optional (!isXwayland) "!fallback-x11";
+        Context.sockets = lib.mkIf isWayland ["wayland" "!x11" "!fallback-x11"];
+          # ++ lib.optional isWayland "wayland"
+          # ++ lib.optional noX11 "!x11"
+          # ++ lib.optional (!isXwayland) "!fallback-x11";
 
         Environment = {
           # Fix un-themed cursor in some Wayland apps
-          XCURSOR_PATH = lib.mkIf isWayland
-            "/run/host/user-share/icons:/run/host/share/icons";
+          XCURSOR_PATH = lib.mkIf isWayland "/run/host/user-share/icons:/run/host/share/icons";
 
           # Force correct theme for some GTK apps
           #GTK_THEME = "Adwaita:dark";
@@ -84,12 +66,12 @@ in
       };
       "com.vscodium.codium".Context = {
         filesystems = [
-          "xdg-config/git:ro" # Expose user Git config
+          "xdg-config/git:ro"             # Expose user Git config
           "/run/current-system/sw/bin:ro" # Expose NixOS managed software
         ];
         sockets = [
           "gpg-agent" # Expose GPG agent
-          "pcsc" # Expose smart cards (i.e. YubiKey)
+          "pcsc"      # Expose smart cards (i.e. YubiKey)
         ];
       };
     };

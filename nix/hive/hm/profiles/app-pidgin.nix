@@ -1,5 +1,4 @@
-{ inputs, config, lib, pkgs, ... }:
-{
+{ config, lib, pkgs, ... }: {
   # TODO: Move purple/pidgin plugins to ./app-chat.nix
   home.packages = [
     # --- Purple Plugins ---

@@ -5,7 +5,7 @@
     pkgs.siproxd # A masquerading SIP Proxy Server
     pkgs.sipexer # Modern and flexible SIP CLI tool
     pkgs.sipcalc # Advanced console ip subnet calculator
-    pkgs.sipwitch # Secure peer-to-peer VoIP server that uses the SIP protocol
+    # pkgs.sipwitch # Secure peer-to-peer VoIP server that uses the SIP protocol. Broken: 2024-06-03
     pkgs.sipvicious # Set of tools to audit SIP based VoIP systems
     pkgs.twinkle # A SIP-based VoIP client
     pkgs.liblinphone # Library for SIP calls and instant messaging

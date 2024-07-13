@@ -1,7 +1,7 @@
-{ inputs, config, lib, pkgs, ... }: {
+{ cell, config, lib, pkgs, ... }: {
   imports = [
-    inputs.self.homeProfiles.role-admin-redis
-    inputs.self.homeProfiles.role-admin-samba
+    cell.homeProfiles.role-admin-redis
+    cell.homeProfiles.role-admin-samba
   ];
   home.packages = [ pkgs.nmap pkgs.dig ];
 

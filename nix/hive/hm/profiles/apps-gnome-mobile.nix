@@ -1,9 +1,9 @@
-{ inputs, config, lib, pkgs, ... }: {
+{ cell, config, lib, pkgs, ... }: {
   imports = [
     #inputs.mobile.homeManagerModules.?
-    #inputs.self.homeProfiles.app-gnome-megapixels
-    #inputs.self.homeProfiles.app-gnome-snapshot
-    #inputs.self.homeProfiles.app-gnome-phosh-mobile-settings
+    #cell.homeProfiles.app-gnome-megapixels
+    #cell.homeProfiles.app-gnome-snapshot
+    #cell.homeProfiles.app-gnome-phosh-mobile-settings
   ];
 
   home.packages = [

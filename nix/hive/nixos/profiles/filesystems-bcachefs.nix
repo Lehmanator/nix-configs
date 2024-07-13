@@ -1,9 +1,5 @@
-{ inputs, config, lib, pkgs, modulesPath, ... }:
-{
-  imports = [
-  ];
+{ config, lib, pkgs, ... }: {
 
-  # --- bcachefs ---
   boot.initrd = {
     services.bcache.enable = true;
     supportedFilesystems = [ "bcachefs" ];

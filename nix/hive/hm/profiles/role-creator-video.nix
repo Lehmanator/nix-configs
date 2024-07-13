@@ -1,13 +1,5 @@
-{ inputs
-, config, lib, pkgs
-, ...
-}:
-{
-  imports = [
-  ];
-
+{ config, lib, pkgs , ... }: {
   home.packages = [
-    pkgs.nur.repos.milahu.subdl         # Generate subtitles for video files
+    pkgs.subdl         # Generate subtitles for video files
   ];
-
 }

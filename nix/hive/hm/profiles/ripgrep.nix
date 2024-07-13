@@ -1,12 +1,7 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}: {
+{ config, pkgs, lib, ... }: {
   programs.ripgrep = {
     enable = true;
-    package = pkgs.ripgrep;
+    package = lib.mkDefault pkgs.ripgrep;
 
     # See: https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md#configuration-file
     arguments = [

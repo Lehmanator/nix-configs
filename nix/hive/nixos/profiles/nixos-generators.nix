@@ -19,8 +19,7 @@
       };
       nix = {
         package = pkgs.nixUnstable;
-        settings.experimental-features =
-          [ "nix-command" "flakes" "repl-flake" ];
+        settings.experimental-features = [ "nix-command" "flakes" "repl-flake" ];
       };
       security.sudo-rs.enable = lib.mkForce false;
       services.openssh = {

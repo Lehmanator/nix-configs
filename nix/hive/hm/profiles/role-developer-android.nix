@@ -1,43 +1,36 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
-  #imports  = [
-  #  ./java.nix
-  #  ./kotlin.nix
-  #];
+{ config, lib, pkgs, ... }: {
+  #imports  = with cell.homeProfiles; [java kotlin];
 
+  # TODO: Convert to //android/devShells/android-app-development
   # https://nixos.org/manual/nixpkgs/unstable/#android
   home = let
     # --- Install Android SDK & Tools ---
-    androidComposition = pkgs.androidenv.composeAndroidPAckages {
+    androidComposition = pkgs.androidenv.composeAndroidPackages {
+      abiVersions = ["armeabi-v7a" "arm64-v8a"];
+      buildToolsVersions = ["34.0.0"];
+      cmakeVersions = ["3.10.2"];
       cmdLineToolsVersion = "8.0";
+      emulatorVersion = "35.1.4";
+      platformVersions = ["30" "31" "32" "33" "34"];
+      platformToolsVersion = "34.0.5";
+      ndkVersions = ["22.0.7026061"];
       toolsVersion = "26.1.1";
-      platformToolsVersion = "30.0.5";
-      buildToolsVersions = ["30.0.3"];
       includeEmulator = true;
-      emulatorVersion = "30.3.4";
-      platformVersions = ["28" "29" "30" "31"];
+      includeExtras = [
+        #"extras;google;gcm"
+      ];
+      includeNDK = true;
       includeSources = true;
       includeSystemImages = true;
       systemImageTypes = [
         #"google_apis_playstore"
       ];
-      abiVersions = ["armeabi-v7a" "arm64-v8a"];
-      cmakeVersions = ["3.10.2"];
-      includeNDK = true;
-      ndkVersions = ["22.0.7026061"];
       useGoogleAPIs = false;
       useGoogleTVAddOns = false;
-      includeExtras = [
-        #"extras;google;gcm"
-      ];
+      # Can get these names from `repo.json` OR `querypackages.sh licenses`
       extraLicenses = [
-        # Can get these names from `repo.json` OR `querypackages.sh licenses`
-        #"android-sdk-license"
-        #"android-sdk-preview-license"
+        "android-sdk-license"
+        "android-sdk-preview-license"
       ];
       #repoJson = "~/path/repo.json"; # Generated repo.json filepath. Generate w/ generate.sh that calls mkrepo.rb
       #repoXmls = {
@@ -66,7 +59,7 @@
       keyAliasPassword = "myfirstapp";
       # Any Android SDK parameters that install all the relevant plugins that a
       # build requires
-      platformVersions = ["24"];
+      platformVersions = ["34"];
       # When we include the NDK, then ndk-build is invoked before Ant gets invoked
       includeNDK = true;
     };
@@ -74,7 +67,7 @@
     # --- Spwan Emulator Instances ---
     emuApp = pkgs.androidenv.emulateApp {
       name = "emulate-MyAndroidApp";
-      platformVersion = "24";
+      platformVersion = "34";
       abiVersion = "armeabi-v7a"; # mips, x86, x86_64
       systemImageType = "default";
       app = ./MyApp.apk;
@@ -82,7 +75,9 @@
       activity = "MainActivity";
     };
   in {
-    packages = [androidComposition.androidsdk];
+    packages = [
+      androidComposition.androidsdk
+    ];
     sessionVariables = {
       ANDROID_SDK_ROOT = "${androidComposition.androidsdk}/libexec/android-sdk";
       ANDROID_NDK_ROOT = "${config.home.sessionVariables.ANDROID_SDK_ROOT}/ndk-bundle";

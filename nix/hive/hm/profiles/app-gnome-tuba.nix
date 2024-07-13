@@ -1,10 +1,4 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-{
+{ config , lib , pkgs , ... }: {
   home.packages = [ pkgs.tuba ];
 
   #imports = [inputs.declarative-flatpak.homeManagerModules.default];

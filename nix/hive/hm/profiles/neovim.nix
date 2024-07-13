@@ -1,20 +1,18 @@
+{ cell, inputs, config, lib, pkgs, ... }: 
+let
+  vim-pkg = pkgs.neovim
+      # inputs.cells.vim.packages.nvim
+      # inputs.self.packages.${pkgs.system}.nvim
+      ;
+in
 {
-  inputs,
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
   home = {
-    sessionVariables.EDITOR = lib.getExe inputs.self.packages.${pkgs.system}.nvim; #"nvim";
-    packages = [
-      inputs.self.packages.${pkgs.system}.nvim
-      pkgs.fd pkgs.universal-ctags
-    ];
+    sessionVariables.EDITOR = lib.getExe vim-pkg; #"nvim";
+    packages = [ pkgs.fd pkgs.universal-ctags vim-pkg ];
   };
 
   programs.git.extraConfig = {
     diff.external = true;
-    core.editor = "${lib.getExe inputs.self.packages.${pkgs.system}.nvim}"; # "nvim";
+    core.editor = "${lib.getExe vim-pkg}";
   };
 }

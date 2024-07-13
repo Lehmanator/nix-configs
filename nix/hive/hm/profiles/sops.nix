@@ -1,14 +1,19 @@
+{ inputs, cell
+, config, lib, pkgs
+, osConfig
+, user
+, ...
+}@moduleArgs:
+let
+  blockDir = "userProfiles";
+in
 {
-  inputs,
-  config,
-  lib,
-  pkgs,
-  user,
-  ...
-}: {
+  # imports = [inputs.sops-nix.homeManagerModules.sops];
+
   sops = {
-    defaultSopsFile = inputs.self + /users/${user}/secrets/default.yaml;
-    #defaultSopsFile = ../../../users/${user}/secrets/default.yaml;
+    # defaultSopsFile = inputs.self + /users/${user}/secrets/default.yaml;
+    # defaultSopsFile = ../../../users/${user}/secrets/default.yaml;
+    defaultSopsFile = inputs.self + /nix/hive/${blockDir}/${config.home.username}/secrets/default.yaml;
     keepGenerations = 10;
 
     age = {
@@ -29,7 +34,10 @@
     #  #];
     #};
 
-    secrets = {test-user-secret = {};};
+    secrets = {
+      test-user-secret = {};
+      # test-shared-secret = {};
+    };
   };
 
   # Restart user sops-nix.service unit on home-manager activation.

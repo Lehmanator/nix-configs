@@ -1,9 +1,10 @@
-{ inputs, config, lib, pkgs, ... }:
-let implementation = "valent";
+{ config, lib, pkgs, ... }:
+let 
+  implementation = "valent";
 in {
   # Allow GSConnect thru firewall
   networking.firewall = {
-    enable = true;
+    # enable = true;
     allowedTCPPortRanges = [{
       from = 1714;
       to = 1764;
@@ -23,12 +24,7 @@ in {
   #];
 
   # Install implementation of GSConnect & shell-extension
-  environment.systemPackages =
-    if (implementation == "valent") then
-      [
-        pkgs.valent
-        #pkgs.gnomeExtensions.valent
-      ]
-    else
-      [ pkgs.gnomeExtensions.gsconnect ];
+  environment.systemPackages = if (implementation == "valent")
+    then [pkgs.valent] #pkgs.gnomeExtensions.valent
+    else [pkgs.gnomeExtensions.gsconnect];
 }

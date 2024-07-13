@@ -6,8 +6,7 @@
 , ...
 }:
 {
-  imports = [ ];
-  network.hostId = "aa38a832"; # 32-bit host ID in hex. Required by ZFS. Run: $ head -c 8 /etc/machine-id
+  networking.hostId = "aa38a832"; # 32-bit host ID in hex. Required by ZFS. Run: $ head -c 8 /etc/machine-id
   boot = {
     loader.grub.copyKernels = true; # Similar for systemd-boot ?
     initrd.supportedFilesystems = [ "zfs" ];
@@ -15,10 +14,9 @@
     supportedFilesystems = [ "zfs" ];
 
     zfs = {
-      allowHibernation = true;
-      autoSnapshot.enable = true;
-      enable = true;
-      enableUnstable = true;
+      enabled = true;
+      enableUnstable = lib.mkDefault true;
+      allowHibernation = lib.mkDefault true;
       forceImportAll = false; # Forcibly import all ZFS pools. If false & NixOS fails to import non-root pools, manually import w/ `zpool import -f <poolName>` & reboot. Only should be necessary once.
       forceImportRoot = false; # Recommended=false, default=true
       requestEncryptionCredentials = true; # true=Req enc keys/passwords for all enc datasets. Pass list of dataset names to only decrypt some.
@@ -47,7 +45,7 @@
 
   services.zfs = {
     autoReplication = {
-      enable = false; # Enable ZFS snapshot replication. Default=false.
+      enable = lib.mkDefault false; # Enable ZFS snapshot replication. Default=false.
       followDelete = true; # Remove remote snapshots that dont have a local correspondent. Default=true
       #host = "<hostname>";  # Remote host where snapshots should be sent. `lz4` expected to be installed on remote host.
       #identityFilePath = "/home/${user}/.ssh/id_rsa";  # Path to SSH key to login to replication host.
@@ -57,12 +55,12 @@
       username = user;
     };
     autoScrub = {
-      enable = true; # Enable periodic scrubbing of ZFS pools
+      enable = lib.mkDefault true; # Enable periodic scrubbing of ZFS pools
       interval = "Sun, 02:00";
       pools = [ "tank" ];
     };
     autoSnapshot = {
-      enable = true; # Number of <period>  auto-snapshots that you wish to keep. Default=4
+      enable = lib.mkDefault true; # Number of <period>  auto-snapshots that you wish to keep. Default=4
       frequent = 4; #           15-minute. Default=4
       hourly = 24; #              hourly. Default=24
       daily = 7; #               daily. Default=7
@@ -70,9 +68,9 @@
       monthly = 12; #              hourly. Default=12
       flags = "-k -p"; # Flags to pass to `zfs-auto-snapshot` command. Run `zfs-auto-snapshot` w/o args to see available flags. D:'-k -p'
     };
-    expandOnBoot = "all"; # Expand each device in the specified pool after import. Options: all | disabled | List<zfsPools>
-    trim.enable = true;
-    trim.interval = "weekly";
+    expandOnBoot = lib.mkDefault "all"; # Expand each device in the specified pool after import. Options: all | disabled | List<zfsPools>
+    trim.enable = lib.mkDefault true;
+    trim.interval = lib.mkDefault "weekly";
   };
 
 }

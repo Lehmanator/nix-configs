@@ -1,9 +1,8 @@
-{ inputs, config, lib, pkgs, ... }: {
+{ cell, config, lib, pkgs, ... }: {
   # TODO: Reorganize this file by splitting into categories.
   imports = [
-    inputs.self.homeProfiles.k9s
-    inputs.self.homeProfiles.helm
-    inputs.self.homeProfiles.role-admin-kubernetes
+    cell.homeProfiles.k9s
+    cell.homeProfiles.helm
   ];
 
   # TODO: Each cluster specified in separate `.nix` files, each appending their config to this env var.

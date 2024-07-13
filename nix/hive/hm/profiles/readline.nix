@@ -3,9 +3,12 @@
 , lib
 , pkgs
 , user
-, bindings ? "vim"
+# , bindings ? "vim"
 , ...
 }:
+let
+  bindings = "vim";
+in
 {
   imports = [ ];
   # TODO: Determine base source of truth for keybinds            (i.e. Vim keybinds set ZSH, readline, etc.)
@@ -29,7 +32,7 @@
   # See: https://www.man7.org/linux/man-pages/man3/readline.3.html
   programs.readline = {
     enable = true;
-    bindings = { };
+    # bindings = { };
     includeSystemConfig = true;
     variables = {
       editing-mode = if bindings == "emacs" then bindings else "vi";

@@ -19,7 +19,7 @@
 # TODO: lib.mkNoNerdfontConfig - Bend config to disable nerdfonts & change options using glyphs to ASCII/UTF-8
 # TODO: lib.mkDynamcNerdfontConfig - Bend config to use Nerdfonts when remote client SSH, disable during console access. Set env vars via PAM session login
 let
-  useNerdfonts = lib.mkDefault true;
+  useNerdfonts = true;
   favorites = {
     overrides = [
       "Agave"
@@ -69,10 +69,10 @@ let
     ];
   };
 in {
-  imports = [
-    # TODO: Split ./fonts.nix into ./desktop/fonts.nix & ./shell/fonts.nix
-    inputs.home-extra-xhmm.homeManagerModules.desktop.fonts
-  ];
+  # imports = [
+  #   # TODO: Split ./fonts.nix into ./desktop/fonts.nix & ./shell/fonts.nix
+  #   inputs.home-extra-xhmm.homeManagerModules.desktop.fonts
+  # ];
 
   #let
   #  base = favorites.packages.normal;

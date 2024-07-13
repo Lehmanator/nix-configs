@@ -1,4 +1,4 @@
-{ inputs, config, lib, pkgs, cell, ... }: {
+{ lib, pkgs, cell, ... }: {
   imports = [
     # --- Distro-independent Apps ---
     # TODO: Import same category files from `../../apps` in `./<category>.nix`

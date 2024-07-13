@@ -125,10 +125,10 @@ in
     # --- Shells -----------------------------------
     bash.historyFile = "${dataHome}/bash/history";
     zsh.history.path = "${dataHome}/zsh/history";
-    nushell = {
-      configFile.source = "${configHome}/nushell/config.nu";
-      envFile.source = "${configHome}/nushell/env.nu";
-    };
+    # nushell = {
+    #   configFile.source = "${configHome}/nushell/config.nu";
+    #   envFile.source = "${configHome}/nushell/env.nu";
+    # };
 
 
     # --- CLI Programs -----------------------------

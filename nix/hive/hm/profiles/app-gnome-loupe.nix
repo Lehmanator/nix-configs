@@ -1,13 +1,4 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-{
-  imports = [
-  ];
-
+{ config , lib , pkgs , ... }: {
   home.packages = [ pkgs.loupe ];
   xdg.mimeApps.defaultApplications = {
     "image/avif" = [ "org.gnome.Loupe.desktop" ];

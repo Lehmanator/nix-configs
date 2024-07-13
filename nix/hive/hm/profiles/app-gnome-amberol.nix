@@ -1,13 +1,4 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-{
-  imports = [
-  ];
-
+{ config , lib , pkgs , ... }: {
   home.packages = [ pkgs.amberol ];
   xdg.mimeApps.defaultApplications = {
     "audio/mpeg" = [ "io.bassi.Amberol.desktop" ];

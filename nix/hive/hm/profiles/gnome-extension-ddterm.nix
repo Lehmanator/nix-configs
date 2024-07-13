@@ -9,7 +9,7 @@
     pkgs.gjs
     pkgs.libhandy
     pkgs.vte-gtk4
-    pkgs.vte
+    # pkgs.vte
   ];
 
   # TODO: Dconf settings

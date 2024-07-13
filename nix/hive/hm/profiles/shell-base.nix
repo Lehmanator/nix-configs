@@ -1,11 +1,5 @@
+{ cell, config, lib, pkgs, ... }:
 {
-  inputs,
-  cell,
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
   imports = [
     #inputs.home-extra-xhmm.homeManagerModules.console.program-variables
     #inputs.home-extra-xhmm.homeManagerModules.console.fish
@@ -17,7 +11,7 @@
     cell.homeProfiles.fzf
     cell.homeProfiles.ls
     cell.homeProfiles.navi
-    cell.homeProfiles.nushell
+    #cell.homeProfiles.nushell
     cell.homeProfiles.ripgrep
     cell.homeProfiles.starship
     cell.homeProfiles.shell-aliases
@@ -40,9 +34,9 @@
       pkgs.cmatrix
       pkgs.figlet
       pkgs.with-shell
-      inputs.self.packages.shell-script-mvlink
+      # cell.packages.shell-script-mvlink
     ]
-    ++ lib.optionals config.zsh.enable [
+    ++ lib.optionals config.programs.zsh.enable [
       pkgs.nix-zsh-completions
       pkgs.zsh-nix-shell
     ];

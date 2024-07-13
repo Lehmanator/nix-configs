@@ -9,13 +9,13 @@
     pathsToLink = ["/share/bash-completion" "/share/zsh"];
 
     # Package to get CLI clients to connect to ODBC databases.
-    systemPackages = [pkgs.bash pkgs.zsh pkgs.nushell pkgs.unixODBC];
+    systemPackages = [pkgs.bash pkgs.unixODBC];
 
     # Unix ODBC drivers to register in /etc/odbcinst.ini
     unixODBCDrivers = [pkgs.unixODBCDrivers.sqlite pkgs.unixODBCDrivers.psql];
 
     shellAliases.ctl = "systemctl";
-    shells = [pkgs.bash pkgs.zsh pkgs.nushell];
+    shells = [pkgs.bash pkgs.zsh pkgs.nushellFull];
   };
 
   # --- command-not-found ---

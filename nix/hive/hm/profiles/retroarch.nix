@@ -1,14 +1,4 @@
-{ self
-, inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-{
-  imports = [
-  ];
-
+{ config, lib, pkgs, ... }: {
   home.packages = [
     # https://github.com/NixOS/nixpkgs/blob/master/pkgs/applications/emulators/retroarch/cores.nix
     pkgs.retroarch-assets # Assets for RetroArch
@@ -37,7 +27,7 @@
     #pkgs.zsnes           # SNES
     #pkgs.cen64           # N64 (Cycle-Accurate)
     #pkgs.dolphin-emu # Gamecube / Wii emulator for x86_64 & ARMv8
-    pkgs.cemu # Wii U                                          #pkgs.nur.repos.mcaju.decaf-emu
+    # pkgs.cemu # Wii U                                          #pkgs.nur.repos.mcaju.decaf-emu
     #pkgs.nur.repos.jakobrs.joycond  # Breaks: libudev renamed to udev
 
     # --- Playstation ----------------------------
@@ -53,4 +43,8 @@
     # --- Xbox -----------------------------------
     #pkgs.xemu            # Original Xbox emulator
   ];
+  services.flatpak.packages = [{ appId = "org.libretro.RetroArch"; }]
+    ++ lib.optional config.programs.gnome-shell.enable {
+    appId = "page.kramo.Cartridges";
+  };
 }

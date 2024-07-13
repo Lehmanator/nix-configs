@@ -6,7 +6,7 @@
     enable = true;
     enableExtensionUpdateCheck = true;
     enableUpdateCheck = true;
-    package = pkgs.vscodium.fhsWithPackages (ps: with ps; [ rustup zlip ]);
+    package = pkgs.vscodium.fhsWithPackages (ps: with ps; [ rustup zlib ]);
     extensions =
       with inputs.nix-vscode-extensions.extensions.${pkgs.system}.open-vsx; [
         activitywatch.aw-watcher-vscode

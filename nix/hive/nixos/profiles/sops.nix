@@ -9,6 +9,8 @@ let
   # sharedDir = inputs.self.outPath + "/nix/hive/nixos/secrets";
   hostDir   = ../../hosts + /${config.networking.hostName}/secrets;
   sharedDir = ../secrets;
+  # userDir   = ../../users + /${user}/secrets;
+  # userSharedDir   = ../../hm/secrets;
 
   getKeys = t:
     let
@@ -21,7 +23,7 @@ let
 in
 {
   # TODO: Make devShell with pkgs.sops installed
-  #imports = [ inputs.sops-nix.nixosModules.sops ];
+  imports = [ inputs.sops-nix.nixosModules.sops ];
 
   sops = {
     defaultSopsFile = hostDir + /default.yaml;
@@ -39,7 +41,7 @@ in
     #};
 
     secrets = {
-      test-host-secret = { sopsFile = "${hostDir}/default.yaml"; };
+      test-host-secret   = { sopsFile =   "${hostDir}/default.yaml"; };
       test-shared-secret = { sopsFile = "${sharedDir}/default.yaml"; };
 
       #user-default-password = { group = "users"; };

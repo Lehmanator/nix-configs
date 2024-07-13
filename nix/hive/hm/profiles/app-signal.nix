@@ -1,12 +1,14 @@
 { config, lib, pkgs, ... }: {
   home.packages = [
-    pkgs.signal-desktop
-    pkgs.nur.repos.dschrempf.signal-back # Decrypt Signal backups
-    pkgs.nur.repos.mic92.signald # Daemon for programs to interface w/ Signal
-  ] ++ lib.optionals config.gtk.enable [
-    pkgs.flare-signal
-    #pkgs.axolotl
-  ];
+    pkgs.signal-desktop      #-beta
+    pkgs.signalbackup-tools  # Decrypt Signal backups
+    pkgs.signald             # Daemon for programs to interface w/ Signal
+    pkgs.signaldctl
+    pkgs.signal-backup-deduplicator
+    pkgs.signal-export
+    pkgs.signal-cli
+  ] ++ lib.optional config.gtk.enable pkgs.flare-signal
+  ;
 
   #services.flatpak.packages = [
   # "flathub:app/org.asamk.SignalCli//stable" # Signal CLI

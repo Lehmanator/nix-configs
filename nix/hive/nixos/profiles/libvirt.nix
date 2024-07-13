@@ -1,10 +1,8 @@
-{ inputs, config, lib, pkgs, user, ... }:
-let root = true;
+{ cell, config, lib, pkgs, user, ... }:
+let
+  root = true;
 in {
-  imports = [
-    #inputs.self.nixosProfiles.kvm
-    #inputs.self.nixosProfiles.libvirt
-  ];
+  imports = [ cell.nixosProfiles.kvm ];
   virtualisation.libvirtd = {
     enable = true;
     allowedBridges = [ "virbr0" ];
@@ -25,8 +23,7 @@ in {
     };
   };
 
-  users.users.${user}.extraGroups =
-    if root then [ "qemu-libvirtd" "libvirtd" ] else [ "libvirtd" ];
+  users.users.${user}.extraGroups = ["libvirtd"] ++ lib.optional root "qemu-libvirtd";
   programs.virt-manager.enable = true;
 
   # --- QEMU / KVM ---

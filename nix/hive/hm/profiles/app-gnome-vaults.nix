@@ -1,11 +1,4 @@
-{ self, inputs,
-  config, lib, pkgs,
-  ...
-}:
-{
-  imports = [
-  ];
-
+{ config, lib, pkgs, ... }: {
   # Currently Vaults app isn't packaged for NixOS. Must install via flatpak
   # https://github.com/mpobaschnig/Vaults
   # https://flathub.org/apps/details/io.github.mpobaschnig.Vaults

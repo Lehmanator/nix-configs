@@ -1,13 +1,7 @@
-{ inputs
-, config, lib, pkgs
-, ...
-}:
-{
-  imports = [
-  ];
-
+{ config, lib, pkgs , ... }: {
   home.packages = [
-    pkgs.nur.repos.uniquepointer.riscv64-linux-gnu-toolchain
-    pkgs.nur.repos.YisuiMilena.devtools-riscv64
+    pkgs.coreboot-toolchain.riscv
+    # pkgs.nur.repos.uniquepointer.riscv64-linux-gnu-toolchain # Insecure: 2024-06-03
+    # pkgs.nur.repos.YisuiMilena.devtools-riscv64
   ];
 }

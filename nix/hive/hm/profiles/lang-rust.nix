@@ -1,12 +1,5 @@
-{
-  inputs,
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
-  imports = [];
-  nixpkgs.overlays = [inputs.fenix.overlays.default];
+{ config, lib, pkgs, ... }: {
+  # nixpkgs.overlays = [inputs.fenix.overlays.default];
   home.packages = [
     pkgs.fenix.complete.toolchain
     #pkgs.fenix.stable.completeToolchain
@@ -47,7 +40,7 @@
     pkgs.cargo-tauri # Build smaller, faster, and more secure desktop applications with a web frontend
     pkgs.cargo-temp # A CLI tool that allow you to create a temporary new Rust project using cargo with already installed dependencies
     pkgs.cargo-toml-lint # A simple linter for Cargo.toml manifests
-    pkgs.cargo-typify # JSON Schema to Rust type converter
+    # pkgs.cargo-typify # JSON Schema to Rust type converter. Broken: 2024-06-03
     pkgs.cargo-udeps # Find unused dependencies in Cargo.toml
     #pkgs.cargo-ui # A GUI for Cargo
     #pkgs.cargo-unused-features # A tool to find potential unused enabled feature flags and prune them
@@ -62,11 +55,9 @@
     pkgs.cargo-clone # Cargo subcommand to fetch source code of a Rust crate
     pkgs.cargo-deadlinks # Cargo subcommand to check rust documentation for broken links
     pkgs.cargo-deb # A cargo subcommand that generates Debian packages from information in Cargo.toml
-    pkgs.cargo-deps # Cargo subcommand for building dependency graphs of Rust projects
     pkgs.cargo-docset # Cargo subcommand to generate a Dash/Zeal docset for your Rust packages
     pkgs.cargo-duplicates # A cargo subcommand for displaying when different versions of a same dependency are pulled in
     pkgs.cargo-feature # Cargo plugin to manage dependency features
-    pkgs.cargo-graph # A cargo subcommand for creating GraphViz DOT files and dependency graphs
     pkgs.cargo-hack # Cargo subcommand to provide various options useful for testing and continuous integration
     pkgs.cargo-i18n # Rust Cargo sub-command and libraries to extract and build localization resources to embed in your application/library
     pkgs.cargo-info # Cargo subcommand to show crates info from crates.io
@@ -89,5 +80,10 @@
 
     # --- Other Utils ---
     pkgs.crate2nix # A Nix build file generator for Rust crates.
+  ];
+
+  programs.helix.extraPackages = [
+    pkgs.fenix.complete.toolchain
+    # pkgs.rust-analyzer
   ];
 }

@@ -17,7 +17,7 @@
       "documents" = {
         roots = [
           # Pair of roots to synchronize
-          "${config.xdg.userDirs.XDG_DOCUMENTS_DIR}"
+          "${config.xdg.userDirs.documents}"
           "ssh:/<remote>/Documents"
         ];
         commandOptions = {

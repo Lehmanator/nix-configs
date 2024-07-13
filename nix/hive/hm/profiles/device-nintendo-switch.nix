@@ -39,8 +39,9 @@ in
     #pkgs.nur.repos.jakobrs.joycond  # Breaks: libudev renamed to udev
   ];
 
-  services.flatpak.packages = lib.mkIf config.flatpak.enable
-    [ "flathub:app/io.github.parnassius.SysDVR-Qt//stable" ];
+  services.flatpak.packages = lib.mkIf config.services.flatpak.enable [
+    {appId = "io.github.parnassius.SysDVR-Qt"; origin="flathub"; }
+  ];
 
   # TODO: Figure out where to write credentials for Nautilus mounts
   #sops.secrets = {

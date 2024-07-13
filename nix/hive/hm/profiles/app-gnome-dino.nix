@@ -1,10 +1,4 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-{
+{ lib , pkgs , ... }: {
   home.packages = [ pkgs.dino ];
 
   #imports = [inputs.declarative-flatpak.homeManagerModules.default];

@@ -7,9 +7,6 @@
 , ...
 }:
 {
-  imports = [
-  ];
-
   programs.chromium = {
     enable = true;
   };

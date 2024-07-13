@@ -227,12 +227,11 @@
           k = [ "extend_line_up" "extend_to_line_bounds" ];
           tab = [ "insert_mode" "collapse_selection" ];
           "{" = [ "extend_to_line_bounds" "goto_prev_paragraph" ];
-          "}" = [ "extend_to_line_bounds" "goto_next_paragraph" ];
+          "}" = [ "extend_to_line_bounds" "goto_nextjparagraph" ];
         };
       };
       theme = "adwaita-dark";
     };
-  };
 
   # TODO: Split into ./helix/themes/<themeName>.nix
   # https://docs.helix-editor.com/themes.html
@@ -272,8 +271,12 @@
   # - [ ] DAP
   # - [ ] Tree-sitter grammars
   # - [ ] Formatters
-  extraPackages = lib.unique
-    ((lib.flatten (builtins.attrValues pkgs.tree-sitter-grammars)) ++ [
+  extraPackages = [
+  # let
+  #   ts-pkgs = lib.lists.unique (lib.flatten (builtins.attrValues pkgs.tree-sitter-grammars));
+  # in lib.lists.unique (lib.flatten (
+  #     ts-pkgs ++ [
+      # pkgs.tree-sitter-grammars
       pkgs.ansible-language-server
       pkgs.arduino-language-server
       pkgs.asm-lsp
@@ -294,11 +297,11 @@
       pkgs.cuelsp
       pkgs.dart
       pkgs.dhall-lsp-server
-      pkgs.vscode-extensions.vscode-dhall-lsp-server
+      pkgs.vscode-extensions.dhall.vscode-dhall-lsp-server
       pkgs.nodePackages.diagnostic-languageserver
       pkgs.docker-compose-language-service
       pkgs.dockerfile-language-server-nodejs
-      pkgs.dot-language-service
+      pkgs.dot-language-server
       pkgs.elixir-ls
       pkgs.vscode-extensions.elixir-lsp.vscode-elixir-ls
       pkgs.elmPackages.elm-language-server
@@ -359,23 +362,22 @@
       pkgs.postgres-lsp
       pkgs.nodePackages.purescript-language-server
       pkgs.pypiserver
-      pkgs.pythonPackages.jupyter-lsp
-      pkgs.pythonPackages.jupyterlab-lsp
-      pkgs.pythonPackages.pyls-flake8
-      pkgs.pythonPackages.pyls-isort
-      pkgs.pythonPackages.pylsp-mypy
-      pkgs.pythonPackages.pylsp-rope
-      pkgs.pythonPackages.python-lsp-black
-      pkgs.pythonPackages.python-lsp-jsonrpc
-      pkgs.pythonPackages.python-lsp-ruff
-      pkgs.pythonPackages.python-lsp-server
+      pkgs.python3Packages.jupyter-lsp
+      pkgs.python3Packages.jupyterlab-lsp
+      pkgs.python3Packages.pyls-flake8
+      pkgs.python3Packages.pyls-isort
+      pkgs.python3Packages.pylsp-mypy
+      pkgs.python3Packages.pylsp-rope
+      pkgs.python3Packages.python-lsp-black
+      pkgs.python3Packages.python-lsp-jsonrpc
+      pkgs.python3Packages.python-lsp-ruff
+      pkgs.python3Packages.python-lsp-server
       pkgs.ruff-lsp
       pkgs.ruby-lsp
       pkgs.regal
       pkgs.regols
       pkgs.roslyn-ls
       pkgs.rune-languageserver
-      pkgs.rust-analyzer
       pkgs.scry
       pkgs.serve-d
       pkgs.slint-lsp
@@ -389,7 +391,7 @@
       pkgs.terraform-ls
       pkgs.terraform-lsp
       pkgs.texlab
-      pkgs.tremor-language-server
+      # pkgs.tremor-language-server
       pkgs.ttags
       pkgs.nodePackages.typescript-language-server
       pkgs.typos-lsp
@@ -410,8 +412,10 @@
       pkgs.zls
 
       # --- Treesitter Grammars ---
-      pkgs.tree-sitter-grammars.tree-sitter-vue
+      # pkgs.tree-sitter-grammars.tree-sitter-vue
       pkgs.vimPlugins.nvim-treesitter-parsers.cairo
       pkgs.vimPlugins.nvim-treesitter-parsers.awk
-    ]);
+    ];
+    # ));
+  };
 }

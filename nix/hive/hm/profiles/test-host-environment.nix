@@ -2,9 +2,9 @@
   config,
   lib,
   pkgs,
-  darwinConfig,
-  nixosConfig,
-  osConfig,
+  # darwinConfig,
+  # nixosConfig,
+  # osConfig,
   ...
 } @ moduleArgs: let
   inherit (pkgs.stdenv) isLinux isDarwin;

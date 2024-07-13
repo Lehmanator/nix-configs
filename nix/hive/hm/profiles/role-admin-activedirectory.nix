@@ -38,7 +38,7 @@
     pkgs.silenthound #  # Tool: Enumerate an Active Directory Domain
     pkgs.powershell #   # Microsoft shell
     pkgs.nur.repos.exploitoverload.ADCSKiller
-  ] ++ lib.optionals pkgs.system == "x86_64-linux" [
+  ] ++ lib.optionals (pkgs.system == "x86_64-linux") [
     pkgs.apache-directory-studio # Eclipse-based LDAP browser & directory client
   ];
 

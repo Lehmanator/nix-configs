@@ -1,11 +1,8 @@
-{ inputs
-, config, lib, pkgs
-, ...
-}:
+{ cell , config, lib, pkgs , ... }:
 {
   imports = [
-    #./systemd-networkd.nix
-    ./systemd-initrd.nix
+    cell.nixosProfiles.systemd-initrd
+    #cell.nixosProfiles.systemd-networkd
   ];
 
   boot.iscsi-initiator = {
