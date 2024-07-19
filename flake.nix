@@ -135,18 +135,6 @@
             ];
           };
         };
-        #homeConfigurations = {
-        #  sam = inputs.home.lib.homeManagerConfiguration {
-        #    #pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        #    modules = [ ./hm/users/sam ];
-        #    extraSpecialArgs = { inherit inputs; user = "sam"; };
-        #  };
-        #  guest = inputs.home.lib.homeManagerConfiguration {
-        #    pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        #    #modules = [./hm/users/default];
-        #    extraSpecialArgs = { inherit inputs; user = "guest"; };
-        #  };
-        #};
       };
     };
 
