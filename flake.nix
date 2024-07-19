@@ -41,11 +41,6 @@
                 self.nixosConfigurations);
             });
         };
-        #pops.omnibus = inputs.omnibus.pops.self.addLoadExtender {
-        #  load.inputs = {
-        #    inputs = {nixpkgs = inputs.nixpkgs.legacyPackages.${system};};
-        #  };
-        #};
       };
       flake = let
         mkSystem = {
@@ -151,34 +146,6 @@
         #    #modules = [./hm/users/default];
         #    extraSpecialArgs = { inherit inputs; user = "guest"; };
         #  };
-        #};
-
-        #pops = {
-        #  nixosModules = inputs.omnibus.pops.nixosModules.addLoadExtender {
-        #    load = {src = ./nixos/modules;};
-        #  };
-        #  nixosProfiles = inputs.omnibus.pops.nixosProfiles.addLoadExtender {
-        #    load = {
-        #      src = ./nixos/profiles;
-        #      inputs = {inherit inputs;};
-        #    };
-        #  };
-        #  homeModules = inputs.omnibus.pops.homeProfiles.addLoadExtender {
-        #    load = {
-        #      src = ./hm/modules;
-        #      inputs = {inherit inputs;};
-        #    };
-        #  };
-        #  homeProfiles = inputs.omnibus.pops.homeProfiles.addLoadExtender {
-        #    load = {
-        #      src = ./hm/profiles;
-        #      inputs = {inherit inputs;};
-        #    };
-        #  };
-        #  #omnibus = forAllSystems (system:
-        #  #  inputs.omnibus.pops.self.addLoadExtender {
-        #  #    load.inputs = { inputs = {nixpkgs = inputs.nixpkgs.legacyPackages.${system};}; };
-        #  #});
         #};
       };
     };
