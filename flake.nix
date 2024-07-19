@@ -1,135 +1,32 @@
 {
   description = "Personal Nix & NixOS configurations";
-  outputs = {
-    self,
-    nixpkgs,
-    nixos,
-    home,
-    nur,
-    flake-parts,
-    ...
-  } @ inputs:
+  outputs = { self, nixpkgs, nixos, home, nur, flake-parts, ... } @ inputs:
     flake-parts.lib.mkFlake {inherit inputs self;} {
       imports = [./parts];
       systems = ["x86_64-linux" "aarch64-linux" "riscv64-linux"];
-      perSystem = {
-        config,
-        lib,
-        pkgs,
-        system,
-        final,
-        ...
-      }: {
-        packages = {
+      perSystem = { config, lib, pkgs, system, final, ... }: {
+        packages = with lib; {
           inherit (inputs.disko.packages.${system}) disko disko-doc;
           #fajita-images = self.flake.nixosConfigurations.fajita.config.mobile.outputs.android-fastboot-images;
-          deploy =
-            nixpkgs.legacyPackages.${system}.writeText "cachix-deploy.json"
-            (builtins.toJSON {
-              agents =
-                inputs.nixpkgs.lib.mapAttrs
-                (host: cfg: cfg.config.system.build.toplevel)
-                (inputs.nixpkgs.lib.filterAttrs (host: cfg:
-                  cfg
-                  ? config
-                  && cfg.config ? system
-                  && cfg.config.system
-                  ? build
-                  && cfg.config.system.build ? toplevel
-                  && cfg.pkgs.stdenv.buildPlatform.system == system
-                  && cfg.config.services.cachix-agent.enable)
-                self.nixosConfigurations);
-            });
+          deploy = pkgs.writeText "cachix-deploy.json" (builtins.toJSON {
+            agents = mapAttrs (host: cfg: cfg.config.system.build.toplevel)
+              (filterAttrs (n: cfg: (hasAttrByPath ["config" "system" "build" "toplevel"] cfg)
+                && (cfg.pkgs.stdenv.buildPlatform.system == system)
+                && cfg.config.services.cachix-agent.enable
+              ) self.nixosConfigurations);
+          });
         };
       };
-      flake = let
-        mkSystem = {
-          host,
-          system ? "x86_64-linux",
-          user ? "sam",
-          # specialArgs ? {},
-          modules ? [],
-          ...
-        } @ args:
-          (import ./lib/flake/lehmanatorSystem.nix {inherit inputs self;}) {
-            #inputs.nixpkgs.lib.nixosSystem {
-            inherit system;
-            specialArgs = {
-              inherit inputs user;
-              # Instantiate all instances of nixpkgs in flake.nix to avoid creating new nixpkgs instances
-              # for every `import nixpkgs` call within submodules/subflakes. Saves time & RAM.
-              #  See:
-              #  - https://nixos-and-flakes.thiscute.world/nixos-with-flakes/downgrade-or-upgrade-packages
-              #  - https://nixos-and-flakes.thiscute.world/nixpkgs/multiple-nixpkgs
-              pkgs-stable = import inputs.nixpkgs-stable {
-                inherit system;
-                config.allowUnfree = true;
-              };
-              pkgs-unstable = import inputs.nixpkgs-unstable {
-                inherit system;
-                config.allowUnfree = true;
-              };
-              pkgs-master = import inputs.nixpkgs-master {
-                inherit system;
-                config.allowUnfree = true;
-              };
-              pkgs-staging = import inputs.nixpkgs-staging {
-                inherit system;
-                config.allowUnfree = true;
-              };
-              pkgs-staging-next = import inputs.nixpkgs-staging-next {
-                inherit system;
-                config.allowUnfree = true;
-              };
-            };
-            #// specialArgs;
-            modules = [./nixos/hosts/${host}] ++ modules;
-          };
-      in {
+      flake = {
         overlays = import ./nixos/overlays;
-        nixosConfigurations = {
-          fw = mkSystem {host = "fw";};
-          wyse = mkSystem {host = "wyse";};
-          fajita = nixos.lib.nixosSystem {
-            system = "aarch64-linux";
-            specialArgs = {
-              inherit inputs;
-              user = "sam";
-            };
-            modules = [
-              {
-                _module.args = {
-                  inherit inputs;
-                  user = "sam";
-                };
-              }
-              (import "${inputs.mobile-nixos}/lib/configuration.nix" {
-                device = "oneplus-fajita";
-              })
-              ./nixos/hosts/fajita
-              inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
-            ];
-          };
-          fajita-minimal = nixos.lib.nixosSystem {
-            system = "aarch64-linux";
-            specialArgs = {
-              inherit inputs;
-              user = "sam";
-            };
-            modules = [
-              {
-                _module.args = {
-                  inherit inputs;
-                  user = "sam";
-                };
-              }
-              (import "${inputs.mobile-nixos}/lib/configuration.nix" {
-                device = "oneplus-fajita";
-              })
-              ./nixos/hosts/fajita/minimal.nix
-              inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
-            ];
-          };
+        nixosConfigurations = let
+          mkSystem = import ./lib/flake/mkSystem.nix { inherit inputs self; hostsDir = ./nixos/hosts; };
+          mkSystems = builtins.mapAttrs (n: v: mkSystem ({ host = n; } // v));
+        in mkSystems {
+          fw             = { device = "laptop"; };
+          wyse           = {};
+          fajita         = { mobile = true; };
+          fajita-minimal = { mobile = true; };
         };
       };
     };
