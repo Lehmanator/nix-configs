@@ -41,7 +41,7 @@
         skip-levels = 2;
       };
       line-number = "relative";
-      line-numbers.min-width = 2;
+      # line-numbers.min-width = 2;
 
       middle-click-paste = true;
       mouse = true;
