@@ -90,10 +90,6 @@
         nixosConfigurations = {
           fw = mkSystem {host = "fw";};
           wyse = mkSystem {host = "wyse";};
-          #installer = nixos.lib.nixosSystem {
-          #  specialArgs = { inherit inputs; user = "sam"; };
-          #  modules = [ ./profiles/nixos/installer ];
-          #};
           fajita = nixos.lib.nixosSystem {
             system = "aarch64-linux";
             specialArgs = {
