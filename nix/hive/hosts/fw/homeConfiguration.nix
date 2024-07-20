@@ -1,11 +1,12 @@
 { inputs, cell, super, }:
 let
-  modules = with inputs;
-    [
-      # emanote.homeManagerModule.default
-      # sops-nix.homeManagerModules.sops
-      nix-flatpak.homeManagerModules.nix-flatpak
-    ];
+  inherit (super.bee) pkgs;
+  modules = with inputs; [
+   # inputs.omnibus.src.hive.beeModule
+    # emanote.homeManagerModule.default
+    # sops-nix.homeManagerModules.sops
+    nix-flatpak.homeManagerModules.nix-flatpak
+  ];
   profiles = with cell.homeProfiles; [
     abook
     app-bitwarden
@@ -92,6 +93,7 @@ let
     gtk
     helix
     helm
+    ibus
     k9s
     lang-nodejs
     lang-python
@@ -166,16 +168,35 @@ let
     xdg
     yubikey
     yuzu
+
+    # test
   ];
 in
 {
   inherit (super) bee;
-  home = rec {
-    inherit (super.meta) stateVersion;
-    username = "sam";
-    homeDirectory = "/home/${username}";
-  };
-  imports = with inputs;
-    [{ _module.args = super.specialArgs; } inputs.omnibus.src.hive.beeModule]
-    ++ modules ++ profiles;
+  # sops.defaultSopsFile = inputs.self + /nix/hive/userProfiles/sam/secrets/default.yaml;
+  # services.openssh.enable = true;
+  imports = pkgs.lib.flatten
+  # [
+  modules ++ [
+    # { imports = modules; }
+    { _module.args = super.specialArgs; }
+    ({config, ...}: { 
+      imports = profiles;
+      home = rec {
+        inherit (super.meta) stateVersion;
+        # username = "sam";
+        homeDirectory = "/home/${config.home.username}";
+      };
+    })
+    # ({config, ...}: {
+    #    sops = {
+    #       defaultSopsFile = inputs.self + /nix/hive/userProfiles/sam/secrets/default.yaml;
+    #       age.sshKeyPaths = [ "${config.home.homeDirectory}/.ssh/id_ed25519" ];
+    #    };
+    # })
+    # { imports = modules; }
+  ];
+  # ] ++ modules;
+  # ] ++ profiles;
 }

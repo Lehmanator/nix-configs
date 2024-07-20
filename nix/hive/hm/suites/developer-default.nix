@@ -1,56 +1,17 @@
+{ inputs, cell, config, lib, pkgs, ... }:
 {
-  inputs,
-  cell, # , cell, nixosConfig, osConfig
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
-  imports = [
-    cell.homeProfiles.abook
-    cell.homeProfiles.bat
-    cell.homeProfiles.cachix-agent
-    cell.homeProfiles.editorconfig
-    cell.homeProfiles.eza
-    cell.homeProfiles.direnv
-    cell.homeProfiles.distrobox
-    cell.homeProfiles.documentation
-    cell.homeProfiles.fetchers
-    cell.homeProfiles.fonts
-    cell.homeProfiles.fzf
-    cell.homeProfiles.git-base
-    cell.homeProfiles.gpg
-    #cell.homeProfiles.helix
-    cell.homeProfiles.helm
-    cell.homeProfiles.k9s
-    cell.homeProfiles.lang-nodejs
-    cell.homeProfiles.lang-python
-    cell.homeProfiles.lang-rust
-    cell.homeProfiles.ls
-    cell.homeProfiles.lsd
-    cell.homeProfiles.navi
-    cell.homeProfiles.neovim
-    #cell.homeProfiles.nix.default
-    cell.homeProfiles.ollama
-    cell.homeProfiles.pls
-    cell.homeProfiles.recoll
-    cell.homeProfiles.ripgrep
-    cell.homeProfiles.shell-base
-    cell.homeProfiles.shell-aliases
-    cell.homeProfiles.social-dl
-    cell.homeProfiles.social-sleuth
-    cell.homeProfiles.starship
-    cell.homeProfiles.tmux
-    cell.homeProfiles.vm
-    cell.homeProfiles.xdg
-
-    #./apps
-    #./gnome
-
-    cell.homeProfiles.role-developer
-    cell.homeProfiles.role-admin-activedirectory
-    cell.homeProfiles.role-admin-azure
-    cell.homeProfiles.role-admin-windows.all
+  imports = with cell.homeProfiles; [ abook bat
+    cachix-agent editorconfig eza direnv distrobox
+    documentation fetchers fonts fzf git-base gpg
+    #helix
+    helm ibus k9s lang-nodejs lang-python lang-rust
+    ls lsd navi neovim
+    #nix.default
+    ollama pls recoll ripgrep shell-base shell-aliases
+    social-dl social-sleuth starship tmux vm xdg
+    #./apps #./gnome
+    role-developer role-admin-activedirectory
+    role-admin-azure role-admin-windows.all
   ];
 
   home = {
