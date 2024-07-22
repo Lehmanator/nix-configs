@@ -27,7 +27,7 @@
     ./none-ls.nix # # Integration w/ LSP
     ./nvim-autopairs.nix # # Pair matching
     ./nvim-bqf.nix # #
-    ./nvim-cmp.nix # # Completion engine
+    # ./nvim-cmp.nix # # Completion engine
     ./nvim-colorizer.nix # # Color highlighter
     #./nvim-lightbulb.nix #  # Code Actions
     ./nvim-tree.nix # # File tree

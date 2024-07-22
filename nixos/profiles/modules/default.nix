@@ -14,7 +14,7 @@
     #./nixified-ai.nix
     #./nixos-generators.nix
     #./nixos-images.nix
-    ./nixvim.nix
+    # ./nixvim.nix
     #./quick-nix-registry.nix
     ./sops.nix
 

@@ -1,14 +1,10 @@
 { inputs
-, config
-, lib
-, pkgs
+, config, lib, pkgs
 , editor ? "nixvim"
 , ...
 }:
 {
-  imports = [
-    ./neovim.nix
-  ];
+  # imports = [ ./neovim.nix ];
 
   # --- Default Editor ---
   #programs.neovim.defaultEditor = editor == "neovim";

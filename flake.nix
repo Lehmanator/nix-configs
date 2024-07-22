@@ -190,7 +190,7 @@
     arkenfox.url = "github:dwarfmaster/arkenfox-nixos";
     arkenfox.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.url = "github:nix-community/nixvim";
-    nixvim.inputs.nixpkgs.follows = "nixpkgs";
+    nixvim.inputs.nixpkgs.follows = "nixos";
     declarative-flatpak.url = "github:GermanBread/declarative-flatpak";
     declarative-flatpak.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";

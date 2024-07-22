@@ -52,19 +52,19 @@
 {
   imports = [
     #inputs.nixvim.homeManagerModules.nixvim
-    ../editorconfig.nix
-    ../nixvim/keymaps.nix
-    ./colorschemes
-    ./langs
-    ./plugins
-    ./styles
+    # ../editorconfig.nix
+    # ../nixvim/keymaps.nix
+    # ./colorschemes
+    # ./langs
+    # ./plugins
+    # ./styles
   ];
 
   # --- Nixvim ---------------------------------------------
   programs.nixvim = {
-    enable = true;
+    # enable = true;
     enableMan = false; # Enable manpages for nixvim options
-    defaultEditor = true;
+    # defaultEditor = true;
     options = {
       # --- Lines ---
       number = true;
