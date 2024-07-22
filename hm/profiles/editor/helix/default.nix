@@ -12,6 +12,7 @@
 
   programs.helix = {
     enable = true;
+    defaultEditor = true;
     settings.theme = "adwaita-dark";
     settings.editor = {
       auto-completion = true;
