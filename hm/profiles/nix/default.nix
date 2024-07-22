@@ -1,20 +1,15 @@
 {
   inputs,
-  overlays,
-  packages,
-  modules,
-  templates,
+  config, lib, pkgs,
   osConfig,
-  config,
-  lib,
-  pkgs,
+  # overlays,
+  # packages,
+  # modules,
+  # templates,
   ...
-}: let
-  mkRegistryJSON = reg:
-    builtins.toJSON {
-      version = 2;
-      flakes = lib.mapAttrsToList (n: v: {inherit (v) from to exact;}) reg;
-    };
+}:
+let
+  mkRegistryJSON = reg: builtins.toJSON { version = 2; flakes = lib.mapAttrsToList (n: v: {inherit (v) from to exact;}) reg; };
 in {
   imports = [
     ./access-tokens.nix
@@ -25,25 +20,20 @@ in {
     #./nixpkgs.nix
   ];
 
-  # TODO: Follow system, fallback to pkgs.nixUnstable
-  #nix = lib.recursiveUpdate osConfig.nix {
   nix = {
-    package = lib.mkDefault pkgs.nixVersions.latest; # Needed for use-xdg-base-directories
+    package = lib.mkDefault pkgs.nixVersions.latest;
     # TODO: Handle NixOS using system NIX_PATH when `home-manager.useGlobalPkgs=true`
     #settings.nix-path = lib.mkDefault [ "${config.xdg.configHome}/nix/inputs" ];
     #settings.nix-path = [ "${config.xdg.configHome}/nix/inputs" ];
     #settings.nix-path = (osConfig.nix.nixPath or [ ]) ++ [ "${config.xdg.configHome}/nix/inputs" ];
   };
 
-  xdg.configFile =
-    lib.recursiveUpdate {
-      "nix/registry.json".text =
-        mkRegistryJSON osConfig.nix.registry or config.nix.registry;
-    } (lib.mapAttrs' (name: value: {
-        name = "nix/inputs/${name}";
-        value = {source = value.outPath;};
-      })
-      inputs);
+  xdg.configFile = lib.recursiveUpdate {
+    "nix/registry.json".text = mkRegistryJSON osConfig.nix.registry or config.nix.registry;
+  } (lib.mapAttrs' (name: value: {
+    name = "nix/inputs/${name}";
+    value = {source = value.outPath;};
+  }) inputs);
 
   # Keep legacy nix-channels in sync w/ flake inputs (for tooling compat)
   # TODO: Same for NixOS, conditionally if system is NixOS
@@ -60,6 +50,23 @@ in {
       nix-closure-tree = "nix-store -q --tree `which $1`"; # arg not at end of alias
       nix-dependencies = "nix-store -q --references `which $1`";
       nix-dependencies-reverse = "nix-store -q --referrers `which $1`";
+      flake = "nix flake";
+      nf = "nix flake";
+      repl = "nix repl";
+      nfs = "nix flake show";
+      nfsp = "nix flake show git+$(${pkgs.wl-clipboard-rs}/bin/wl-paste)";
+      build = "nix build";
+      derivation = "nix derivation";
+      develop = "nix develop";
+      fmt = "nix fmt";
+      nedit = "nix edit";
+      nenv = "nix env";
+      nrun = "nix run";
+      # npkg = "nix run nixpkgs#$(read -p \"Enter a package name\")";
+      store = "nix store";
+      why-depends = "nix why-depends";
+      upgrade-nix = "nix upgrade-nix";
+      profile = "nix profile";
     };
   };
 }
