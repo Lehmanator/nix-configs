@@ -2,7 +2,7 @@
 { host, system ? "x86_64-linux", mobile ? false, ... }@sysArgs:
 let
   lehmanatorSystem = import ./lehmanatorSystem.nix importArgs;
-  inherit (inputs.nixpkgs.lib) hasSuffix removeSuffix optionals;
+  inherit (inputs.nixos.lib) hasSuffix removeSuffix optionals;
   host = removeSuffix "-minimal" sysArgs.host;
   hostEntry = hostsDir + "/${host}/${if hasSuffix "-minimal" sysArgs.host then "minimal" else "default"}.nix";
 

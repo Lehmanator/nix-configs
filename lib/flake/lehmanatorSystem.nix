@@ -1,13 +1,13 @@
 { inputs, self, hostsDir, user ? "sam", ... }:
 let
-  lehmanatorSystem = inputs.nixpkgs.lib.makeOverridable ({
+  lehmanatorSystem = inputs.nixos.lib.makeOverridable ({
     modules ? [],
     baseModules ? [],
     installer ? {},
     system ? "x86_64-linux",
     specialArgs ? {},
   }@overrideArgs: let
-    inherit (inputs.nixpkgs.lib) optionalAttrs nixosSystem;
+    inherit (inputs.nixos.lib) optionalAttrs nixosSystem;
     selfSystem = nixosSystem {
       inherit (overrideArgs) specialArgs;
       modules = baseModules ++ modules ++ [
