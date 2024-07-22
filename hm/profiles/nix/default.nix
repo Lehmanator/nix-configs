@@ -10,6 +10,7 @@
 }:
 let
   mkRegistryJSON = reg: builtins.toJSON { version = 2; flakes = lib.mapAttrsToList (n: v: {inherit (v) from to exact;}) reg; };
+  clip-bin = "${pkgs.wl-clipboard}/bin/wl-paste";
 in {
   imports = [
     ./access-tokens.nix
@@ -54,7 +55,7 @@ in {
       nf = "nix flake";
       repl = "nix repl";
       nfs = "nix flake show";
-      nfsp = "nix flake show git+$(${pkgs.wl-clipboard-rs}/bin/wl-paste)";
+      nfsp = "nix flake show git+$(${clip-bin})";
       build = "nix build";
       derivation = "nix derivation";
       develop = "nix develop";
