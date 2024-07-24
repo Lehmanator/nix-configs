@@ -61,7 +61,7 @@
     nixos-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
     nixos-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos.follows = "nixos-stable";
-    home.url = "github:nix-community/home-manager";
+    home.url = "github:nix-community/home-manager/release-24.05";
     home.inputs.nixpkgs.follows = "nixos";
     home-extra-xhmm.url = "github:schuelermine/xhmm";
     system-manager.url = "github:numtide/system-manager";
