@@ -52,7 +52,7 @@ in
   boot = {
     lanzaboote = mkDefault {
       enable =  true;
-      enrollKeys = true;
+      # enrollKeys = true;
       configurationLimit = config.boot.loader.systemd-boot.configurationLimit or 20;
       pkiBundle = "/etc/secureboot"; #config.sops.secrets.secureboot-keys.path;
       # publicKeyFile  = config.sops.secrets.secureboot-pubkey.path;
