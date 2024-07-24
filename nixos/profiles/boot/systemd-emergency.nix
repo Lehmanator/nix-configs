@@ -1,23 +1,17 @@
-{ inputs, config, lib, pkgs, modulesPath, ... }:
-{
-  imports = [
-    #./crash-dump.nix     # ???
-    #./systemd-debug.nix  # ???
-  ];
-
-  # --- systemd Emergency Mode ---
+{ config, lib, pkgs, ... }: {
   systemd.enableEmergencyMode = true;
   boot.initrd.systemd = {
-    emergencyAccess = true;
-    enableEmergencyMode = true;
-    initrdBin = [ "btrfs" "btrfs-progs" ]; # Packages to include in /bin for the stage 1 emergency shell
-    extraBin = [ "btrfs" "btrfs-progs" ]; # Packages to include in /bin for the stage 1 emergency shell
-  };
+    # TODO: Set to hashed super user password to enable authentication in emergency mode
+    emergencyAccess = lib.mkDefault true;
+    enableEmergencyMode = lib.mkDefault true;
 
-  # Print out default bootloader name & its config
-  boot.extraInstallCommands = ''
-    default_cfg=$(cat /boot/loader/loader.conf | grep default | awk '{print $2}')
-    init_value=$(cat /boot/loader/entries/$default_cfg | grep init= | awk '{print $2}')
-    sed -i "s|@INIT@|$init_value|g" /boot/custom/config_with_placeholder.conf
-  '';
+    # Packages to include in /bin for the stage 1 emergency shell
+    initrdBin = [ pkgs.btrfs pkgs.btrfs-progs ];
+
+    # extraBin  = {
+    #   umount = "${pkgs.util-linux}/bin/umount";
+    #   btrfs = "${lib.getExe pkgs.btrfs}";
+    #   btrfs-progs = "${lib.getExe pkgs.btrfs-progs}";
+    # };
+  };
 }

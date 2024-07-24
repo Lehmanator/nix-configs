@@ -1,11 +1,4 @@
-{ inputs
-, config
-, lib
-, pkgs
-, user
-, ...
-}:
-{
+{ config, lib, pkgs, user, ... }: {
   security.tpm2 = {
     enable = true;
     #applyUdevRules = true;
@@ -30,5 +23,8 @@
   #  endorsementCred = "${config.services.tcsd.stateDir}/endorsement.cert";
   #  platformCred = "${config.services.tcsd.stateDir}/platform.cert";
   #};
-  users.extraGroups.tss.members = [ user ];
+  users.extraGroups.${config.security.tpm2.tssGroup}.members = [ user ];
+
+  boot.initrd.systemd.enableTpm2 = lib.mkDefault config.security.tpm2.enable;
+  # virtualisation.tpm.enable = lib.mkDefault config.security.tpm2.enable;
 }
