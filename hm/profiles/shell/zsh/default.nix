@@ -24,7 +24,7 @@ in
     #prezto.editor.keymap = "vi";
 
     # --- Completion ---
-    enableAutosuggestions = true;
+    autosuggestion.enable = true;
     enableCompletion = false;
     completionInit = ''
       autoload -U compinit && compinit

@@ -13,7 +13,7 @@
   # --- Qt Applications ---
   qt = {
     enable = true;
-    platformTheme = "gnome";
+    platformTheme.name = "adwaita";
     style.package = pkgs.adwaita-qt;
     style.name = "adwaita-dark";
   };
