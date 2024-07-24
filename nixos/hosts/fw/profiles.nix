@@ -8,6 +8,7 @@
   imports = [
     ../../profiles
     ../../profiles/boot
+    # ../../profiles/boot/secureboot.nix
     ../../profiles/desktop
     ../../profiles/desktop/de/gnome
     ../../profiles/hardware/display
