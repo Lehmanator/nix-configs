@@ -29,7 +29,10 @@
   ];
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
   console.useXkbConfig = true;
-  hardware.enableAllFirmware = true;
+  hardware = {
+    enableAllFirmware = true;
+    framework.enableKmod = true;
+  };
   networking.hostName = "fw";
 
   # --- Users ---
