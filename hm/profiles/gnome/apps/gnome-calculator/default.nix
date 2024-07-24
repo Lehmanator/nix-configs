@@ -1,5 +1,6 @@
 { config, lib, pkgs, ... }: {
-  home.packages = [ pkgs.gnome-calculator ];
+  # home.packages = [ pkgs.gnome-calculator ]; # unstable
+  home.packages = [ pkgs.gnome.gnome-calculator ];
   dconf.settings."org/gnome/calculator" = {
     #button-mode = "programming";
     show-thousands = true;

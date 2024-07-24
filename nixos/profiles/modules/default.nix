@@ -5,7 +5,7 @@
     ./arion.nix
     #./colmena.nix
     #./disko.nix
-    ./flake-utils-plus.nix
+    # ./flake-utils-plus.nix
     ./home-manager.nix
     #./impermanence.nix
     ./lanzaboote.nix
@@ -14,7 +14,7 @@
     #./nixified-ai.nix
     #./nixos-generators.nix
     #./nixos-images.nix
-    # ./nixvim.nix
+    #./nixvim.nix
     #./quick-nix-registry.nix
     ./sops.nix
 

@@ -62,7 +62,7 @@
     nixos-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos.follows = "nixos-stable";
     home.url = "github:nix-community/home-manager";
-    home.inputs.nixpkgs.follows = "nixpkgs";
+    home.inputs.nixpkgs.follows = "nixos";
     home-extra-xhmm.url = "github:schuelermine/xhmm";
     system-manager.url = "github:numtide/system-manager";
     system-manager.inputs.flake-utils.follows = "flake-utils";

@@ -29,12 +29,12 @@ in {
     #settings.nix-path = (osConfig.nix.nixPath or [ ]) ++ [ "${config.xdg.configHome}/nix/inputs" ];
   };
 
-  xdg.configFile = lib.recursiveUpdate {
-    "nix/registry.json".text = mkRegistryJSON osConfig.nix.registry or config.nix.registry;
-  } (lib.mapAttrs' (name: value: {
-    name = "nix/inputs/${name}";
-    value = {source = value.outPath;};
-  }) inputs);
+  # xdg.configFile = lib.recursiveUpdate {
+  #   "nix/registry.json".text = mkRegistryJSON osConfig.nix.registry or config.nix.registry;
+  # } (lib.mapAttrs' (name: value: {
+  #   name = "nix/inputs/${name}";
+  #   value = {source = value.outPath;};
+  # }) inputs);
 
   # Keep legacy nix-channels in sync w/ flake inputs (for tooling compat)
   # TODO: Same for NixOS, conditionally if system is NixOS

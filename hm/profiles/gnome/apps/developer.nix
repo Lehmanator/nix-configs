@@ -6,10 +6,16 @@
     pkgs.gitg #                  # Graphical Git client
     pkgs.gnome-builder #         # IDE for developing GNOME apps
     pkgs.gnome-doc-utils #       # Documentation utils
-    pkgs.dconf-editor #          # Dconf setting editor
-    pkgs.devhelp #               # Developer documentation viewer
-    pkgs.ghex #                  # GTK hex editor
-    pkgs.zenity #                #
+
+    # FIXME: unstable renamed pkgs
+    # pkgs.dconf-editor #          # Dconf setting editor
+    # pkgs.devhelp #               # Developer documentation viewer
+    # pkgs.ghex #                  # GTK hex editor
+    # pkgs.zenity #                #
+    pkgs.gnome.dconf-editor #    # Dconf setting editor
+    pkgs.gnome.devhelp           # Developer documentation viewer
+    pkgs.gnome.ghex #            # GTK hex editor
+    pkgs.gnome.zenity #          #
 
     pkgs.elastic #               # Design spring animations
     pkgs.meld #                  # Visual diff

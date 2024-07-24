@@ -7,7 +7,9 @@
     pkgs.gcr
     pkgs.gcr_4
     pkgs.adw-gtk3
-    pkgs.adwaita-icon-theme
+    # pkgs.adwaita-icon-theme
+    # pkgs.gnome-themes-extra
+    pkgs.gnome.adwaita-icon-theme
     pkgs.gnome-themes-extra
     pkgs.simp1e-cursors
     #pkgs.nur.repos.federicoschonborn.morewaita

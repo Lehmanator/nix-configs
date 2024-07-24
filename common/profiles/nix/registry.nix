@@ -6,17 +6,17 @@
   ];
 
   nix = {
-    generateNixPathFromInputs = true;
-    generateRegistryFromInputs = true;
-    linkInputs = true;
+    # generateNixPathFromInputs = lib.mkDefault true;
+    # generateRegistryFromInputs = lib.mkDefault true;
+    # linkInputs = lib.mkDefault true;
     #localRegistry = {
     #  enable = true;
     #  cacheGlobalRegistry = true;
     #  noGlobalRegistry = false;
     #};
     settings = {
-      use-registries = true;
-      flake-registry = lib.mkDefault "https://channels.nixos.org/flake-registry.json";
+      use-registries = lib.mkDefault true;
+      # flake-registry = lib.mkDefault "https://channels.nixos.org/flake-registry.json";
     };
   };
 }

@@ -1,24 +1,54 @@
 { inputs
-, config
-, lib
-, pkgs
+, config, lib, pkgs
 , ...
 }:
+# 
+let
+  sbctl = lib.getExe pkgs.sbctl;
+  enroll-script = pkgs.writeShellApplication "secureboot-encroll.sh" ''
+    echo 'Creating keys...'
+    echo '> sbctl create-keys'
+    ${sbctl} create-keys
+      \ && echo 'Created keys.'
+      \ || echo 'Failed to create keys.'
+    ${sbctl} verify
+  '';
+in
 {
 
   # --- SecureBoot ---
+  # https://github.com/nix-community/lanzaboote
+  # https://github.com/nix-community/lanzaboote/blob/master/docs/QUICK_START.md
   # https://wiki.archlinux.org/title/Secure_Boot#Booting_an_installation_medium
+  #
+  # Process:
+  # 1. Create keys
+  #   $ sudo sbctl create-keys
+  # 2. Configure NixOS secureboot (activate this profile)
+  # 3. Reboot into UEFI firmware settings
+  #   $ sudo systemctl reboot --firmware-setup
+  # 4. Enable Secure Boot in UEFI firmware
+  #   b. Select "Administrator Secure Boot"
+  #   c. Select "Erase all Secure Boot Settings"
+  #   d. Press "F10" to save and exit
+  # 4. Reboot
+  #   $ sudo systemctl reboot
+  # 5. Enroll keys
+  #   $ sudo sbctl enroll-keys --microsoft
+  # 6. Reboot
+  #   $ sudo systemctl reboot
+  # 7. Test
+  #   $ bootctl status
+  # 
   #
   # TODO: Lanzaboote
   # TODO: TPM2.0 authenticated boot
   # TODO: Boot counting
   #
 
-  imports = [
-    # TODO: Determine whether lanzaboote options important/necessary for SecureBoot.
-    # TODO: Determine whether lanzaboote module import still necessary for SecureBoot. (Included by default yet?)
-    inputs.lanzaboote.nixosModules.lanzaboote
-  ];
+  # TODO: Determine whether lanzaboote options important/necessary for SecureBoot.
+  # TODO: Determine whether lanzaboote module import still necessary for SecureBoot. (Included by default yet?)
+  imports = [ inputs.lanzaboote.nixosModules.lanzaboote ];
 
   boot = {
     bootspec = {
@@ -42,14 +72,12 @@
         canTouchEfiVariables = true;
         efiSysMountPoint = "/boot/efi"; # Default: `/boot`  # TODO: `XBOOTLDR` / `ESP` splitting. # TODO: Rewrite to `/efi`?
       };
-      # Initially, SecureBoot was only supported on GRUB2. # TODO: Check if still true.
-      grub.enable = lib.mkForce false;
+      grub.enable         = lib.mkForce false;
       systemd-boot.enable = lib.mkForce false;
     };
   };
 
-  environment.systemPackages = [
-    pkgs.sbctl # Util to sign Secure Boot keys, etc.
-  ];
+  # Util to sign Secure Boot keys, etc.
+  environment.systemPackages = [ pkgs.sbctl ];
 
 }
