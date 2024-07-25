@@ -1,34 +1,20 @@
-{ inputs
-, config
-, osConfig
-, lib
-, pkgs
-, ...
-}:
+{ config, lib, pkgs, osConfig, ... }:
 let
   defaults = {
-    substituters = [
-      "https://cache.nixos.org/"
-    ];
+    substituters = [ "https://cache.nixos.org/" ];
     extra-substituters = [ ];
-    trusted-substituters = [
-      "https://cache.nixos.org/"
-    ];
+    trusted-substituters = [ "https://cache.nixos.org/" ];
     extra-trusted-substituters = [ ];
-    trusted-public-keys = [
-      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-    ];
+    trusted-public-keys = [ "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" ];
     extra-trusted-public-keys = [ ];
   };
 in
 {
-  imports = [
-    # Use same caches as NixOS system. home-manager config will only define extra caches to add on top.
-    ../../../common/profiles/nix/cache/binary-caches.nix
-  ];
-
   # --- Binary Cache -------------------
   # TODO: Find more binary caches for big projects & common software
+  # Use same caches as NixOS system. home-manager config will only define extra caches to add on top.
+  imports = [ ../../../common/profiles/nix/binary-caches.nix ];
+
   nix.settings =
     if (osConfig ? home-manager && osConfig.home-manager.useGlobalPkgs)
     then osConfig.nix.settings
@@ -61,15 +47,12 @@ in
     };
 
   # TODO: Make dir `../cache` ?
-  #
   # TODO: Move this config to: `../cache/binary.nix`  # Use Nix binary caches
   # TODO: Move this config to: `../cache/cachix.nix`  # Use private Cachix binary cache
   # TODO: Move this config to: `../cache/ccache.nix`  # Use compilation cache
   # TODO: Move this config to: `../cache/distcc.nix`  # Use distributed ccache
   # TODO: Move this config to: `../cache/sccache.nix` # Use Rust cache
-  #
   # TODO: Move this config to: `../cache/host.nix`    # Host private Nix binary cache
-  #
   # Use the system's ccache
   home.sessionVariables = lib.mkIf osConfig.programs.ccache.enable {
     CCACHE_DIR = osConfig.programs.ccache.cacheDir;
