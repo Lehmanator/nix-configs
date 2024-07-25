@@ -20,7 +20,6 @@
     ../../profiles/hercules-ci.nix
 
     # --- Disabled ---
-    #../../profiles/hardware/fprintd.nix
     #../../profiles/virt/windows
     #../../../common/profiles/editor
 
@@ -29,7 +28,6 @@
     #../../profiles/hardware
     #../../profiles/locale
     #../../profiles/network
-    #../../profiles/piwc
     #../../profiles/security
     #../../profiles/security/sops.nix
     #../../profiles/shell

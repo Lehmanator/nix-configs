@@ -1,9 +1,4 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
+{ config, lib, pkgs, ... }:
 # Clear fprint storage
 # - https://github.com/nixvital/fprint-clear
 #
@@ -14,7 +9,6 @@
 #environment.systemPackages = lib.mkIf pkgs.system=="x86_64-linux" [inputs.fprint-clear.packages.${pkgs.system}.default];
 #
 {
-  imports = [ ];
   services.fprintd = {
     enable = true;
     #tod.enable = true;

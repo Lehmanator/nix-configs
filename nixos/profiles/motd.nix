@@ -1,10 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  user,
-  ...
-}: {
+{ config, lib, pkgs, user, ... }: {
   # --- Message of the Day (MotD) ---
   # Options:
   # - programs.rust-motd = { <rust-motd_config> };
@@ -54,12 +48,8 @@
       # TODO: Set banner width to function of: `config.programs.rust-motd.settings.global.progress_width`
       # TODO: Set figlet style/font with `-d <font>`
       banner = {
-        color =
-          lib.mkDefault
-          "black"; # black|red|green|yellow|blue|magenta|cyan|white|light<Color>
-        command =
-          lib.mkDefault
-          "echo '${config.networking.hostName}' | ${pkgs.figlet}/bin/figlet -c"; # sh command to generate banner
+        color = lib.mkDefault "black"; # black|red|green|yellow|blue|magenta|cyan|white|light<Color>
+        command = lib.mkDefault "echo '${config.networking.hostName}' | ${pkgs.figlet}/bin/figlet -c"; # sh command to generate banner
       };
 
       # Display status of docker containers.
@@ -121,7 +111,6 @@
       #  Containers = "containerd";
       #  CRI-O = "crio";
       #  Firewall = "nftables";
-      #  Fingerprint = "fprintd";
       #  "Firmware Update" = "fwupd";
       #  Geoclue = "geoclue";
       #  LibVirt = "libvirtd";
