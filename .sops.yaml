@@ -33,6 +33,14 @@ creation_rules:
           # TODO: Remove user keys
           - *age-user-sam-ssh-ed25519
           - *age-backup
+
+  - path_regex: nix/hive/(hm/(configs|users)|userProfiles)/sam/secrets/[^/]+\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
+    key_groups:
+      - age:
+          - *age-host-fw-ssh-ed25519
+          - *age-user-sam-ssh-ed25519
+          - *age-backup
+
   - path_regex: profiles/(common|darwin|droid|nixos|robotnix|wsl)/([^/]+/)+secrets\.(ya?ml|json|env|ini|bin|key|privkey|luks|lukskey)$
     key_groups:
       - age:
