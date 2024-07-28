@@ -3,11 +3,10 @@ let
   cfg = config.admin;
   inherit (lib.options) mkOption mkEnableOption;
   inherit (lib) mkDefault mkForce mkIf optional types;
-  
+ 
 in
 {
   imports = [];
-
   options.admin = {
     enable = mkEnableOption "Administrator User";
     username = mkOption {
@@ -49,5 +48,6 @@ in
     #     path = inputs.self + /nix/hive/users/${user}/secrets/default.yaml;  
     #   };
     # };
+
   };
 }
