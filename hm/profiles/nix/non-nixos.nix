@@ -1,17 +1,17 @@
-{ inputs, config, lib, pkgs, ... }:
+{ inputs, config, lib, pkgs, osConfig, ... }:
+let
+  isNixOS = lib.mkIf (lib.hasAttrsByPath ["environment" "systemPackages"] osConfig);
+in
 {
-  imports = [
-  ];
-
-  targets.genericLinux.enable = true;
-  home.sessionVariables.NIX_PATH = "nixpkgs=${inputs.nixpkgs}";
-  nixpkgs.overlays = [ inputs.nur.overlay ];
-  nix = {
-    package = pkgs.nixFlakes;
-    settings.experimental-features = [ "nix-command" "flakes" ];
+  targets.genericLinux.enable = isNixOS true;
+  home.sessionVariables.NIX_PATH = isNixOS "nixpkgs=${inputs.nixpkgs}";
+  nixpkgs.overlays = isNixOS [ inputs.nur.overlay ];
+  nix = isNixOS {
+    package = pkgs.nixVersions.latest;
+    settings.experimental-features = isNixOS [ "nix-command" "flakes" ];
     #registry.nixos.flake = inputs.nixos;
     #registry.darwin.flake = inputs.darwin;
-    registry.nixpkgs = {
+    registry.nixpkgs = isNixOS {
       flake = inputs.nixpkgs;
       from = {
         id = "nixpkgs";
@@ -21,7 +21,7 @@
   };
 
   # zsh doesnt always load ~/.profile on other distros
-  programs.zsh.envExtra = ''
+  programs.zsh.envExtra = isNixOS ''
     source "$HOME/.profile"
   '';
 

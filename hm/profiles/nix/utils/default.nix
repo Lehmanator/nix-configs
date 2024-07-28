@@ -1,29 +1,25 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-{
-
+{ inputs, config, lib, pkgs, ... }: {
   imports = [
+    #./cli.nix
     ./converters.nix
     ./direnv.nix
-    #./cli.nix
     #./devshell.nix
     #./diff.nix
     ./docs.nix
     #./editor.nix
+    ./linters.nix
+    ./manix.nix
+    ./misc.nix
     ./nix-alien.nix
     #./nix-index.nix
     #./plugins.nix
     ./updaters.nix
   ];
-  home.packages = let sys = pkgs.stdenv.system; in with inputs; [
-    # TODO: Add more utils
-    # TODO: Add package conversion utils
-    # TODO: Add config format conversion utils
 
+  # TODO: Add more utils
+  # TODO: Add package conversion utils
+  # TODO: Add config format conversion utils
+  home.packages = [
     # --- Nix Plugins --------
     pkgs.nix-plugins # Extensions for Nix
 

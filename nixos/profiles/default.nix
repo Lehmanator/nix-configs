@@ -9,7 +9,7 @@
 # TODO: Move all config that isn't NixOS-specific stuff to common file
 {
   imports = [
-    ../../common/profiles
+    ../../common/profiles/nix
 
     ./modules
 
@@ -53,10 +53,12 @@
   };
 
   # Enable extra info/metadata for packages
-  appstream.enable = true;
+  appstream.enable = lib.mkIf config.services.xserver.enable true;
 
   # Always load modules: USB controller, NVMe controller, SATA controller, USB gadgets/peripherals
   boot.initrd.availableKernelModules = ["xhci_pci" "nvme" "ahci" "usbhid" "usb_storage"];
+
+  environment.systemPackages = [pkgs.systemctl-tui];
 
   #environment.etc = let
   #  needsEscaping = s: null != builtins.match "[a-zA-Z0-9]+" s;

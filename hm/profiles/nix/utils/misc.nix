@@ -1,13 +1,6 @@
 { inputs, config, lib, pkgs, ... }:
 {
-  imports = [
-    ./cachix.nix
-    ./linters.nix
-    ./manix.nix
-    ./updaters.nix
-  ];
-
-  environment.systemPackages = [
+  home.packages = [
     pkgs.nix-doc # Search docs & Generate tags + plugin
     pkgs.nix-plugins # Misc Nix plugins
     pkgs.nix-du # Show sizes of Nix store paths

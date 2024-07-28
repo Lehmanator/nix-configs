@@ -15,7 +15,6 @@ in {
   imports = [
     ./access-tokens.nix
     ./binary-caches.nix
-    ./utils
     ./write-config.nix
     #./nix.nix
     #./nixpkgs.nix

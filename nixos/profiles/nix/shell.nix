@@ -1,10 +1,5 @@
-{
-  inputs,
-  config,
-  lib,
-  pkgs,
-  ...
-}: let
+{ config, lib, pkgs, ... }:
+let
   #mkAliasPrefix = pre: builtins.map (name: pre + name);
   #mkAliasPrefixNix = mkAliasPrefix "nix ";
   #mkAliasPrefixN   = mkAliasPrefix "n-";
@@ -210,13 +205,8 @@
   #mkNixShortcuts   = init: mkShortcuts "n-" "nix " init commands.nix.commands.all;
   #mkNixosShortcuts = init: mkShortcuts "nos-" "nixos-rebuild " "nixos" init subcmds.nixos;
 in {
-  imports = [
-    #../../../common/profiles/nix/shell.nix
-    #../../../common/profiles/_platforms/linux/nix/shell.nix
-  ];
-
-  environment.shellAliases =
-    {
+  # imports = [ ../../../common/profiles/nix/shell.nix ../../../common/profiles/_platforms/linux/nix/shell.nix ];
+  environment.shellAliases = {
       nixos = "nixos-rebuild";
       #nos = "nixos-rebuild";
       nrb = "nixos-rebuild";
