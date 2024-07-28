@@ -1,4 +1,4 @@
-{ pkgs, ...}:
+{ pkgs, ... }:
 {
   environment.systemPackages = [pkgs.cachix];
   nix.settings = {
