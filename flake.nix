@@ -67,7 +67,7 @@
     system-manager.url = "github:numtide/system-manager";
     system-manager.inputs.flake-utils.follows = "flake-utils";
     darwin.url = "github:lnl7/nix-darwin";
-    darwin.inputs.nixpkgs.follows = "nixpkgs";
+    darwin.inputs.nixpkgs.follows = "nixpkgs-darwin";
     # --- SnowflakeOS ----------------------------------------------
     snowflake.url = "github:snowflakelinux/snowflake-modules";
     snow.url = "github:snowflakelinux/snow";
