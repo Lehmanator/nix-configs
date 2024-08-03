@@ -1,11 +1,11 @@
 { inputs, lib, ... }: {
   imports = [
+    inputs.flake-utils-plus.nixosModules.autoGenFromInputs
     ./activation-script.nix
     ./cachix.nix
     ./nom.nix
     ./shell.nix
     #./ssh-serve-store.nix
-    inputs.flake-utils-plus.nixosModules.autoGenFromInputs
   ];
 
   # --- Registry ---
@@ -19,7 +19,7 @@
     settings.use-registries = lib.mkDefault true;
   };
   nixpkgs.flake = {
-    setNixPath = false;
+    setNixPath       = false;
     setFlakeRegistry = false;
   };
 
