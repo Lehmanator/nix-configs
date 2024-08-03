@@ -1,15 +1,8 @@
-{
-  inputs,
-  config,
-  lib,
-  pkgs,
-  user,
-  ...
-}:
-# TODO: Move all config that isn't NixOS-specific stuff to common file
+{ config, lib, pkgs, ... }:
 {
   imports = [
     ../../common/profiles/nix
+    # nixos/profiles/nix/shell.nix
 
     ./modules
 
@@ -34,10 +27,7 @@
     #./specialization.nix
     #./stylix.nix
 
-    #inputs.srvos.nixosModules.common
-    #inputs.srvos.nixosModules.mixins-nix-experimental
-    #inputs.srvos.nixosModules.mixins-trusted-nix-caches
-    #
+    #++ (with inputs.srvos.nixosModules; [common mixins-nix-experimental mixins-trusted-nix-caches]) ++ [
     #inputs.nix-data.nixosModules.nix-data
     #inputs.nix-index.nixosModules.nix-index { programs.nix-index-database.comma.enable = true; }
     #./nix/activation-script.nix
@@ -48,7 +38,7 @@
 
   # Mount /etc via overlay filesystem (faster activation)
   system.etc.overlay = {
-    enable = lib.mkDefault false;
+    enable  = lib.mkDefault false;
     mutable = lib.mkDefault true;
   };
 
