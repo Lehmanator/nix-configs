@@ -1,10 +1,10 @@
 { inputs
 , config, lib, pkgs
 , user
-, sshguard ? true
 , ...
 }:
 let
+  inherit (lib) mkDefault mkForce mkIf fold recursiveUpdate ;
   internal-tlds = ["local" "lan" "wan" ]; # [ "work" "home" ];
   keyFormats = [ "rsa" "ed25519" ];       # [ "3des" ]; # etc...
 
@@ -13,12 +13,10 @@ let
   # TODO: Mechanism for collecting publicKeys & network details from a colemena swarm
   # TODO: Add local  IP addresses (per network w/ static DNS)
   # TODO: Add public IP addresses (per network w/ static DNS?)
-  mkListFQQN = lib.lists.map (domainName: "${config.networking.hostName}.${domainName}");
+  mkListFQQN = builtins.map (domainName: "${config.networking.hostName}.${domainName}");
 
   # Creates a list of FQDNs (including internal network TLDs)
   mkListHosts = domains: ipAddrs: (mkListFQQN (domains ++ internal-tlds)) ++ ipAddrs ++ [ config.networking.hostName "localhost"];
-
-
   mkHostKeys = with config.sops.secrets; [
     { path = ssh-host-rsa-privkey.path;     type = "rsa";     bits = 4096; openSSHFormat = true; rounds = 100; }
     { path = ssh-host-ed25519-privkey.path; type = "ed25519"; openSSHFormat = true; }
@@ -31,17 +29,13 @@ let
     ];
   };
   #mkKnownHostsSelf = lib.lists.fold (keyType: kh: { "${config.networking.hostName}-${keyType}" = mkKnownHostSelf keyType; });
-  mkKnownHostsSelf = lib.lists.fold (a: b: lib.attrsets.recursiveUpdate a (mkKnownHostsSelf b)) {} keyFormats;
+  mkKnownHostsSelf = fold (a: b: recursiveUpdate a (mkKnownHostsSelf b)) {} keyFormats;
     #{ "${config.networking.hostName}-rsa" = mkKnownHostSelf "rsa";
     #  "${config.networking.hostName}-ed25519" = mkKnownHostSelf "ed25519"; };
-  mkConfigSSH = lib.attrsets.recursiveUpdate { hostKeys = mkHostKeys []; knownHosts = mkKnownHostsSelf; };
-
+  mkConfigSSH = recursiveUpdate { hostKeys = mkHostKeys []; knownHosts = mkKnownHostsSelf; };
 in
 {
-  imports = [
-    #./server/sshguard.nix
-    #./server/fail2ban.nix
-  ];
+  # imports = [./sshguard.nix ./fail2ban.nix ./tmate-ssh-server.nix];
 
   # --- Secrets ------------------------------------------------------
   #sops.secrets.ssh-host-rsa-privkey     = { owner = "root"; group = "root"; mode = "0600"; };
@@ -54,12 +48,8 @@ in
   services.openssh = {
     enable = true;
 
-    # TODO: Human users group: "@users"
-    # TODO: Nix remote builders group: "@builders"?
-    AllowGroups = ["sshd"];
-    AllowUsers = [ user ];
-
-    # If set, SSHD is socket-activated, w/ systemd starting an instance for each incoming connection instead of running permanently as a daemon.
+    # If set, SSHD is socket-activated, 
+    #  w/ systemd starting an instance for each incoming connection instead of running permanently as a daemon.
     # TODO: Enable to save CPU cycles
     startWhenNeeded = false;
 
@@ -76,11 +66,15 @@ in
       # Dynamic host to match the current config.
       #"${hostName}" = mkKnownHostsSelf;
 
-      cheetah = { publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHr+t441NIoYT5PkWy3UXpp9aGLowvYICUPE77yupNIE u0_a263@localhost"; #publicKeyFile = "/etc/ssh/hosts/cheetah.pub";
-        # publicKey = "";
-        hostNames = [ "cheetah"            "192.168.1.101"      "10.17.1.201"
-                      "cheetah.local"      "cheetah.lan"        "cheetah.wan"          "cheetah.home"
-                      "cheetah.piwine.com" "cheetah.lehman.run" "cheetah.samlehman.me"                ];
+      cheetah = { 
+        # publicKeyFile = "/etc/ssh/hosts/cheetah.pub";
+        publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHoHifjJL0fMBZDjNnXvSDhr0cwgkU80ybVeKRnly7Ku u0_a263@localhost";
+        hostNames = [
+          "cheetah"            "cheetah.tail3dfa6.ts.net" "100.100.1.1"
+          "cheetah.lan"        "cheetah.local"            "192.168.1.101"
+          "cheetah.wan"        "cheetah.local"            "cheetah.home"          #"cheetah.${domain}"
+          "cheetah.lehman.run" "cheetah.samlehman.dev"    "cheetah.samlehman.dev"
+        ];
       };
       cheetah-rsa = { publicKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCn5m9GuM7DgUwKEienhfXC38a2UTWCCHsXwJSeOeXaNegYeHcPMp1NTwJ04CV6YwXUzVjehyOtDFVQ7XvnwsjOYAK1suYIw5tt2LeejTk4cYnnplHEmoxvQuc6tLK62w3/ar+Ba6OEJdf+9Mv0uJSEYliX9sF/PPce3YrdMKYesn75qyU0xvnfDTsEyXh6ldwMUfLiviY/yfYWAyOPX2LoBWskpLtsPNVQm5Fyjqzm/CjKlv2ILZm5BH6PjLb+wa1bgk0aSFcx82CNVgY7Bh9aWnN+yzbIIzn4VSHOVV/RWQk8OfIZ3F2HBJ+OPZq3fEa9PVIGNCBmzjUxlTcofcNAeVc0LAbqV5PUwhKayCS1Lh3ehUNf83+L0hle4FYtvWu84GoQRf/0OmhOiVeaK6xmvNL7zSoWurTWlMCs9FZxPGMRb5KdmOqhHjGNd82tyGYGNkykzAgs14BZvmd4h0w7J98k5UOsF0a6fZnA3AQQwfQdrB4fKsuxGoWt4pD47UQ3KjO71OwYsVREvkkeRKnYMbV3zJ2SPRU1NoL2ZgptRdRjyFu5HqXndUwoEcgWT1FC5NQqj+r0PYyRzS7qMyHG9T2KvYd3jDXZNDYUvTGJfKvf2TDJ2m2Ix001go/68EdbdpRkVRMPoi2gg/K/WbvOwhDAaRh8a+A/0JfMNoo3vQ== u0_a263@localhost";
       };
@@ -95,18 +89,25 @@ in
       #};
     };
     # --- Networking ---
-    listenAddresses = [ #{ addr = "192.168.3.1"; port = 22;   }
-                        { addr = "0.0.0.0";     port = 2223; } ];
-    openFirewall = true;
+    listenAddresses = [
+      { addr = "0.0.0.0";     port = 2223; }
+      #{ addr = "192.168.3.1"; port = 22;   }
+    ];
+    openFirewall = mkDefault true;
     ports = [ 2224 2223 ];
 
-    settings = lib.mkForce {
+    settings = {
+      # TODO: Human users group: "@users"
+      # TODO: Nix remote builders group: "@builders"?
+      AllowGroups = ["sshd"];
+      AllowUsers  = [ user ];
+
       GatewayPorts = "no";                 # Whether remote hosts allowed to connect to ports forwarded for client. sshd_config(5)
-      KbdInteractiveAuthentication = true; # Whether keyboard-interactive authentication is allowed.
+      KbdInteractiveAuthentication = mkDefault true; # Whether keyboard-interactive authentication is allowed.
       PasswordAuthentication = false;      # (Dis)allow auth using passwords
       PermitRootLogin = "no";              # yes | without-password | prohibit-password | forced-commands-only | no
-      UseDns = true;                       # Lookup remote host name & check that resolved host name for remote IP maps to same IP.
-      X11Forwarding = true;    # (Dis)allow X11 connections to be forwarded.
+      UseDns = mkDefault true;             # Lookup remote host name & check that resolved host name for remote IP maps to same IP.
+      X11Forwarding = mkDefault true;      # (Dis)allow X11 connections to be forwarded.
       #LogLevel = "INFO";                   # QUIET | FATAL | ERROR | INFO | VERBOSE | DEBUG | DEBUG1 | DEBUG2 | DEBUG3
       # --- Crypto Algorithms ---
       #Ciphers = [ "chacha20-poly1305@openssh.com" "aes256-gcm@openssh.com" "aes128-gcm@openssh.com" "aes256-ctr"             "aes192-ctr"             "aes128-ctr" ];
@@ -114,7 +115,7 @@ in
       #Macs = [ "hmac-sha2-512-etm@openssh.com" "hmac-sha2-256-etm@openssh.com" "umac-128-etm@openssh.com" ];
     };
     # --- SFTP ---
-    allowSFTP = true;
+    allowSFTP = mkDefault true;
     #sftpFlags = [ "-f AUTHPRIV" "-l INFO:" ];
     #sftpServerExecutable = "internal-sftp";
 
@@ -140,7 +141,6 @@ in
   networking.dhcpcd.persistent = true;  # Set true if machine accepts SSH connections thru DHCP interfaces & clients should be notified when it shuts down.
 
   # --- SSH Security -------------------------------------------------
-  # --- sshguard ---
   services.sshguard = {         # Service to block IP addresses attempting SSH brute force attacks.
     enable = true;              # Enable sshguard service
     #attack_threshold = 30;     # Block attacker after cumulative attack score exceeds threshold. Most attacks' scores = 10
@@ -148,9 +148,8 @@ in
     blacklist_threshold = 120;  # Blacklist attacker after score exceeds threshold.
     blocktime = 120;            # Seconds to block attacker after exceeding threshold. Each subsequent block inc by 1.5x
     detection_time = 1000;      # Remember potential attackers for up to this many seconds before resetting score.
-    services = [ "sshd"
-      #"cockpit" "exim" "dovecot" "cucipop" "uwimap" "vsftpd" "postfix" "proftpd" "pure-ftpd"
-    ];                          # systemd services sshguard should receive logs from.
+    services = ["sshd"];        # systemd services sshguard should receive logs from.
+                                #  cockpit exim dovecot cucipop uwimap vsftpd postfix proftpd pure-ftpd
     whitelist = ["100.100.1.1" "100.65.77.40"];
   };
 
@@ -214,10 +213,6 @@ in
   #  sshAuthorizedKeysIntegration = true; # Make SSHD lookup authorized keys from SSS. The "ssh" SSS service must be enabled in the sssd configuration. Default=false
   #};
   #security.pam.services.<name>.sssdStrictAccess = false;  # Enforce SSSD access control.
-
-
-  # --- MOTD ---------------------------------------------------------
-  programs.rust-motd.enableMotdInSSHD = true;  # Let openssh print result when entering new ssh session. Incompatible w/ users.motd
 
   # --- tmate --------------------------------------------------------
   #services.tmate-ssh-server = {       # Service to share terminal sessions
