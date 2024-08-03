@@ -3,6 +3,7 @@
   outputs = { self, nixpkgs, nixos, home, nur, flake-parts, ... } @ inputs:
     flake-parts.lib.mkFlake {inherit inputs self;} {
       imports = [./parts];
+      debug = true;
       systems = ["x86_64-linux" "aarch64-linux" "riscv64-linux"];
       perSystem = { config, lib, pkgs, system, final, ... }: {
         packages = with lib; {
@@ -18,6 +19,7 @@
         };
       };
       flake = {
+        inherit inputs;
         overlays = import ./nixos/overlays;
         nixosConfigurations = let
           mkSystem = import ./lib/flake/mkSystem.nix { inherit inputs self; hostsDir = ./nixos/hosts; };
