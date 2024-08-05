@@ -1,10 +1,4 @@
-{ inputs
-, config
-, lib
-, pkgs
-, user
-, ...
-}:
+{ config, lib, pkgs, user, ... }:
 {
   imports = [
     #./dns
@@ -13,7 +7,8 @@
     ./networkmanager.nix
     #./rxe.nix
     #./systemd-networkd.nix
-    ./tailscale
+    ../tailscale.nix
+    # ./tailscale
     #./wifi
     ./wireguard
     #./sits.nix
