@@ -22,6 +22,10 @@ in
     pkgs.bleachbit #      # Wipe disks
   ];
 
+  # TODO: Adapt NixOS module for home-manager
+  # TODO: systemd unit for Goldwarden daemon
+  programs.firefox.nativeMessagingHosts = [ pkgs.goldwarden ];
+
   services.flatpak.packages = lib.mkIf prefer-flatpak [
     "org.gnome.World.Secrets"
     "com.belmoussaoui.Authenticator"

@@ -1,12 +1,5 @@
-{ self
-, inputs
-, config
-, lib
-, pkgs
-, ...
-}:
+{ config, lib, pkgs, ... }: {
 # Default apps for GNOME configuration
-{
   imports = [
     #./epiphany.nix
     ./dev.nix
@@ -16,6 +9,7 @@
   environment.systemPackages = [
     pkgs.authenticator # GTK4 Two-Factor Auth code generator
     pkgs.gnome.gnome-software
+    pkgs.goldwarden    # Bitwarden GTK client
   ];
 
   programs.evince.enable = true;
