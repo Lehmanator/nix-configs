@@ -22,6 +22,7 @@
     ./adb.nix
     ./motd.nix
     ./normalize.nix
+    ./ollama.nix
     ./sshd.nix
     #./auto-upgrade.nix
     #./specialization.nix
