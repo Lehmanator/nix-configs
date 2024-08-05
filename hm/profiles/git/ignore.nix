@@ -13,7 +13,7 @@
     "*.DS_STORE"
 
     # --- keys ---
-    "*.key"
+    # "*.key"
     "*.priv"
     "*.privkey"
     "*.luks"
