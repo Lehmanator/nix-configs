@@ -91,9 +91,10 @@ in
     ]
     # steam-run - Quick way to run software w/o having to find libraries, etc. More complete than buildFHSUserEnv. Unfree libs included
     # Usage: $ steam-run <binary>
-    ++ lib.optional
-      (config.nixpkgs.config.allowUnfree && pkgs.system == "x86_64-linux")
-      pkgs.steam-run;
+    # ++ lib.optional
+    #   (config.nixpkgs.config.allowUnfree && pkgs.system == "x86_64-linux")
+    #   pkgs.steam-run
+    ;
 
   # --- Finding Libraries ----------------------------------
   # System-wide: Set env vars to use LD paths with standard set of libs.
