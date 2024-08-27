@@ -1,20 +1,20 @@
 { inputs, cell, config, lib, pkgs, ... }: {
-  imports = [
-    #cell.homeProfiles.app-pidgin
-    #cell.homeProfiles.app-discord
-    #cell.homeProfiles.app-twitch
+  imports = with cell.homeProfiles; [
+    #app-pidgin
+    #app-discord
+    #app-twitch
 
     # --- SMS ----------------
-    # cell.homeProfiles.app-gnome-chatty
+    # gnome-app-chatty
 
     # --- XMPP ---------------
-    cell.homeProfiles.app-gnome-dino
+    gnome-app-dino
 
     # --- Signal -------------
-    # cell.homeProfiles.app-gnome-flare
+    # gnome-app-flare
 
     # --- Matrix -------------
-    # cell.homeProfiles.app-gnome-fractal
+    # gnome-app-fractal
   ];
 
   home.packages = [

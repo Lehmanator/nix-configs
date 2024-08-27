@@ -1,14 +1,14 @@
 { cell, config, lib, pkgs, ... }: {
   imports = [
     #inputs.mobile.homeManagerModules.?
-    #cell.homeProfiles.app-gnome-megapixels
-    #cell.homeProfiles.app-gnome-snapshot
-    #cell.homeProfiles.app-gnome-phosh-mobile-settings
+    #cell.homeProfiles.gnome-app-megapixels
+    #cell.homeProfiles.gnome-app-snapshot
+    #cell.homeProfiles.gnome-app-phosh-mobile-settings
   ];
 
   home.packages = [
-    pkgs.megapixels # Camera GTK app
-    #pkgs.snapshot              # New GTK4 camera app
+    pkgs.megapixels  # GTK camera app (old)
+    pkgs.snapshot    # GTK4 camera app (new)
     pkgs.phosh-mobile-settings # Settings for phosh / mobile Linux
   ];
 }

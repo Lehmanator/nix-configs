@@ -1,27 +1,27 @@
 { lib, pkgs, cell, ... }: {
-  imports = [
+  imports = with cell.homeProfiles; [
     # --- Distro-independent Apps ---
     # TODO: Import same category files from `../../apps` in `./<category>.nix`
     #../../apps
-    cell.homeProfiles.apps-base
+    apps-base
 
-    cell.homeProfiles.apps-gnome-chat
-    cell.homeProfiles.apps-gnome-dbus
-    cell.homeProfiles.apps-gnome-developer
-    cell.homeProfiles.apps-gnome-finance
-    cell.homeProfiles.apps-gnome-multimedia
-    cell.homeProfiles.apps-gnome-productive
-    cell.homeProfiles.apps-gnome-reading
-    cell.homeProfiles.apps-gnome-security
-    cell.homeProfiles.apps-gnome-social
-    cell.homeProfiles.apps-gnome-translate
+    apps-gnome-chat
+    apps-gnome-dbus
+    apps-gnome-developer
+    apps-gnome-finance
+    apps-gnome-multimedia
+    apps-gnome-productive
+    apps-gnome-reading
+    apps-gnome-security
+    apps-gnome-social
+    apps-gnome-translate
 
     # --- Individual Apps ---
     # TODO: Move all apps to use dir structure: `./<appName>/{default,settings}.nix`
     # TODO: Use `./<category>.nix` to import these.
-    cell.homeProfiles.app-gnome-calculator
-    cell.homeProfiles.app-gnome-gradience
-    cell.homeProfiles.app-gnome-valent
+    gnome-app-calculator
+    gnome-app-gradience
+    gnome-app-valent
   ];
 
   # --- Install GTK4 Apps ---
@@ -29,6 +29,7 @@
   home.packages = with pkgs; [
     celeste # # Sync files w/ Google-Drive/Dropbox/Nextcloud/OwnCloud/WebDAV/OneDrive/S3
     czkawka # # Remove unnecessary files
+    key-rack
     pika-backup # # Backup application
     warp # # QR code file transfer (https://gitlab.gnome.org/World/warp) TODO: Update
     #portfolio-filemanager  # Mobile-first file manager

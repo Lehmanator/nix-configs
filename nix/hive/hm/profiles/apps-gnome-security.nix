@@ -1,6 +1,6 @@
 { inputs , cell , config , lib , pkgs , ... }:
 {
-  imports = [ cell.homeProfiles.app-gnome-vaults ];
+  imports = [ cell.homeProfiles.gnome-app-vaults ];
 
   home.packages = [
     pkgs.authenticator #  # 2-Factor authenticator
@@ -12,5 +12,7 @@
     pkgs.bleachbit #      # Wipe disks
   ];
 
-  # https://framagit.org/tractor/carburetor #   # Connect to TOR   TODO: Package
+  # Connect to TOR
+  # TODO: Package app: cell.packages.gnome-app-carburetor
+  # https://framagit.org/tractor/carburetor
 }

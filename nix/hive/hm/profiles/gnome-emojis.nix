@@ -7,7 +7,7 @@ let
   prefer-flatpak = false;
 in
 {
-  imports = [ cell.homeProfiles.app-gnome-smile ];
+  imports = [ cell.homeProfiles.gnome-app-smile ];
 
   # --- GNOME Apps ---
   home.packages = [];

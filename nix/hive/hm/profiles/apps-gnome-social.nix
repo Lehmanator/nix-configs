@@ -1,16 +1,16 @@
-{ inputs, cell, config, lib, pkgs, ... }: {
+{ cell, pkgs, ... }: {
   imports = [
     # --- FOSS ---------------------------------------------
-    cell.homeProfiles.app-gnome-lemoa
-    cell.homeProfiles.app-gnome-lemonade
-    cell.homeProfiles.app-gnome-tuba
+    cell.homeProfiles.gnome-app-lemoa
+    cell.homeProfiles.gnome-app-lemonade
+    cell.homeProfiles.gnome-app-tuba
 
     # --- Proprietary --------------------------------------
   ];
 
   home.packages = [
     #pkgs.giara #         # Reddit   # Build: 11/23: Dep python311Packages.prawcore build fails
-    pkgs.headlines # # Reddit
+    pkgs.headlines #      # Reddit
     pkgs.telegram-desktop # Telegram
     #pkgs.cawbird #       # Twitter (deprecated)
     # --- Bumble --------

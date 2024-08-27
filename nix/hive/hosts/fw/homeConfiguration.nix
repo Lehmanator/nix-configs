@@ -13,18 +13,18 @@ let
     app-chromium
     app-discord
     app-facebook
-    app-gnome-amberol
-    app-gnome-calculator
-    app-gnome-cozy
-    app-gnome-decibels
-    app-gnome-dino
-    app-gnome-gradience
-    app-gnome-lemoa
-    app-gnome-lemonade
-    app-gnome-loupe
-    app-gnome-tuba
-    app-gnome-valent
-    app-gnome-vaults
+    gnome-app-amberol
+    gnome-app-calculator
+    gnome-app-cozy
+    gnome-app-decibels
+    gnome-app-dino
+    gnome-app-gradience
+    gnome-app-lemoa
+    gnome-app-lemonade
+    gnome-app-loupe
+    gnome-app-tuba
+    gnome-app-valent
+    gnome-app-vaults
     app-libreoffice
     app-matrix
     app-pidgin
@@ -44,6 +44,7 @@ let
     apps-gnome-multimedia
     apps-gnome-productive
     apps-gnome-reading
+    apps-gnome-rss
     apps-gnome-security
     apps-gnome-social
     apps-gnome-translate
@@ -81,6 +82,7 @@ let
     gaming-clips
     # git/ aliases base diff fzf gh gitui hooks ignore mr sync tui
     gnome-adwaita-themes
+    gnome-emojis
     gnome-extension-ags
     gnome-extension-ddterm
     gnome-extension-forge
