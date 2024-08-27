@@ -1,9 +1,9 @@
-{ self, inputs
-, config, lib, pkgs
+{ config, lib, pkgs
 , keybinds ? "custom"
 , ...
 }:
 let
+  # TODO: Move to ./keys-helix.nix
   helix.normal = {
     # --- Movement ---
     j = "move_visual_line_down";
@@ -326,17 +326,18 @@ let
   };
 in
 {
-  imports = [
-    #./custom.nix
-    #./helix.nix
-    #./vim.nix
-  ];
+  # imports = [
+  #   ./keys-custom.nix
+  #   ./keys-helix.nix
+  #   ./keys-vim.nix
+  # ];
 
   programs.helix.settings.keys = {
 
-    insert = {
-      j.k = "normal_mode"; # jk to exit insert mode
-    };
+    # TODO: Fix delay after pressing j
+    # insert = {
+    #   j.k = "normal_mode"; # jk to exit insert mode
+    # };
 
     normal = {
       #D = "delete_char_backward";
@@ -350,7 +351,8 @@ in
       "C-/" = "toggle_comments";
 
       # Vim training wheels
-      C = ["select_mode" "goto_line_end" "change_selection"];
+      "C-C" = "copy_selection_on_next_line";
+      C = ["select_mode" "goto_line_end" "change_selection"];  # Replaces multi-cursor placement
       D = ["select_mode" "goto_line_end" "delete_selection"];
       Y = ["select_mode" "goto_line_end" "yank"];
       "@" = "replay_macro";
