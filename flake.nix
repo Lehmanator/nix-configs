@@ -6,6 +6,7 @@
       inherit (omnibus.flake.inputs) climodSrc flake-parts std;
       systems = [ "x86_64-linux" "aarch64-linux" ];
       i = {
+        raw = inputs;
         inputsSelf = self;
         inputsFlake = inputs;
         inputsLoader = omnibus.lib.omnibus.loaderInputs;
@@ -142,10 +143,7 @@
           nixago = [ [ "repo" "configs" ] ];
           nixpkgs-custom = [ [ "hive" "pkgs" ] [ "repo" "pkgs" ] ];
           packages = [
-            [
-              "android"
-              "packages"
-            ]
+            [ "android" "packages" ]
             #["hive" "packages"]
             #["kube" "packages"]
             #["test" "packages"]
@@ -300,10 +298,11 @@
       url = "github:nix-community/haumea";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    home = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # home = {
+    #   url = "github:nix-community/home-manager";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+    home.follows = "home-manager"; 
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -449,6 +448,7 @@
       url = "github:berberman/nvfetcher";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nm2nix.url = "github:Janik-Haag/nm2nix"; # Convert NetworkManager profiles to Nix.
     ssbm-nix.url =
       "github:lytedev/ssbm-nix"; # Fork of: "github:djanatyn/ssbm-nix";
     stylix.url = "github:danth/stylix";
