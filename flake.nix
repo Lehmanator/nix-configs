@@ -401,6 +401,10 @@
       flake = false;
     };
 
+    # --- Modules: Desktops ----------------------------------------
+    nixos-cosmic.url = "github:lilyinstarlight/nixos-cosmic";
+    nixos-cosmic.inputs.nixpkgs.follows = "nixpkgs";
+    
     # --- Modules: Flake-parts -------------------------------------
     agenix-shell.url = "github:aciceri/agenix-shell";
     ez-configs.url = "github:ehllie/ez-configs";
