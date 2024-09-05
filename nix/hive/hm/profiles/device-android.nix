@@ -1,7 +1,5 @@
 { inputs
-, config
-, lib
-, pkgs
+, lib, pkgs
 , ...
 }:
 {
@@ -50,6 +48,8 @@
     #self.packages.fajita-flash-oem
     #self.packages.fajita-flash-all
     #self.packages.fajita-convert-international
+
+    pkgs.rquickshare        # Rust impl of NearbyShare/QuickShare from Android on Linux/MacOS
   ];
 
 }
