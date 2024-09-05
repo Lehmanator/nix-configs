@@ -9,13 +9,13 @@
         packages = with lib; {
           inherit (inputs.disko.packages.${system}) disko disko-doc;
           #fajita-images = self.flake.nixosConfigurations.fajita.config.mobile.outputs.android-fastboot-images;
-          deploy = pkgs.writeText "cachix-deploy.json" (builtins.toJSON {
-            agents = mapAttrs (host: cfg: cfg.config.system.build.toplevel)
-              (filterAttrs (n: cfg: (hasAttrByPath ["config" "system" "build" "toplevel"] cfg)
-                && (cfg.pkgs.stdenv.buildPlatform.system == system)
-                && cfg.config.services.cachix-agent.enable
-              ) self.nixosConfigurations);
-          });
+          # deploy = pkgs.writeText "cachix-deploy.json" (builtins.toJSON {
+          #   agents = mapAttrs (host: cfg: cfg.config.system.build.toplevel)
+          #     (filterAttrs (n: cfg: (hasAttrByPath ["config" "system" "build" "toplevel"] cfg)
+          #       && (cfg.pkgs.stdenv.buildPlatform.system == system)
+          #       && cfg.config.services.cachix-agent.enable
+          #     ) self.nixosConfigurations);
+          # });
         };
       };
       flake = {
@@ -59,6 +59,8 @@
     home-extra-xhmm.url = "github:schuelermine/xhmm";
     system-manager.url = "github:numtide/system-manager";
     system-manager.inputs.flake-utils.follows = "flake-utils";
+    wrapper-manager.url = "github:viperML/wrapper-manager";
+    wrapper-manager.inputs.nixpkgs.follows = "nixpkgs";
     darwin.url = "github:lnl7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs-darwin";
     # --- SnowflakeOS ----------------------------------------------

@@ -26,5 +26,6 @@
     #./proc-flake.nix
     #./std.nix
     ./treefmt.nix
+    ./wrapper-manager.nix
   ];
 }
