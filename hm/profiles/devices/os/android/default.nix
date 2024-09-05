@@ -1,19 +1,12 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
+{ inputs, lib, pkgs, ... }:
 {
+  # https://github.com/tadfisher/android-nixpkgs
   imports = [
-    # https://github.com/tadfisher/android-nixpkgs
     #inputs.nixpkgs-android.hmModule
-    #{
-    #  #inherit config lib pkgs;
+    #{ inherit config lib pkgs;
     #  android-sdk = {
     #    enable = true;
-    #    #path = "${config.xdg.dataHome}/android/sdk";
-    #    # nix flake show github:tadfisher/android-nixpkgs
+    #    path = "${config.xdg.dataHome}/android/sdk";
     #    packages = sdk: with sdk; [
     #      build-tools-34-0-0
     #      cmdline-tools-latest
@@ -24,32 +17,24 @@
     #    ];
     #  };
     #}
-    #lib.lists.optional
-    #config.gtk.enable
-    #../../desktop/gnome/apps/phone.nix
-  ];
+  ] #++ (lib.lists.optional config.gtk.enable ../../desktop/gnome/apps/phone.nix)
+  ;
+  home.packages = lib.mkIf (pkgs.system=="x86_64-linux") [
+    pkgs.adbtuifm           # ADB TUI
+    pkgs.android-tools      # Android tools like ADB & fastboot
+    pkgs.git-repo           # Android git repo management util
+    pkgs.payload-dumper-go  # Android OTA payload dumper
+    pkgs.rquickshare        # Rust impl of NearbyShare/QuickShare from Android on Linux/MacOS
 
-  home.packages = lib.mkIf (pkgs.system == "x86_64-linux") [
-    # --- ADB & Fastboot ---
-    #pkgs.android-tools
-    inputs.nixpkgs-android.packages.${pkgs.system}.platform-tools
-    #inputs.nixpkgs-android.sdk
-    #(sdkPkgs: with sdkPkgs; [
+    #pkgs.nur.repos.wolfangaukang.device-flasher    # Flash CalyxOS to Android device
+    #inputs.nixpkgs-android.packages.${pkgs.system}.platform-tools
+    #inputs.nixpkgs-android.sdk (sdkPkgs: with sdkPkgs; [
     #  build-tools-34-0-0
     #  cmdline-tools-latest
     #  emulator
     #  platform-tools
     #  platforms-android-34
     #])
-
-    pkgs.payload-dumper-go # Android OTA payload dumper
-    #pkgs.nur.repos.aleksana.payload-dumper-go # Android OTA payload dumper
-    #pkgs.nur.repos.wolfangaukang.device-flasher # Flash CalyxOS to Android device
-
-    #self.packages.fastboot-flash-slot
-    #self.packages.fajita-flash-oem
-    #self.packages.fajita-flash-all
-    #self.packages.fajita-convert-international
-  ];
-
+  ] #++ (with self.packages.${pkgs.system}; [fastboot-flash-slot fajita-flash-oem fajita-flash-all fajita-convert-international])
+  ;
 }
