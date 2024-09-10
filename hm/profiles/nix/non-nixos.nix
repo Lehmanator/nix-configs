@@ -7,7 +7,8 @@ in
   home.sessionVariables.NIX_PATH = isNixOS "nixpkgs=${inputs.nixpkgs}";
   nixpkgs.overlays = isNixOS [ inputs.nur.overlay ];
   nix = isNixOS {
-    package = pkgs.nixVersions.latest;
+    # package = pkgs.nixVersions.latest;
+    package = pkgs.lix;
     settings.experimental-features = isNixOS [ "nix-command" "flakes" ];
     #registry.nixos.flake = inputs.nixos;
     #registry.darwin.flake = inputs.darwin;

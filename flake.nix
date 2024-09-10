@@ -40,6 +40,10 @@
 
   inputs = {
     # --- Main -----------------------------------------------------
+    lix-module = {
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.0.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # https://discourse.nixos.org/t/differences-between-nix-channels/13998
     # nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs.follows = "nixpkgs-unstable";

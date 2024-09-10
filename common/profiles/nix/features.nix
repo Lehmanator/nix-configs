@@ -11,9 +11,10 @@
       "dynamic-derivations"
       "fetch-closure" "parse-toml-timestamps" "read-only-local-store"
       #"git-hashing" # Note: Allow creating (content-addressed) store objects which are hashed via Git's hashing algorithm. These store objects will not be understandable by older versions of Nix.
-      "impure-derivations" "configurable-impure-env"
+      "impure-derivations" 
+      #"configurable-impure-env"
       "recursive-nix"
-      "verified-fetches"
+      # "verified-fetches"
     ];
     extra-substituters        = ["https://cache.ngi0.nixos.org/"]; # content-address derivations cache
     extra-trusted-public-keys = ["cache.ngi0.nixos.org-1:KqH5CBLNSyX184S9BKZJo1LxrxJ9ltnY2uAs5c/f1MA="];

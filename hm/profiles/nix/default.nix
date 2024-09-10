@@ -1,15 +1,6 @@
-{
-  inputs,
-  config, lib, pkgs,
-  osConfig,
-  # overlays,
-  # packages,
-  # modules,
-  # templates,
-  ...
-}:
+{ config, lib, pkgs, ... }:
 let
-  mkRegistryJSON = reg: builtins.toJSON { version = 2; flakes = lib.mapAttrsToList (n: v: {inherit (v) from to exact;}) reg; };
+  # mkRegistryJSON = reg: builtins.toJSON { version = 2; flakes = lib.mapAttrsToList (n: v: {inherit (v) from to exact;}) reg; };
   clip-bin = "${pkgs.wl-clipboard}/bin/wl-paste";
 in {
   imports = [
@@ -20,13 +11,7 @@ in {
     #./nixpkgs.nix
   ];
 
-  nix = {
-    package = lib.mkDefault pkgs.nixVersions.latest;
-    # TODO: Handle NixOS using system NIX_PATH when `home-manager.useGlobalPkgs=true`
-    #settings.nix-path = lib.mkDefault [ "${config.xdg.configHome}/nix/inputs" ];
-    #settings.nix-path = [ "${config.xdg.configHome}/nix/inputs" ];
-    #settings.nix-path = (osConfig.nix.nixPath or [ ]) ++ [ "${config.xdg.configHome}/nix/inputs" ];
-  };
+  nix.package = lib.mkDefault pkgs.lix;
 
   # xdg.configFile = lib.recursiveUpdate {
   #   "nix/registry.json".text = mkRegistryJSON osConfig.nix.registry or config.nix.registry;

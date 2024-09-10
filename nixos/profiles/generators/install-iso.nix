@@ -5,7 +5,7 @@
   formatConfigs = rec {
     install-iso = { inputs, config, lib, pkgs, ... }: {
       disko.enableConfig = false;
-      nix.package = pkgs.nixVersions.latest;
+      nix.package = pkgs.lix;
       nix.settings.experimental-features = [ "nix-command" "flakes"];
       users.users.${user} = {
         isNormalUser = true;

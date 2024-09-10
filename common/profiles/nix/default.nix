@@ -1,5 +1,6 @@
-{ lib, pkgs, user, ... }: {
+{ inputs, lib, pkgs, user, ... }: {
   imports = [
+    inputs.lix-module.nixosModules.default
     ./access-tokens.nix
     ./ccache.nix
     ./diff.nix
@@ -21,8 +22,16 @@
     #./shell/{alias,completion,nix-path,linters,updaters}.nix
   ];
   nix = {
-    channel.enable = lib.mkDefault false;
-    package = lib.mkDefault pkgs.nixVersions.latest;
+    enable = true;
+    channel.enable = false;
+    checkAllErrors = true;
+    checkConfig = true;
+    daemonCPUSchedPolicy = lib.mkDefault "idle";
+    daemonIOSchedClass = lib.mkDefault "idle";
+    # daemonIOSchedPriority = lib.mkDefault 4;
+    distributedBuilds = lib.mkDefault true;
+
+    package = lib.mkDefault pkgs.lix;
     settings = {
 
       allow-import-from-derivation = true;
@@ -37,16 +46,18 @@
       # --- Flakes ---
       accept-flake-config = true;
       experimental-features = ["nix-command" "flakes"];
+      extra-experimental-features = ["fetch-closure" "recursive-nix"]
+        ++ lib.optionals pkgs.stdenv.isLinux ["auto-allocate-uids" "cgroups"]
+      ;
+      system-features = lib.mkIf pkgs.stdenv.isLinux ["uid-range"];
+      auto-allocate-uids = lib.mkIf pkgs.stdenv.isLinux true;
+      use-cgroups = lib.mkIf pkgs.stdenv.isLinux true;
+      use-xdg-base-directories = lib.mkIf pkgs.stdenv.isLinux true;
       
       # --- Sandboxing ---
       sandbox = true;
       fallback = true;
       extra-sandbox-paths = [];
-    } // lib.optionalAttrs pkgs.stdenv.isLinux {
-      auto-allocate-uids = true;
-      use-xdg-base-directories = true;
-      use-cgroups = true;
-      extra-experimental-features = ["auto-allocate-uids" "cgroups"];
     };
   };
 }

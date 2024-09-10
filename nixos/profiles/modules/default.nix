@@ -42,7 +42,8 @@
 
     # https://github.com/nix-community/srvos
     srvos.nixosModules.common #                  # desktop, server,   mixins-terminfo,     mixins-tracing,
-    srvos.nixosModules.mixins-nix-experimental # # mixins-cloud-init, mixins-systemd-boot, mixins-telegraf
+    # srvos.nixosModules.mixins-nix-experimental # NOTE: Broken setting: experimental-features = ["configurable-impure-env"]
+    # mixins-cloud-init, mixins-systemd-boot, mixins-telegraf
     srvos.nixosModules.mixins-trusted-nix-caches # roles-github-actions-runner, roles-nix-remote-builder
   ];
 
