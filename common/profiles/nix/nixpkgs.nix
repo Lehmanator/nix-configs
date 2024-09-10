@@ -17,6 +17,7 @@
     permittedInsecurePackages = [
       "python3.12-youtube-dl-2021.12.17"
       "python3.11-youtube-dl-2021.12.17"
+      "olm-3.2.16"
     ];
   };
 

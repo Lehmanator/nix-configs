@@ -45,7 +45,7 @@ in
       build-users-group = mkDefault "nixbld";
       keep-build-log    = mkDefault true;
       log-lines         = mkDefault 25;
-      connect-timeout   = mkDefault 10;
+      connect-timeout   = 5;  # set=4 in srvos.nixosModules.common.nix 
       warn-dirty        = mkDefault false;
 
       # --- Flakes ---
