@@ -1,22 +1,7 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-{
-  imports = [
-  ];
-
+{ lib, ... }: {
   # Host-based ad & malware blocker. Also can block other optional types of hosts.
   networking.stevenblack = {
-    enable = true;
-    block = [
-      #"fakenews"
-      #"gambling"
-      #"porn"
-      #"social"
-    ];
+    enable = lib.mkDefault true;
+    # block = [ "fakenews" "gambling" "porn" "social" ];
   };
-
 }

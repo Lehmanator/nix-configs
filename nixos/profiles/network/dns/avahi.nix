@@ -1,13 +1,4 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-{
-  imports = [
-  ];
-
+{ config, lib, pkgs, ... }: {
   services.avahi = {
     enable = true;
 
@@ -64,5 +55,4 @@
 
   # Avahi is incompatible w/ systemd-resolved
   services.resolved.enable = false;
-
 }

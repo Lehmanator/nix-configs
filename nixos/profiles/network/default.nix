@@ -1,8 +1,6 @@
-{ config, lib, pkgs, user, ... }:
-{
+{ config, lib, pkgs, user, ... }: {
   imports = [
-    #./dns
-    ./dns/resolvconf.nix
+    ./dns
     ./firewall.nix
     ./networkmanager.nix
     #./rxe.nix

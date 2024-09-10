@@ -38,7 +38,7 @@ ssh_*_key
 **/.keys
 
 # --- Private Info ---
-hosts.nix
+# hosts.nix
 networks.nix
 repo.nix
 users.nix

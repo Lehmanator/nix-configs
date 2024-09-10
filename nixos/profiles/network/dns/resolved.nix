@@ -1,24 +1,15 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
 # See:
 # - https://nixos.wiki/wiki/Systemd-resolved
 # - https://www.freedesktop.org/software/systemd/man/systemd-resolved.html
-# - systemd-resolved(8)
-{
-  imports = [
-  ];
+# - man systemd-resolved(8)
+# - man NetworkManager.conf(5)
 
-  networking.networkmanager.dns = lib.mkDefault "systemd-resolved"; # man NetworkManager.conf(5)
-
+{ config, lib, pkgs, ... }: {
+  networking.networkmanager.dns = lib.mkDefault "systemd-resolved";
   services.resolved = {
-    enable = true;
-
-    dnssec = "true"; # Options: *allow-downgrade | true | false
-    llmnr = "true"; # true=full LLMNR responder/resolver support, false=disable-both, resolve=only-resolve+no-respond
+    enable = lib.mkDefault true;
+    dnssec = "true";  # Options: *allow-downgrade | true | false
+    llmnr = "true";   # true=full LLMNR responder/resolver support, false=disable-both, resolve=only-resolve+no-respond
 
     # Domains to search for hostnames
     domains = [
@@ -43,5 +34,4 @@
 
   # Note: Avahi & systemd-resolved cannot be used simultaneously
   services.avahi.enable = false; #!config.services.resolved.enable;
-
 }

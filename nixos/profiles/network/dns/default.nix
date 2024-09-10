@@ -1,20 +1,14 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-{
+{ config, lib, pkgs, ... }: {
   imports = [
-    #./adblock.nix
+    ./adblock.nix
     #./encrypted.nix
     #./avahi.nix     # Incompatible w/ systemd-resolved
+    ./hosts.nix
     ./resolvconf.nix
-    ./resolved.nix
+    # ./resolved.nix
   ];
 
   networking = {
-
     # Upstream DNS nameservers to resolve domain names & hostnames
     nameservers = [
       "1.1.1.1#one.one.one.one"
