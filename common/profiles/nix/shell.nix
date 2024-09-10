@@ -19,7 +19,7 @@
     n-repl = "nix repl";
     repl = "nix repl";
     n-run = "nix run";
-    run = "nix} run";
+    run = "nix run";
     nr = "nix run";
     n-search = "nix search";
     nixpkgs = "nix search nixpkgs";
