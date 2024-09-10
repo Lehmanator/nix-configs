@@ -1,17 +1,6 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-{
-  home.packages = [ pkgs.flare-signal ];
-
-  #imports = [inputs.declarative-flatpak.homeManagerModules.default];
-  #services.flatpak.packages = [
-  #  "flathub:app/de.schmidhuberj.Flare//stable"
-  #  #"flathub-beta:app/de.schmidhuberj.Flare//beta"
-  #];
-
+{ inputs, config, lib, pkgs, ... }: {
   # TODO: Signal protocol string handler?
+  #imports = [inputs.nix-flatpak.homeManagerModules.nix-flatpak];
+  #services.flatpak.packages = [{origin="flathub"; appId="de.schmidhuberj.Flare"; }];
+  home.packages = [ pkgs.flare-signal ];
 }

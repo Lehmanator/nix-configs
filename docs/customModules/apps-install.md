@@ -123,7 +123,7 @@ options = {
 };
 ```
 
-- [ ] Extend `GermanBread/declarative-flatpak` with options:
+- [ ] Extend `gmoderna/nix-flatpak` or `GermanBread/declarative-flatpak` with options:
   - `services.flatpak.removeUndeclared = true | false`
   - `services.flatpak.removeUnusedRuntimes = true | false`
 

@@ -1,13 +1,6 @@
-{ inputs
-, lib
-, pkgs
-, config
-, ...
-}:
-{
-  #imports = [inputs.declarative-flatpak.homeManagerModules.default ];
+{ lib, pkgs, ... }: {
+  #imports = [inputs.nix-flatpak.homeManagerModules.nix-flatpak ];
   #services.flatpak.packages = ["flathub:app///stable"];
-
   home.packages = [
     #pkgs.gnomeExtensions.gsconnect
     #pkgs.gnomeExtensions.valent

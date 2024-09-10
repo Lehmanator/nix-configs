@@ -1,17 +1,7 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-{
+{ inputs, config, lib, pkgs, ... }: {
+  #imports = [inputs.nix-flatpak.homeManagerModules.nix-flatpak];
+  #services.flatpak.packages = [{appId="dev.geopjr.Tuba"; origin="flathub";}];
   home.packages = [ pkgs.tuba ];
 
-  #imports = [inputs.declarative-flatpak.homeManagerModules.default];
-  #services.flatpak.packages = [
-  #  "flathub:app/dev.geopjr.Tuba//stable"
-  #];
-
   # TODO: Protocol string handler for Mastodon?
-
 }

@@ -149,8 +149,7 @@
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
 
-    nixos-flatpak.url = "github:GermanBread/declarative-flatpak";
-    nixos-flatpak.inputs.nixpkgs.follows = "nixpkgs";
+    nix-flatpak.url = "github:gmoderna/nix-flatpak";
     nixpak.url = "github:nixpak/nixpak";
     nixpak.inputs.nixpkgs.follows = "nixpkgs";
 

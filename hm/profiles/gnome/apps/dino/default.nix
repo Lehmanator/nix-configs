@@ -1,18 +1,11 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-{
+{ inputs , config , lib , pkgs , ... }: {
   home.packages = [ pkgs.dino ];
 
-  #imports = [inputs.declarative-flatpak.homeManagerModules.default];
+  #imports = [inputs.nix-flatpak.homeManagerModules.nix-flatpak];
   #services.flatpak.packages = [
-  #  "flathub:app/im.dino.Dino//stable"
-  #  "flathub-beta:app/im.dino.Dino//beta"
+  #  { origin="flathub";      appId="im.dino.Dino"; }
+  #  { origin="flathub-beta"; appId="im.dino.Dino"; }
   #];
 
   # TODO: Protocol string handler for XMPP chats
-
 }

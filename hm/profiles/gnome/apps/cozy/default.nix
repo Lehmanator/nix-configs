@@ -1,15 +1,8 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-{
+{ inputs, config, lib, pkgs, ... }: {
+  #imports = [inputs.nix-flatpak.homeManagerModules.nix-flatpak];
   #home.packages = [pkgs.cozy]; # Audiobook player (outdated. GTK4 avail via flathub-beta)
-
-  #imports = [inputs.declarative-flatpak.homeManagerModules.default];
   services.flatpak.packages = [
-    "flathub-beta:app/com.github.geigi.cozy//beta"
-    #"flathub:app/com.github.geigi.cozy//stable"
+    {origin="flathub-beta"; appId="com.github.geigi.cozy";}
+    {origin="flathub";      appId="com.github.geigi.cozy";}
   ];
 }

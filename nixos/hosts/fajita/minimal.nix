@@ -1,17 +1,14 @@
-{
-  inputs,
-  lib,
-  config,
-  pkgs,
-  user,
-  ...
+{ inputs
+, config, lib, pkgs
+, user
+, ...
 }: {
   imports = [
     inputs.agenix.nixosModules.age
-    inputs.declarative-flatpak.nixosModules.declarative-flatpak
     inputs.flake-utils-plus.nixosModules.autoGenFromInputs
     inputs.home.nixosModules.home-manager
     inputs.nixvim.nixosModules.nixvim
+    inputs.nix-flatpak.nixosModules.nix-flatpak
     inputs.nur.nixosModules.nur
     inputs.scalpel.nixosModules.scalpel
     inputs.sops-nix.nixosModules.sops
@@ -33,7 +30,7 @@
   #  extraSpecialArgs = { inherit inputs user; };
   #  sharedModules = [
   #    inputs.agenix.homeManagerModules.age
-  #    inputs.declarative-flatpak.homeManagerModules.declarative-flatpak
+  #    inputs.nix-flatpak.homeManagerModules.nix-flatpak
   #    inputs.nixvim.homeManagerModules.nixvim
   #    inputs.nur.hmModules.nur
   #    inputs.sops-nix.homeManagerModules.sops

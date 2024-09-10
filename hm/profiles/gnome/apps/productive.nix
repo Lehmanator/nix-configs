@@ -1,22 +1,13 @@
-{ self
-, inputs
-, config
-, pkgs
-, lib
-, ...
-}:
-{
-  imports = [ ];
-
+{ inputs, config, pkgs, lib, ... }: {
   home.packages = [
-    pkgs.endeavour #   # To-do manager (https://gitlab.gnome.org/World/Endeavour)
-    pkgs.formiko #     # reStructuredText editor & live preview
-    pkgs.furtherance # # https://github.com/lakoliu/Furtherance
+    pkgs.endeavour #    # To-do manager (https://gitlab.gnome.org/World/Endeavour)
+    pkgs.formiko #      # reStructuredText editor & live preview
+    pkgs.furtherance #  # https://github.com/lakoliu/Furtherance
     #pkgs.gaphor #      # Simple modeling tool (broken as of 1/15/23: failing version check for dep jedi-0.19.1)
-    pkgs.gnome-solanum # Pomodoro timer
+    pkgs.gnome-solanum ## Pomodoro timer
     #pkgs.khronos #     # https://github.com/lainsce/khronos
-    pkgs.rnote #       # Handwritten Notes (https://github.com/flxzt/rnote)
-    pkgs.sticky #      # Sticky Notes      (https://github.com/linuxmint/sticky)
+    pkgs.rnote #        # Handwritten Notes (https://github.com/flxzt/rnote)
+    pkgs.sticky #       # Sticky Notes      (https://github.com/linuxmint/sticky)
 
     # --- Broken Apps ---
     #pkgs.notejot #    # https://github.com/lainsce/notejot
@@ -40,25 +31,24 @@
   ]);
 
   services.flatpak.packages = [
-    "flathub:app/ir.imansalmani.IPlan//stable" #            # IPlan        (https://github.com/)
-    "flathub:app/com.mardojai.DiccionarioLengua//stable" #  # DiccionarioLengua
-    "flathub:app/dev.edfloreshz.Done//stable" #             # Done         (https://github.com/done-devs/done)
-    "flathub:app/io.github.mrvladus.List//stable" #         # Errands      (https://github.com/mrvladus/List)
-    "flathub:app/io.github.dgsasha.Remembrance//stable" #   # Reminders    (https://github.com/dgsasha/remembrance)
-    "flathub-beta:app/io.github.dgsasha.Remembrance//beta"
-    "flathub:app/com.github.alainm23.planner//stable" #     # Plannner     (https://github.com/alainm23/planner)
-    "flathub:app/io.github.zhrexl.thisweekinmylife//stable" # ThisWeekInMyLife (https://github.com/zhrexl/ThisWeekInMyLife)
-    "flathub:app/io.github.kaschpal.timetable//stable" #    # Timetable    ()
-    "flathub:app/codes.loers.Punchclock//stable" #          # Punchclock   (https://gitlab.com/floers/punchclock)
-    "flathub:app/com.vixalien.sticky//stable" #             # Sticky Notes (https://gitlab.com/vixalien/sticky)
+    "ir.imansalmani.IPlan" #            # IPlan        (https://github.com/)
+    "com.mardojai.DiccionarioLengua" #  # DiccionarioLengua
+    "dev.edfloreshz.Done" #             # Done         (https://github.com/done-devs/done)
+    "io.github.mrvladus.List" #         # Errands      (https://github.com/mrvladus/List)
+    "io.github.dgsasha.Remembrance" #   # Reminders    (https://github.com/dgsasha/remembrance)
+    "com.github.alainm23.planner" #     # Plannner     (https://github.com/alainm23/planner)
+    "io.github.zhrexl.thisweekinmylife" # ThisWeekInMyLife (https://github.com/zhrexl/ThisWeekInMyLife)
+    "io.github.kaschpal.timetable" #    # Timetable    ()
+    "codes.loers.Punchclock" #          # Punchclock   (https://gitlab.com/floers/punchclock)
+    "com.vixalien.sticky" #             # Sticky Notes (https://gitlab.com/vixalien/sticky)
     # - vNotes
 
     # --- Diagrams ---
-    "flathub:app/org.gaphor.Gaphor//stable"
+    "org.gaphor.Gaphor"
 
     # --- Health ---
-    "flathub:app/io.github.diegopvlk.Dosage//stable" #      # Dosage ()
-    "flathub:app/xyz.slothlife.Jogger//stable" #            # Jogger (https://codeberg.org/baarkerlounger/jogger)
+    "io.github.diegopvlk.Dosage" #      # Dosage ()
+    "xyz.slothlife.Jogger" #            # Jogger (https://codeberg.org/baarkerlounger/jogger)
 
   ];
 

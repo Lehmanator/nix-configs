@@ -1,21 +1,15 @@
-{
-  config,
-  lib,
-  pkgs,
-  osConfig,
-  inputs,
-  ...
-}: let
+{ inputs
+, config, lib, pkgs
+, osConfig
+, ...
+}:
+let
   cfg = config.adwaita; # adw-colors;
-
   gnome-extension-setting = ext: "gsettings set org.gnome.shell.extensions.${ext}";
   gext-cmd = "${pkgs.dconf}/bin/dconf write /org/gnome/shell/extensions";
-
   setGsetting = path: option: value: {};
 in {
-  imports = [
-    inputs.declarative-flatpak.nixosModules.homeManagerModules.declarative-flatpak
-  ];
+  imports = [inputs.nix-flatpak.nixosModules.homeManagerModules.nix-flatpak];
   options = {
     enable = lib.mkEnableOption "Custom adwaita theming";
     auto-switcher.enable =
