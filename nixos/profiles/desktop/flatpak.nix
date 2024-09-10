@@ -19,7 +19,7 @@
       ] ++ lib.optionals config.services.xserver.desktopManager.gnome.enable [
         { origin="flathub"; appId="org.gtk.Gtk3theme.adw-gtk3";          }
         { origin="flathub"; appId="org.gtk.Gtk3theme.adw-gtk3-dark";     }
-        { origin="flathub"; appId="org.kde.KStyle.Adwaita";              }
+        # { origin="flathub"; appId="org.kde.KStyle.Adwaita";              }
       ];
       update = {
         onActivation = true;
