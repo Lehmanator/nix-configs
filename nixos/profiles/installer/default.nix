@@ -9,9 +9,9 @@
 
   nix = {
     package = pkgs.lix;
-    settings = {
-      extra-features = [ "nix-channel" "flakes" ];
-    };
+    # settings = {
+    #   extra-features = [ "nix-channel" "flakes" ];
+    # };
   };
 
   # Faster build (at expense of iso size)

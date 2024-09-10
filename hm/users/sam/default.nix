@@ -16,7 +16,7 @@
     ./git
 
     ./gpg.nix
-    ./nix.nix
+    # ./nix.nix
 
   ];
 

@@ -16,7 +16,7 @@
   # Make sure we can use nix commands and flakes in installer
   nix = {
     package = pkgs.lix;
-    settings.experimental-features = ["nix-command" "flakes"];
+    # settings.experimental-features = ["nix-command" "flakes"];
   };
 
   boot = {
