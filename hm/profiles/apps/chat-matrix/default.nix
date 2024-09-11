@@ -8,4 +8,5 @@
     #./schlidichat.nix
     #./syphon.nix
   ];
+  services.flatpak.packages = ["chat.schildi.desktop"];
 }
