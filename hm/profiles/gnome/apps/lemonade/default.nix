@@ -1,5 +1,5 @@
 { pkgs, config, lib, ... }:
 {
-  #home.packages = [pkgs.lemonade];  # TODO: Package for nixpkgs
-  services.flatpak.packages = [ "flathub:app/ml.mdwalters.Lemonade//stable" ];
+  # TODO: Package for nixpkgs (if not abandoned)
+  services.flatpak.packages = [ "ml.mdwalters.Lemonade" ];
 }

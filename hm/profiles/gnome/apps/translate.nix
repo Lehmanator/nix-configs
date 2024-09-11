@@ -1,19 +1,18 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
+{ lib, pkgs, ... }:
+let
+  prefer-flatpak = true;
+in
 {
-  home.packages = [
-    pkgs.gnomeExtensions.live-captions-assistant # Ext: Better desktop integration b/w app & GNOME
-    #pkgs.livecaptions #                          # Provides live captioning (broken 1/15/24: failed dep=python3.11-onnx-1.15.0)
-    pkgs.dialect #                               # Translator
+  home.packages = lib.mkIf (! prefer-flatpak) [
+    pkgs.livecaptions # Provides live captioning (broken 1/15/24: failed dep=python3.11-onnx-1.15.0)
+    pkgs.dialect #    # Translation app
   ];
 
-  services.flatpak.packages = [
-    "flathub:app/com.mardojai.DiccionarioLengua//stable" # DiccionarioLengua
-    "flathub:app/net.sapples.LiveCaptions//stable"
+  services.flatpak.packages = [ "com.mardojai.DiccionarioLengua" ] ++ lib.optionals prefer-flatpak [
+    "net.sapples.LiveCaptions"
+    "app.drey.Dialect"
   ];
 
+  # LiveCaptions app integration with GNOME.
+  programs.gnome-shell.extensions = [{ package = pkgs.gnomeExtensions.live-captions-assistant; }];
 }

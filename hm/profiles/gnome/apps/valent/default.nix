@@ -1,10 +1,12 @@
-{ lib, pkgs, ... }: {
-  #imports = [inputs.nix-flatpak.homeManagerModules.nix-flatpak ];
-  #services.flatpak.packages = ["flathub:app///stable"];
-  home.packages = [
-    #pkgs.gnomeExtensions.gsconnect
-    #pkgs.gnomeExtensions.valent
-    #pkgs.valent
-    #pkgs.valent-unstable
-  ];
+{ lib, pkgs, ... }: 
+let
+  prefer-flatpak = true;
+in
+{
+  services.flatpak = lib.mkIf prefer-flatpak {
+    remotes = [{ name = "Valent"; location = "https://valent.andyholmes.ca/repo"; }];
+    packages = ["ca.andyholmes.Valent"];
+  };
+  home.packages = lib.mkIf (! prefer-flatpak) [ pkgs.valent ];
+  programs.gnome-shell.extensions = [{ package = pkgs.gnomeExtensions.valent; }];
 }
