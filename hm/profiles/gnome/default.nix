@@ -70,7 +70,6 @@ in
   home.packages = with pkgs; [
     gnome.gnome-boxes
     gnome.totem
-    gnome.vinagre
 
     # FIXME: Renamed pkgs: 24.05 -> unstable
     # gnome-autoar

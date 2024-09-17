@@ -44,7 +44,6 @@
     # --- Remote Desktop ---
     pkgs.freerdp # A Remote Desktop Protocol Client
     pkgs.gtk-frdp # RDP viewer widget for GTK
-    pkgs.gnome.vinagre # Remote desktop viewer for GNOME
     pkgs.gnome-connections # A remote desktop client for the GNOME desktop environment
     pkgs.gnomeExtensions.remmina-search-provider # Search for Remmina Remote Desktop Connections
     pkgs.guacamole-server # Clientless remote desktop gateway
