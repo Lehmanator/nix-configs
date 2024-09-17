@@ -62,7 +62,7 @@ in
       ];
       substituters        = ["https://cache.ngi0.nixos.org/"];  # content-address derivations cache
       trusted-public-keys = ["cache.ngi0.nixos.org-1:KqH5CBLNSyX184S9BKZJo1LxrxJ9ltnY2uAs5c/f1MA="];
-      system-features = ["ca-derivations"] ++ optionals isLinux ["cgroups" "uid-range"];
+      system-features = ["big-parallel" "nixos-test" "benchmark" "ca-derivations"] ++ optionals isLinux ["cgroups" "uid-range" "kvm"];
       auto-allocate-uids       = mkIf isLinux true;
       use-cgroups              = mkIf isLinux true;
       use-xdg-base-directories = mkIf isLinux true;
