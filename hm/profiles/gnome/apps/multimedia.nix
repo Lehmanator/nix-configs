@@ -100,7 +100,7 @@
   #https://github.com/Nokse22/ascii-draw #                       # ASCII art maker
   #https://github.com/aleiepure/ticketbooth #                    # TV Show viewer w/ TMDB API
   #https://gitlab.com/gregorni/Letterpress #                     # ASCII art maker
-  #https://flathub.org/apps/com.vixalien.decibels #              # Audio file player with waveform
+  #https://flathub.org/apps/org.gnome.Decibels #                 # Audio file player with waveform
   #https://flathub.org/apps/details/org.nickvision.cavalier #    # Audio visualizer
   #https://flathub.org/apps/details/org.nickvision.tubeconverter
   #https://flathub.org/apps/io.gitlab.theevilskeleton.Upscaler # # Image upscaler
@@ -109,7 +109,7 @@
   # Common: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
   #    All: https://www.iana.org/assignments/media-types/media-types.xhtml
   xdg.mimeApps.defaultApplications = let
-    audio-player = ["com.vixalien.decibels.desktop" "io.bassi.Amberol.desktop"];
+    audio-player = ["org.gnome.Decibels.desktop" "io.bassi.Amberol.desktop"];
     music-player = ["io.bassi.Amberol.desktop"];
     image-viewer = ["org.gnome.Loupe.desktop" "org.gnome.eog.desktop"];
     video-viewer = ["org.gnome.Totem.desktop"];

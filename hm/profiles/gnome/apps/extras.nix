@@ -13,7 +13,6 @@
   # https://github.com/GradienceTeam/Gradience   # Adwaita themer
   # https://github.com/igorgue/neowaita          # Neovim GTK4/Libadwaita UI
   # https://github.com/aspinwall-ui/lapel        # Voice assistant GUI based on Mycroft
-  # https://github.com/GeopJr/Tuba               # Mastodon client
   # https://github.com/marhkb/pods               # Podman manager
   # https://github.com/an-anime-team/honkers-launcher-gtk # Honkers game launcher
 

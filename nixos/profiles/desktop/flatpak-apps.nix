@@ -22,7 +22,6 @@ in
     "app.drey.Blurble"
     #"app.drey.EarTag"
     #"app.drey.Elastic"
-    #"net.sapples.LiveCaptions"
     #"app.drey.Warp"
     "chat.schildi.desktop"
     "codes.loers.Karlender"
@@ -77,7 +76,6 @@ in
     "dev.Cogitri.Health"
     "dev.edfloreshz.Done"
     "dev.geopjr.Collision"
-    #"dev.geopjr.Tuba"
     "dev.jamiethalacker.window_painter"
     "fr.free.Homebank"
     "fr.romainvigier.MetadataCleaner"
@@ -210,6 +208,5 @@ in
     "re.sonny.Workbench"
     "se.manyver.Manyverse"
     "se.sjoerd.Graphs"
-    #"xyz.diamondb.gtkcord4"
   ];
 }

@@ -15,7 +15,6 @@
   # - GNOME: Cartridges
 
   imports = [
-    ./chat.nix
     ./chess.nix
     ./clips.nix
     #./controllers

@@ -1,16 +1,10 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
+{ inputs, config, lib, pkgs, ... }:
 {
   imports = [
     # --- Distro-independent Apps ---
     # TODO: Import same category files from `../../apps` in `./<category>.nix`
     ../../apps
 
-    ./chat.nix
     ./dbus.nix
     ./developer.nix
     ./finance.nix

@@ -6,10 +6,8 @@
     ./browser-firefox
     #./browser-tor
 
-    ./chat-matrix
     ./chat-pidgin
     #./chat-beeper
-    #./chat-discord
     ./chat-signal
 
     ./libreoffice
