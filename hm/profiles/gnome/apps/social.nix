@@ -62,55 +62,42 @@ in
     { origin="flathub";     appId="re.sonny.Tangram"; }
   ];
 
-  # https://specifications.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html#recognized-keys
-  # TODO: mkReverseDNS = url:
-  xdg.desktopEntries."com.snapchat.Snapchat" = {
-    name = "Snapchat";
-    comment = "Talk to friends on Snapchat";
-
-    # http://freedesktop.org/wiki/Standards/icon-theme-spec
-    icon = "";
-
-    # http://www.freedesktop.org/Standards/menu-spec
-    categories = ["Application" "Network" "WebApp"];
-
-    terminal = false;
-    type = "Application";
-
-    # https://specifications.freedesktop.org/desktop-entry-spec/latest/exec-variables.html
-    exec = "flatpak run net.codelogistics.webapps ${appId}";
-    mimeType = [];
-
-    # http://www.freedesktop.org/Standards/startup-notification-spec
-    startupNotify = false;
-
-    # https://specifications.freedesktop.org/desktop-entry-spec/latest/recognized-keys.html
-    settings = {
-      NoDisplay = false;
-
-      # Only used if Type == "Link"
-      URL = "";
-
-      # Compares to $XDG_CURRENT_DESKTOP
-      NotShowIn = "phosh";
-      OnlyShowIn = "gnome,plasma";
-
-      Keywords = "calc;math";
-
-      # https://specifications.freedesktop.org/desktop-entry-spec/latest/dbus.html
-      DBusActivatable = "false";
-
-      # https://specifications.freedesktop.org/desktop-entry-spec/latest/interfaces.html
-      #  Comma-sep strings
-      Implements="";
-
-      # http://www.freedesktop.org/Standards/startup-notification-spec
-      StartupWMClass = "";
-    };
-
-    # https://specifications.freedesktop.org/desktop-entry-spec/latest/extra-actions.html
-    # actions."New Window" = {
-    #   exec = "${pkgs.firefox}/bin/firefox --new-window %u";
-    # };
-  };
+  # # https://specifications.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html#recognized-keys
+  # # TODO: mkReverseDNS = url:
+  # xdg.desktopEntries."com.snapchat.Snapchat" = {
+  #   name = "Snapchat";
+  #   comment = "Talk to friends on Snapchat";
+  #   # http://freedesktop.org/wiki/Standards/icon-theme-spec
+  #   icon = "";
+  #   # http://www.freedesktop.org/Standards/menu-spec
+  #   categories = ["Application" "Network" "WebApp"];
+  #   terminal = false;
+  #   type = "Application";
+  #   # https://specifications.freedesktop.org/desktop-entry-spec/latest/exec-variables.html
+  #   exec = "flatpak run net.codelogistics.webapps ${appId}";
+  #   mimeType = [];
+  #   # http://www.freedesktop.org/Standards/startup-notification-spec
+  #   startupNotify = false;
+  #   # https://specifications.freedesktop.org/desktop-entry-spec/latest/recognized-keys.html
+  #   settings = {
+  #     NoDisplay = false;
+  #     # Only used if Type == "Link"
+  #     URL = "";
+  #     # Compares to $XDG_CURRENT_DESKTOP
+  #     NotShowIn = "phosh";
+  #     OnlyShowIn = "gnome,plasma";
+  #     Keywords = "calc;math";
+  #     # https://specifications.freedesktop.org/desktop-entry-spec/latest/dbus.html
+  #     DBusActivatable = "false";
+  #     # https://specifications.freedesktop.org/desktop-entry-spec/latest/interfaces.html
+  #     #  Comma-sep strings
+  #     Implements="";
+  #     # http://www.freedesktop.org/Standards/startup-notification-spec
+  #     StartupWMClass = "";
+  #   };
+  #   # https://specifications.freedesktop.org/desktop-entry-spec/latest/extra-actions.html
+  #   # actions."New Window" = {
+  #   #   exec = "${pkgs.firefox}/bin/firefox --new-window %u";
+  #   # };
+  # };
 }
