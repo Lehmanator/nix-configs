@@ -1,20 +1,9 @@
+{ config, lib, pkgs, ... }:
 {
-  inputs,
-  nixosConfig,
-  osConfig,
-  config,
-  lib,
-  pkgs,
-  ...
-}: let
-  inherit (pkgs) system;
-  #system = pkgs.system;
-  arch = lib.lists.elemAt (lib.strings.splitString "-" system) 0;
-  platform = lib.lists.elemAt (lib.strings.splitString "-" system) 1;
-in {
   imports = [
     ./modules
 
+    ./cachix-agent.nix
     ./crypto
     ./apps
     ./gnome
@@ -31,15 +20,9 @@ in {
     ./search
     ./shell
     ./social
+    ./ssh.nix
     ./virt
     ./xdg.nix
-    ./cachix-agent.nix
-
-    # TODO: Conditionally load ./nixos.nix when system is NixOS-based
-    #./_system/${system}
-    #./_arch/${arch}
-    #./_platform/${platform}
-    #./_host/${osConfig.networking.hostName}
   ];
 
   home = {
@@ -47,18 +30,13 @@ in {
     enableDebugInfo = true;
     enableNixpkgsReleaseCheck = true;
     #extraOutputsToInstall = [ "doc" "info" "devdoc" "dev" "bin" ];
-    sessionPath = with config.xdg.userDirs.extraConfig; [
-      XDG_APPS_DIR
-      XDG_BIN_DIR
-    ];
+    sessionPath = with config.xdg.userDirs.extraConfig; [ XDG_APPS_DIR XDG_BIN_DIR ];
     packages = [
       #pkgs.ripgrep-all   # Fast grep w/ ability to search in PDFs, eBooks, Office docs, archives, & more
-      pkgs.repgrep # Interactive replacer for ripgrep
-
+      pkgs.repgrep        # Interactive replacer for ripgrep
+      #pkgs.python3
       #pkgs.python311Full
       #pkgs.python312
-      #pkgs.python311
-      #pkgs.python310
 
       pkgs.ntfs3g
       #pkgs.rustup
@@ -73,5 +51,32 @@ in {
   services.home-manager.autoUpgrade = {
     enable = true;
     frequency = "weekly";
+  };
+
+  systemd.user = {
+    # Start new/changed services wanted by active targets & stop obsolete services from prev generation
+    # - "suggest"   / false = print suggested systemctl commands to run manually
+    # - "sd-switch" / true  = use sd-switch to determine necessary changes & apply them
+    # - "legacy"            = Use Ruby script to determine necessary changes & apply them. Will be removed soon.
+    startServices = true;  
+
+    # Environment variables that will be set for the user session.
+    #   The variable values must be as described in environment.d(5).
+    # sessionVariables = config.home.sessionVariables;
+
+    # # Extra config options for user session service manager. 
+    # # https://www.freedesktop.org/software/systemd/man/systemd-user.conf.html
+    # settings = {
+    #   Manager = rec {
+
+    #     # Sets environment variables just for the manager process itself.
+    #     ManagerEnvironment = DefaultEnvironment;
+
+    #     # Configures environment variables passed to all executed processes.
+    #     DefaultEnvironment = {
+    #       PATH = "%u/bin:%u/.cargo/bin";
+    #     };
+    #   };
+    # };
   };
 }
