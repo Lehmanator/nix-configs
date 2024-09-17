@@ -1,6 +1,6 @@
 { lib, pkgs, ... }: 
 let
-  prefer-flatpak = true;
+  prefer-flatpak = false;
 in
 {
   services.flatpak = lib.mkIf prefer-flatpak {
