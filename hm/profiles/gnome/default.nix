@@ -73,13 +73,11 @@ in
 
     # FIXME: Renamed pkgs: 24.05 -> unstable
     # gnome-autoar
-    # gnome-dictionary
     # gnome-font-viewer # Includes thumbnailer
     # gnome-packagekit
     # gnome-tweaks
     # simple-scan
     gnome.gnome-autoar
-    gnome.gnome-dictionary
     gnome.gnome-font-viewer # Includes thumbnailer
     gnome.gnome-packagekit
     gnome.gnome-tweaks
