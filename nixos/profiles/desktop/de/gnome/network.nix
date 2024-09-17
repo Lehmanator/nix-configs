@@ -15,7 +15,7 @@
   services.gnome = {
     glib-networking.enable = true; # GLib network extensions
     gnome-online-accounts.enable = true; # Daemon providing single-sign-on framework for GNOME desktop.
-    gnome-online-miners.enable = with config.services.gnome; gnome-online-accounts.enable && tracker-miners.enable; # Index content from remote account services
+    # gnome-online-miners.enable = with config.services.gnome; gnome-online-accounts.enable && tracker-miners.enable; # Index content from remote account services
     gnome-remote-desktop.enable = true; # Remote Desktop
     gnome-user-share.enable = true; # User-level file-sharing service for GNOME.
   };
