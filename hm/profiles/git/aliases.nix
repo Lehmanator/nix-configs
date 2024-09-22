@@ -25,6 +25,7 @@
     f = "fetch";
     h = "help";
     i = "init";
+    l = "log --oneline --stat --graph";
     ls = "ls-files";
     m = "merge";
     p = "pull";
