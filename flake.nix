@@ -6,20 +6,12 @@
       debug = true;
       systems = ["x86_64-linux" "aarch64-linux" "riscv64-linux"];
       perSystem = { config, lib, pkgs, system, final, ... }: {
-        packages = with lib; {
+        packages = {
           inherit (inputs.disko.packages.${system}) disko disko-doc;
-          #fajita-images = self.flake.nixosConfigurations.fajita.config.mobile.outputs.android-fastboot-images;
-          # deploy = pkgs.writeText "cachix-deploy.json" (builtins.toJSON {
-          #   agents = mapAttrs (host: cfg: cfg.config.system.build.toplevel)
-          #     (filterAttrs (n: cfg: (hasAttrByPath ["config" "system" "build" "toplevel"] cfg)
-          #       && (cfg.pkgs.stdenv.buildPlatform.system == system)
-          #       && cfg.config.services.cachix-agent.enable
-          #     ) self.nixosConfigurations);
-          # });
         };
       };
       flake = {
-        inherit inputs;
+        inherit inputs self;
         overlays = import ./nixos/overlays;
         nixosConfigurations = let
           mkSystem = import ./lib/flake/mkSystem.nix { inherit inputs self; hostsDir = ./nixos/hosts; };
