@@ -19,8 +19,8 @@
         in mkSystems {
           fw             = { device = "laptop"; };
           wyse           = {};
-          fajita         = { mobile = true; };
-          fajita-minimal = { mobile = true; };
+          # fajita         = { mobile = true; device="oneplus-fajita"; system="aarch64-linux"; };
+          # fajita-minimal = { mobile = true; device="oneplus-fajita"; };
         };
       };
     };

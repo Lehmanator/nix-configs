@@ -16,8 +16,9 @@ let
             installerConfiguration = lehmanatorSystem {
               inherit baseModules;
               modules = [
-                { nixpkgs.hostPlatform = selfSystem.config.nixpkgs.hostPlatform;
-                  nixpkgs.buildPlatform = selfSystem.config.nixpkgs.buildPlatform;
+                { #nixpkgs.hostPlatform  = selfSystem.config.nixpkgs.hostPlatform;
+                  #nixpkgs.buildPlatform = selfSystem.config.nixpkgs.buildPlatform;
+                  inherit (selfSystem.config) nixpkgs;
                 }
                 (optionalAttrs (selfSystem.config.system.build ? diskoScript) {
                   system.build.installDiskoScript = selfSystem.config.system.build.diskoScript;
