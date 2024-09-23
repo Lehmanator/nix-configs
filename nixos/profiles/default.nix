@@ -23,7 +23,7 @@
     ./motd.nix
     ./normalize.nix
     ./ollama.nix
-    ./ollama-ui.nix
+    # ./ollama-ui.nix
     ./sshd.nix
     #./auto-upgrade.nix
     #./specialization.nix
