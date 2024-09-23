@@ -1,10 +1,4 @@
-{
-  inputs,
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ inputs, config, lib, pkgs, ... }:
 # TODO: Compose devShells
 #
 # Nix-based devShells:
@@ -37,18 +31,12 @@ let
   # - Git repos w/ auto-pull/auto-updating
 in {
   imports = [];
-  perSystem = {
-    config,
-    lib,
-    pkgs,
-    ...
-  }: {
+  perSystem = { config, lib, pkgs, ... }: {
     devshells.nixos = {
       devshell = {
         name = "nixos";
         # TODO: Use figlet
         motd = ''
-
           ╭───────────────────────────────────────────────────────────╮
           │                                                           │
           │ {202} 🔨   Welcome to Lehmanator's NixOS configuration shell!{reset}  │
@@ -190,7 +178,6 @@ in {
         pkgs.disnixos # Provides complementary NixOS infrastructure deployment to Disnix
         pkgs.morph # A NixOS host manager written in Golang
         pkgs.nix-deploy # Deploy Nix-built software to a NixOS machine
-        pkgs.nix-simple-deploy # Deploy software or entire NixOS system config to another NixOS system
         pkgs.nixops-dns # DNS server for resolving NixOps machines
         pkgs.nixos-anywhere # Install NixOS anywhere via SSH
 
@@ -231,7 +218,6 @@ in {
         #pkgs.nixpkgs-lint # Util for nixpkgs contributors to check nixpkgs for common errors
         pkgs.nixpkgs-lint-community # Fast semantic linter for Nix using tree-sitter
         pkgs.rnix-hashes # Nix hash converter
-        pkgs.rnix-lsp # WIP language server for Nix w/ syntax checking & basic completion.
         pkgs.statix # Lints and suggestions for the nix programming language
         #pkgs.vimPlugins.nix-develop-nvim
         pkgs.vimPlugins.nvim-treesitter-parsers.nix
@@ -250,7 +236,6 @@ in {
         pkgs.nix-prefetch-git
         pkgs.nix-prefetch-github
         pkgs.nix-prefetch-scripts
-        pkgs.nix-universal-prefetch
         pkgs.nix-update # Swiss-army-knife for updating Nix packages.
         pkgs.nix-update-source # Util to automate updating of Nix derivation sources
         pkgs.nurl # Command-line tool to generate Nix fetcher calls from repository URLs
@@ -278,7 +263,6 @@ in {
         pkgs.sbomnix # Generate SBOMs for nix targets
         #pkgs.stack2nix # Convert stack.yaml files into Nix build instructions.
         #pkgs.stackage2nix # Convert Stack files into Nix build instructions
-        pkgs.styx # Nix based static site generator
         pkgs.swiftpm2nix # Generate a Nix expression to fetch swiftpm dependencies
         pkgs.terranix # A NixOS like terraform-json generator
         pkgs.toml2nix # A tool to convert TOML files to Nix expressions
@@ -307,7 +291,7 @@ in {
         pkgs.lanzaboote-tool # Lanzaboote UEFI tooling for SecureBoot enablement on NixOS systems
         pkgs.linuxKernel.packages.linux_zen.hyperv-daemons # Integration Services for running NixOS under HyperV
         pkgs.lorri # Your project's `nix-env`
-        pkgs.python311Packages.nix-kernel # Simple Jupyter kernel for `nix-repl`
+        pkgs.python3Packages.nix-kernel # Simple Jupyter kernel for `nix-repl`
         pkgs.nix-ld # Run unpatched dynamic binaries on NixOS
         pkgs.nix-plugins # Collection of misc plugins for Nix expression language
         pkgs.nixos-container

@@ -134,6 +134,8 @@
     # --- Modules: Flake-parts -------------------------------------
     flake-parts.url = "github:hercules-ci/flake-parts";
     agenix-shell.url = "github:aciceri/agenix-shell";
+    agenix-rekey.url = "github:oddlama/agenix-rekey";
+    agenix-rekey.inputs.nixpkgs.follows = "nixpkgs";
     emanote.url = "github:srid/emanote";
     ez-configs.url = "github:ehllie/ez-configs";
     flake-parts-website.url = "github:hercules-ci/flake.parts-website";
