@@ -5,7 +5,7 @@
     enable = true;
     enableRecoloring = true;
     package = pkgs.amberol;
-    replayGain = "track";
+    # replayGain = "track";
   };
 
   xdg.mimeApps.defaultApplications = {
