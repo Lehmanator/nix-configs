@@ -21,9 +21,9 @@
     packageNames = [
       #"ffmpeg"
       #"phoc"
-      "mutter"
+      # "mutter"
       "mutter-devel"
-      "gnome-shell"
+      # "gnome-shell"
       "gnome-shell-devel"
       "linux"
       #"bitwarden"

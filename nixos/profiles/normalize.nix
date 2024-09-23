@@ -1,7 +1,5 @@
 { inputs
-, config
-, lib
-, pkgs
+, config, lib, pkgs
 , ...
 }:
 let
@@ -55,14 +53,11 @@ let
   pkgs-pipewire = with pkgs; [ pipewire.lib ];
 in
 {
-  imports = [ ];
-
   # --- Running Foreign Packages ---------------------------
   # https://unix.stackexchange.com/questions/522822/different-methods-to-run-a-non-nixos-executable-on-nixos
   # https://reflexivereflection.com/posts/2015-02-28-deb-installation-nixos.html
   #nixpkgs.overlays = [inputs.nix-alien.overlays.default];
-  environment.systemPackages =
-    [
+  environment.systemPackages = [
       #inputs.nix-alien.packages.${pkgs.stdenv.system}.nix-alien
       #pkgs.nix-alien
 
