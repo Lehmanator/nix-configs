@@ -7,12 +7,11 @@
     ./crypto
     ./apps
     ./gnome
-    ./editor
+    ./editorconfig.nix
     ./fonts.nix
     ./git
-    ./languages/nodejs.nix
-    ./languages/python.nix
-    ./languages/rust.nix
+    ./helix
+    ./languages
     ./nix
     ./ollama.nix
     ./roles/dev
@@ -23,6 +22,10 @@
     ./ssh.nix
     ./virt
     ./xdg.nix
+
+    # ./codium
+    # ./neovim
+    # ./nixvim
   ];
 
   home = {
