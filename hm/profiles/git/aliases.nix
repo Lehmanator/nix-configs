@@ -1,10 +1,4 @@
-{ self
-, inputs
-, config
-, lib
-, pkgs
-, ...
-}:
+{ inputs, config, lib, pkgs, ... }:
 {
   programs.git.aliases = {
     a = "add";
