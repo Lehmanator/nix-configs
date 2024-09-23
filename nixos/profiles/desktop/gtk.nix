@@ -25,7 +25,7 @@
   services.dbus.packages = with pkgs; [gcr gcr_4]; # Let gpg-agent/rbw use pinentry-gnome3
   #programs.ssh.askPassword = "${pkgs.gcr_4}/libexec/gcr4-ssh-askpass";
 
-  xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
+  xdg.portal.extraPortals = lib.mkIf (!config.services.xserver.desktopManager.gnome.enable) [pkgs.xdg-desktop-portal-gtk];
 
   programs.sway.wrapperFeatures.gtk = true;
   #services.xserver.displayManager.lightdm.greeters.gtk.enable = lib.mkDefault true;

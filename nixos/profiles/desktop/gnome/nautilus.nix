@@ -12,9 +12,9 @@
 
   # Enable Nautilus Extensions
   environment = {
-    sessionVariables.NAUTILUS_4_EXTENSION_DIR = "${pkgs.gnome.nautilus-python}/lib/nautilus/extensions-4";
+    sessionVariables.NAUTILUS_4_EXTENSION_DIR = lib.mkDefault "${pkgs.gnome.nautilus-python}/lib/nautilus/extensions-4";
     pathsToLink = ["/share/nautilus-python/extensions"];
-    packages = [pkgs.gnome.nautilus pkgs.gnome.nautilus-python];
+    systemPackages = [pkgs.gnome.nautilus pkgs.gnome.nautilus-python];
   };
 
   # TODO: Set settings

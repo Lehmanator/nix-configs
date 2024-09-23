@@ -1,15 +1,15 @@
 { config, lib, pkgs, user, ... }:
 let
   inherit (lib) optionalString;
-  desktop = lib.toLower config.xserver.displayManager.defaultSession;
+  desktop = lib.toLower config.services.displayManager.defaultSession;
   usesTheme = builtins.elem desktop;
   prefers-dark = false;
   highcontrast = false;
 in
 {
   # styles = OneOf: "adwaita", "adwaita-dark", "adwaita-highcontrast", "adwaita-highcontrastinverse", "bb10bright", "bb10dark", "breeze", "cde", "cleanlooks", "gtk2", "kvantum", "motif", "plastique"
-  qt = {
-    enable = lib.mkDefault true;
+  qt = lib.mkDefault {
+    enable = true;
   } // (
     if usesTheme ["gnome" "gnome-mobile" "phosh" "mate" "budgie"] then
       { platformTheme="gnome"; style="adwaita"
@@ -26,8 +26,14 @@ in
       { platformTheme="qt5ct"; style="gtk2"; }
   );
 
-  home-manager = {
-    sharedModules = [{ qt = config.qt; }];
-    users.${user}.config.qt = config.qt;
+  home-manager = let
+    hmQt = {
+      inherit (config.qt) enable;
+      platformTheme.name = if config.qt.platformTheme == "gnome" then "adwaita" else config.qt.platformTheme;
+      style.name = config.qt.style;
+    };
+  in {
+    sharedModules = [{ qt = hmQt; }];
+    users.${user}.config.qt = lib.mkDefault hmQt;
   };
 }

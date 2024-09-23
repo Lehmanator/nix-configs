@@ -99,5 +99,8 @@
   # };
 
   # Admin user: Add configurator package & DConf Nix util
-  home-manager.users.${user}.home.packages = [pkgs.gdm-settings pkgs.dconf2nix];
+  home-manager.users.${user}.home.packages = [
+    pkgs.dconf2nix
+    # pkgs.gdm-settings  # TODO: Enable in 24.11
+  ];
 }

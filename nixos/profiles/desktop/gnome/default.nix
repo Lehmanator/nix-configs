@@ -4,19 +4,23 @@
 #   - All GNOME packages:  default.nix
 #   - GNOME Installer Env: installer.nix
 #   - Update GNOME:        updater.nix
-{ config, lib, pkgs, ... }:
+{ inputs
+, config, lib, pkgs
+, ...
+}:
 {
   imports = [
+    ./apps
+    ./extensions
+
     ./audio.nix
     ./keyring.nix
     ./nautilus.nix
     ./network.nix
-    #../../autologin.nix { inherit user; }
-    ../../gtk.nix
-    ../../wayland.nix
-    #../../xwayland.nix
-    ./apps
-    ./extensions
+
+    "${inputs.self}/nixos/profiles/desktop/gtk.nix"
+    "${inputs.self}/nixos/profiles/desktop/wayland.nix"
+    # "${inputs.self}/nixos/profiles/desktop/xwayland.nix"
   ];
 
   # --- Services -----------------------------------------------------
@@ -63,7 +67,7 @@
       pkgs.gnome.gnome-tweaks
     ] ++ lib.optionals config.programs.dconf.enable [
       pkgs.dconf2nix
-      pkgs.dconf-editor
+      pkgs.gnome.dconf-editor  # TODO: Remove from scope in 24.11
     ]; # Convert dconf settings to Nix
 
     # Exclude broken packages
