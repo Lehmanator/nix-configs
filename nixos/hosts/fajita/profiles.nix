@@ -6,7 +6,7 @@
     ../../profiles/mobile
 
     #../../profiles/desktop
-    #../../profiles/desktop/de/gnome
+    #../../profiles/desktop/gnome
     #../../profiles/virt/emulators/slippi.nix
 
     # --- Disabled ---

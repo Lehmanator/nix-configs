@@ -1,11 +1,5 @@
+{ inputs, config, lib, pkgs, user, ... }:
 {
-  inputs,
-  config,
-  lib,
-  pkgs,
-  user,
-  ...
-}: {
   imports = with inputs; [
     #./configuration.nix # System configuration
     ./disko.nix # Disk configuration
@@ -28,7 +22,7 @@
 
     ../../profiles/boot
     ../../profiles/desktop
-    ../../profiles/desktop/de/gnome
+    ../../profiles/desktop/gnome
     ../../profiles/hardware/display
     ../../profiles/hardware/fwupd.nix
     ../../profiles/hardware/peripherals/logitech.nix

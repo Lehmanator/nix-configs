@@ -3,7 +3,7 @@
     ../../profiles
     ../../profiles/boot
     ../../profiles/desktop
-    ../../profiles/desktop/de/gnome
+    ../../profiles/desktop/gnome
     ../../profiles/hardware/display
     ../../profiles/hardware/tpm2.nix
     ../../profiles/hardware/peripherals/apple.nix

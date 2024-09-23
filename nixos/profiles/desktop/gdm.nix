@@ -1,85 +1,103 @@
+{ config, lib, pkgs, user, ... }:
+# let
+#   inherit (lib) concatStringsSep mkDefault optionalString;
+#   openssh-banner = (config.services.openssh.banner != null) && false;
+#   bannerText = with config; ''
+#     +---[Welcome!]---------------------+
+#     |     Host: ${config.networking.hostName} |
+#     |   Domain: ${config.networking.domain or "lehman.run"} |
+#     +---[NixOS]------------------------+
+#     |  Release: ${system.nixos.release} (${system.nixos.codeName})
+#     | Original: ${system.stateVersion}
+#     | Revision: ${system.configurationRevision}
+#     |    Label: ${system.nixos.label}
+#     |  Variant: ${system.nixos.variant_id ? "main"}
+#     |     Tags: ${builtins.concatStringsSep ", " nixos.tags}
+#     +----------------------------------+
+#   '';
+#   mkBanner = bannerText + "\n"
+#     + optionalString (services.openssh.banner != null) services.openssh.banner
+#     + optionalString (             users.motd != null) users.motd             
+#   ;
+# in
 {
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-#let
-#  openssh-banner = (config.services.openssh.banner != null) && false;
-#in
-{
-  services.xserver.displayManager.gdm = {
-    enable = lib.mkDefault true;
+  users.users.${user}.extraGroups = ["gdm"];          # Add main user to GDM
+  services.xserver.displayManager.gdm.enable = true;  # Enable GDM
 
-    # Display text on login screen
-    # NOTE: Font is not monospaced.
-    # TODO: Display MOTD?
-    # TODO: Display lastUpdated?
-    # TODO: Display nixpkgs version/channel/date/hash?
-    banner =
-      ''
-        Host: ${config.networking.hostName}
-      ''
-      #--- Welcome! ---------------------
-      #  Domain: lehman.run
-      #''
-      #--- NixOS ------------------------
-      # Release: ${config.system.nixos.release} (${config.system.nixos.codeName})
-      #Original: ${config.system.stateVersion}
-      #Revision: ${config.system.configurationRevision}
-      #   Label: ${config.system.nixos.label}
-      #----------------------------------
-      #Variant: ${config.system.nixos.variant_id ? "main"}
-      #Domain: ${config.networking.domain} ? "lehman.run"}
-      #Tags: ${builtins.concatStringsSep ", " config.system.nixos.tags}
-      #+ (lib.strings.optionalString (config.services.openssh.banner != null)
-      #  config.services.openssh.banner)
-      #+ (lib.strings.optionalString (config.users.motd != null)
-      #config.users.motd)
-      ;
+  # Display text on login screen
+  # NOTE: Font is not monospaced.
+  # TODO: Display MOTD?
+  # TODO: Display lastUpdated?
+  # TODO: Display nixpkgs version/channel/date/hash?
+  services.xserver.displayManager.gdm.banner = ''
+    Host: ${config.networking.hostName}
+  '';
 
-    # Login after seconds as autoLogin.user when autoLogin.enable=true;
-    #autoLogin.delay = lib.mkDefault 120;
+  # services.xserver.displayManager.gdm = {
+  #   autoLogin.delay = mkDefault 120;    # Delay autoLogin when enabled
+  #   autoSuspend     = mkDefault true;   # Suspend if no login after time
+  #   debug           = mkDefault false;  # Enable GDM debugging
+  #   wayland         = mkDefault true;   # Use Wayland for GDM instead of X11
+  # };
 
-    # Automatically suspend if no login after some time
-    #autoSuspend = lib.mkDefault true;
+  # GDM Daemon settings - `/etc/gdm/custom.conf`
+  #  Options: https://help.gnome.org/admin/gdm/stable/configuration.html.en#daemonconfig
+  # services.xserver.displayManager.settings = mkDefault {
+  #   debug.enable = false;              # Set by debug
+  #
+  #   daemon = {
+  #     TimedLoginEnable     = false;    # Set by autoSuspend
+  #     TimedLogin           = user;     # Set by autoSuspend
+  #     TimedLoginDelay      = 30;       # Set by autoLogin.delay
+  #     AutomaticLoginEnable = false;    # Set by autoLogin.enable
+  #     AutomaticLogin       = user;     # Set by autoLogin.user
+  #   };
+  #
+  #   chooser = {    # If IPv6 enabled,  # Collect multicast network hosts resps
+  #     Multicast           = false;     # Send multicast query to local network
+  #     MulticastAddr       = "ff02::1"; # Link-local multicast address
+  #   };
+  #
+  #   greeter = {
+  #     IncludeAll = true;                   # Include all users (w/ UID > 500)
+  #     Include = concatStringsSep "," [user "guest"]; # UI: Incl users (force)
+  #     Exclude = concatStringsSep "," [               # UI: Excl users
+  #       "bin"  "root" "daemon"    "adm"    "shutdown" "sync"
+  #       "news" "uucp" "operator"  "nobody" "nobody4"  "noaccess" "halt"
+  #       "pvm"  "rpm"  "nfsnobody" "pcap"   "postgres" "mail"
+  #     ];
+  #   };
+  #
+  #   # Disallow TCP connections when starting attached Xservers.
+  #   #  More secure if not using remote connections
+  #   security.DisallowTCP = true;  
+  #
+  #   # XDMCP support allows remote displays/X terminals to be managed by GDM
+  #   xdmcp = {
+  #     # NOTE: Also add `gdm:.${config.networking.domain}` to `/etc/hosts.allow`
+  #     Enable              = true; # Listen on UDP port 177 (or value below)
+  #     HonorIndirect       = true; # Remote execd gdmchooser (X-Term w/o display browser)
+  #     DisplaysPerHost     = 4;    # Connections per remote computer.
+  #     MaxPending          = 4;    # Max simult started displays (to thwart DOS)
+  #     MaxSessions         = 12;   # Max simult display connections
+  #     MaxWait             = 30;   # Sec w/o resp before drops pending display
+  #     MaxWaitIndirect     = 30;   #
+  #     PingIntervalSeconds = 60;   # Sec w/o Xserver resp before ending session
+  #     Port                = 177;  # UDP port GDM should listen for XDMCP reqs on
+  #     Willing             = "/etc/gdm/Xwilling";  # Script to gen status message to send
+  #   };
+  # };
 
-    # Enable debugging
-    #debug = lib.mkDefault false;
+  # networking.firewall.allowedUDPPorts = with config.services.xserver.displayManager.gdm.settings; mkIf xdmcp.enable [xdmcp.Port];
 
-    # Use Wayland instead of X11
-    #wayland = lib.mkDefault true;
+  # environment.etc = mkIf config.services.xserver.displayManager.gdm.settings.xdmcp.enable {
+  #   "hosts.allow".text = ''
+  #     gdm:.${config.networking.domain}
+  #   '';
+  #   # "gdm/Xwilling".text = ''
+  #   # '';
+  # };
 
-    # Options to pass to the GDM daemon.
-    # Options: https://help.gnome.org/admin/gdm/stable/configuration.html.en#daemonconfig
-    #settings = lib.mkDefault {
-    #  debug.enable = false;
-    #  daemon = {
-    #    TimedLoginEnable = false;
-    #    TimedLogin = user;
-    #    TimedLoginDelay = 30;
-    #    AutomaticLoginEnable = false;
-    #    AutomaticLogin = user;
-    #  };
-    #  greeter = {
-    #    IncludeAll = true;
-    #    Include = [user "guest"];
-    #    Exclude = ["bin" "root" "daemon" "adm" "lp" "sync" "shutdown" "halt" "mail" "news" "uucp" "operator" "nobody" "nobody4" "noaccess" "postgres" "pvm" "rpm" "nfsnobody" "pcap"];
-    #  };
-    #  security.DisallowTCP = true;
-    #  xdmcp = {
-    #    DisplaysPerHost = 3;
-    #    # NOTE: Also add `gdm:.${config.networking.domain}` to `/etc/hosts.allow`
-    #    Enable = true;
-    #    HonorIndirect = true;
-    #    MaxPending = 4;
-    #    MaxSessions = 16;
-    #    MaxWait = 30;
-    #    MaxWaitIndirect = 30;
-    #    PingIntervalSeconds = 60;
-    #    Port = 177;
-    #    Willing = "/etc/gdm/Xwilling";
-    #  };
-    #};
-  };
+  # Admin user: Add configurator package & DConf Nix util
+  home-manager.users.${user}.home.packages = [pkgs.gdm-settings pkgs.dconf2nix];
 }
