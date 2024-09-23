@@ -1,85 +1,46 @@
-{ config, lib, pkgs
-, keybinds ? "custom"
-, ...
-}:
-let
-  # TODO: Move to ./keys-helix.nix
-  helix.normal = {
+{ ... }:
+{
+    C-s = "save_selection";
+    
     # --- Movement ---
-    j = "move_visual_line_down";
-    k = "move_visual_line_up";
-    l = "move_char_right";
+    left  = "move_char_left";         h = "move_char_left";
+    down  = "move_visual_line_down";  j = "move_visual_line_down";
+    up    = "move_visual_line_up";    k = "move_visual_line_up";
+    right = "move_char_right";        l = "move_char_right";
 
-    left = "move_char_left";
-    down = "move_visual_line_down";
-    up = "move_visual_line_up";
-    right = "move_char_right";
+    home = "goto_line_start"; pageup = "page_up";   C-b = "page_up";
+    end  = "goto_line_end"; pagedown = "page_down"; C-f = "page_down";
 
-    b = "move_prev_word_start";
-    B = "move_prev_long_word_start";
+    C-i = "jump_forward";   C-o = "jump_backward";
+    C-d = "half_page_down"; C-u = "half_page_up";
 
-    e = "move_next_word_end";
-    E = "move_next_long_word_end";
-
-    f = "find_next_char";
-    F = "find_prev_char";
-
-    t = "find_till_char";
-    T = "till_prev_char";
+    w = "move_next_word_start"; W = "move_next_long_word_start";  #  Forward-Word
+    b = "move_prev_word_start"; B = "move_prev_long_word_start";  # Backward-Word
+    e = "move_next_word_end";   E = "move_next_long_word_end";    #  Forward-End
+    f = "find_next_char";       F = "find_prev_char";             #     Find-Char
+    t = "find_till_char";       T = "till_prev_char";             #     Till-Char
     
     G = "goto_line";
-    
-    w = "move_next_word_start";
-    W = "move_next_long_word_start";
 
-    home = "goto_line_start";
-    end = "goto_line_end";
-    pageup = "page_up";
-    pagedown = "page_down";
-
-    C-b = "page_up";
-    C-f = "page_down";
-
-    C-d = "half_page_down";
-    C-i = "jump_forward";
-    C-o = "jump_backward";
-    C-s = "save_selection";
-    C-u = "half_page_up";
-    
     # --- Actions ---
-    a = "append_mode";
-    A = "insert_at_line_end";
 
-    c = "change_selection";
-    d = "delete_selection";
+    c = "change_selection"; # C = "copy_selection_on_next_line";
+    d = "delete_selection"; # D = null;
 
-    D = null;
-
-    i = "insert_mode";
-    I = "insert_at_line_start";
-    
-    o = "open_below";
-    O = "open_above";
-
-    p = "paste_after";
-    P = "paste_before";
-
-    q = "replay_macro";
-    Q = "record_macro";
-
-    r = "replace";
-    R = "replace_with_yanked";
-    
-    u = "undo";
-    U = "redo";
+    a = "append_mode";  A = "insert_at_line_end";
+    i = "insert_mode";  I = "insert_at_line_start";
+    o = "open_below";   O = "open_above";
+    p = "paste_after";  P = "paste_before";
+    r = "replace";      R = "replace_with_yanked";
+    q = "replay_macro"; Q = "record_macro";
+    u = "undo";         U = "redo";
     
     y = "yank";
 
-    esc = null;
-
-    "1" = null;
-    "@" = null;
-    "0" = null;
+    # esc = null;
+    # "1" = null;
+    # "@" = null;
+    # "0" = null;
 
     A-c = "change_selection_noyank";
     A-d = "delete_selection_noyank";
@@ -87,17 +48,11 @@ let
     A-U = "later";
 
     "A-." = "repeat_last_motion";
-    "A-`" = "switch_to_uppercase";
 
-    "~" = "switch_case";
-    "`" = "switch_to_lowercase";
-
-    ">" = "indent";
-    "<" = "unindent";
     "=" = "format_selections";
-
-    C-a = "increment";
-    C-x = "decrement";
+    "~" = "switch_case"; "`" = "switch_to_lowercase"; "A-`" = "switch_to_uppercase";
+    ">" = "indent";      "<" = "unindent";
+    C-a = "increment";   C-x = "decrement";
 
     #\"<reg> = "select_register";
     #. = null; # repeat_last_insert
@@ -303,121 +258,4 @@ let
       space = "add_newline_above";
     };
 
-  };
-
-  vim.normal = {
-    h = "move_char_left";
-    j = "move_visual_line_down";
-    k = "move_visual_line_up";
-    l = "move_char_right";
-    left = "move_char_left";
-    down = "move_visual_line_down";
-    up = "move_visual_line_up";
-    right = "move_char_right";
-
-    "0" = "goto_line_start";
-    "$" = "goto_line_end";
-    "@" = "replay_macro";
-    q = "record_macro";
-    x = "delete_char_forward";
-    X = "delete_char_backward";
-    ";" = "repeat_last_motion";
-    C-r = "redo";
-  };
-in
-{
-  # imports = [
-  #   ./keys-custom.nix
-  #   ./keys-helix.nix
-  #   ./keys-vim.nix
-  # ];
-
-  programs.helix.settings.keys = {
-
-    # TODO: Fix delay after pressing j
-    # insert = {
-    #   j.k = "normal_mode"; # jk to exit insert mode
-    # };
-
-    normal = {
-      #D = "delete_char_backward";
-      X = "extend_line_above";
-      esc = "collapse_selection";
-      ret = [ "move_line_down" "goto_first_nonwhitespace" ];
-
-      "1" = "goto_line_start";
-      "0" = "goto_line_end";
-
-      "C-/" = "toggle_comments";
-
-      # Vim training wheels
-      "C-C" = "copy_selection_on_next_line";
-      C = ["select_mode" "goto_line_end" "change_selection"];  # Replaces multi-cursor placement
-      D = ["select_mode" "goto_line_end" "delete_selection"];
-      Y = ["select_mode" "goto_line_end" "yank"];
-      "@" = "replay_macro";
-      g = {
-        "0" = "goto_line_end";
-        "1" = "goto_line_start";
-        "2" = "goto_first_nonwhitespace";
-        "^" = "goto_first_nonwhitespace";
-        "$" = "goto_line_end";
-        G = "goto_last_line";
-      };
-
-      # OS-like selection
-      backspace = "delete_char_backward";
-      del = "delete_char_forward";
-      C-backspace = ["select_mode" "move_prev_word_start" "delete_selection"];
-      C-del = ["select_mode" "move_next_word_start" "delete_selection"];
-      C-left = "move_prev_word_start";
-      C-right = "move_next_word_end";
-
-      C-S-down = "extend_line_below";
-      C-S-up = "extend_line_above";
-
-      C-a = "select_all";
-      C-c = "yank_main_selection_to_clipboard";
-      C-v = "replace_selections_with_clipboard";
-      C-up = "increment";
-      C-down = "decrement";
-
-
-    };
-
-  };
-
-
 }
-
-# --- Key Names ---
-# CTRL:  C-
-# SHIFT: S-
-# ALT:   A-
-# Enter: ret
-# backspace
-# space
-# minus
-# left
-# right
-# up
-# down
-# home
-# end
-# pageup
-# pagedown
-# tab
-# del
-# ins
-# null
-# esc
-
-# --- Minor Modes ---
-# v = select_mode
-# g = goto mode
-# m = match mode
-# : = command_mode
-# z = view mode
-# Z = sticky view mode
-# C-w = window mode
-# space = space mode

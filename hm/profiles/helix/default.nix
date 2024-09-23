@@ -1,11 +1,8 @@
-{ self, inputs
-, config, lib, pkgs
-, ...
-}:
+{ config, lib, pkgs , ... }:
 {
   imports = [
-    ./keys.nix
-    ./languages.nix
+    ./keymaps
+    ./languages
     ./themes.nix
     ./statusline.nix
   ];
@@ -60,12 +57,7 @@
         goto-reference-include-declaration = true;
         snippets = true;
       };
-
       scrolloff = 2;
-
     };
-
   };
-
-  
 }

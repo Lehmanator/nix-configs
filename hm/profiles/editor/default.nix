@@ -1,11 +1,11 @@
-{ self, inputs
+{ inputs
 , config, lib, pkgs
-, editor ? "nixvim"
-, ... }: {
+, ... }:
+{
   imports = [
     #inputs.home-extra-xhmm.homeManagerModules.console.nano
     ./editorconfig.nix
-    ./helix
+    "${inputs.self}/hm/profiles/helix"
     #./neovim
     #./nixvim
   ];
