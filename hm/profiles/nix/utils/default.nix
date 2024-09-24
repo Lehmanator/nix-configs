@@ -1,19 +1,13 @@
-{ inputs, config, lib, pkgs, ... }: {
+{ config, lib, pkgs, ... }: {
   imports = [
-    #./cli.nix
-    ./converters.nix
-    ./direnv.nix
-    #./devshell.nix
-    #./diff.nix
+    ./converters.nix  # x2nix utils.
     ./docs.nix
-    #./editor.nix
     ./linters.nix
     ./manix.nix
     ./misc.nix
     ./nix-alien.nix
-    #./nix-index.nix
-    #./plugins.nix
     ./updaters.nix
+    #./editor.nix
   ];
 
   # TODO: Add more utils
@@ -27,12 +21,7 @@
     pkgs.flockit # LD_PRELOAD shim to add file locking to programs that don't do it (I'm looking at you, rsync!)
 
     # --- CLIs ---
-    pkgs.nox # Cleaner CLI
-    pkgs.nux # Wrapper over Nix CLI
-
-    # --- Benchmarking ---
-    pkgs.unixbench
-    pkgs.phoronix-test-suite
+    pkgs.nox # Cleaner CLI (Unmaintained)
 
     # --- Shell ---
     # TODO: Move to ${self}/users/sam/shell/default.nix

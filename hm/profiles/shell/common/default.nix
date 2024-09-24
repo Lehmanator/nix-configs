@@ -1,16 +1,13 @@
+{ config, lib, pkgs
+, user
+, ...
+}: 
 {
-  config,
-  lib,
-  pkgs,
-  user,
-  ...
-}: {
   imports = [
     ./abook.nix
     ./alias.nix
     #./audio.nix
     #./colors.nix
-    ./direnv.nix
     ./fetchers.nix
     ./fzf.nix
     ./ls.nix
@@ -27,10 +24,6 @@
     enableVteIntegration = true;
     historyControl = ["ignorespace"];
   };
-
-  # TODO: Move to separate file
-  programs.command-not-found.enable = !config.programs.direnv.enable;
-  services.lorri.enable = !config.programs.direnv.nix-direnv.enable;
 
   home.packages = [
     #pkgs.uutils-coreutils #        # Rust rewrite of GNU coreutils WITH prefix

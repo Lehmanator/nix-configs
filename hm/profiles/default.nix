@@ -5,6 +5,7 @@
 
     ./cachix-agent.nix
     ./crypto
+    ./direnv.nix
     ./apps
     ./gnome
     ./editorconfig.nix
