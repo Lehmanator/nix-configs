@@ -3,7 +3,6 @@
     ./converters.nix  # x2nix utils.
     ./docs.nix
     ./linters.nix
-    ./manix.nix
     ./misc.nix
     ./nix-alien.nix
     ./updaters.nix

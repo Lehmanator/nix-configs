@@ -13,6 +13,7 @@
     ./git
     ./helix
     ./languages
+    ./manix.nix
     ./nix
     ./ollama.nix
     ./roles/dev

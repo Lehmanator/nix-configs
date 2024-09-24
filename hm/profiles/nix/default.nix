@@ -23,68 +23,83 @@
     #   ];
     #   flakeCommands = mkAliasPrefix "nix flake" ["check" "clone" "init" "lock" "metadata" "new" "prefetch" "show" "update"];
     #   storeCommands = mkAliasPrefix "nix store" ["add-file" "add-path" "cat" "copy-logs" "copy-sigs" "delete" "diff-closures" "dump-path" "gc" "ls" "make-content-addressed" "optimise" "path-from-hash-part" "ping" "prefetch-file" "repair" "sign" "verify"];
-    in 
+    in rec
     {
+      # --- Nix CLI ------------------------------
+      # TODO: Create lib to shorten this
       # --- Base Commands ---
-      build = "nix build";
-      bundle = "nix bundle";
-      derivation = "nix derivation";
-      develop = "nix develop";
-      doctor = "nix doctor";
-      flake = "nix flake";
-      fmt = "nix fmt";
+      # Remove `nix ` prefix from subcommands
+      build       = "nix build";
+      bundle      = "nix bundle";
+      derivation  = "nix derivation";
+      develop     = "nix develop";
+      doctor      = "nix doctor";
+      flake       = "nix flake";
+      fmt         = "nix fmt";
       help-stores = "nix help-stores";
-      nar = "nix nar";
-      path-info = "nix path-info";
+      nar         = "nix nar";
+      path-info   = "nix path-info";
       print-dev-env = "nix print-dev-env";
-      profile = "nix profile";
-      run = "nix run";
-      search = "nix search";
-      shell = "nix shell";
-      store = "nix store";
+      profile     = "nix profile";
+      run         = "nix run";
+      search      = "nix search";
+      shell       = "nix shell";
+      store       = "nix store";
       realisation = "nix realisation";
-      repl = "nix repl";
+      repl        = "nix repl";
       upgrade-nix = "nix upgrade-nix";
       why-depends = "nix why-depends";
 
+      # These commands might conflict with existing commands.
       # config = "nix config";
-      # copy = "nix copy";
+      # copy   = "nix copy";
       # daemon = "nix daemon";
-      # edit = "nix edit";
-      # eval = "nix eval";
-      # hash = "nix hash";
-      # key = "nix key";
-      # log = "nix log";
+      # edit   = "nix edit";
+      # eval   = "nix eval";
+      # hash   = "nix hash";
+      # key    = "nix key";
+      # log    = "nix log";
 
       # --- Flake Commands ---
-      check = "nix flake check";
-      clone = "nix flake clone";
-      init = "nix flake init";
-      lock = "nix flake lock";
+      # Remove `nix flake ` prefix from flake subcommands
+      check    = "nix flake check";
+      clone    = "nix flake clone";
+      init     = "nix flake init";
+      lock     = "nix flake lock";
       metadata = "nix flake metadata";
-      new = "nix flake new";
+      new      = "nix flake new";
       prefetch = "nix flake prefetch";
-      show = "nix flake show";
-      update = "nix flake update --commit-lock-file";
+      show     = "nix flake show";
+      update   = "nix flake update --commit-lock-file";
 
       # --- Other Subcommands ---
       config-show = "nix config show";
 
       # --- Renamed Commands ---
+      # Commands that cannot be simply aliased without `nix ` prefix.
       nedit = "nix edit";
-      nenv = "nix env";
-      nrun = "nix run";
+      nenv  = "nix env";
+      nrun  = "nix run";
+      # TODO: FZF pname selection for this?
       # npkg = "nix run nixpkgs#$(read -p \"Enter a package name\")";
 
+      # --- Nix Store -------------------------
+      store-optimize = "nix store optimise";
+      store-gc       = "nix store gc --verbose";
+      store-cleanup  = "nix store gc & nix store optimise &";
+      store-content-addressed = "nix store make-content-addressed";
+      make-content-addressed  = store-content-addressed;
+      
+      # --- Dependencies -------------------------
       nix-closure-list = "nix-store -qR `which $1`"; # TODO: Figure out how to allow
       nix-closure-tree = "nix-store -q --tree `which $1`"; # arg not at end of alias
       nix-dependencies = "nix-store -q --references `which $1`";
       nix-dependencies-reverse = "nix-store -q --referrers `which $1`";
 
-      nf = "nix flake";
-      nfs = "nix flake show";
+      # --- Flakes -------------------------------
+      nf   = "nix flake";
+      nfs  = "nix flake show";
       nfsp = "nix flake show git+$(${clip-bin})";
-
     };
   };
 
@@ -103,5 +118,4 @@
   #  hmReg = mkRegistryJSON config.nix.registry; # osConfig.nix.registry;
   #in lib.recursiveUpdate { "nix/registry.json".text = hmReg; }
   #{(lib.mapAttrs' (n: v: { n = "nix/inputs/${n}"; v = { source = v.outPath; }; }) inputs);
-
 }
