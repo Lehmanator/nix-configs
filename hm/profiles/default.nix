@@ -3,6 +3,7 @@
   imports = [
     ./modules
 
+    ./bat.nix
     ./cachix-agent.nix
     ./crypto
     ./direnv.nix

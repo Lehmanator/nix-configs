@@ -1,7 +1,4 @@
-{ config, lib, pkgs
-, user
-, ...
-}: 
+{ config, lib, pkgs, ... }: 
 {
   imports = [
     ./abook.nix
@@ -17,7 +14,6 @@
     ./starship.nix
     ./tmux.nix
     ../../docs
-    ../../pager
   ];
 
   programs.bash = {
