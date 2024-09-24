@@ -23,6 +23,7 @@
     ./shell
     ./social
     ./ssh.nix
+    ./tealdeer.nix
     ./virt
     ./xdg.nix
 
@@ -47,6 +48,16 @@
       pkgs.ntfs3g
       #pkgs.rustup
     ];
+  };
+
+  # TODO: Make this work when home-manager integrated in NixOS
+  news.display = "show";
+
+  # home-manager manuals
+  manual = {
+    html.enable     = true;  # $ home-manager-help
+    json.enable     = true;  # $ jq '.' $profileDir/share/doc/home-manager/options.json
+    manpages.enable = true;  # $ man home-configuration.nix
   };
 
   programs = {
