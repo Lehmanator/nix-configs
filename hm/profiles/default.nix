@@ -17,6 +17,7 @@
     ./manix.nix
     ./nix
     ./ollama.nix
+    ./readline.nix
     ./roles/dev
     ./roles/sysadmin
     ./search
