@@ -1,20 +1,16 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: let
+{ config, lib, pkgs, ... }:
+let
+  setopt-options = {};
   # TODO: Load by getting all attrs (+ filter unwanted/disabled)
   completion-snippets = {
     # Reorder completion groups
     group-order = "zstyle ':completion:*:*:-command-:*:*' group-order alias builtins functions commands";
   };
-  setopt-options = {};
 in {
   programs.zsh = {
     initExtra = let
       cache-completions = ''
-                zstyle ':completion:*' use-cache on
+        zstyle ':completion:*' use-cache on
         zstyle ':completion:*' cache-path "${config.xdg.cacheHome}/zsh/.zcompcache"
       '';
 
@@ -60,6 +56,13 @@ in {
 
       # Don't expand '//' to '/*/'
       squeeze-slashes = "zstyle ':completion:*' squeeze-slashes true";
-    in "";
+
+      # Use fzf-tab completion
+      zsh-fzf-tab = "${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh";
+    in ''
+      # --- programs.zsh.initExtra ---
+    ''
+    + lib.optionalString config.programs.fzf.enable zsh-fzf-tab
+    ;
   };
 }
