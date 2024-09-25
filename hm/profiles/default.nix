@@ -25,6 +25,7 @@
     ./editorconfig.nix
     ./eza.nix
     ./fastfetch.nix
+    ./fd.nix
     ./fonts.nix
     ./fzf.nix
     ./gallery-dl.nix
