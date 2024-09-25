@@ -2,6 +2,8 @@
 
 ❄️  Welcome! ❄️
 
+[![built with nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org)
+
 *What do we have here?*
 
 - Work-in-progress set of [NixOS](https://nixos.org) configs.
