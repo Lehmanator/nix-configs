@@ -1,9 +1,5 @@
+{ config, lib, pkgs, ... }:
 {
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
   # TODO: Add custom repos (https://github.com/denisidoro/navi/blob/master/docs/cheatsheet_repositories.md)
   # TODO: Auto-update repos (https://github.com/denisidoro/navi/blob/master/docs/cheatsheet_repositories.md#auto-updating-repositories)
   # TODO: Vim syntax highlighting (https://github.com/denisidoro/navi/blob/master/docs/vim.md)
@@ -12,23 +8,29 @@
 
   programs.navi = {
     enable = true;
+
+    # https://github.com/denisidoro/navi/blob/master/docs/config_file.md
+    # https://github.com/denisidoro/navi/blob/master/docs/config_file_example.yaml
+    # navi info config-example
     settings = {
       cheats = {
         # TODO: Use system dirs
-        # TODO: Instruct nixpkgs to include navi cheats
+        # TODO: Instruct nixpkgs to include navi cheats (environment.pathsToLink)
         paths = [
-          "${config.xdg.dataHome}/navi/cheats/" # "~/.local/share/navi/cheats/"
-          "${config.xdg.configHome}/navi/cheats/" # "~/.config/navi/cheats/"
+          "${config.xdg.dataHome}/navi/cheats/"   # ".local/share/navi/cheats/"
+          "${config.xdg.configHome}/navi/cheats/" # ".config/navi/cheats/"
         ];
       };
 
       # TODO: cheatsh client?
-      client = {tealdeer = true;};
+      client = {
+        tealdeer = config.programs.tealdeer.enable;
+      };
 
       #finder = {
-      #  command = "fzf";
-      #  #overrides = "";
-      #  #overrides_var = "";
+      #  command = "fzf"; # Equiv opt: --finder
+      #  #overrides = ""; # Equiv opt: --fzf-overrides
+      #  #overrides_var = ""; # Equiv opt: --fzf-overrides-var
       #};
 
       #search = {

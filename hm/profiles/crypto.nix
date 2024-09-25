@@ -1,14 +1,6 @@
-{
-  inputs,
-  self,
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
+{ ... }: {
   imports = [
     #./age.nix                     # age secret encryption
-    ./gpg.nix                      # GPG client
     #./gpg                         # GPG client
     #./gpg/agent.nix               # GPG agent
     #./sops.nix                    # sops secret encryption

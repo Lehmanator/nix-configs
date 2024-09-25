@@ -1,16 +1,14 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
+{ config, lib, pkgs, ... }:
 {
-  imports = [
-    #./git-sync.nix
-    #./unison.nix
-    #./vdirsyncer.nix
-  ];
+  services.vdirsyncer = {
+    enable = !config.services.unison.enable;
+    package = pkgs.vdirsyncer;
+    configFile = "${config.xdg.configHome}/virdirsyncer/config";
+    frequency = "*:0/5";
+    verbosity = null;
+  };
 
+  # TODO: Move to ./unison.nix
   services.unison = {
     enable = true;
     pairs = {
@@ -31,14 +29,6 @@
         };
       };
     };
-  };
-
-  services.vdirsyncer = {
-    enable = !config.services.unison.enable;
-    package = pkgs.vdirsyncer;
-    configFile = "${config.xdg.configHome}/virdirsyncer/config";
-    frequency = "*:0/5";
-    verbosity = null;
   };
 
 }

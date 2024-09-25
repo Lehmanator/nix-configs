@@ -100,9 +100,23 @@ in
 
   home = {
     # TODO: Package: https://github.com/doron-cohen/antidot
-    packages = with pkgs; [ handlr xdg-ninja ];
+    packages = [pkgs.handlr pkgs.xdg-ninja];
     preferXdgDirectories = true;
     #profileDirectory = "${dataDir}/nix/profiles";
+    shellAliases = {
+      o = "xdg-open";
+      open = "xdg-open";
+
+      cd-config = "cd $XDG_CONFIG_HOME";
+      cd-data   = "cd $XDG_DATA_HOME";
+      cd-cache  = "cd $XDG_CACHE_HOME";
+      cd-state  = "cd $XDG_STATE_HOME";
+
+      ls-config = "ls $XDG_CONFIG_HOME";
+      ls-data   = "ls $XDG_DATA_HOME";
+      ls-cache  = "ls $XDG_CACHE_HOME";
+      ls-state  = "ls $XDG_STATE_HOME";
+    };
   };
 
   # --- XDG Base Dirs: Force respect ---------------------------------

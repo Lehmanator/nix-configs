@@ -1,8 +1,8 @@
 { inputs, config, lib, pkgs, ... }: {
   home.packages = [
     # --- Nix Plugins --------
+    # pkgs.nix-plugins # Extensions for Nix  # Broken: 20240924
     pkgs.nix-doc     # Nix documentation CLI
-    pkgs.nix-plugins # Extensions for Nix
 
     # --- Package Fixers ---
     pkgs.flockit     # LD_PRELOAD shim to add file locking to programs that dont supoort (e.g. rsync)

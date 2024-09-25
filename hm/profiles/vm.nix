@@ -1,9 +1,4 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
+{ config, lib, pkgs, ... }:
 {
   # Necessary for QEMU / KVM user session TODO: Conditional based on system config
   # TODO: Use symlink to `/var/lib/libvirt/qemu.conf` instead?
@@ -25,9 +20,6 @@
   # TODO: Move distrobox / chroot stuff to a different file (./virt/chroot.nix)
   # TODO: Add Atoms when nixpkg available. https://github.com/AtomsDevs/Atoms
   # TODO: Set flatpak permissions for Atoms: talk to `org.freedesktop.Flatpak`
-  home.packages = [
-    pkgs.distrobox
-  ];
 
   # TODO: Podman
   # TODO: DistroBox
@@ -36,4 +28,20 @@
   # TODO: VMs
   # TODO: Remote desktop protocol & VNC
 
+  # TODO: Distinguish b/w emulation, virtualization, containerization, & foreign packaging formats?
+  # ./android.nix
+  # ./containers.nix
+  # ./containers/compose.nix
+  # ./containers/docker.nix
+  # ./containers/kubernetes.nix
+  # ./containers/helm.nix
+  # ./containers/podman.nix
+  # ./chroot
+  # ./chroot/distrobox.nix
+  # ./packages.nix
+  # ./windows
+  # ./windows/bottles.nix
+  # ./windows/lutris.nix
+  # ./windows/playonlinux.nix
+  # ./windows/wine.nix
 }

@@ -6,7 +6,7 @@ let
   inherit (lib) getExe concatLines concatStringsSep mapAttrs mapAttrsToList optionalString stringLength;
 in
 {
-  imports = [ ../common
+  imports = [
     ./alias.nix   ./completion.nix ./dirs.nix    ./highlight.nix
     ./history.nix ./init.nix       ./plugins.nix
   ];
@@ -147,7 +147,12 @@ in
     };
   };
 
-  home.packages = [pkgs.zsh-nix-shell pkgs.any-nix-shell pkgs.nix-zsh-completions];
+  home.packages = [
+    pkgs.any-nix-shell       # 
+    pkgs.nix-zsh-completions # Completions for Nix, NixOS, NixOps, & ecosystem
+    pkgs.with-shell          # Interactive shell where each command is prefixed
+    pkgs.zsh-nix-shell       # Zsh plugin that lets you use ZSH in nix-shell
+  ];
 
   #home.sessionVariables.ZDOTDIR = "${config.home.homeDirectory}/${config.programs.zsh.dotDir}";
 }

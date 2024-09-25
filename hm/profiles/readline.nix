@@ -1,38 +1,41 @@
-{ inputs
-, config
-, lib
-, pkgs
-, user
-, bindings ? "vim"
-, ...
-}:
+{ config, lib, pkgs, ... }:
+#
+# --- GNU readline ---
+#
+# See: https://www.man7.org/linux/man-pages/man3/readline.3.html
+#
+# TODO: Determine base source of truth for keybinds            
+#       (ie Vim keybinds set ZSH, readline, etc)
+# TODO: Determine base source of truth for completion behavior
+#       (ie Vim wildmenu completion mimicks ZSH, readline)
+#
+# TODO: Declare highlights & delimiter themes in global user style preference.
+#       Pass in profile imports for Vim, ZSH, readline, shell utils, etc.
+#       - Prompt style / segment delimiting chars / segment order
+#       - colorscheme
+#
+# TODO: Programmatically match all program keybinds w/ those of source of truth
+#       - Vim keybind base
+#
+# TODO: Consider files per-keymap-type to set keybind configs across all programs 
+#       instead of per-program configs for all behavior.
+#       (../<category>/<program>.nix -> ../<
+#       - ../keybinds/vim.nix   {programs.readline.bindings={..}; programs.zsh.completion.strategy=[..]; programs.fzf.keybinds={..};}
+#       - ../keybinds/emacs.nix {programs.readline.bindings={..}; programs.zsh.completion.strategy=[..]; programs.fzf.keybinds={..};}
+#       - ../completion/<PRESET>.nix {programs.readline={..}; programs.zsh.completion.strategy=[..]; programs.fzf.keybinds={..};}
+#       - ../prompt/square.nix {...}
+#       - ../prompt/round.nix  {...}
+#       - ../highlight/<colorscheme>.nix {programs.bat.theme={..}; ...}
+let
+  bindings = "vim";
+in
 {
-  imports = [ ];
-  # TODO: Determine base source of truth for keybinds            (i.e. Vim keybinds set ZSH, readline, etc.)
-  # TODO: Determine base source of truth for completion behavior (i.e. Vim wildmenu completion mimicks ZSH, readline)
-  #
-  # TODO: Declare highlights & delimiter themes in global user style preference & pass in profile imports for Vim, ZSH, readline, shell utils, etc.
-  # - Prompt style / segment delimiting chars / segment order
-  # - colorscheme
-  #
-  # TODO: Programmatically match all program keybinds with those of the source of truth
-  # - Vim keybind base
-  #
-  # TODO: Consider files per-keymap-type to set keybind configs across all programs instead of per-program configs for all behavior. (../<category>/<program>.nix -> ../<
-  # - ../keybinds/vim.nix   {programs.readline.bindings={..}; programs.zsh.completion.strategy=[..]; programs.fzf.keybinds={..};}
-  # - ../keybinds/emacs.nix {programs.readline.bindings={..}; programs.zsh.completion.strategy=[..]; programs.fzf.keybinds={..};}
-  # - ../completion/<PRESET>.nix {programs.readline={..}; programs.zsh.completion.strategy=[..]; programs.fzf.keybinds={..};}
-  # - ../prompt/square.nix {...}
-  # - ../prompt/round.nix  {...}
-  # - ../highlight/<colorscheme>.nix {programs.bat.theme={..}; ...}
-
-  # See: https://www.man7.org/linux/man-pages/man3/readline.3.html
   programs.readline = {
     enable = true;
     bindings = { };
     includeSystemConfig = true;
     variables = {
-      editing-mode = if bindings == "emacs" then bindings else "vi";
+      editing-mode = if bindings=="emacs" then bindings else "vi";
       bell-style = "visible";
       blink-matching-paren = true;
       colored-stats = true;

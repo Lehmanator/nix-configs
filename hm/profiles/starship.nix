@@ -1,16 +1,15 @@
-{
-  config,
-  lib,
-  pkgs,
-  user,
-  ...
-}: let
+{ config, lib, pkgs
+, user
+, ...
+}:
+let
   # TODO Dynamically change `starship.character.vimcmd_*symbol`
   vim_show_abbr = true;
   vim_mode_full = true;
   vim_mode_caps = true;
   vim_mode_normalize_width = true;
-in {
+in
+{
   # See: https://starship.rs/config/
   programs.starship = {
     enable = true;

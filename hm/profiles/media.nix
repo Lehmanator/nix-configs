@@ -1,14 +1,10 @@
-{ self, inputs, config, lib, pkgs,
-  ...
-}:
+{ config, lib, pkgs, ... }:
 {
   home.packages = [
-
     # --- Audio Editors ------
     pkgs.imagemagickBig
 
     # --- Audio Players ------
-
     # --- Photo Editors ------
     # --- Photo Viewers ------
     pkgs.lsix                # Terminal image viewer

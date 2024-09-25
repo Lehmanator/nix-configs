@@ -1,12 +1,9 @@
+{ inputs
+, osConfig
+, config, lib, pkgs
+, ...
+}: 
 {
-  inputs,
-  self,
-  osConfig,
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
   imports = [inputs.emanote.homeManagerModule.default];
   services.emanote = {
     enable = true;
@@ -21,7 +18,7 @@
       "${config.home.homeDirectory}/Documents/Notes"
       "${config.home.homeDirectory}/Documents/Resume"
       "${config.home.homeDirectory}/Projects/Blog"
-      "${self}/docs"
+      "${inputs.self}/docs"
     ];
 
     # See https://emanote.srid.ca/demo/yaml-config for

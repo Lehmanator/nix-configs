@@ -1,20 +1,8 @@
-{ self
-, inputs
-, config
-, lib
-, pkgs
-, ...
-}:
+{ config, lib, pkgs, ... }:
 {
   imports = [
     #inputs.home-extra-xhmm.homeManagerModules.console.program-variables
     #inputs.home-extra-xhmm.homeManagerModules.console.fish
-    ./common
-
-    #./bash
-    #./fish
-    #./nushell
-    ./zsh
   ];
 
   # --- To-Dos -------------------------------------------------------
