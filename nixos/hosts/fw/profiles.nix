@@ -1,36 +1,36 @@
 { config, lib, pkgs, inputs, ... }: {
   imports = [
-    ../../profiles
-    ../../profiles/boot
-    ../../profiles/desktop
-    ../../profiles/desktop/gnome
-    ../../profiles/hardware/display
-    ../../profiles/hardware/tpm2.nix
-    ../../profiles/hardware/peripherals/apple.nix
-    ../../profiles/hardware/peripherals/logitech.nix
-    #../../profiles/hardware/peripherals/printers.nix
-    #../../profiles/hardware/peripherals/scanners.nix
-    ../../profiles/security
-    ../../profiles/security/apparmor.nix
-    #../../profiles/server/kubernetes/k3s-node-main.nix
-    #../../profiles/users/homed.nix
-    ../../profiles/virt
-    #../../profiles/virt/emulators/slippi.nix
-    ../../profiles/cachix-agent.nix
-    ../../profiles/hercules-ci.nix
+    (inputs.self + /nixos/profiles)
+    (inputs.self + /nixos/profiles/boot)
+    (inputs.self + /nixos/profiles/desktop)
+    (inputs.self + /nixos/profiles/desktop/gnome)
+    (inputs.self + /nixos/profiles/hardware/display)
+    (inputs.self + /nixos/profiles/hardware/tpm2.nix)
+    (inputs.self + /nixos/profiles/hardware/peripherals/apple.nix)
+    (inputs.self + /nixos/profiles/hardware/peripherals/logitech.nix)
+    (inputs.self + /nixos/profiles/security)
+    (inputs.self + /nixos/profiles/security/apparmor.nix)
+    (inputs.self + /nixos/profiles/virt)
+    (inputs.self + /nixos/profiles/cachix-agent.nix)
+    # (inputs.self + /nixos/profiles/hercules-ci.nix)
+    # (inputs.self + /nixos/profiles/hardware/peripherals/printers.nix)
+    # (inputs.self + /nixos/profiles/hardware/peripherals/scanners.nix)
+    # (inputs.self + /nixos/profiles/server/kubernetes/k3s-node-main.nix)
+    # (inputs.self + /nixos/profiles/users/homed.nix)
+    # (inputs.self + /nixos/profiles/virt/emulators/slippi.nix)
 
     # --- Disabled ---
-    #../../profiles/virt/windows
-    #../../../common/profiles/editor
+    # (inputs.self + /nixos/profiles/virt/windows)
+    # (inputs.self + /common/profiles/editor)
 
     # --- Imported by profiles/nixos ---
-    #../../profiles/nixos
-    #../../profiles/hardware
-    #../../profiles/locale
-    #../../profiles/network
-    #../../profiles/security
-    #../../profiles/security/sops.nix
-    #../../profiles/shell
-    #../../profiles/users
+    # (inputs.self + /nixos/profiles/nixos)
+    # (inputs.self + /nixos/profiles/hardware)
+    # (inputs.self + /nixos/profiles/locale)
+    # (inputs.self + /nixos/profiles/network)
+    # (inputs.self + /nixos/profiles/security)
+    # (inputs.self + /nixos/profiles/security/sops.nix)
+    # (inputs.self + /nixos/profiles/shell)
+    # (inputs.self + /nixos/profiles/users)
   ];
 }
