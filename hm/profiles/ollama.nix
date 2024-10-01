@@ -4,6 +4,6 @@
     packages = [pkgs.ollama];
   };
   services.flatpak.packages = [
-  ] ++ lib.mkIf config.programs.gnome-shell.enable "com.jeffser.Alpaca"
+  ] ++ (lib.optional config.programs.gnome-shell.enable "com.jeffser.Alpaca")
   ;
 }
