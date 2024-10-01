@@ -6,4 +6,5 @@
   services.flatpak.packages = [
   ] ++ (lib.optional config.programs.gnome-shell.enable "com.jeffser.Alpaca")
   ;
+  programs.nushell.environmentVariables.OLLAMA_HOST = config.home.sessionVariables.OLLAMA_HOST;
 }
