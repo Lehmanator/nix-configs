@@ -125,10 +125,10 @@
   };
   environment.systemPackages = with pkgs; [
     bat
+    fastfetch
     eza
     gcc
     lsd
-    neofetch
     #ripgrep
     tealdeer
     gnumake

@@ -103,10 +103,10 @@
   # TODO: Move most of these to home-manager profile (default user?)
   environment.systemPackages = with pkgs; [
     bat
+    fastfetch
     eza
     gcc
     lsd
-    neofetch
     #ripgrep
     tealdeer
     gnumake

@@ -99,7 +99,7 @@ in
         || echo "Installation failed. :("
     '';
   in (with inputs.disko.packages.${pkgs.system}; [disko disko-doc]) ++ (with pkgs; [
-    bat bottom curl diskrsync dnsutils fd fzf git helix htop httpie jq lsd neofetch neovim ntfsprogs ntfs3g procs ripgrep wget zsh
+    bat bottom curl diskrsync dnsutils fastfetch fd fzf git helix htop httpie jq lsd neovim ntfsprogs ntfs3g procs ripgrep wget zsh
   ]) ++ [disko disko-mount disko-format];
 
   system.stateVersion = "23.11";

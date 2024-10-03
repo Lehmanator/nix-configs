@@ -29,6 +29,6 @@
     firefox.enable = true;
     gnupg = { dirmngr.enable = true; agent.enableExtraSocket = true; agent.enableBrowserSocket = true; };
   };
-  environment.systemPackages = [ pkgs.bat pkgs.eza pkgs.gcc pkgs.lsd pkgs.neofetch pkgs.tealdeer pkgs.gnumake pkgs.lynis ];
+  environment.systemPackages = [ pkgs.bat pkgs.fastfetch pkgs.eza pkgs.gcc pkgs.lsd pkgs.tealdeer pkgs.gnumake pkgs.lynis ];
   nix.settings.trusted-public-keys = [ "hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs=" ];
 }

@@ -47,11 +47,6 @@ in
       itermIntegration = true;
     };
 
-    #${pkgs.neofetch}/bin/neofetch
-    loginExtra = ''
-      ${getExe pkgs.fastfetch}
-    '';
-
     initExtra = let
       # TODO: Dynamic path based on this file's path.
       prefix = ''
@@ -74,7 +69,9 @@ in
       # TODO: Add comments to start of snippet.
       # TODO: Separate this functionality into lib.
       in mkSections {
-        cacheHome = ''mkdir -p "${config.xdg.cacheHome}/zsh"'';
+        cacheHome = ''
+          mkdir -p "${config.xdg.cacheHome}/zsh"
+        '';
         dirstack = ''
           # Maintain stack of recent directories for quick traversal
           if [[ -f "$DIRSTACKFILE" ]] && (( ''${#dirstack} == 0 )); then

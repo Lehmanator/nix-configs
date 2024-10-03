@@ -7,4 +7,8 @@
     settings = {
     };
   };
+
+  programs.zsh.loginExtra = ''
+    ${lib.getExe pkgs.fastfetch}
+  '';
 }

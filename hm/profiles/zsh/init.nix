@@ -1,21 +1,13 @@
 { inputs
-, config
-, lib
-, pkgs
+, config, lib, pkgs
 , ...
 }:
 {
-  imports = [ ];
-
   programs.zsh = {
     #localVariables = {};
 
     #initExtraFirst = "";
     #initExtraBeforeCompInit = "";
-
-    loginExtra = ''
-      ${pkgs.neofetch}/bin/neofetch
-    '';
 
     logoutExtra = ''
       echo "Goodbye, $USER!"
