@@ -89,7 +89,7 @@
       she = "$SHELL";
 
       # --- Networking ---
-      ip-address = "curl ipconfig.me";
+      ip-address = "curl ifconfig.me";
 
       # --- Privileges -------------
       #s  = lib.mkIf config.security.sudo.enable "sudo";        # TODO: Make generic

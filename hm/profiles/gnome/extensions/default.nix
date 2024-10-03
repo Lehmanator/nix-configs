@@ -1,4 +1,4 @@
-{ self, cell, inputs
+{ inputs
 , config, lib, pkgs
 , ...
 }:
@@ -12,7 +12,7 @@
 #
 {
   imports = [
+    ./ddterm.nix
     ./forge
   ];
-
 }
