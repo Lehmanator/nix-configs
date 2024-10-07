@@ -4,7 +4,7 @@ let
 in
 {
   imports = [
-    inputs.srvos.nixosModules.desktop
+    # inputs.srvos.nixosModules.desktop
     ./apps
     ./gnome
     ./flatpak.nix
@@ -28,4 +28,6 @@ in
     printing.enable = true;  # CUPS print server to enable printing
   };
 
+  # Improve desktop responsiveness when updating system
+  nix.daemonCPUSchedPolicy = "idle";
 }
