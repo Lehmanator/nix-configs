@@ -43,7 +43,7 @@
     # --- Package Converters ---
     pkgs.bundix        # Ruby gemfile bundler
     pkgs.buildkit-nix  # Convert Nix to Dockerfile
-    pkgs.cabal2nix     # Cabal files
+    #pkgs.cabal2nix     # Cabal files  # Broken: 20240927
     pkgs.crate2nix     # Rust crate
     pkgs.crystal2nix   # Crystal shard.lock
     pkgs.dconf2nix     # GNOME Settings
