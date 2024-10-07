@@ -53,7 +53,7 @@
         user = "git";                           # git@github.com:<username>/<repo>.git
         addressFamily = "inet";                 # GitHub only supports IPv4 (as of 9/2024)
         identitiesOnly = true;                  # GitHub disallows password auth
-        identityFile = ["~/.ssh/id_rsa" "~/.ssh/id_ed25519"];
+        identityFile = ["~/.ssh/id_ed25519"];   # "~/.ssh/id_rsa"];
         extraOptions = {
           VisualHostKey = "no";
         };
