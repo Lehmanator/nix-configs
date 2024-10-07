@@ -60,4 +60,7 @@
       scrolloff = 2;
     };
   };
+  programs.nushell.environmentVariables = {
+    inherit (config.home.sessionVariables) EDITOR GIT_EDITOR;
+  };
 }
