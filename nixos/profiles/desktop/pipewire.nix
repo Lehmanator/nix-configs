@@ -1,9 +1,9 @@
-{ inputs, config, lib, pkgs, user, ... }: {
+{ config, lib, pkgs, user, ... }: {
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
-    alsa.enable = false;
+    alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
   };
