@@ -1,11 +1,9 @@
-{
-  config,
-  lib,
-  pkgs,
-  user,
-  ...
+{ config, lib, pkgs
+, user
+, ...
 }:
 # nix-output-montor - Build Nix outputs & display a pretty output tree.
+# nix-fast-build    - Combine nix-output-monitor & nix-eval-jobs for faster eval & builds
 #
 # This config wraps `nixos-rebuild` with `nix-output-montor` for prettier system rebuilds.
 #
@@ -18,12 +16,13 @@
 let
   system-config = "${config.users.users.${user}.home}/.config/nixos";
   flake-arg = "--flake ${system-config}#${config.networking.hostName}";
-  rebuild = lib.getExe pkgs.nixos-rebuild;
-  nom = lib.getExe pkgs.nix-output-monitor;
-  unbuffer = "${pkgs.expect}/bin/unbuffer";
+  rebuild   = lib.getExe pkgs.nixos-rebuild;
+  nom       = lib.getExe pkgs.nix-output-monitor;
+  nfb       = lib.getExe pkgs.nix-fast-build;
+  unbuffer  = "${pkgs.expect}/bin/unbuffer";
 in {
   environment = {
-    #systemPackages = [pkgs.expect pkgs.nix-output-montor];
+    systemPackages = with pkgs; [expect nix-output-monitor nix-fast-build];
     shellAliases = rec {
       # Minimal wrapper
       nos-rebuild = "${unbuffer} ${rebuild} $@ |& ${nom}";
@@ -36,9 +35,9 @@ in {
 
       # Aliases to other main rebuild commands using --fast
       nos-build = "${nos} build";
-      nos-build-dry = "${nos} dry-build}";
-      nos-build-vm = "${nos} build-vm}";
-      nos-build-vm-bootloader = "${nos} build-vm-with-bootloader}";
+      nos-build-dry = "${nos} dry-build";
+      nos-build-vm = "${nos} build-vm";
+      nos-build-vm-bootloader = "${nos} build-vm-with-bootloader";
       nos-switch = "${nos} switch";
       nos-test = "${nos} test";
       nos-activate = "${nos} switch";
