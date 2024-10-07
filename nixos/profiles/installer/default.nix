@@ -78,11 +78,11 @@
     shells = [ pkgs.bash pkgs.zsh ];
     systemPackages = [
       pkgs.bat
+      pkgs.fastfetch
       pkgs.fd
       pkgs.fzf
       pkgs.git
       pkgs.neovim
-      pkgs.neofetch
       pkgs.lsd
       pkgs.eza
     ];
