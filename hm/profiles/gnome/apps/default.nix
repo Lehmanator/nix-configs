@@ -3,7 +3,8 @@
   imports = [
     # --- Distro-independent Apps ---
     # TODO: Import same category files from `../../apps` in `./<category>.nix`
-    ../../apps
+    # ../../apps
+    (inputs.self + /hm/profiles/apps)
 
     ./dbus.nix
     ./developer.nix
@@ -27,6 +28,7 @@
   # --- Install GTK4 Apps ---
   # TODO: Figure out apps loaded elsewhere & remove
   home.packages = with pkgs; [
+    # https://github.com/hwittenborn/celeste
     celeste #               # Sync files w/ Google-Drive/Dropbox/Nextcloud/OwnCloud/WebDAV/OneDrive/S3
     czkawka #               # Remove unnecessary files
     pika-backup #           # Backup application
