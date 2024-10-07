@@ -18,13 +18,12 @@
 
     # Domains to search for hostnames
     search = [
-      config.networking.domain
       "samlehman.me"
       "samlehman.dev"
       "lehman.run"
       "home.local"
-    ];
-
+    ] ++ lib.optional (config.networking ? "domain" && config.networking.domain != null && config.networking.domain != "") config.networking.domain
+    ;
   };
 
 }
