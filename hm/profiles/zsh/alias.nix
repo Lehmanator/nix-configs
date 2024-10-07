@@ -1,10 +1,8 @@
+{ config, lib, pkgs
+, osConfig
+, ...
+}:
 {
-  config,
-  osConfig,
-  lib,
-  pkgs,
-  ...
-}: {
   programs.zsh = {
     # --- zsh-abbr ---
     # Like aliases, but can expand in-place.
@@ -63,6 +61,9 @@
     # --- Regualar Aliases ---
     # Only for zsh-specific shell aliases
     # Generic aliases should go in `../common/alias.nix`
-    shellAliases = {pretty-fpath = "echo \"$fpath\" | tr ' ' '\\n'";};
+    shellAliases = {
+      # TODO: Colorize
+      pretty-fpath = "echo \"$fpath\" | tr ' ' '\\n'";
+    };
   };
 }

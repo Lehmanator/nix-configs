@@ -30,15 +30,15 @@ in
       autoload -U compinit && compinit
       autoload -U bashcompinit && bashcompinit
     '';
-    prezto.editor.dotExpansion = true; # Auto expand ... to ../..
+    prezto.editor.dotExpansion = true;  # Auto expand ... to ../..
 
     # --- Integration ---
     enableVteIntegration = true;
     prezto.terminal = {
-      autoTitle = true; # Issue w/ Blackbox terminal or all iTerm-based?
-      #multiplexerTitleFormat = "%s";        # TODO: Test tmux
-      tabTitleFormat = "%m: %s"; # TODO: Fix tab titles missing
-      windowTitleFormat = "%n@%m: %s"; # TODO: Only user@host if remote host or other user
+      autoTitle = true;                 # Issue w/ Blackbox terminal or all iTerm-based?
+      #multiplexerTitleFormat = "%s";   # TODO: Test tmux
+      tabTitleFormat = "%m: %s";        # TODO: Fix tab titles missing
+      windowTitleFormat = "%n@%m: %s";  # TODO: Only user@host if remote host or other user
     };
     prezto.tmux = {
       autoStartLocal = true;
@@ -52,7 +52,7 @@ in
       prefix = ''
         # +-- programs.zsh.initExtra --------------------------------+
         # | File Location:                                           |
-        # |   Repo: ./hm/profiles/shell/zsh/default.nix              |
+        # |   Repo: ./hm/profiles/zsh/default.nix                    |
         # +----------------------------------------------------------+
         # +-- add-zsh-hook --+
         autoload -Uz add-zsh-hook  # Attach functions to shell events
@@ -70,13 +70,16 @@ in
       # TODO: Separate this functionality into lib.
       in mkSections {
         cacheHome = ''
-          mkdir -p "${config.xdg.cacheHome}/zsh"
+          # --- cacheHome ---
+          # Make sure ZSH cache directory exists
+          [[ ! -d "${config.xdg.cacheHome}/zsh" ]] && mkdir -p "${config.xdg.cacheHome}/zsh"
         '';
         dirstack = ''
+          # --- dirstack ---
           # Maintain stack of recent directories for quick traversal
           if [[ -f "$DIRSTACKFILE" ]] && (( ''${#dirstack} == 0 )); then
             dirstack=("''${(@f)"$(< "$DIRSTACKFILE")"}")
-            [[ -d "''${dirstack[1]}" ]] && cd -- "''${dirstack[1]}"
+            [[ -d "''${dirstack[1]}" ]] && builtin cd -- "''${dirstack[1]}"
           fi
           chpwd_dirstack() { print -l -- "$PWD" "''${(u)dirstack[@]}" > "$DIRSTACKFILE" }
           add-zsh-hook -Uz chpwd chpwd_dirstack
@@ -85,6 +88,7 @@ in
           setopt PUSHD_MINUS           # Revert the +/- operators.
         '';
         run-help = ''
+          # --- run-help ---
           # Show command's manpage using run-help (aliased to 'help')
           # Keybinds: '<ALT>-H' & '<ESC>-H'
           autoload -Uz run-help                      # Generic
@@ -93,10 +97,12 @@ in
           ${optionalString (osConfig.security.sudo.enable || osConfig.security.sudo-rs.enable) "autoload -Uz run-help-sudo"}
         '';
         rehash-completions = ''
+          # --- rehash-completions ---
           # Refresh completions when PATH contents change
           zstyle ':completion:*' rehash true
         '';
         reset-fix-terminal-garbage = ''
+          # -- reset-fix-terminal-garbage ---
           function reset_broken_terminal_test () { print '\e(0\e)B' }
           function reset_broken_terminal () {
             	printf '%b' '\e[0m\e(B\e)0\017\e[?5l\e7\e[0;0r\e8'
@@ -104,6 +110,8 @@ in
           add-zsh-hook -Uz precmd reset_broken_terminal
         '';
         git-repo-greeter-info = ''
+          # --- git-repo-greeter-info ---
+          # Show onefetch output if cd to git repo
           last_repository=
           check_directory_for_new_repository() {
             current_repository=$(git rev-parse --show-toplevel 2> /dev/null)
@@ -124,6 +132,7 @@ in
           #check_directory_for_new_repository
         '';
         wordchars-improved = ''
+          # --- wordchars-improved ---
           # Better word behavior when using <Alt>+<Backspace>
           #   Info: 'https://lgug2z.com/articles/sensible-wordchars-for-most-developers'
           #   Default: WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>'

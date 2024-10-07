@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, pkgs, ... }:
 # https://github.com/unixorn/awesome-zsh-plugins
 # http://strcat.de/zsh/#tipps
 # TODO: [fast-syntax-highlighting](https://github.com/zdharma-continuum/fast-syntax-highlighting/)
@@ -62,19 +57,18 @@
 
     # TODO: Fetch plugins using nvfetcher & nixpkgs overlay ?
     # TODO: Use plugins from nixpkgs?
-    plugins = [
-      {
-        name = "fzf-tab";
-        src = pkgs.fetchFromGitHub {
-          owner = "Aloxaf";
-          repo = "fzf-tab";
-          rev = "b06e7574577cd729c629419a62029d31d0565a7a";
-          hash = "sha256-ilUavAIWmLiMh2PumtErMCpOcR71ZMlQkKhVOTDdHZw=";
-        };
-        file = "zsh/fzf-tab-completion.sh";
-      }
-      #pkgs.zsh-fzf-tab
-    ];
+    # plugins = [
+    #   { name = "fzf-tab";
+    #     file = "zsh/fzf-tab-completion.sh";
+    #     src = pkgs.fetchFromGitHub {
+    #       owner = "Aloxaf";
+    #       repo = "fzf-tab";
+    #       rev = "b06e7574577cd729c629419a62029d31d0565a7a";
+    #       hash = "sha256-ilUavAIWmLiMh2PumtErMCpOcR71ZMlQkKhVOTDdHZw=";
+    #     };
+    #   }
+    #   #pkgs.zsh-fzf-tab
+    # ];
   };
 
   home.packages = [pkgs.zsh-fzf-tab];

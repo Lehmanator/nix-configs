@@ -58,7 +58,7 @@ in {
       squeeze-slashes = "zstyle ':completion:*' squeeze-slashes true";
 
       # Use fzf-tab completion
-      zsh-fzf-tab = "${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh";
+      zsh-fzf-tab = "source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh";
     in ''
       # --- programs.zsh.initExtra ---
     ''
