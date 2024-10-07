@@ -1,5 +1,5 @@
-{pkgs, ...}: let
-  mkLine = import ./draw-line.nix {inherit pkgs;};
+{pkgs, ...}@args: let
+  mkLine = import ./draw-line.nix args;
   # TODO: Wrap script w/  "| ${lib.getExe pkgs.gnused} 's/^/│ /'"
 in
   msg: script: ''

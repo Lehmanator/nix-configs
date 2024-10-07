@@ -1,4 +1,3 @@
-{pkgs, ...}: let
-  mkLine = import ./draw-line.nix {inherit pkgs;};
-in
-  mkLine "" "╰" "─" "╯"
+{ ... }@args:
+  (import ./draw-line.nix args)
+  "" "╰" "─" "╯"

@@ -1,4 +1,4 @@
-{pkgs, ...}: msg: beg: sep: end: let
+{pkgs, ...}@args: msg: beg: sep: end: let
   len = toString (1 + builtins.stringLength (beg + msg + end));
   #COLUMNS=$(${pkgs.ncurses}/bin/tput cols)
   #DIVIDER_COLS="$(( COLUMNS - ${len} ))"

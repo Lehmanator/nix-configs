@@ -1,18 +1,15 @@
 { inputs, config, lib, pkgs, ... }@moduleArgs:
 let
   # TODO: Use lib.strings.replicate N "mystring"
-  importLib = name: import "${inputs.self}/lib/${name}.nix" moduleArgs;
-  mkWrapper = importLib "shell/wrap-command-box";
-  mkLine    = importLib "shell/draw-line";
-  mkTop     = importLib "shell/draw-divider-top";
-  mkBot     = importLib "shell/draw-divider-bottom";
-  mkMid     = importLib "shell/draw-divider-middle";
+  draw-divider = import "${inputs.self}/lib/shell/draw-divider.nix" moduleArgs;
+  mkWrapper    = import "${inputs.self}/lib/shell/wrap-command-box.nix" moduleArgs;
+  mkLine       = import "${inputs.self}/lib/shell/draw-line.nix" moduleArgs;
+  mkTop = draw-divider.top;
+  mkBot = draw-divider.bottom;
+  mkMid = draw-divider.middle;
 
-  # mkWrapper = import ../../../lib/shell/wrap-command-box.nix    moduleArgs;
-  # mkLine    = import ../../../lib/shell/draw-line.nix           moduleArgs;
-  # mkTop     = import ../../../lib/shell/draw-divider-top.nix    moduleArgs;
-  # mkBot     = import ../../../lib/shell/draw-divider-bottom.nix moduleArgs;
-  # mkMid     = import ../../../lib/shell/draw-divider-middle.nix moduleArgs;
+  figlet = lib.getExe pkgs.figlet;
+  sed    = lib.getExe pkgs.gnused;
 in {
   system.activationScripts = {
     aaa-begin = {
@@ -23,9 +20,8 @@ in {
         ''
         + mkWrapper "NixOS System Activation" ''
           echo '│ '
-          ${pkgs.figlet}/bin/figlet '${config.networking.hostName}' -f o8 -w "$(( COLUMNS - 1 ))" | ${
-            lib.getExe pkgs.gnused
-          } 's/^/│ /'
+          ${figlet} '${config.networking.hostName}' -f o8 -w "$(( COLUMNS - 1 ))" | \
+          ${sed} 's/^/│ /'
         '';
     };
     aaa-end = {
@@ -42,8 +38,8 @@ in {
       deps = [
         "aaa-begin" "aaa-end" "diff-closures" "diff-versions" "zzz-begin"
         "etc" "groups" "hashes" "setupSecrets"
-        # "update-diff"
         "usrbinenv"
+        # "update-diff"
       ];
       text = mkBot;
     };

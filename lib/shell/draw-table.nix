@@ -1,5 +1,5 @@
-{pkgs, lib, ...}: let
-  mkLine = import ./draw-line.nix {inherit pkgs;};
+{ ... }@args: let
+  mkLine = (import ./draw-line.nix args);
   # ⛖  ⛗
   chars = {
     arrows = {
