@@ -81,8 +81,8 @@
 
       # --- Programs ---
       w = "which -a";
-      path-print     = "echo \"$PATH\" | tr ':' '\n'";
-      path-print-nix = "echo \"$NIX_PATH\" | tr ':' '\n'";
+      # path-print-nix = "echo \"$NIX_PATH\" | tr ':' '\n'";  # TODO: Properly escape
+      # path-print     = "echo \"$PATH\" | tr ':' '\n'";
 
       # --- Terminal ---
       cl = "clear";
