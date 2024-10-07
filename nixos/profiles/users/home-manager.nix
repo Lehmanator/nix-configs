@@ -14,6 +14,7 @@
     arkenfox.hmModules.default
     sops-nix.homeManagerModules.sops
   ];
+  backupFileExtension = "backup";
   extraSpecialArgs = { inherit inputs user; };
   useGlobalPkgs = true;
   useUserPackages = true;
