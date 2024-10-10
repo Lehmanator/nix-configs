@@ -100,7 +100,7 @@
     in lib.concatLines ([
       zmods
       cd-ls
-      # xterm-titles
+      xterm-titles
     ] 
     ++ lib.optional config.programs.git.enable cd-git
     );
