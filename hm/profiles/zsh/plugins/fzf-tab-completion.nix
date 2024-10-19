@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
   # Last Update: 2024/02/06
   # Broken. Relies on LD_PRELOAD method probably broken by NixOS.
   # Also works for other programs using readline

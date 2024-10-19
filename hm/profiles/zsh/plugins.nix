@@ -57,19 +57,27 @@
 
     # TODO: Fetch plugins using nvfetcher & nixpkgs overlay ?
     # TODO: Use plugins from nixpkgs?
-    # plugins = [
-    #   { name = "fzf-tab";
-    #     file = "zsh/fzf-tab-completion.sh";
-    #     src = pkgs.fetchFromGitHub {
-    #       owner = "Aloxaf";
-    #       repo = "fzf-tab";
-    #       rev = "b06e7574577cd729c629419a62029d31d0565a7a";
-    #       hash = "sha256-ilUavAIWmLiMh2PumtErMCpOcR71ZMlQkKhVOTDdHZw=";
-    #     };
-    #   }
-    #   #pkgs.zsh-fzf-tab
-    # ];
+    plugins = [
+      { # https://github.com/chisui/zsh-nix-shell
+        name = "zsh-nix-shell";
+        src = pkgs.zsh-nix-shell;
+        file = "share/zsh-nix-shell/nix-shell.plugin.zsh";
+      }
+      { # https://github.com/jeffreytse/zsh-vi-mode
+        name = "vi-mode";
+        src = pkgs.zsh-vi-mode;
+        file = "share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
+      }
+      { # https://github.com/Aloxaf/fzf-tab
+        name = "fzf-tab";
+        src = pkgs.zsh-fzf-tab;
+        file = "share/fzf-tab/fzf-tab.plugin.zsh";
+      }
+      { # https://github.com/wfxr/forgit 
+        name = "forgit";
+        src = pkgs.zsh-forgit;
+        file = "share/zsh/zsh-forgit/forgit.plugin.zsh";
+      }
+    ];
   };
-
-  home.packages = [pkgs.zsh-fzf-tab];
 }

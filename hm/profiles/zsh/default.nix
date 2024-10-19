@@ -109,28 +109,6 @@ in
           };
           add-zsh-hook -Uz precmd reset_broken_terminal
         '';
-        git-repo-greeter-info = ''
-          # --- git-repo-greeter-info ---
-          # Show onefetch output if cd to git repo
-          last_repository=
-          check_directory_for_new_repository() {
-            current_repository=$(git rev-parse --show-toplevel 2> /dev/null)
-            if [ "$current_repository" ] && \
-               [ "$current_repository" != "$last_repository" ]; then
-              ${getExe pkgs.onefetch}
-            fi
-            last_repository=$current_repository
-          }
-          add-zsh-hook -Uz chpwd check_directory_for_new_repository
-          #cd() {
-          #  builtin cd "$@"
-          #  check_directory_for_new_repository
-          #}
-
-          # optional, greet also when opening shell directly in repository directory
-          # adds time to startup
-          #check_directory_for_new_repository
-        '';
         wordchars-improved = ''
           # --- wordchars-improved ---
           # Better word behavior when using <Alt>+<Backspace>
