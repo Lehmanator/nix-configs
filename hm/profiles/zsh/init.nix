@@ -158,7 +158,7 @@
           repo_last=$repo_curr
         }
         function cd-git-boxed() {
-          cd-git $* | ${lib.getExe pkgs.boxes} --design info --align hlvt --indent box --size "$((COLUMNS-4))" --padding h1v0
+          cd-git $* | ${lib.getExe pkgs.boxes} --design ansi-rounded --align hlvt --indent box --size "$((COLUMNS-4))" --padding h1v0
         }
         add-zsh-hook -Uz chpwd cd-git-boxed
       '';
