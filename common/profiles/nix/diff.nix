@@ -8,17 +8,26 @@ let
   sed    = getExe pkgs.gnused;
   nvd    = getExe pkgs.nvd;
   choose = getExe pkgs.choose;
+  cowsay = "${pkgs.cowsay}/bin/cowsay";
 
   # TODO: Wrap all diff commands in pretty tables with `column` command.
   # TODO: Enforce all columns same width.
   
   # Wrap commands in pretty box using unicode box chars.
-  mkWrapper = import "${inputs.self}/lib/shell/wrap-command-box.nix" moduleArgs;
+  # TODO: Test if script output is empty and hide borders when empty.
+  box-libs = import "${inputs.self}/lib/shell/boxes-wrap-command.nix" moduleArgs;
+  mkBoxScript = box-libs.mkBoxFile;
+  mkSplit = box-libs.mkBoxFile2;
 in {
   system.activationScripts = {
+    test = {
+      supportsDryActivation = true;
+      text = mkSplit "round" "home-activate" " " "${cowsay} -f tux 'home-manager TESTING'";
+    };
     diff-closures = {
       supportsDryActivation = true;
-      text = mkWrapper "nix store diff-closures" ''
+      # text = mkWrapperNixos "nix store diff-closures" ''
+      text = mkBoxScript "round" "nix store diff-closures" " " (builtins.replaceStrings ["\n" "| \\"] ["" "| "] '' 
         ${nix} store diff-closures /run/current-system "$systemConfig" | \
         ${rg} --color=always -w "→" | \
         ${rg} --color=always -w "KiB" | \
@@ -29,21 +38,18 @@ in {
         ${choose} 6:-1 | \
         column --table | \
         ${sed} 's/^/│ /'
-      '';
+      '');
     };
 
     # https://github.com/nix-community/srvos/blob/main/nixos/common/upgrade-diff.nix
     diff-versions = {
       supportsDryActivation = true;
-      text = mkWrapper "nvd diff" ''
-        ${nvd} --color always --nix-bin-dir ${config.nix.package}/bin diff /run/current-system "$systemConfig" | \
-        ${sed} 's/^/│ /'
-      '';
+      text = mkBoxScript "round" "nvd diff" " "  "${nvd} --color always --nix-bin-dir ${config.nix.package}/bin diff /run/current-system \"$systemConfig\"";
     };
 
     #diff-derivations = {
     #  supportsDryActivation = true;
-    #  text = mkWrapper "nix-diff" ''
+    #  text = mkWrapperNixos "nix-diff" ''
     #    ${lib.getExe pkgs.nix-diff} /run/current-system "$systemConfig" --skip-already-compared --word-oriented --squash-text-diff --color always
     #  '';
     #};
