@@ -2,6 +2,7 @@
 {
   imports = [
     ./markdown.nix
+    ./rust.nix
   ];
   
   programs.helix = {
@@ -11,7 +12,6 @@
       };
       language = [
         { name = "nix";  auto-format = false; }
-        { name = "rust"; auto-format = true;  }
       ];
     };
   };
