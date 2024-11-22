@@ -12,11 +12,18 @@
         # https://rust-analyzer.github.io/manual.html
         config = {
           check.command = "clippy";
+          cargo = {
+            features = "all";
+          };
         };
       };
       language = [{
         name = "rust";
         auto-format = true;
+        formatter = { 
+          command = "rustfmt";
+          # args = ["+nightly"];
+        };
       }];
     };
   };
