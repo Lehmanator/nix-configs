@@ -97,6 +97,8 @@
     };
     
     packages = [
+      pkgs.topgrade
+      
       #pkgs.uutils-coreutils         # Rust rewrite of GNU coreutils WITH prefix
       pkgs.uutils-coreutils-noprefix # Rust rewrite of GNU coreutils WITHOUT prefix
 
