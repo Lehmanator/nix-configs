@@ -8,7 +8,7 @@ let
     dirs    = "first";
     field   = "name";
     reverse = false;
-    ignored = true && show.git;
+    ignored = false && show.git;
   };
   view = {
     layout  = "grid"; # grid | tree | oneline
