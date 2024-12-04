@@ -1,11 +1,4 @@
-{ self
-, inputs
-, user
-, config
-, lib
-, pkgs
-, ...
-}:
+{ config, lib, pkgs, ... }:
 # GNOME Shell Extensions default config
 {
   # TODO: Use dconf2nix to create Nix config files for each GNOME extension & place in this dir
@@ -15,7 +8,6 @@
     ./appearance.nix
     ./clock.nix
     ./desktop.nix
-    ./gestures.nix
     ./gsconnect.nix
     ./quicksettings.nix
     ./search.nix

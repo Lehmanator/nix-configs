@@ -55,7 +55,7 @@ in
       # TODO: Write configuration file.
       # TODO: Create NixOS module for config options.
       # TODO: Move config to profiles/mobile?
-      unl0kr.enable = opts.disk-unlock-password-entry;
+      unl0kr.enable = mkDefault opts.disk-unlock-password-entry;
       kernelModules = mkIf opts.disk-unlock-usb-key ["usb_storage"];
     };
 

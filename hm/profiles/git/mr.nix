@@ -1,14 +1,12 @@
-{ inputs, config, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 {
-  imports = [ ];
-
   # TODO: Enable mr (VCS repo manager)
   programs.mr = {
     enable = true;
     settings = {
-      config = { checkout = "git clone git@github.com:lehmanator/nix-configs.git"; update = "git pull"; };
+      config = { checkout = "git clone git@github.com:Lehmanator/nix-configs.git"; update = "git pull"; };
       nixpkgs = { checkout = "git clone git@github.com:NixOS/nixpkgs.git"; update = "git pull --rebase"; };
-      nur = { checkout = "git clone git@github.com:lehmanator/nur-repo.git"; };
+      nur = { checkout = "git clone git@github.com:Lehmanator/nur-repo.git"; };
     };
   };
 

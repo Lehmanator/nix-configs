@@ -1,9 +1,4 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
+{ config, lib, pkgs, ... }:
 {
   programs.fuse.userAllowOther = true;
   boot.binfmt.registrations.appimage = {
@@ -17,7 +12,6 @@
 
   environment.systemPackages = [
     pkgs.fuse3
-    pkgs.fuse-common
     pkgs.appimagekit
     pkgs.appimage-run
   ];

@@ -1,10 +1,4 @@
-{ self
-, inputs
-, config
-, lib
-, pkgs
-, ...
-}:
+{ config, lib, pkgs, ... }:
 {
 
   imports = [
@@ -15,8 +9,6 @@
 
   environment.systemPackages = [
     pkgs.fuse3
-    pkgs.fuse-common
-
     pkgs.thunderbird
   ];
 

@@ -33,24 +33,24 @@
   inputs = {
     # --- Main -----------------------------------------------------
     lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.0.tar.gz";
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.1-2.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # https://discourse.nixos.org/t/differences-between-nix-channels/13998
     # nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs.follows = "nixpkgs-unstable";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/release-24.05";
+    nixpkgs.follows = "nixpkgs-stable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/release-24.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs-staging.url = "github:NixOS/nixpkgs/staging";
     nixpkgs-staging-next.url = "github:NixOS/nixpkgs/staging-next";
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
-    nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-24.05-darwin";
+    nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-24.11-darwin";
     # --- System Types ---------------------------------------------
     # nixos.url = "github:NixOS/nixpkgs/nixos-unstable"; # /gnome";
-    nixos-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixos-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
     nixos-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos.follows = "nixos-stable";
-    home.url = "github:nix-community/home-manager/release-24.05";
+    home.url = "github:nix-community/home-manager/release-24.11";
     home.inputs.nixpkgs.follows = "nixos";
     home-extra-xhmm.url = "github:schuelermine/xhmm";
     system-manager.url = "github:numtide/system-manager";

@@ -6,6 +6,7 @@
 {
   imports = [ ./quiet.nix ];
   boot = {
+    initrd.unl0kr.enable = false;
     plymouth = with pkgs; {
       enable = lib.mkDefault true;
 
