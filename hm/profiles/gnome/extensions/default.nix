@@ -1,7 +1,4 @@
-{ inputs
-, config, lib, pkgs
-, ...
-}:
+{ config, lib, pkgs, ... }:
 #
 # Config for GNOME extensions that applies to all `gnomeProfiles`
 #
@@ -14,5 +11,10 @@
   imports = [
     ./ddterm.nix
     ./forge
+  ];
+
+  home.packages = [
+    # Required for tophat & possibly other system monitor extensions
+    pkgs.gtop
   ];
 }
