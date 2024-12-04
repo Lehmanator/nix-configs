@@ -61,6 +61,7 @@
   programs.dconf.enable = true;
   environment = {
     systemPackages = [
+      pkgs.gtop         # Process manager used by tophat extension
       pkgs.gnome-randr  # Xrandr-like CLI for configuring displays on GNOME Wayland
       pkgs.gnome-tecla  # Keyboard layout viewer
       pkgs.gnomecast    # Native Linux GUI for Chromecasting local files.
