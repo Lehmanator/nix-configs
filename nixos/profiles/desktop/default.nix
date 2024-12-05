@@ -30,4 +30,13 @@ in
 
   # Improve desktop responsiveness when updating system
   nix.daemonCPUSchedPolicy = "idle";
+
+  fonts = {
+    # Enable a basic set of fonts providing several styles and families and reasonable coverage of Unicode.
+    enableDefaultPackages = true;
+
+    # Whether to create a directory with links to all fonts in:
+    #   /run/current-system/sw/share/X11/fonts
+    fontDir.enable = true;
+  };
 }
