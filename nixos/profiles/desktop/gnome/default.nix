@@ -27,12 +27,14 @@
   services = {
     xserver.displayManager.defaultSession = lib.mkDefault "gnome";
     xserver.desktopManager.gnome = {
-      enable = lib.mkForce true; # Enable GNOME Shell
+      # Enable GNOME Shell
+      enable = lib.mkForce true; 
 
-      # Extend timeout before showing '<App> is not responding' dialog (5s -> 20s)
+      # Extend timeout before showing dialog: (5s -> 25s)
+      #  '<App> is not responding'
       extraGSettingsOverrides = ''
         [org.gnome.mutter]
-        check-alive-timeout=20000
+        check-alive-timeout=25000
       '';
 
       # Packages to add to GNOME session environment.
