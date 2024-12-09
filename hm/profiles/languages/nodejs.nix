@@ -1,10 +1,5 @@
-{ self, inputs,
-  config, lib, pkgs,
-  ...
-}:
+{ config, lib, pkgs, ... }:
 {
-  imports = [];
-
   home.packages = [
     pkgs.nodejs
     pkgs.node2nix         # Convert npm packages to Nix

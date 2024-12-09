@@ -4,15 +4,6 @@
   # --- Helix ---
   programs.helix = {
     extraPackages = [pkgs.bash-language-server];
-    languages = {
-      language-server = {
-        bash-language-server.command = lib.getExe pkgs.bash-language-server;
-      };
-      language = [{
-        name = "bash";
-        auto-format = false;
-      }];
-    };
   };
 
   # --- Neovim ---

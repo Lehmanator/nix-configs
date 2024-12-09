@@ -6,6 +6,7 @@
   # --- Helix ---
   programs.helix = {
     extraPackages = [
+      pkgs.comrak
       pkgs.markdown-oxide
       pkgs.marksman
       pkgs.mdformat
@@ -13,9 +14,9 @@
     ];
     languages = {
       language-server = {
-        markdown-oxide.command = lib.getExe pkgs.markdown-oxide;
+        markdown-oxide.command = "markdown-oxide";
         marksman = {
-          command = lib.getExe pkgs.marksman;
+          command = "marksman";
           args = ["server"];
         };
       };
@@ -23,7 +24,7 @@
         name = "markdown";
         auto-format = true;
         formatter = {
-          command = lib.getExe pkgs.comrak;
+          command = "comrak";
           args = ["--inplace" "--gfm"];
         };
       }];
