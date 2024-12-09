@@ -151,9 +151,15 @@
           emulate -L zsh
           repo_curr="$(git rev-parse --show-toplevel 2> /dev/null)"
           if [[ "$repo_curr" ]] && [[ "$repo_curr" != "$repo_last" ]]; then
-            ${lib.getExe pkgs.onefetch}
-            git log --oneline --color | head -"$((LINES / 6))"
-            git status --short
+            ${lib.getExe pkgs.onefetch} --email --no-title --no-color-palette --number-separator comma --disabled-fields contributors churn
+            # --stat - show changed files
+            # git log --oneline --color --all --graph --decorate | head -"$((LINES / 6))"
+
+            # Wrapper for git log for cleaner oneline graph output
+            COLUMNS="$((COLUMNS - 6))" ${lib.getExe pkgs.thicket} --all | head -"$((LINES / 6))"
+
+            # git status --short
+            git status
           fi
           repo_last=$repo_curr
         }
