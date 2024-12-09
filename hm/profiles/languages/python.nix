@@ -1,6 +1,7 @@
 { config, lib, pkgs, ... }:
 {
   programs.helix.extraPackages = [pkgs.python3Packages.python-lsp-server];
+  programs.zed-editor.extensions = ["pylsp" "python-refactoring" "cython"];
 
   # TODO: python with packages
   home.packages = [

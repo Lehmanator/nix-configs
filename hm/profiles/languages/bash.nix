@@ -11,7 +11,7 @@
   # pkgs.vscode-extensions.mads-hartmann.bash-ide-vscode
 
   # --- Zed ------
-  programs.zed-editor.extensions = [];
+  programs.zed-editor.extensions = ["basher"];
 
   # --- Packages -----------------------------------------------------
   home.packages = [
