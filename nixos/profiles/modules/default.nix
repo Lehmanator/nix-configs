@@ -33,7 +33,7 @@
     #nixified-ai.nixosModules.invokeai
     #nixified-ai.nixosModules.textgen
     # https://github.com/polygon/scalpel
-    scalpel.nixosModules.scalpel
+    # scalpel.nixosModules.scalpel
 
     # https://github.com/nix-community/srvos
     # srvos.nixosModules.common #                  # desktop, server,   mixins-terminfo,     mixins-tracing,

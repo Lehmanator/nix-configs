@@ -51,15 +51,51 @@ in
       # --- Flakes ---
       accept-flake-config = true;
       experimental-features = [
-        "nix-command" "flakes" "ca-derivations" "recursive-nix"
+        "nix-command" "flakes"
+        
+        "ca-derivations" 
+
+        # Allow derivation builders to call Nix, and thus build derivations recursively.
+        "recursive-nix"
       ] ++ optionals isLinux ["auto-allocate-uids" "cgroups"]
       ;
       extra-experimental-features = [
+        # Allow forcing trusting or not trusting clients with nix-daemon.
+        #  This is useful for testing,
+        #  but possibly also useful for various experiments with:
+        #  $ nix-daemon --stdio networking.
+        "daemon-trust-override"
+
         "dynamic-derivations"
+
         "fetch-closure"
-        "parse-toml-timestamps" "read-only-local-store"
+
+        # Allow creating (content-addressed) store objects which are hashed via Git's hashing algorithm.
+        #  These store objects will not be understandable by older versions of Nix.
+        # "git-hashing"
+
+        # Allow derivations to produce non-fixed outputs by setting:
+        #  `derivation {__impure=true;}`
+        #  Impure derivations can have differing outputs each time they are built.
         "impure-derivations"
-        "pipe-operators"
+
+        # "local-overlay-store"
+        # "mounted-ssh-store"
+
+        # Disallow unquoted URLs as part of the Nix language syntax.
+        "no-url-literals"
+
+        # Allow parsing of timestamps in builtins.fromTOML.
+        "parse-toml-timestamps"
+
+        # Add |> and <| operators to the Nix language.
+        "pipe-operator"
+
+        # Allow the use of the read-only parameter in local store URIs.
+        "read-only-local-store"
+
+        # Enables verification of git commit signatures through the fetchGit built-in.
+        # "verified-fetches"
       ];
       substituters        = ["https://cache.ngi0.nixos.org/"];  # content-address derivations cache
       trusted-public-keys = ["cache.ngi0.nixos.org-1:KqH5CBLNSyX184S9BKZJo1LxrxJ9ltnY2uAs5c/f1MA="];
