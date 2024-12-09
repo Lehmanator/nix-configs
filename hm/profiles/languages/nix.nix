@@ -8,7 +8,10 @@
   # --- Editors ------------------------------------------------------
   # --- Helix ---
   programs.helix = {
-    extraPackages = [ pkgs.nil ];
+    extraPackages = [
+      pkgs.nil
+      pkgs.deadnix
+    ];
     languages = {
       language = [
         {
