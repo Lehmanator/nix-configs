@@ -8,7 +8,7 @@
   #  inputs.firefox.packages.${pkgs.system}.firefox-nightly-bin
   #];
 
-  nixpkgs.overlays = [ inputs.nur.overlay ];
+  nixpkgs.overlays = [ inputs.nur.overlays.default ];
 
   programs.firefox = {
     enable = true;

@@ -101,7 +101,7 @@
       allowUnfree = true;
     };
     hostPlatform = "aarch64-linux";
-    overlays = [inputs.fenix.overlays.default inputs.nur.overlay];
+    overlays = [inputs.fenix.overlays.default inputs.nur.overlays.default];
   };
   #nix.registry.self = inputs.self.outPath;
   environment.etc."nix/inputs/self".source = inputs.self.outPath;

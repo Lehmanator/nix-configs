@@ -1,7 +1,5 @@
 { inputs
-, config
-, lib
-, pkgs
+, config, lib, pkgs
 , ...
 }:
 {
@@ -11,7 +9,7 @@
       lanzaboote.overlays.default
       nix-alien.overlays.default
       nixpkgs-gnome-apps.overlays.default
-      nur.overlay
+      nur.overlays.default
       ssbm-nix.overlay
       
       #nvfetcher.overlays.default  # nvfetcher included in nixpkgs now

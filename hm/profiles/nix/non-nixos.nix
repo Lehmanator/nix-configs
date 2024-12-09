@@ -5,7 +5,7 @@ in
 {
   targets.genericLinux.enable = isNixOS true;
   home.sessionVariables.NIX_PATH = isNixOS "nixpkgs=${inputs.nixpkgs}";
-  nixpkgs.overlays = isNixOS [ inputs.nur.overlay ];
+  nixpkgs.overlays = isNixOS [ inputs.nur.overlays.default ];
   nix = isNixOS {
     # package = pkgs.nixVersions.latest;
     package = pkgs.lix;
