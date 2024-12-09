@@ -30,7 +30,6 @@ aviator          # Merge JSON/YAML files
 boatswain        # Control Elgato Stream Deck devices
 cambalache       # Rapid Application Development for GTK4 / GTK3
 cavalier         # Audio visualizer
-cawbird          # Twitter client (deprecated?)
 curtail          # Compress images
 denaro           # Personal finance manager
 dialect          # Translator
@@ -51,8 +50,6 @@ dino             # Jabber/XMPP client
   halftone         # Give images pixel-art style
   icon-library     # Symbolic icon catalog
   identity         # Compare multiple versions of an image or video
-  livecaptions     # Provides live captioning
-    gnomeExtensions.live-captions-assistant  # Extension to provide better desktop integration with GNOME
   mousai           # Identify playing music
   pika-backup      # Backup application
   portfolio-filemanager # Mobile-first file manager
@@ -61,7 +58,6 @@ dino             # Jabber/XMPP client
   symbolic-preview # Create, preview, export symbolic icons easily
   tagger           # Music tag editor
   tangram          # Run web apps in tabbed app-like client
-  tuba             # Fediverse / Mastodon client
   video-trimmer    # Trim videos
   warp             # QR code file transfer
   wike             # Wikipedia client
