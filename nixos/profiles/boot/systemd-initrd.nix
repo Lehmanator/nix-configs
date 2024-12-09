@@ -6,7 +6,7 @@ in
 {
   boot.initrd.systemd = {
     enable = systemd-boot-based;
-    enableTpm2  = mkDefault systemd-boot-based;
+    tpm2.enable = mkDefault systemd-boot-based;
     dbus.enable = mkDefault systemd-boot-based;
 
     # true  = unauthed-emerg-access,

@@ -1,14 +1,13 @@
 { config, lib, pkgs, ... }: {
-  hardware.opengl = rec {
+  hardware.graphics = {
     enable = true;
-    driSupport32Bit = true;
+    enable32Bit = true;
+    #extraPackages32 = lib.mkIf enable32Bit (extraPackages ++ []);
     #extraPackages = [
     #  pkgs.intel-media-driver
     #  pkgs.intel-ocl
     #  pkgs.intel-vaapi-driver
     #];
-    #extraPackages32 = lib.mkIf driSupport32Bit (extraPackages ++ [
-    #]);
   };
 
   qt.enable = true;

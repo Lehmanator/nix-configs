@@ -25,7 +25,7 @@
 
   # --- Services -----------------------------------------------------
   services = {
-    xserver.displayManager.defaultSession = lib.mkDefault "gnome";
+    displayManager.defaultSession = lib.mkDefault "gnome";
     xserver.desktopManager.gnome = {
       # Enable GNOME Shell
       enable = lib.mkForce true; 

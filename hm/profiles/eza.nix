@@ -29,7 +29,8 @@ let
 in {
   programs.eza = {
     enable = true;
-    inherit (show) git icons;
+    icons = "auto";
+    inherit (show) git;
 
     # TODO: Use lib.cli.toGNUCommandLine {} attrs;
     extraOptions =

@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }: {
   imports = [ ./xserver.nix ];
-  hardware.opengl.enable = true;
+  hardware.graphics.enable = true;
   #programs.wshowkeys.enable = true;
   services.xserver.displayManager.gdm.wayland = true;
 

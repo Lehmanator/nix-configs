@@ -32,7 +32,7 @@
   # users.extraGroups.${config.security.tpm2.tssGroup}.members = [ user ];
   users.users.${user}.extraGroups = ["tss"];
 
-  boot.initrd.systemd.enableTpm2 = lib.mkDefault config.security.tpm2.enable;
+  boot.initrd.systemd.tpm2.enable = lib.mkDefault config.security.tpm2.enable;
   # virtualisation.tpm.enable = lib.mkDefault config.security.tpm2.enable;
 
   environment.systemPackages = [
