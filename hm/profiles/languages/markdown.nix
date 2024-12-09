@@ -13,12 +13,18 @@
     languages = {
       language-server = {
         markdown-oxide.command = lib.getExe pkgs.markdown-oxide;
-        marksman.command = "${lib.getExe pkgs.marksman} server";
+        marksman = {
+          command = lib.getExe pkgs.marksman;
+          args = ["server"];
+        };
       };
       language = [{
         name = "markdown";
         auto-format = true;
-        formatter.command = lib.getExe pkgs.mdformat;
+        formatter = {
+          command = lib.getExe pkgs.comrak;
+          args = ["--inplace" "--gfm"];
+        };
       }];
     };
   };
@@ -30,7 +36,7 @@
   # --- VSCode ---
   # https://marketplace.visualstudio.com/items?itemName=FelixZeller.markdown-oxide
 
-  # --- Zed ---
+  # --- Zed ------
   programs.zed-editor = {
     # NOTE: Only available in unstable (after 24.11)
     # extraPackages = [ pkgs.markdown-oxide ];
