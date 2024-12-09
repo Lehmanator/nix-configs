@@ -1,4 +1,4 @@
-{ config, lib, pkgs, user, ... }: {
+{ config, lib, pkgs, ... }: {
   # Default settings for GTK-based desktops
 
   gtk.iconCache.enable = true;
@@ -12,14 +12,16 @@
     # pkgs.adwaita-icon-theme
     # pkgs.gnome-themes-extra
     
-    pkgs.gnome.adwaita-icon-theme
+    pkgs.adwaita-icon-theme
     pkgs.gnome-themes-extra
     pkgs.simp1e-cursors
     #pkgs.nur.repos.federicoschonborn.morewaita
   ];
 
   # GTK3 plugin to show popup to search compatible application's menus
-  programs.plotinus.enable = lib.mkDefault true;
+  # TODO: GIMP Nightly/Beta flatpak dies immediately without it.
+  # TODO: How to expose to flatpaks?
+  programs.plotinus.enable = true;
 
   # Use GTK4 pinentry
   services.dbus.packages = with pkgs; [gcr gcr_4]; # Let gpg-agent/rbw use pinentry-gnome3

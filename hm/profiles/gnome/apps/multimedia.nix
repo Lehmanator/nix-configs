@@ -1,11 +1,4 @@
-{
-  inputs,
-  osConfig,
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
+{ config, lib, pkgs, ... }: {
   imports = [
     #./audio-recorders.nix
     #./audio-editors.nix
@@ -26,8 +19,7 @@
 
   # TODO: Only enable mobile-friendly apps on phones/tablets
   # TODO: Split into media-playback, media-editors, reading
-  home.packages =
-    [
+  home.packages = [
       pkgs.variety # # Wallpaper manager
 
       # --- Download -----------------------------------------
@@ -35,7 +27,7 @@
 
       # --- Audio --------------------------------------------
       # --- Capture ------
-      pkgs.gnome.gnome-sound-recorder # Recorder app
+      pkgs.gnome-sound-recorder # Recorder app
       pkgs.mousai # # Identify playing music
       #pkgs.recapp #                  # GTK audio recorder & screencaster
       # --- Edit ------

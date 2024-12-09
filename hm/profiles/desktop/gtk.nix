@@ -1,10 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  osConfig,
-  ...
-}:
+{ config, lib, pkgs, osConfig, ... }:
 # --- Docs ---
 # https://nix-community.github.io/home-manager/options.html#opt-gtk.enable
 # https://gnome.pages.gitlab.gnome.org/libadwaita/doc/main/named-colors.html
@@ -30,18 +24,19 @@
   # TODO: Diff b/w:
   # - gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3'
   # - dconf write /org/gnome/desktop/interface gtk-theme "'adw-gtk3'"
-  #home.packages =
-  #  [
-  #    pkgs.gnomeExtensions.night-theme-switcher
-  #    pkgs.vimPlugins.adwaita-nvim
-  #    pkgs.vscode-extensions.piousdeer.adwaita-theme
-  #    pkgs.gnome.adwaita-icon-theme
-  #    pkgs.adwaita-qt
-  #    pkgs.adwaita-qt6
-  #    pkgs.adw-gtk3
-  #  ]
-  #  #++ lib.optionals config.mobile.enable [pkgs.fcitx5-gtk]
-  #  ++ lib.optionals pkgs.platforms.isDarwin [pkgs.gtk-mac-integration-gtk2];
+  home.packages = [
+    pkgs.ptyxis
+    # pkgs.gnomeExtensions.night-theme-switcher
+    # pkgs.vimPlugins.adwaita-nvim
+    # pkgs.vscode-extensions.piousdeer.adwaita-theme
+    # pkgs.adwaita-icon-theme
+    # pkgs.adwaita-qt
+    # pkgs.adwaita-qt6
+    # pkgs.adw-gtk3
+  ]
+  #++ lib.optionals config.mobile.enable [pkgs.fcitx5-gtk]
+  #++ lib.optionals pkgs.platforms.isDarwin [pkgs.gtk-mac-integration-gtk2]
+  ;
 
   #services.darkman = let
   #  # TODO: Gradience generation
@@ -172,7 +167,7 @@
 
   #home.packages = [
   #  pkgs.adw-gtk3
-  #  pkgs.gnome.adwaita-icon-theme
+  #  pkgs.adwaita-icon-theme
   #  pkgs.plotinus
   #  #pkgs.nur.repos.ilya-fedin.gtk-layer-background  # Desktop background using GTK wayland layer
   #];

@@ -51,8 +51,8 @@
       core-shell.enable = true;
       core-utilities.enable = true;
       gnome-settings-daemon.enable = true; # Settings storage daemon (for gsettings & programs/apps being able to react to settings changes)
-      tracker.enable = true; # Local search engine & metadata storage
-      tracker-miners.enable = true; # Indexing services for tracker search engine & metadata storage
+      localsearch.enable = true; # Local search engine & metadata storage
+      tinysparql.enable = true; # Indexing services for tracker search engine & metadata storage
     };
     #(lib.optionalAttrs (options?services.flatpak.packages) {
     #  flatpak.packages = [
@@ -72,10 +72,10 @@
       pkgs.gnome-randr  # Xrandr-like CLI for configuring displays on GNOME Wayland
       pkgs.gnome-tecla  # Keyboard layout viewer
       pkgs.gnomecast    # Native Linux GUI for Chromecasting local files.
-      pkgs.gnome.gnome-tweaks
+      pkgs.gnome-tweaks
     ] ++ lib.optionals config.programs.dconf.enable [
       pkgs.dconf2nix
-      pkgs.gnome.dconf-editor  # TODO: Remove from scope in 24.11
+      pkgs.dconf-editor  # TODO: Remove from scope in 24.11
     ]; # Convert dconf settings to Nix
 
     # Exclude broken packages

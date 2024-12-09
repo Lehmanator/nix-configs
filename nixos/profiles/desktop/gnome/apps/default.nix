@@ -7,7 +7,7 @@
   ];
   environment.systemPackages = [
     pkgs.authenticator         # GTK4 Two-Factor Auth code generator
-    pkgs.gnome.gnome-software  # Software center app
+    pkgs.gnome-software        # Software center app
     pkgs.goldwarden            # Bitwarden GTK client
   ];
 

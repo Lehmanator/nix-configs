@@ -14,7 +14,7 @@
   environment = {
     sessionVariables.NAUTILUS_4_EXTENSION_DIR = lib.mkDefault "${pkgs.gnome.nautilus-python}/lib/nautilus/extensions-4";
     pathsToLink = ["/share/nautilus-python/extensions"];
-    systemPackages = [pkgs.gnome.nautilus pkgs.gnome.nautilus-python];
+    systemPackages = [pkgs.nautilus pkgs.nautilus-python];
   };
 
   # TODO: Set settings
