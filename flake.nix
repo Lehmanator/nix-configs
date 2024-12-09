@@ -54,7 +54,7 @@
     home.inputs.nixpkgs.follows = "nixos";
     home-extra-xhmm.url = "github:schuelermine/xhmm";
     system-manager.url = "github:numtide/system-manager";
-    system-manager.inputs.flake-utils.follows = "flake-utils";
+    system-manager.inputs.nixpkgs.follows = "nixpkgs";
     wrapper-manager.url = "github:viperML/wrapper-manager";
     wrapper-manager.inputs.nixpkgs.follows = "nixpkgs";
     darwin.url = "github:lnl7/nix-darwin";
