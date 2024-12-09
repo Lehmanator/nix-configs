@@ -1,9 +1,4 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
+{ config, lib, pkgs, ... }:
 {
   imports = [
     ./audio.nix
@@ -15,5 +10,7 @@
     #./touchpad.nix
     #./udiskie.nix
     #./wayland.nix
+
+    ../zed.nix
   ];
 }
