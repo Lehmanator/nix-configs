@@ -1,10 +1,4 @@
-{
-  inputs,
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
+{ config, lib, pkgs, ... }: {
   imports = [
     ./aliases.nix
     ./diff.nix
@@ -18,7 +12,7 @@
     ./tui.nix
   ];
 
-  # https://nixos.wiki/wiki/Git
+  # https://wiki.nixos.org/wiki/Git
   programs.git = {
     enable = true;
     package = pkgs.gitAndTools.gitFull;
@@ -26,11 +20,26 @@
     # https://git-scm.com/docs/git-config
     # https://git-scm.com/docs/git-config#Documentation/git-config.txt-pushautoSetupRemote
     extraConfig = {
-      core.whitespace = "trailing-space,space-before-tab";
+      branch = {
+        autoSetupRebase = "always";
+      };
+      color = {
+        ui = "always";
+      };
+      core = {
+        autocrlf = true;
+        whitespace = "trailing-space,space-before-tab";
+      };
       column.ui = "auto,column,dense";
-      credential.helper = "${
-        pkgs.git.override {withLibsecret = true;}
-      }/bin/git-credential-libsecret";
+      credential = {
+        # By default, Git does not consider the "path" component of an http URL to be worth matching via external helpers.
+        # This means that a credential stored for https://example.com/foo.git will also be used for https://example.com/bar.git.
+        # If you do want to distinguish these cases, set this option to true.
+        useHttpPath = true;
+
+        # helper = "${pkgs.git.override {withLibsecret = true;}}/bin/git-credential-libsecret";
+        helper = "${config.programs.git.package}/bin/git-credential-libsecret";
+      };
       init.defaultBranch = "main";
       pull.rebase = false;
       push.autoSetupRemote = true;
@@ -62,4 +71,12 @@
       # }
     ];
   };
+
+  home.packages = [
+    pkgs.git-credential-oauth
+    pkgs.git-credential-keepassxc
+    pkgs.git-credential-gopass
+    pkgs.pass-git-helper
+    pkgs.gitoxide
+  ];
 }
