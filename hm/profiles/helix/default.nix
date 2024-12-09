@@ -58,6 +58,7 @@
       };
       scrolloff = 2;
     };
+    extraPackages = builtins.attrValues (builtins.removeAttrs pkgs.tree-sitter-grammars ["recurseForDerivations"]);
   };
   programs.nushell.environmentVariables = {
     inherit (config.home.sessionVariables) EDITOR GIT_EDITOR;
