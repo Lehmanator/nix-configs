@@ -14,8 +14,9 @@
       "make"
       "nickel"
       "typst"
-    ] ++ lib.optional (builtins.elem pkgs.blueprint-compiler config.home.packages) "blueprint"
+    ] ++ lib.optional (builtins.elem pkgs.blueprint-compiler config.home.packages) "blueprint" #"meson"
       ++ lib.optional config.programs.nushell.enable "nu"
+      ++ lib.optional config.programs.navi.enable "navi"
       ++ lib.optionals config.programs.gnome-shell.enable ["adwaita-pastel" "zedwaita"]
     ;
 
