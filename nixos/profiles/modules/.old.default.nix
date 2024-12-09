@@ -7,7 +7,7 @@
   agenix.nixosModules.default
   nix-index.nixosModules.nix-index
   { programs.nix-index-database.comma.enable = true; }
-  nur.nixosModules.nur
+  nur.modules.nixos.default
   sops-nix.nixosModules.sops
   # https://github.com/TLATER/dotfiles
   home.nixosModules.home-manager

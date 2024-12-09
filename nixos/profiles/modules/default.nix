@@ -29,7 +29,7 @@
     # nix build .#nixosConfigurations.<host>.config.formats.<format>
     nixos-generators.nixosModules.all-formats
     nix-flatpak.nixosModules.nix-flatpak
-    nur.nixosModules.nur
+    nur.modules.nixos.default
     #nixified-ai.nixosModules.invokeai
     #nixified-ai.nixosModules.textgen
     # https://github.com/polygon/scalpel
@@ -44,7 +44,7 @@
 
   home-manager.sharedModules = with inputs; [
     nix-flatpak.homeManagerModules.nix-flatpak
-    nur.hmModules.nur
+    nur.modules.homeManager.default
   ];
 
   services.envfs.enable = lib.mkDefault true;

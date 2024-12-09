@@ -1,14 +1,9 @@
-{ self
-, inputs
-, config
-, lib
-, pkgs
+{ inputs
+, config, lib, pkgs
 , ...
 }:
 {
-  imports = [
-    inputs.nur.nixosModules.nur
-  ];
+  imports = [ inputs.nur.modules.nixos.default ];
   #environment.systemPackages = [
   #  inputs.firefox.packages.${pkgs.system}.firefox-nightly-bin
   #];

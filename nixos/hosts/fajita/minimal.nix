@@ -9,7 +9,7 @@
     inputs.home.nixosModules.home-manager
     inputs.nixvim.nixosModules.nixvim
     inputs.nix-flatpak.nixosModules.nix-flatpak
-    inputs.nur.nixosModules.nur
+    inputs.nur.modules.nixos.default
     inputs.scalpel.nixosModules.scalpel
     inputs.sops-nix.nixosModules.sops
     inputs.srvos.nixosModules.mixins-nix-experimental
@@ -32,7 +32,7 @@
   #    inputs.agenix.homeManagerModules.age
   #    inputs.nix-flatpak.homeManagerModules.nix-flatpak
   #    inputs.nixvim.homeManagerModules.nixvim
-  #    inputs.nur.hmModules.nur
+  #    inputs.nur.modules.homeManager.default
   #    inputs.sops-nix.homeManagerModules.sops
   #  ];
   #  users.${user} = import ../../../hm/users/${user};
