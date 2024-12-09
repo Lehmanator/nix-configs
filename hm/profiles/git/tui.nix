@@ -1,9 +1,5 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
+{ config, lib, pkgs, ... }:
+# TODO: Pick one
 {
   # --- GitUI ---
   programs.gitui = {
@@ -14,7 +10,7 @@
   # --- Lazygit ---
   # https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md
   programs.lazygit = {
-    enable = false;
+    enable = true;
     settings = {
       gui.showIcons = true; # TODO: Pass global style attrset & conditionally set
     };
