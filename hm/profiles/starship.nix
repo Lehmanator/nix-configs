@@ -2,64 +2,94 @@
 , user
 , ...
 }:
-let
-  # TODO Dynamically change `starship.character.vimcmd_*symbol`
-  vim_show_abbr = true;
-  vim_mode_full = true;
-  vim_mode_caps = true;
-  vim_mode_normalize_width = true;
-in
 {
   # See: https://starship.rs/config/
+  # https://starship.rs/advanced-config
+  # Style: https://starship.rs/advanced-config/#style-strings
+  # Icons: https://www.nerdfonts.com/cheat-sheet
+  # - Mode:
+  #   - Normal: 󱁐 , 󰌌 ,  , 󰌏 , 󰌐 , 󱊷 , 󰌥 , 󰌒 ,  , ❮ ,  ,  , 󱊷 , 
+  #   - Insert:  , ❯ , ❯ , ❯ ,  ,  , 󰁔 ,  , ─ , ❯ , ❮ ,
+  # - Status:
+  #   - Error:      ✖ , ✖ , ❌, ✖ , ✖ , ✕ , ✗ , ✘ , ☒ ,☓ , 
+  #   - Success:    󰸞 ,  ,  ,  ,  ,  ,  , ✅, ☑ ,
+  #       Unicode:  ✔ , ✓ , ✔ , ✓ , ☑ ,  
+  #       Emoji:    ✔️ , ✅, ☑️ , 
+  # - Box Drawing:  └─, ─ , 
+  # - Time:          , 󰔛 , 󱎫 , 󱦟 , 
+  # - Readonly:      ,  , 󰈈 ,  , 󰷊 , 󱞊 , 🔒 , 🚫
+  # - Delimiters:    ,  ,  ,  ,  , 
+  # - Directories:
+  #   - Home:      , 
+  #   - Ellipsis:  ,  , … ,  , 
+  #   - Settings:  ,  , 
+  #   - Git:       , 󰊢 ,  ,  ,  ,  ,  , , 
+  #   - GitHub:    , 󰊤 ,  ,  , 
+  #   - Download:  , 󰇚 , 
+  #   - Nix:     Unicode: ❆ , 
+  #
+  # TODO: Setup right prompt
+  # TODO: Match prompt styles with statusline in Neovim / Helix config.
   programs.starship = {
     enable = true;
     enableTransience = true;
-
-    settings = {
-      # Module: Character to show last cmd status & input mode
-      # TODO: Match Neovim statusline config.
+    settings =  let
+      # TODO Dynamically change `starship.character.vimcmd_*symbol`
+      vim = { abbr=true; full=true; caps=true; normalize_width=true; };
+      prefix = { top = "╭─"; bottom="╰󰁔"; style="dimmed white"; };
+      sep = {
+        left = { icon=""; style="bg:prev_bg fg:none"; };
+        right= { icon=""; style="bg:none fg:prev_bg"; };
+      };
+    in {
       character = {
-        #format = "$symbol";
-        #error_symbol = "✖";
-        error_symbol = "[Insert  ✖ ](bold red)";
-        success_symbol = "[Insert  ❯ ](bold green)";
-        vimcmd_symbol = "[Normal  ❯ ](bold green)";
-        vimcmd_replace_one_symbol = "[replace ❯ ](bold purple)";
-        vimcmd_replace_symbol = "[Replace ❯ ](bold purple)";
-        vimcmd_visual_symbol = "[Visual  ❯ ](bold orange)";
+        format = "[${prefix.bottom}](${prefix.style}) $symbol [](dimmed white blink) "; #─[$](dimmed white blink)";
+        error_symbol              = "[❌](dimmed red)";
+        success_symbol            = "[ ](dimmed green)";
+        vimcmd_symbol             = "[󱊷 ](dimmed white)";
+        vimcmd_replace_one_symbol = "[r]─❮ ](bold purple)";
+        vimcmd_replace_symbol     = "[R]─❮ ](bold purple)";
+        vimcmd_visual_symbol      = "[V]─❮ ](bold orange)";
       };
 
-      # Module: Command Duration
-      #cmd_duration = {
-      #  #format = "took [$duration]($style)";
-      #  min_time = "2_000";
-      #  show_milliseconds = false;
-      #  style = "bold yellow";
-      #  show_notifications = false;
-      #  min_time_to_notify = "45_000";
-      #  notification_timeout = "45_000"; # time in milliseconds
-      #};
+      cmd_duration = {
+        format = "󱦟 [$duration]($style)";  # Default: "took [$duration]($style)"
+        # min_time = "2_000";
+        # show_milliseconds = false;
+        # style = "bold yellow";
+        # show_notifications = false;
+        # min_time_to_notify = "45_000";
+        # notification_timeout = "45_000"; # time in milliseconds 
+      };
 
-      # Module: Directory
+      # TODO: Use box drawing chars for path slashes
       directory = {
-        truncate_to_repo = true;
-        format = "[$path]($style)[$read_only]($read_only_style) ";
-        style = "bold cyan";
-        read_only = "🔒"; # TODO: Eyeball
-        read_only_style = "red";
-        truncation_symbol = "…/";
-        #before_repo_root_style = "";
-        truncation_length = 6;
-        #repo_root_style = "";
-        repo_root_format = "[$before_root_path]($before_repo_root_style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) ";
-        home_symbol = "~"; # TODO: House icon
+        format = "[${prefix.top}](${prefix.style})[](bg:none fg:cyan)[$path]($style)[](bg:none fg:prev_bg)[$read_only]($read_only_style)";
+        style = "bold bg:cyan fg:bright-black";
+        before_repo_root_style = "bg:bright-black fg:white";
+        repo_root_style = "bg:bright-cyan fg:purple bold";
+        repo_root_format = "[${prefix.top}](${prefix.style})[](bg:none fg:bright-black)[$before_root_path]($before_repo_root_style)[$repo_root]($repo_root_style)[$path]($style)[](bg:none fg:cyan)[$read_only]($read_only_style) ";
+        read_only_style = "bg:red fg:white bold";
+        read_only = "🔒";
+        truncation_symbol = " /";
+        truncation_length = 8;
+        truncate_to_repo = false;
+        home_symbol = " ";
         use_os_path_sep = true;
         substitutions = {
-          "nix" = "";
-          "etc" = "";
-          ".config" = "";
-          "/home/${user}/.local/repos" = "~";
-          "/home/${user}/.local/repos-all" = "~";
+          "${config.xdg.configHome}" = " / ";
+          "~/.config/nixos" = "  (system)";
+          "etc/nixos" = "  (system)";
+          "etc" = " ";
+          ".config" = " ";
+          Documents = "󰈙 ";
+          Downloads = " ";
+          Music = " ";
+          Pictures = " ";
+          Nix = " ";  #    󱄅
+          configs = " ";
+          "/home/${user}/.local/repos" = "~/";
+          "/home/${user}/.local/repos-all" = "~/";
         };
       };
 
