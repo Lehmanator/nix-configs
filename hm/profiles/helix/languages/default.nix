@@ -2,7 +2,6 @@
 {
   imports = [
     ./markdown.nix
-    ./rust.nix
   ];
   
   programs.helix = {

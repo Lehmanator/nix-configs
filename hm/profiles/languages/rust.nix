@@ -1,15 +1,67 @@
-{
-  inputs,
-  config,
-  lib,
-  pkgs,
+{ inputs,
+  config, lib, pkgs,
   ...
-}: {
-  imports = [];
+}:
+{
   nixpkgs.overlays = [inputs.fenix.overlays.default];
+
+  # --- Editors ------------------------------------------------------
+  # --- Helix ----
+  # https://github.com/helix-editor/helix/wiki/Language-Server-Configurations#rust
+  programs.helix = {
+    languages = {
+      language-server.rust-analyzer = {
+        # https://rust-analyzer.github.io/manual.html
+        config = {
+          check.command = "clippy";
+          cargo = {
+            features = "all";
+          };
+        };
+      };
+      language = [{
+        name = "rust";
+        auto-format = true;
+        formatter = { 
+          command = "rustfmt";
+          # args = ["+nightly"];
+        };
+      }];
+    };
+
+    # TODO: Use rust toolchain builder flake input
+    extraPackages = [
+      pkgs.fenix.complete.toolchain
+      # pkgs.rust-analyzer
+      # pkgs.rust-analyzer-unwrapped
+      # pkgs.vscode-extensions.rust-lang.rust-analyzer
+      pkgs.vscode-extensions.llvm-org.lldb-vscode
+      # pkgs.rustfmt
+      pkgs.rustup
+
+      # https://github.com/dan-t/rusty-tags
+      # TODO: Does Helix have ctags support?
+      # TODO: Package rusty-ctags in nixpkgs
+      # pkgs.rusty-ctags
+    ];
+  };
+  # --- Neovim ---
+  # --- VSCode ---
+  # --- Zed ------
+  programs.zed-editor = {
+    extensions = ["cargo-tom"];
+    # NOTE: Only in unstable (not 24.11)
+    # extraPackages = [
+    #   pkgs.fenix.complete.toolchain
+    #   pkgs.fenix.stable.completeToolchain
+    # ];
+  };
+
+  # --- Packages -----------------------------------------------------
   home.packages = [
     pkgs.fenix.complete.toolchain
-    #pkgs.fenix.stable.completeToolchain
+    # pkgs.fenix.latest.toolchain
+    # pkgs.fenix.stable.completeToolchain
     #(pkgs.fenix.stable.withComponents [ "cargo" "clippy" "rust-src" "rustc" "rustfmt" ])
     #pkgs.rust-analyzer-nightly
 
@@ -86,4 +138,5 @@
     # --- Other Utils ---
     pkgs.crate2nix # A Nix build file generator for Rust crates.
   ];
+
 }
