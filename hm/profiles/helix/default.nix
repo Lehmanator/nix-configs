@@ -2,7 +2,6 @@
 {
   imports = [
     ./keymaps
-    ./languages
     ./themes.nix
     ./statusline.nix
   ];

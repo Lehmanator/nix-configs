@@ -13,7 +13,6 @@
       "helm"
       "jsonnet"
       "make"
-      "nix"
       "nickel"
       "typst"
     ] ++ lib.optional (builtins.elem pkgs.blueprint-compiler config.home.packages) "blueprint"
