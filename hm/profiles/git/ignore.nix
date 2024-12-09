@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
+{ config, lib, pkgs, ... }: {
   # https://git-scm.com/docs/gitignore
   programs.git.ignores = [
     # --- temp files ---
@@ -40,6 +35,7 @@
   ];
 
   home.packages = [
+    # TODO: Use `programs.git.includes` to source config file: ``~/.config/git-ignores/config.toml`
     pkgs.git-ignore # Quickly fetch .gitignore templates from gitignore.io
   ];
 }
