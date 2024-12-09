@@ -1,4 +1,9 @@
 { inputs, config, lib, pkgs, ... }:
+let
+  gix = "${pkgs.gitoxide}/bin/gitoxide";
+  thicket = lib.getExe pkgs.thicket;
+  # meteor = lib.getExe pkgs.meteor-git;
+in
 {
   programs.git.aliases = {
     a = "add";
@@ -9,17 +14,15 @@
     bug = "bugreport";
     checko = "checkout";
     chko = "checkout";
-    cl = "clone";
-    clo = "clone";
+
     cle = "clean";
-    cm = "commit -m";
     cfg = "config";
     cfgg = "config --global";
     d = "diff";
-    f = "fetch";
+
     h = "help";
     i = "init";
-    l = "log --oneline --stat --graph";
+
     ls = "ls-files";
     m = "merge";
     p = "pull";
@@ -42,6 +45,30 @@
     sub = "submodule";
     wchg = "whatchanged";
     what = "whatchanged";
+
+    # --- External Tools -----------------------------------
+    # > [!NOTE]: External tool commands must be prefixed w/ !
+    #
+    # --- gh - GitHub CLI ---
+    # --- Gitoxide - Rust Git CLI ---
+    cl = "!${gix} clone";
+    clo = "!${gix} clone";
+    # clo = "clone";
+    # f = "fetch";
+    f = "!${gix} fetch";
+
+    # --- Meteor - Conventional Commits command ---
+    # https://github.com/stefanlogue/meteor
+    # > [!NOTE] Not available until 24.11
+    # TODO: Write config files.
+    cm = "commit -m";
+    # com = "!${lib.getExe pkgs.meteor-git}";
+
+    # --- Thicket - Better oneline Git log graphs ---
+    # l = "log --oneline --stat --graph";
+    l    = "!${thicket} --all";
+    logg = "!${thicket} --all";
+
   };
 
   home.shellAliases = {
@@ -54,9 +81,7 @@
     gc = "git commit -m";
     gcm = "git commit -m";
     gco = "git checkout";
-    gcl = "git clone";
     gi = "git init";
-    gl = "git log";
     gmv = "git mv";
     grm = "git rm";
 
@@ -65,8 +90,7 @@
     amend = "git commit --amend";
     branch = "git branch";
     checkout = "git checkout";
-    commit = "git commit -m";
-    fetch = "git fetch";
+
     merge = "git merge";
     pull = "git pull";
     push = "git push";
@@ -77,6 +101,19 @@
     stash = "git stash";
     status = "git status";
     submodule = "git submodule";
+
+
+    # --- External Tools -----------------------------------
+    # TODO: gitnr - git ignore file TUI
+    gcl = "gix clone";
+    fetch = "gix fetch";
+    gl = "git l";
+
+    # --- Meteor - Conventional Commits command ---
+    # https://github.com/stefanlogue/meteor
+    # > [!NOTE] Not available until 24.11
+    commit = "git commit -m";
+    # commit = "${lib.getExe pkgs.meteor-git}";
   };
 
 }
