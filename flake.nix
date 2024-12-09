@@ -174,8 +174,8 @@
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
-    scalpel.url = "github:polygon/scalpel";
-    scalpel.inputs.nixpkgs.follows = "nixpkgs";
+    # scalpel.url = "github:polygon/scalpel";
+    # scalpel.inputs.nixpkgs.follows = "nixpkgs";
     # --- Modules: Servers -----------------------------------------
     hercules-ci-agent.url = "github:hercules-ci/hercules-ci-agent";
     # --- Modules: Configuration -----------------------------------
