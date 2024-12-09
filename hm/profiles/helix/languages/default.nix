@@ -1,9 +1,5 @@
 { config, lib, pkgs, ... }:
 {
-  imports = [
-    ./markdown.nix
-  ];
-  
   programs.helix = {
     languages = {
       language-server = {
