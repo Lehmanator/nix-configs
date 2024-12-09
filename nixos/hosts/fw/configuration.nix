@@ -1,13 +1,7 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-{ inputs
-, config
-, lib
-, pkgs
-, user
-, ...
-}: {
+{ config, lib, pkgs, user, ... }: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -103,7 +97,6 @@
   # TODO: Move most of these to home-manager profile (default user?)
   environment.systemPackages = with pkgs; [
     bat
-    fastfetch
     eza
     gcc
     lsd
