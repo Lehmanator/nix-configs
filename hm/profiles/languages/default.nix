@@ -4,6 +4,7 @@
   imports = [
     # ./android.nix
     ./bash.nix
+    ./cue.nix
     ./markdown.nix
     ./nix.nix
     ./nodejs.nix

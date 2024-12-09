@@ -6,7 +6,6 @@
     # https://github.com/zed-industries/extensions/tree/main/extensions
     extensions = [
       "base16"
-      "cue"
       "dockerfile"
       "docker-compose"
       "env"
