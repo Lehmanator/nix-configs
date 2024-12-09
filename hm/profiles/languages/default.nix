@@ -5,6 +5,7 @@
     # ./android.nix
     ./bash.nix
     ./cue.nix
+    ./javascript.nix
     ./markdown.nix
     ./nix.nix
     ./nodejs.nix
