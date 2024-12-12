@@ -1,7 +1,4 @@
-{ inputs
-, config, lib, pkgs
-, ...
-}:
+{ config, lib, pkgs, ... }:
 {
   # --- nix-direnv ---------------------------------------------------
   # TODO: Nushell integration (https://github.com/nushell/nu_scripts)
@@ -29,7 +26,7 @@
       };
       whitelist = {
         exact = ["~/Nix/config" "~/Nix/clan" "~/Nix/termux"];
-        prefix = ["~/.config" "~/.local/share" "~/Code/lehmanator" "~/Projects/lehmanator"];
+        prefix = ["~/.config" "~/.local/share" "~/Code/Lehmanator" "~/Projects/Lehmanator"];
       };
     };
     # Custom stdlib written to $XDG_CONFIG_HOME/direnv/direnvrc
