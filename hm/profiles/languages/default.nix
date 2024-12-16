@@ -7,6 +7,7 @@
     ./cue.nix
     ./docker.nix
     ./javascript.nix
+    ./json.nix
     ./kubernetes.nix
     ./markdown.nix
     ./nickel.nix
