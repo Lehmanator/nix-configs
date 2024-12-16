@@ -19,6 +19,6 @@
     pkgs.pkg-config
     pkgs.universal-ctags
     pkgs.vscode-langservers-extracted
-    pkgs.vscode-lldb
+    pkgs.vscode-extensions.vadimcn.vscode-lldb
   ];
 }
