@@ -7,6 +7,7 @@
     ./cue.nix
     ./javascript.nix
     ./markdown.nix
+    ./nickel.nix
     ./nix.nix
     ./nodejs.nix
     ./python.nix
