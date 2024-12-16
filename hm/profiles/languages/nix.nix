@@ -1,10 +1,13 @@
+{ config, lib, pkgs, ... }:
 {
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-{
+  home.packages = [
+    pkgs.nix-diff
+    pkgs.nix-init
+    pkgs.nixos-generators  
+    pkgs.nurl
+    pkgs.rnix-hashes
+  ];
+  
   # --- Editors ------------------------------------------------------
   # --- Helix ---
   programs.helix = {
