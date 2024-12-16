@@ -20,10 +20,6 @@
   # TODO: Enable carapace (multi-shell argument completer)
   #programs.carapace.enable = true;
 
-  # --- Package Management & Task Running ---
-  # TODO: [topgrade](https://github.com/r-darwish/topgrade/wiki/Step-list)
-  #programs.topgrade.settings = { commands={"name item" = "command";}; };
-
   # --- Password / Secret Management ---
   # TODO: [Tomb](https://dyne.org/software/tomb/) - Encrypt dirs & keep directory structure secret
   # TODO: [pass](https://passwordstore.org) - Simple password encryption using GPG-encrypted files.
@@ -37,14 +33,22 @@
   #  "/share/bash-completion"
   #];
 
-  # home = {
-  #   editor = {
-  #     executable = types.path | types.str;
-  #     package = types.package;
-  #   };
-  #   visual = { ... };
-  #   pager = { ... };
-  # };
+  home = {
+    # editor = {
+    #   executable = types.path | types.str;
+    #   package = types.package;
+    # };
+    # visual = { ... };
+    # pager = { ... };
+    packages = [
+      # --- Rust Utils ---
+      pkgs.procs                     # Rust-based process manager
+      #pkgs.uutils-coreutils         # Rust rewrite of GNU coreutils WITH prefix
+      pkgs.uutils-coreutils-noprefix # Rust rewrite of GNU coreutils WITHOUT prefix
+      pkgs.zoxide                    # Rust-based terminal multiplexor
+    ];
+  };
+
   # programs.nano = {
   #   enable = false;
   #   package = types.package;

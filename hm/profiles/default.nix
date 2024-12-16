@@ -49,6 +49,7 @@
     ./starship.nix
     ./tealdeer.nix
     ./tmux.nix
+    ./topgrade.nix
     ./vm.nix
     ./xdg.nix
 
@@ -83,7 +84,6 @@
       w = "which -a";
       # path-print-nix = "echo \"$NIX_PATH\" | tr ':' '\n'";  # TODO: Properly escape
       # path-print     = "echo \"$PATH\" | tr ':' '\n'";
-      up = "topgrade";
 
       # --- Terminal ---
       cl = "clear";
@@ -98,11 +98,6 @@
     };
     
     packages = [
-      pkgs.topgrade
-      
-      #pkgs.uutils-coreutils         # Rust rewrite of GNU coreutils WITH prefix
-      pkgs.uutils-coreutils-noprefix # Rust rewrite of GNU coreutils WITHOUT prefix
-
       pkgs.cmatrix                   # Cool matrix screensaver program
       pkgs.figlet                    # Print ASCII art text
 
