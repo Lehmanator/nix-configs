@@ -12,6 +12,7 @@
     ./nodejs.nix
     ./python.nix
     ./rust.nix
+    ./yaml.nix
   ];
 
   home.packages = [
