@@ -1,24 +1,19 @@
 { config, lib, pkgs, ... }:
 {
+  imports = [./json.nix];
+
   # --- Editors ------------------------------------------------------
   # --- Helix ---
   programs.helix = {
 
-    # TODO: Split this file into parts?
+    # TODO: Split this file into parts? (nodejs, react, react-native, svelte, tailwindcss, vue)
     extraPackages = [
-      pkgs.dockerfile-language-server-nodejs
       pkgs.nodePackages_latest.prettier
-      pkgs.nodePackages_latest.vscode-json-languageserver
-      pkgs.svelte-language-server
-      pkgs.tailwindcss-language-server
       pkgs.tree-sitter-grammars.tree-sitter-html
       pkgs.tree-sitter-grammars.tree-sitter-javascript
       pkgs.tree-sitter-grammars.tree-sitter-jsdoc
-      pkgs.tree-sitter-grammars.tree-sitter-json
-      pkgs.tree-sitter-grammars.tree-sitter-json5
       pkgs.typescript-language-server
       pkgs.vscode-js-debug
-      pkgs.vue-language-server
     ];
   };
 
@@ -30,9 +25,8 @@
   # pkgs.vscode-extensions.esbenp.prettier-vscode
 
   # --- Zed ------
-  programs.zed-editor.extensions = ["svelte" "vue" "ejs"];
+  programs.zed-editor.extensions = ["ejs"];
 
   # --- Packages -----------------------------------------------------
-  home.packages = [
-  ];
+  home.packages = [ ];
 }
