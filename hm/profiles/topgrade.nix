@@ -8,7 +8,7 @@
 
     # https://github.com/topgrade-rs/topgrade/blob/main/config.example.toml
     settings = { 
-      include.paths = ["/etc/topgrade.toml"];
+      # include.paths = ["/etc/topgrade.toml"];
 
       # --- System ---------------------
       flatpak.use_sudo = false;
@@ -16,8 +16,8 @@
 
       # --- Nix ------------------------
       # linux.nix_env_arguments = "--prebuilt-only";
-      linux.nix_arguments          = "--flake ~/Nix/configs"; # "~/.config/nixos"];
-      linux.home_manager_arguments = ["--flake" "~/Nix/configs"]; # "~/.config/nixos"];
+      linux.nix_arguments          = "--flake $HOME/Nix/configs";     # "$HOME/.config/nixos";
+      linux.home_manager_arguments = ["--flake" "$HOME/Nix/configs"]; # "$HOME/.config/nixos"];
 
       # --- Git ------------------------
       git = {
@@ -59,9 +59,9 @@
         # --- Terminal -----------------
         display_time = true;
         set_title = true;
-        tmux_arguments    = lib.mkIf config.programs.tmux.enable "-S /var/tmux.sock";
-        tmux_session_mode = lib.mkIf config.programs.tmux.enable "attach_if_not_in_session"; # "attach_always"
-        run_in_tmux       =          config.programs.tmux.enable;
+        # tmux_arguments    = lib.mkIf config.programs.tmux.enable "-S /var/tmux.sock";
+        # tmux_session_mode = lib.mkIf config.programs.tmux.enable "attach_if_not_in_session"; # "attach_always"
+        # run_in_tmux       =          config.programs.tmux.enable;
 
         # --- Privilege Escalation -----
         # Run `sudo -v` to cache credentials at the start of the run
