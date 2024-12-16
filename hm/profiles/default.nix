@@ -83,6 +83,7 @@
       w = "which -a";
       # path-print-nix = "echo \"$NIX_PATH\" | tr ':' '\n'";  # TODO: Properly escape
       # path-print     = "echo \"$PATH\" | tr ':' '\n'";
+      up = "topgrade";
 
       # --- Terminal ---
       cl = "clear";
@@ -106,10 +107,9 @@
       pkgs.figlet                    # Print ASCII art text
 
       pkgs.ntfs3g
-      #pkgs.rustup
-      #pkgs.python3
-      #pkgs.python311Full
-      #pkgs.python312
+
+      # TODO: Also set PKG_CONFIG_PATH="${lib.getExe pkgs.pkg-config}:$XDG_DATA_HOME/nix/profile/lib/pkg-config"
+      pkgs.pkg-config
     ];
   };
 
