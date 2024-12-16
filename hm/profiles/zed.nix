@@ -6,8 +6,6 @@
     # https://github.com/zed-industries/extensions/tree/main/extensions
     extensions = [
       "base16"
-      "dockerfile"
-      "docker-compose"
       "env"
       "helm"
       "jsonnet"
