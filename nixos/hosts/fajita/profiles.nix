@@ -1,9 +1,9 @@
 { config, lib, pkgs, inputs, ... }:
 {
   imports = [
-    ../../profiles
-    ../../profiles/desktop/flatpak.nix
-    ../../profiles/mobile
+    "${inputs.self}/nixos/profiles"
+    "${inputs.self}/nixos/profiles/flatpak.nix"
+    "${inputs.self}/nixos/profiles/mobile"
 
     #../../profiles/desktop
     #../../profiles/desktop/gnome

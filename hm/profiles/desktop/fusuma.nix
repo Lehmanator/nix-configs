@@ -1,19 +1,20 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: let
+{ config, lib, pkgs, ... }:
+let
   # TODO: TEST ME
   # TODO: Use `services.xserver.wayland` to set xdotool/ydotool
   dotool = pkgs.ydotool;
-in {
+in
+{
+  # Fusuma - Touchpad gesture management
   services.fusuma = {
     enable = false;
+
+    # TODO: Condition on: osConfig.services.xserver
     extraPackages = [pkgs.xdotool pkgs.ydotool];
+
     settings = {
-      threshold = {swipe = 0.1;};
-      interval = {swipe = 0.7;};
+      threshold = { swipe = 0.1; };
+      interval  = { swipe = 0.7; };
       pinch = {
         "in" = {
           command = "${lib.getExe pkgs.ydotool} key Ctrl+Super+Up";

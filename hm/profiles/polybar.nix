@@ -1,16 +1,9 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
+{ config, lib, pkgs, ... }:
 {
-  imports = [
-  ];
-
   services.polybar = {
     enable = true;
 
+    # TODO: Make conditional?
     package = pkgs.polybar.override {
       i3GapsSupport = true;
       alsaSupport = true;

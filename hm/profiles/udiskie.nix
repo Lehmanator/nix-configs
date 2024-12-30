@@ -1,15 +1,7 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-# udiskie: Userspace mount daemon
-# Note: Requires loading ../../../profiles/hardware/udisks2.nix
+{ inputs, config, lib, pkgs, ... }:
 {
-  imports = [
-  ];
-
+  # udiskie: Userspace mount daemon
+  # NOTE: Requires loading "${inputs.self}/nixos/profiles/hardware/udisks2.nix"
   services.udiskie = {
     enable = true;
     automount = true;

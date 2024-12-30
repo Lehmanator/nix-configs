@@ -53,18 +53,14 @@ in
     # TODO: Re-enable this & use to install & enable gnomeExtensions, leaving imported, but unset disables extensions for users.
     #inputs.home-extra-xhmm.homeManagerModules.desktop.gnome
 
-
-    # ../desktop
-    # ../desktop/gtk.nix
-    # ../desktop/wayland.nix
-    "${inputs.self}/hm/profiles/desktop"
-    "${inputs.self}/hm/profiles/desktop/gtk.nix"
-    "${inputs.self}/hm/profiles/desktop/wayland.nix"
-    ./keyring.nix
-    ./mobile.nix
-    ./styles.nix
-    ./apps          # GNOME-specific apps
-    ./extensions    # GNOME Shell Extensions
+    "${inputs.self}/hm/profiles/desktop"               # Generic desktop config
+    "${inputs.self}/hm/profiles/gtk.nix"               # GTK-related settings & packages
+    "${inputs.self}/hm/profiles/wayland.nix"           # Packages for Wayland
+    "${inputs.self}/hm/profiles/desktop/keyring.nix"   # GNOME-Keyring
+    "${inputs.self}/hm/profiles/desktop/mobile.nix"    # Mobile-specific settings
+    "${inputs.self}/hm/profiles/desktop/styles.nix"    # 
+    "${inputs.self}/hm/profiles/desktop/apps"          # GNOME-specific apps
+    "${inputs.self}/hm/profiles/desktop/extensions"    # GNOME Shell Extensions
   ];
 
   home.packages = (with inputs.snowflake-os.packages.${pkgs.system}; [
