@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ inputs, config, lib, pkgs, ... }:
 let
   cfg = config.services.xserver;
   gnomeProfile = "default";
@@ -53,21 +53,26 @@ in
     # TODO: Re-enable this & use to install & enable gnomeExtensions, leaving imported, but unset disables extensions for users.
     #inputs.home-extra-xhmm.homeManagerModules.desktop.gnome
 
-    #inputs.nix-software-center.packages.${system}.nix-software-center
-    #inputs.nixos-conf-editor.packages.${system}.nixos-conf-editor
-    #inputs.snow.packages.${system}.snow
 
-    ../desktop
-    ../desktop/gtk.nix
-    ../desktop/wayland.nix
+    # ../desktop
+    # ../desktop/gtk.nix
+    # ../desktop/wayland.nix
+    "${inputs.self}/hm/profiles/desktop"
+    "${inputs.self}/hm/profiles/desktop/gtk.nix"
+    "${inputs.self}/hm/profiles/desktop/wayland.nix"
     ./keyring.nix
     ./mobile.nix
     ./styles.nix
-    ./apps # GNOME-specific apps
-    ./extensions # GNOME Shell Extensions
+    ./apps          # GNOME-specific apps
+    ./extensions    # GNOME Shell Extensions
   ];
 
-  home.packages = with pkgs; [
+  home.packages = (with inputs.snowflake-os.packages.${pkgs.system}; [
+    nix-software-center
+    nixos-conf-editor
+    snowflakeos-module-manager
+    snow
+  ]) ++ (with pkgs; [
     gnome-boxes
     totem
 
@@ -90,7 +95,7 @@ in
     gnome-multi-writer
     gnome-recipes
     gtklp
-  ];
+  ]);
 
   # https://gist.github.com/quidome/4e225db4b1611a9624d3927919f96bc6
   #config = lib.mkIf (cfg.desktopManager.gnome.enable == true) {

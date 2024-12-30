@@ -3,19 +3,21 @@
 , ...
 }:
 {
-  imports = [ inputs.nur.modules.nixos.default ];
-  #environment.systemPackages = [
-  #  inputs.firefox.packages.${pkgs.system}.firefox-nightly-bin
-  #];
-
-  nixpkgs.overlays = [ inputs.nur.overlays.default ];
+  imports = [inputs.nur.modules.nixos.default];
+  nixpkgs.overlays = [inputs.nur.overlays.default];
+  # Nixpkgs Package Names: pkgs.firefox-{,beta,devedition,esr}{,-bin}{,-unwrapped}
+  environment.systemPackages = [
+    # pkgs.firefox_decrypt  # Decrypt Firefox passwords from profiles
+    # pkgs.firefoxpwa       # Util to install PWAs in Firefox (native component)
+  ] ++ (lib.optionals pkgs.stdenv.isx86_64 (with inputs.firefox.packages.${pkgs.system}; [
+    firefox-nightly-bin
+  ])); 
 
   programs.firefox = {
     enable = true;
-    package = inputs.flake-firefox-nightly.packages.${pkgs.system}.firefox-bin;
-    #package = pkgs.firefox;
-
-
+    package = if pkgs.stdenv.isx86_64
+      then inputs.firefox.packages.${pkgs.system}.firefox-bin
+      else pkgs.firefox;
 
     # https://support.mozilla.org/en-US/kb/customizing-firefox-using-autoconfig
     #autoConfig = ''

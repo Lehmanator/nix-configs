@@ -1,12 +1,5 @@
+{ inputs, osConfig, config, lib, pkgs, ... }:
 {
-  modulesPath,
-  inputs,
-  config,
-  osConfig,
-  lib,
-  pkgs,
-  ...
-}: {
   imports = [
     #./policies.nix
 
@@ -33,18 +26,11 @@
 
   programs.firefox = {
     enable = true;
-
-    #finalPackage =
-    package =
-      if (pkgs.system != "x86_64-linux")
-      then
-        pkgs.firefox.override {
-          nativeMessagingHosts =
-            [pkgs.tridactyl-native]
-            ++ lib.optional osConfig.services.gnome.gnome-browser-connector.enable
-            pkgs.gnome-browser-connector;
-        }
-      else inputs.flake-firefox-nightly.packages.${pkgs.system}.firefox-bin;
+    package = if (pkgs.system != "x86_64-linux")
+      then pkgs.firefox.override {
+        nativeMessagingHosts = [pkgs.tridactyl-native]
+          ++ lib.optional osConfig.services.gnome.gnome-browser-connector.enable pkgs.gnome-browser-connector;
+      } else inputs.firefox.packages.${pkgs.system}.firefox-bin;
 
     # Deprecated
     #enableGnomeExtensions = lib.mkIf osConfig.services.gnome.gnome-browser-connector.enable true;

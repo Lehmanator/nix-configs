@@ -1,15 +1,7 @@
+{ inputs, ... }:
 {
-  inputs,
-  self,
-  ...
-}: {
-  imports = [inputs.pre-commit-hooks-nix.flakeModule];
-  perSystem = {
-    config,
-    lib,
-    pkgs,
-    ...
-  }: {
+  imports = [inputs.pre-commit-hooks.flakeModule];
+  perSystem = { config, lib, pkgs, ... }: {
     pre-commit = {
       check.enable = true;
       #devShell = null;

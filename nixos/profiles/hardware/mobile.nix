@@ -2,8 +2,8 @@
 {
   # Overlay our mobile forks of gnome-shell & mutter.
   nixpkgs.overlays = [
-    (import ../../overlays/gnome-mobile)
-    #(import inputs.self.overlays.gnome-mobile)
+    # (import ../../overlays/gnome-mobile)
+    inputs.self.overlays.gnome-mobile
   ];
 
   # Configure options from nixosModule: NixOS/mobile-nixos
@@ -87,9 +87,6 @@
       pkgs.gnome-console # # Terminal
       pkgs.megapixels # # Camera
       pkgs.git # # For rebuilding w/ GitHub flakes
-      #inputs.nix-software-center.packages.${pkgs.system}.nix-software-center
-      #inputs.nixos-conf-editor.packages.${pkgs.system}.nixos-conf-editor
-      #inputs.snow.packages.${pkgs.system}.snow
     ];
   };
 
