@@ -3,6 +3,101 @@
   ...
 }:
 {
+  # See also:
+  # https://github.com/schuelermine/xhmm/tree/b0/languages/rust
+  imports = [inputs.home-extra-xhmm.homeManagerModules.languages.rust];
+  programs.rust = {
+    # clippy.enable = true;
+    # rls.enable = false;
+    # rust-analyzer.enable = true;
+    # rustc.enable = true;
+    # rustup.enable = true;
+    # rustfmt = {
+    #   enable = true;
+    #   # ~/.config/rustfmt/rustfmt.toml
+    #   settings = {
+    #   };
+    # };
+    cargo = {
+      # enable = true;
+      # Config: ~/.cargo/config.toml
+      settings = {
+        alias = {
+          a = "add";
+          b = "build";
+          ba = "build-all-features";
+          br = "build --release";
+          ch = "check";
+          cle = "clean";
+          cli = "clippy";
+          clo = "clone";
+          d = "doc";
+          i = "install";
+          n = "new";
+          s = "search";
+          r = "run";
+          rr = "run --release";
+          t = "test";
+          tr = "tree";
+          u = "update";
+          up = "update";
+          un = "uninstall";
+          v = "version";
+          w = "watch";
+          work = "workspaces";
+        };
+        env = {};
+        cargo-new.vcs = "git";
+        #net.ssh.known-hosts=["..."]; # known SSH host keys
+      };
+    };
+
+    # Sets env var: RUST_SRC_PATH="${toolchainPackages.rustPlatform.rustLibSrc}"
+    exposeRustSrcLocation = true;
+
+    # customToolchain = {
+    #   toolchainPackage = inputs.fenix.complete.toolchain;  # Disables programs.rust.customToolchain.builder
+    #   builder = file: inputs.fenix.fromToolchainFile { inherit file; sha256=""; };
+    #   format = "attrs";
+    #   channel = "nightly";
+    #   profile = "complete";
+    #   components = [
+    #     "llvm-bitcode-linker"
+    #     "llvm-tools"
+    #     "miri"
+    #     "rust-analysis"
+    #     "rust-docs"
+    #     "rust-docs-json"
+    #     "rust-src"
+    #     "rust-std"
+    #     "rustc-codegen-cranelift"
+    #     "rustc-dev"
+    #     "rustc-docs"
+    #   ];
+    #   targets = [
+    #     "nvptx64-nvidia-cuda"
+    #     "riscv64gc-unknown-linux-gnu"
+    #     "riscv64gc-unknown-linux-musl"
+    #     "riscv64gc-unknown-none-elf"
+    #     "wasm32-unknown-emscripten"
+    #     "wasm32-unknown-unknown"
+    #     "wasm32-wasip1"
+    #     "wasm32-wasip1-threads"
+    #     "wasm32-wasip2"
+    #     "wasm32v1-none"
+    #     "x86_64-apple-darwin"
+    #     "x86_64-linux-android"
+    #     "x86_64-pc-windows-gnu"
+    #     "x86_64-pc-windows-gnullvm"
+    #     "x86_64-pc-windows-msvc"
+    #     "x86_64-unknown-linux-gnu"
+    #     "x86_64-unknown-linux-musl"
+    #     "x86_64-unknown-none"
+    #     "x86_64-unknown-uefi"
+    #   ];
+    # };
+  };
+
   nixpkgs.overlays = [inputs.fenix.overlays.default];
 
   # --- Editors ------------------------------------------------------
