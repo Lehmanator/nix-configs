@@ -20,7 +20,6 @@
 
     "${inputs.self}/nixos/profiles/desktop/gtk.nix"
     "${inputs.self}/nixos/profiles/desktop/wayland.nix"
-    # "${inputs.self}/nixos/profiles/desktop/xwayland.nix"
   ];
 
   # --- Services -----------------------------------------------------
@@ -36,12 +35,6 @@
         [org.gnome.mutter]
         check-alive-timeout=25000
       '';
-
-      # Packages to add to GNOME session environment.
-      #  Add binaries needed by gnomeExtensions
-      sessionPath = [
-        pkgs.gtop      # Process manager used by tophat extension
-      ];
     };
 
     gnome = {

@@ -1,13 +1,5 @@
-{ config
-, lib
-, pkgs
-, ...
-}:
-
+{ config, lib, pkgs, ... }:
 {
-  imports = [
-  ];
-
   environment.systemPackages = with pkgs.gnomeExtensions; [
     # Tasks lists in clock panel next to calendar
     # - Local tasks
@@ -15,9 +7,9 @@
     # - Evolution (Mail client)
     # - GNOME Online Accounts (all providers that support tasks)
     # - Thunderbird (Mail client)
-    #task-widget #    #
-    desktop-clock #   # Display a configurable clock on the desktop
-    weather-or-not #  # Display clickable weather status panel button next to clock
+    # task-widget     # Clock panel task list next to calendar (Srcs: Local, Endeavour, Evolution, GNOME Online Accounts, Thunderbird)
+    desktop-clock     # Display configurable desktop clock
+    weather-or-not    # Display clickable weather status panel button next to clock
   ];
 
 }

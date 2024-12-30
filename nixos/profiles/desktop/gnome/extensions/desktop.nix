@@ -1,14 +1,6 @@
-{ config
-, lib
-, pkgs
-, ...
-}:
-# GNOME Shell Extensions for the desktop & widgets
-
+{ config, lib, pkgs, ... }:
 {
-  imports = [
-  ];
-
+  # GNOME Shell Extensions for the desktop & widgets
   environment.systemPackages = with pkgs.gnomeExtensions; [
     # Create desktop shortcuts w/ right-click -> 'add to desktop'
     # TODO: Check if desktop-icons extension provides this functionality

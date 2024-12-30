@@ -10,4 +10,8 @@
     # rounded-window-corners #     # Round window corners (fix non-adwaita app inconsistency) # WARN: 11/23: GNOME45 incompat, unavailable 24.11
     snowy #                      # Snow effect on your desktop
   ];
+
+  services.xserver.desktopManager.gnome.sessionPath = [
+    pkgs.sass
+  ];
 }
