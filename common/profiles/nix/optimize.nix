@@ -12,7 +12,7 @@
       keep-derivations = true;
       keep-env-derivations = false;
       keep-going = lib.mkDefault false;
-      keep-outputs = lib.mkDefault true;
+      keep-outputs = lib.mkDefault false;
       preallocate-contents = lib.mkDefault true;
     };
   };

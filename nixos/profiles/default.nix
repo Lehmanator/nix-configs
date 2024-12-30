@@ -40,7 +40,7 @@
 
   # Mount /etc via overlay filesystem (faster activation)
   system.etc.overlay = {
-    enable  = lib.mkDefault false;
+    enable  = lib.mkForce true;
     mutable = lib.mkDefault true;
   };
 

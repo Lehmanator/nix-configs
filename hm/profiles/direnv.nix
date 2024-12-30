@@ -77,7 +77,7 @@
 
   # TODO: Why did I initially add this config?
   nix.settings = {
-    keep-outputs = true;
+    # keep-outputs = true;
     keep-derivations = true;
   };
 }
