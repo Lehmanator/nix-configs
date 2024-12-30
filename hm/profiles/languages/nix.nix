@@ -1,4 +1,6 @@
 { config, lib, pkgs, ... }:
+# https://github.com/snowfallorg/drift - Update Nix Flake package sources
+# https://github.com/snowfallorg/thaw  - SemVer Nix Flake inputs (only works w/ GitHub for now)
 {
   home.packages = [
     pkgs.nix-diff
