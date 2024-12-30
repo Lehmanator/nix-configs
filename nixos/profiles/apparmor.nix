@@ -1,19 +1,12 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
+{ lib, pkgs, ... }:
 {
-  imports = [
-  ];
-
   security.apparmor = {
-    enable = true;
+    enable = lib.mkDefault true;
 
     # Enable caching of AppArmor policies in /var/cache/apparmor/.
     #   Beware that AppArmor policies almost always contain Nix store paths,
     #   and thus produce at each change of these paths a new cached version accumulating in the cache.
+    # TODO: Create activationScripts.apparmor-cache-refresh
     #enableCache = false;
 
     # Enable killing of processes which have AppArmor profile enabled (in security.apparmor.policies) but are not confined (because AppArmor can only confine new processes. Sends SIGTERM signal. Due to limitation of AppArmor, only profiles w/ exact paths (and no name) can enable such kills.
@@ -31,7 +24,6 @@
     #  #  '';
     #  #};
     #};
-
   };
 
   services.dbus.apparmor = "enabled"; # enabled = enables mediation when supported in kernel | disabled = always disabled | required = fails when AppArmor not found in kernel

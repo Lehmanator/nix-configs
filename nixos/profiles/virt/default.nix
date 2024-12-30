@@ -1,17 +1,10 @@
-{ inputs
-, config
-, lib
-, pkgs
-, user
-, ...
-}:
+{ inputs, config, lib, pkgs, ... }:
 {
   imports = [
-    ./android
-    ./appimage.nix
-    ./containers
-    ./vm
-    ./wine.nix
+    (inputs.self + /nixos/profiles/appimage.nix)
+    (inputs.self + /nixos/profiles/containers)
+    (inputs.self + /nixos/profiles/vm)
+    (inputs.self + /nixos/profiles/waydroid.nix)
+    (inputs.self + /nixos/profiles/wine.nix)
   ];
-
 }

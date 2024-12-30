@@ -5,12 +5,12 @@ in
 {
   imports = [
     # inputs.srvos.nixosModules.desktop
-    "${inputs.self}/nixos/profiles/apps"
-    "${inputs.self}/nixos/profiles/gnome"
-    "${inputs.self}/nixos/profiles/flatpak.nix"
-    "${inputs.self}/nixos/profiles/gdm.nix"
-    "${inputs.self}/nixos/profiles/gtk.nix"
-    "${inputs.self}/nixos/profiles/qt.nix"
+    (inputs.self + /nixos/profiles/apps)
+    (inputs.self + /nixos/profiles/gnome)
+    (inputs.self + /nixos/profiles/flatpak.nix)
+    (inputs.self + /nixos/profiles/gdm.nix)
+    (inputs.self + /nixos/profiles/gtk.nix)
+    (inputs.self + /nixos/profiles/qt.nix)
   ];
 
   # Use more responsive kernel on desktops (Non-ARM for now?)

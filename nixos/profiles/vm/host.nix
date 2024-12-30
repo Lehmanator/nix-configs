@@ -1,11 +1,4 @@
-{
-  inputs,
-  config,
-  lib,
-  pkgs,
-  user,
-  ...
-}:
+{ inputs, config, lib, pkgs, ... }:
 #let
 #  uuid = "6a1eb126-267f-11ee-a91c-075c79e9269a";
 #in

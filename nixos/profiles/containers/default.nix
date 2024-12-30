@@ -1,18 +1,14 @@
-{ inputs
-, config
-, lib
-, pkgs
-, user
-, ...
-}: {
+{ inputs, config, lib, pkgs, ... }:
+{
   imports = [
-    ../../security/apparmor.nix
-    ./containerd.nix
-    ./cri-o.nix
-    #./lxc.nix
-    #./lxd.nix
-    #./lxd-image-server.nix
-    ./podman.nix
+    (inputs.self + /nixos/profiles/apparmor.nix)
+    (inputs.self + /nixos/profiles/containerd.nix)
+    (inputs.self + /nixos/profiles/crio.nix)
+    (inputs.self + /nixos/profiles/podman.nix)
+
+    # (inputs.self + /nixos/profiles/lxc.nix)
+    # (inputs.self + /nixos/profiles/lxd.nix)
+    # (inputs.self + /nixos/profiles/lxd-image-server.nix)
   ];
 
   # Common config module in: `/etc/containers`

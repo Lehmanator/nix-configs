@@ -1,15 +1,15 @@
-{ inputs
-, config
-, lib
-, pkgs
-, user
-, ...
-}:
-# LXC - Linux Containers (LXC), provides tools for creating & managing system / application containers on Linux
+{ inputs, config, lib, pkgs, user, ... }:
 {
-  imports = [ ../../security/apparmor.nix ]; # LXD service complains about missing AppArmor support (WARN)
-  #boot.kernelModules = ["vhost_vsock"];         # TODO: Explain why kernel module added
-  users.users.${user}.extraGroups = [ "lxc" ]; #users.extraGroups.lxc.members = [user];  users.groups.lxc.members = [user];
+  # LXC - Linux Containers (LXC), provides tools for creating & managing system / application containers on Linux
+  # LXD service complains about missing AppArmor support (WARN)
+  imports = [(inputs.self + /nixos/security/apparmor.nix)];
+
+  # TODO: Explain why kernel module added
+  #boot.kernelModules = ["vhost_vsock"];        
+
+  users.users.${user}.extraGroups = ["lxc"];
+  # users.extraGroups.lxc.members = [user];
+  # users.groups.lxc.members = [user];
 
   # Hooks that will be placed under /var/lib/libvirt/hooks/lxc.d/ & called for lxc domains begin/end events.
   #   See: https://libvirt.org/hooks.html

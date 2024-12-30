@@ -18,27 +18,26 @@
     nixos-hardware.nixosModules.common-pc-ssd
     nixos-hardware.nixosModules.common-cpu-intel
 
-    ../../profiles
+    (inputs.self + /nixos/profiles)
+    (inputs.self + /nixos/profiles/apparmor.nix)
+    (inputs.self + /nixos/profiles/boot)
+    (inputs.self + /nixos/profiles/cachix-agent.nix)
+    (inputs.self + /nixos/profiles/desktop)
+    (inputs.self + /nixos/profiles/desktop/gnome)
+    (inputs.self + /nixos/profiles/hardware/display)
+    (inputs.self + /nixos/profiles/hardware/fwupd.nix)
+    (inputs.self + /nixos/profiles/hardware/peripherals/logitech.nix)
+    (inputs.self + /nixos/profiles/hardware/usb.nix)
+    (inputs.self + /nixos/profiles/slippi.nix)
+    (inputs.self + /nixos/profiles/users/homed.nix)
+    (inputs.self + /nixos/profiles/virt)
 
-    ../../profiles/boot
-    ../../profiles/desktop
-    ../../profiles/desktop/gnome
-    ../../profiles/hardware/display
-    ../../profiles/hardware/fwupd.nix
-    ../../profiles/hardware/peripherals/logitech.nix
-    ../../profiles/hardware/usb.nix
-    ../../profiles/security/apparmor.nix
-    #../../profiles/server/kubernetes/k3s-node-main.nix
-    ../../profiles/users/homed.nix
-    ../../profiles/virt
-    ../../profiles/cachix-agent.nix
-    #../../profiles/installer.nix
-    #../../profiles/virt/emulators/slippi.nix
-
-    #../../profiles/hardware/display/displaylink.nix
-    #../../profiles/hardware/tpm1.2.nix
-    #../../profiles/virt/windows
-    #../../../common/profiles/editor
+    #(inputs.self + /nixos/profiles/server/kubernetes/k3s-node-main.nix)
+    # (inputs.self + /nixos/profiles/installer.nix)
+    # (inputs.self + /nixos/profiles/hardware/display/displaylink.nix)
+    # (inputs.self + /nixos/profiles/hardware/tpm1.2.nix)
+    # (inputs.self + /nixos/profiles/virt/windows)
+    # (inputs.self + /nixos/profiles/editor)
   ];
   #security.sudo-rs.enable = lib.mkForce false;
 

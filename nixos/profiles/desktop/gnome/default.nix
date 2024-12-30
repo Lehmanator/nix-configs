@@ -10,6 +10,10 @@
 }:
 {
   imports = [
+    (inputs.self + /nixos/profiles/gdm.nix)
+    (inputs.self + /nixos/profiles/gtk.nix)
+    (inputs.self + /nixos/profiles/wayland.nix)
+
     ./apps
     ./extensions
 
@@ -17,9 +21,6 @@
     ./keyring.nix
     ./nautilus.nix
     ./network.nix
-
-    "${inputs.self}/nixos/profiles/desktop/gtk.nix"
-    "${inputs.self}/nixos/profiles/desktop/wayland.nix"
   ];
 
   # --- Services -----------------------------------------------------
