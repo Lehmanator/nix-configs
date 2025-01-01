@@ -53,6 +53,9 @@
     ./vm.nix
     ./xdg.nix
 
+    ./monado.nix
+    ./steam.nix
+
     # ./codium
     # ./neovim
     # ./nixvim
