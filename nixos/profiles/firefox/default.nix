@@ -1,18 +1,8 @@
-{ inputs
-, config, lib, pkgs
-, ...
-}:
+{ inputs, config, lib, pkgs, ... }:
 {
-  imports = [inputs.nur.modules.nixos.default];
-  nixpkgs.overlays = [inputs.nur.overlays.default];
-  # Nixpkgs Package Names: pkgs.firefox-{,beta,devedition,esr}{,-bin}{,-unwrapped}
-  environment.systemPackages = [
-    # pkgs.firefox_decrypt  # Decrypt Firefox passwords from profiles
-    # pkgs.firefoxpwa       # Util to install PWAs in Firefox (native component)
-  ] ++ (lib.optionals pkgs.stdenv.isx86_64 (with inputs.firefox.packages.${pkgs.system}; [
-    firefox-nightly-bin
-  ])); 
-
+  imports = [(inputs.self + /nixos/profiles/nur.nix)];
+  home-manager.sharedModules = [(inputs.self + /hm/profiles/firefox)];
+  
   programs.firefox = {
     enable = true;
     package = if pkgs.stdenv.isx86_64
@@ -78,4 +68,13 @@
 
   # TODO: Move to locale profile
   languagePacks = [ "en-US" "es-MX" "zh-CN" ];
+  
+  # Nixpkgs Package Names: pkgs.firefox-{,beta,devedition,esr}{,-bin}{,-unwrapped}
+  environment.systemPackages = [
+    # pkgs.firefox_decrypt  # Decrypt Firefox passwords from profiles
+    # pkgs.firefoxpwa       # Util to install PWAs in Firefox (native component)
+  ] ++ (lib.optionals pkgs.stdenv.isx86_64 (with inputs.firefox.packages.${pkgs.system}; [
+    firefox-nightly-bin
+  ])); 
+
 }

@@ -1,6 +1,9 @@
 { inputs, config, lib, pkgs, ... }:
 {
-  imports = [./libreoffice.nix];
+  imports = [
+    (inputs.self + /nixos/profiles/firefox)
+    ./libreoffice.nix
+  ];
   home-manager.sharedModules = [(inputs.self + /hm/profiles/bitwarden.nix)];
 
   programs.fuse.userAllowOther = true;

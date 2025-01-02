@@ -1,10 +1,4 @@
-{
-  config,
-  osConfig,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, osConfig, lib, pkgs, ... }:
 #
 # Wrapped Firefox package with default extensions & policies
 # - Import in NixOS options, home-manager options, nix-darwin options to share config.

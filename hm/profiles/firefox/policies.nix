@@ -1,9 +1,5 @@
+{ config, lib, pkgs, ... }: 
 {
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
   # https://mozilla.github.io/policy-templates
   programs.firefox.policies = {
     BlockAboutAddons = false;

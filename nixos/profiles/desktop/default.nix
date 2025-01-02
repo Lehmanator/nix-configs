@@ -8,11 +8,16 @@ in
     (inputs.self + /nixos/profiles/apps)
     (inputs.self + /nixos/profiles/gnome)
     
-    (inputs.self + /nixos/profiles/chromium.nix)
     (inputs.self + /nixos/profiles/flatpak.nix)
     (inputs.self + /nixos/profiles/gdm.nix)
     (inputs.self + /nixos/profiles/gtk.nix)
     (inputs.self + /nixos/profiles/qt.nix)
+
+    # --- Apps ---------------------------------------------
+    (inputs.self + /nixos/profiles/chromium.nix)
+    (inputs.self + /nixos/profiles/firefox)
+    (inputs.self + /nixos/profiles/torbrowser.nix)
+    
   ];
 
   # Use more responsive kernel on desktops (Non-ARM for now?)
@@ -41,4 +46,10 @@ in
     #   /run/current-system/sw/share/X11/fonts
     fontDir.enable = true;
   };
+
+  environment.systemPackages = [
+    pkgs.bitwarden
+    pkgs.fuse3
+    pkgs.thunderbird
+  ];
 }
