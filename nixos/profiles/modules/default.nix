@@ -3,10 +3,8 @@
   imports = with inputs; [
     ./agenix.nix
     ./arion.nix
-    #./disko.nix
     # ./flake-utils-plus.nix
     ./home-manager.nix
-    #./impermanence.nix
     #./microvm.nix
     #./nix-index.nix
     #./nixified-ai.nix

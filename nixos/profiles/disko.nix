@@ -1,9 +1,6 @@
 { inputs, config, lib, pkgs, ... }:
 {
-  imports = [
-    inputs.disko.nixosModules.disko
-    #../../../hosts/${config.networking.hostName}/disko.nix
-  ];
+  imports = [inputs.disko.nixosModules.disko];
 
   disko = {
     enableConfig = lib.mkDefault false;
