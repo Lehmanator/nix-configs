@@ -10,6 +10,7 @@
     (inputs.self + /nixos/profiles/hardware/tpm2.nix)
     (inputs.self + /nixos/profiles/hardware/peripherals/apple.nix)
     (inputs.self + /nixos/profiles/hardware/peripherals/logitech.nix)
+    (inputs.self + /nixos/profiles/lanzaboote.nix)
     (inputs.self + /nixos/profiles/security)
     (inputs.self + /nixos/profiles/virt)
     # (inputs.self + /nixos/profiles/hercules-ci.nix)

@@ -1,4 +1,4 @@
-{ inputs, config, lib, pkgs, user, ... }:
+{ inputs, config, lib, pkgs, ... }:
 #
 # https://github.com/nix-community/lanzaboote
 # https://github.com/nix-community/lanzaboote/blob/master/docs/QUICK_START.md

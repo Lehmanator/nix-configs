@@ -8,7 +8,6 @@
     # ./flake-utils-plus.nix
     ./home-manager.nix
     #./impermanence.nix
-    ./lanzaboote.nix
     #./microvm.nix
     #./nix-index.nix
     #./nixified-ai.nix
