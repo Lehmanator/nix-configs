@@ -1,22 +1,14 @@
-{ inputs
-, config, lib, pkgs
-, user
-, ...
-}: with lib;
+{ inputs, config, lib, pkgs, ... }:
 {
   # --- Stylix ---
+  # Sets colors, fonts, & styles for multiple programs based on wallpaper.
+  #
   # https://github.com/danth/stylix
   # https://danth.github.io/stylix/options/hm.html
   #
-  # Sets colors, fonts, & styles for multiple programs based on wallpaper.
   imports = [inputs.stylix.homeManagerModules.stylix];
 
-  home.packages = [
-    inputs.stylix.${pkgs.system}.docs
-    inputs.stylix.${pkgs.system}.palette-generator
-  ];
-
-  stylix = rec {
+  stylix = with lib; rec {
     autoEnable = true;
     #base16Scheme = {};
     fonts = with pkgs; {
@@ -76,4 +68,7 @@
       xresources.enable = true;
     };
   };
+
+  home.packages = with inputs.stylix.${pkgs.system}; [docs palette-generator];
+
 }

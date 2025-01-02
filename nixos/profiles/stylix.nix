@@ -1,17 +1,17 @@
-{ inputs
-, config, lib, pkgs
-, user
-, ...
-}: with lib;
+{ inputs, config, lib, pkgs, ... }:
 {
   imports = [inputs.stylix.nixosModules.stylix];
-  environment.systemPackages = with inputs.stylix.packages.${pkgs.system}; [docs palette-generator];
+  home-manager.sharedModules = [(inputs.self + /hm/profiles/stylix.nix)];
 
-  stylix = {
-    autoEnable = lib.mkDefault true;
+  stylix = with lib; {
+    autoEnable = mkDefault true;
+
+    homeManagerIntegration = {
+      autoImport   = mkDefault true; # TODO: Conditionally import stylix hmModule when not using NixOS.
+      followSystem = mkDefault true; # TODO: Figure out if home-manager options disappear when set.
+    };
+
     #base16Scheme = {};
-    homeManagerIntegration.autoImport   = true; # TODO: Conditionally import stylix hmModule when not using NixOS.
-    homeManagerIntegration.followSystem = true; # TODO: Figure out if home-manager options disappear when set.
     #image   = mkDefault "";
     override = mkDefault {};
     polarity = mkDefault "either";
@@ -43,4 +43,6 @@
       #plymouth.logo = <path|package>;
     };
   };
+
+  environment.systemPackages = with inputs.stylix.packages.${pkgs.system}; [docs palette-generator];
 }
