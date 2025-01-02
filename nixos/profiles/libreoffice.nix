@@ -1,7 +1,4 @@
-{ self, inputs
-, config, lib, pkgs
-, ...
-}:
+{ inputs, config, lib, pkgs, ... }:
 let
   variant = "fresh"; # fresh | still
   uno = false;       # Python library
@@ -9,9 +6,9 @@ let
   libreoffice = if unwrapped then pkgs."libreoffice-${variant}" else pkgs."libreoffice-${variant}-unwrapped";
 in
 {
+  home-manager.sharedModules = [(inputs.self + /hm/profiles/libreoffice.nix)];
 
   environment.systemPackages = [
-    #libreoffice
     pkgs.libreoffice-fresh
 
     pkgs.hunspell
