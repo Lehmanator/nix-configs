@@ -1,10 +1,4 @@
-
-{
-  lib,
-  pkgs,
-  config,
-  ...
-}:
+{ lib, pkgs, config, ... }:
 {
   services.monado = {
     enable = true;
@@ -24,5 +18,4 @@
     enable = true;
     openFirewall = true; # This is set true by default
   };
-
 }
