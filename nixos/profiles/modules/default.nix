@@ -11,8 +11,6 @@
     #./nixos-generators.nix
     #./nixos-images.nix
     #./quick-nix-registry.nix
-    ./sops.nix
-
 
     #colmena.nixosModules.assertionModule
     #colmena.nixosModules.deploymentOptions
