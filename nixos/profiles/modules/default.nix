@@ -14,7 +14,6 @@
     #colmena.nixosModules.keyChownModule
     #colmena.nixosModules.keyServiceModule
     #colmena.nixosModules.metaOptions
-    envfs.nixosModules.envfs
     # https://github.com/nix-community/nixos-generators
     # nix build .#nixosConfigurations.<host>.config.formats.<format>
     nixos-generators.nixosModules.all-formats
@@ -29,8 +28,6 @@
     # mixins-cloud-init, mixins-systemd-boot, mixins-telegraf
     srvos.nixosModules.mixins-trusted-nix-caches # roles-github-actions-runner, roles-nix-remote-builder
   ];
-
-  services.envfs.enable = lib.mkDefault true;
 
   #formatConfigs = {
   #  install-iso = {};
