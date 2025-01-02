@@ -4,8 +4,6 @@
     # ./flake-utils-plus.nix
     #./microvm.nix
     #./nix-index.nix
-    #./nixified-ai.nix
-    #./nixos-generators.nix
     #./nixos-images.nix
     #./quick-nix-registry.nix
 
@@ -14,11 +12,11 @@
     #colmena.nixosModules.keyChownModule
     #colmena.nixosModules.keyServiceModule
     #colmena.nixosModules.metaOptions
-    # https://github.com/nix-community/nixos-generators
-    # nix build .#nixosConfigurations.<host>.config.formats.<format>
-    nixos-generators.nixosModules.all-formats
+    
+    #./nixified-ai.nix
     #nixified-ai.nixosModules.invokeai
     #nixified-ai.nixosModules.textgen
+    
     # https://github.com/polygon/scalpel
     # scalpel.nixosModules.scalpel
 
@@ -28,9 +26,5 @@
     # mixins-cloud-init, mixins-systemd-boot, mixins-telegraf
     srvos.nixosModules.mixins-trusted-nix-caches # roles-github-actions-runner, roles-nix-remote-builder
   ];
-
-  #formatConfigs = {
-  #  install-iso = {};
-  #};
 
 }

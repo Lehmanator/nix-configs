@@ -7,6 +7,7 @@
     ./modules
 
     ./boot
+    ./generators
     ./hardware
     ./locale
     ./network
@@ -15,7 +16,6 @@
     ./shell
     ./users
     #./desktop
-    #./generators
     #./installer
     #./virt
 

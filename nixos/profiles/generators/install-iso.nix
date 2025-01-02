@@ -1,8 +1,14 @@
 { inputs, config, lib, pkgs, user, ... }:
 {
-  imports = [ inputs.disko.nixosModules.disko ];
+  imports = [
+    # inputs.nixos-generators.nixosModules.all-formats
+    inputs.nixos-generators.nixosModules.install-iso
+    (inputs.self + /nixos/profiles/disko.nix)
+  ];
 
-  formatConfigs = rec {
+  formatConfigs = {
+    #iso = { };
+    #install-iso-hyperv = install-iso // { };
     install-iso = { inputs, config, lib, pkgs, ... }: {
       disko.enableConfig = false;
       nix.package = pkgs.lix;
@@ -20,7 +26,5 @@
       };
       environment.systemPackages = with inputs.disko.packages.${pkgs.system}; [ disko disko-doc ];
     };
-    #install-iso-hyperv = install-iso // { };
-    #iso = { };
   };
 }
