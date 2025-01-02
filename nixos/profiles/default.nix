@@ -20,6 +20,7 @@
     #./virt
 
     ./adb.nix
+    ./agenix.nix
     ./colmena.nix
     ./motd.nix
     ./nixvim.nix
