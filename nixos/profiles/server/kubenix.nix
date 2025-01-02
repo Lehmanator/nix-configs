@@ -2,6 +2,8 @@
 {
   # https://github.com/nix-community/nixvim
   imports = [ inputs.kubenix.nixosModules.kubenix ];
+  home-manager.sharedModules = [(inputs.self + /hm/profiles/kubenix)];
+  sops.secrets.kubeconfig = { };
 
   #docker = {
   #  #copyScript = pkgs.copy-docker-images.sh;
@@ -119,15 +121,5 @@
   system.activationScripts.kubenix.text = lib.mkIf config.k3s.enable ''
     ln -sf /etc/kubenix.yaml /var/lib/rancher/k3s/server/manifests/kubenix.yaml
   '';
-
-  sops.secrets.kubeconfig = { };
-
-  home-manager.sharedModules = [
-    inputs.kubenix.homemManagerModules.kubenix
-    # --- OR ---
-    #../../../hm/profiles/modules/kubenix.nix
-  ];
-
-  # TODO: Learn about `lib.extendModules`
 
 }

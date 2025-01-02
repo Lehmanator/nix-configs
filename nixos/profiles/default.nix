@@ -1,10 +1,7 @@
-{ config, lib, pkgs, ... }:
+{ inputs, config, lib, pkgs, ... }:
 {
   imports = [
     ../../common/profiles/nix
-    # nixos/profiles/nix/shell.nix
-
-    ./modules
 
     ./boot
     ./generators
@@ -41,6 +38,16 @@
     #./boot
     #./home-manager.nix
     #./users/homed.nix
+
+    
+    # https://github.com/polygon/scalpel
+    # scalpel.nixosModules.scalpel
+
+    # https://github.com/nix-community/srvos
+    # srvos.nixosModules.common #                  # desktop, server,   mixins-terminfo,     mixins-tracing,
+    # srvos.nixosModules.mixins-nix-experimental # NOTE: Broken setting: experimental-features = ["configurable-impure-env"]
+    # mixins-cloud-init, mixins-systemd-boot, mixins-telegraf
+    inputs.srvos.nixosModules.mixins-trusted-nix-caches # roles-github-actions-runner, roles-nix-remote-builder
   ];
 
   # Mount /etc via overlay filesystem (faster activation)

@@ -1,13 +1,9 @@
-{ inputs
-, config
-, lib
-, pkgs
-, user
-, ...
-}:
+{ inputs, config, lib, pkgs, user, ... }:
 {
+  imports = [inputs.sops-nix.homeManagerModules.sops];
+
   sops = {
-    defaultSopsFile = ../../users/${user}/secrets/default.yaml;
+    defaultSopsFile = (inputs.self + /hm/users/secrets/default.yaml);
     keepGenerations = 10;
 
     age = {

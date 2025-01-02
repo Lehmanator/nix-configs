@@ -2,7 +2,7 @@
 {
   # TODO: Make devShell with pkgs.sops installed
   imports = [ inputs.sops-nix.nixosModules.sops ];
-  home-manager.sharedModules = [inputs.sops-nix.homeManagerModules.sops];
+  home-manager.sharedModules = [(inputs.self + /hm/profiles/sops.nix)];
   
   sops = {
     defaultSopsFile = (inputs.self + /nixos/hosts/${config.networking.hostName}/secrets/default.yaml);

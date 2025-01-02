@@ -10,10 +10,7 @@
     users.${user} = import (inputs.self + /hm/users/${user});
     sharedModules = [
       # inputs.arkenfox.hmModules.default
-      # inputs.sops.homeManagerModules.sops
       # inputs.nixpkgs-android.hmModule
-      # inputs.nix-index.hmModules.nix-index
-      # { programs.nix-index-database.comma.enable = true; }
     ];
   };
 }

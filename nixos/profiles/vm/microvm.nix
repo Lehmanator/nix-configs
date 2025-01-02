@@ -1,6 +1,8 @@
 { inputs, config, lib, pkgs, user, ... }:
 {
-  # https://github.com/nix-community/nixvim
+  #
+  # https://github.com/astro/microvm.nix
+  #
   imports = [
     inputs.microvm.nixosModules.host
     inputs.microvm.nixosModules.microvm
@@ -102,6 +104,7 @@
   ) (builtins.attrNames inputs.self.lib.addresses.machineId);
   #) (builtins.attrNames self.lib.addresses.machineId);
 
+  # Persist data for MicroVMs
   environment.persistence."/nix/persist".directories = lib.mkIf config.microvm.host.enable [ config.microvm.stateDir ];
 
   # Flake updates from CI / Hydra jobs
