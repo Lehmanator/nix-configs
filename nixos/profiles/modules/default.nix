@@ -3,7 +3,6 @@
   imports = with inputs; [
     ./agenix.nix
     ./arion.nix
-    #./colmena.nix
     #./disko.nix
     # ./flake-utils-plus.nix
     ./home-manager.nix

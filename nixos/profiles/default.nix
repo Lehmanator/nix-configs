@@ -20,6 +20,7 @@
     #./virt
 
     ./adb.nix
+    ./colmena.nix
     ./motd.nix
     ./normalize.nix
     ./ollama.nix
