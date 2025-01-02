@@ -4,10 +4,10 @@
     "${inputs.self}/nixos/profiles"
     "${inputs.self}/nixos/profiles/flatpak.nix"
     "${inputs.self}/nixos/profiles/mobile"
+    (inputs.self + /nixos/profiles/slippi.nix)
 
     #../../profiles/desktop
     #../../profiles/desktop/gnome
-    #../../profiles/virt/emulators/slippi.nix
 
     # --- Disabled ---
     #../../profiles/hardware/fprintd.nix
