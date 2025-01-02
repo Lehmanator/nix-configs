@@ -123,13 +123,6 @@
 
     traceroute.enable = true;
 
-    # --- Browsers ---
-    chromium = {
-      enable = true;
-      defaultSearchProviderEnabled = true;
-    };
-    #firefox.enable = true;
-
     # --- Keys ---
     gnupg = {
       dirmngr.enable = true;

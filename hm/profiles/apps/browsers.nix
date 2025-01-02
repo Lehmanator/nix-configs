@@ -1,15 +1,10 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
+{ inputs, config, lib, pkgs, ... }:
 {
   imports = [
-    ./browser-chromium
-    #./browser-chromium/brave.nix
-    #./browser-chromium/chromite.nix
-    #./browser-chromium/ungoogled.nix
+    (inputs.self + /hm/profiles/chromium.nix)
+    # (inputs.self + /hm/profiles/chromium/ungoogled.nix)
+    # (inputs.self + /hm/profiles/chromium/chromite.nix)
+    # (inputs.self + /hm/profiles/chromium/brave.nix)
 
     ./browser-firefox
     #./browser-firefox/arkenfox.nix

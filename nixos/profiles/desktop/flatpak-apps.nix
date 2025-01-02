@@ -30,8 +30,6 @@ in
     "com.belmoussaoui.ashpd.demo"
     "com.borgbase.Vorta"
     "com.github.Darazaki.Spedread"
-    "com.github.Eloston.UngoogledChromium"
-    "com.github.Eloston.UngoogledChromium.Codecs"
     "com.github.GradienceTeam.Gradience"
     "com.github.IsmaelMartinez.teams_for_linux"
     "com.github.LongSoft.UEFITool"

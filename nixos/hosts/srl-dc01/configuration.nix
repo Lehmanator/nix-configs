@@ -25,7 +25,6 @@
     git = { enable = true; package = pkgs.gitFull; };
     less = { enable = true; lessopen = "|${pkgs.lesspipe}/bin/lesspipe.sh %s"; };
     traceroute.enable = true;
-    chromium.enable = false;
     firefox.enable = true;
     gnupg = { dirmngr.enable = true; agent.enableExtraSocket = true; agent.enableBrowserSocket = true; };
   };

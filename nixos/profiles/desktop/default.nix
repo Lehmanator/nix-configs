@@ -7,6 +7,8 @@ in
     # inputs.srvos.nixosModules.desktop
     (inputs.self + /nixos/profiles/apps)
     (inputs.self + /nixos/profiles/gnome)
+    
+    (inputs.self + /nixos/profiles/chromium.nix)
     (inputs.self + /nixos/profiles/flatpak.nix)
     (inputs.self + /nixos/profiles/gdm.nix)
     (inputs.self + /nixos/profiles/gtk.nix)

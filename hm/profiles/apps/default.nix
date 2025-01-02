@@ -1,7 +1,7 @@
 { inputs, lib, config, pkgs, ... }:
 {
   imports = [
-    ./browser-chromium
+    (inputs.self + /hm/profiles/chromium.nix)
     ./browser-firefox
     #./browser-tor
 

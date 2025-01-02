@@ -111,11 +111,6 @@
       lessopen = "|${pkgs.lesspipe}/bin/lesspipe.sh %s";
     };
     traceroute.enable = true;
-    chromium = {
-      enable = true;
-      defaultSearchProviderEnabled = true;
-    };
-    #firefox.enable = true;
     gnupg = {
       dirmngr.enable = true;
       agent.enableExtraSocket = true;
