@@ -21,6 +21,7 @@
 
     ./adb.nix
     ./agenix.nix
+    ./arion.nix
     ./colmena.nix
     ./motd.nix
     ./nixvim.nix

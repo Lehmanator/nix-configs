@@ -1,7 +1,6 @@
 { inputs, lib, config, pkgs, ... }:
 {
   imports = with inputs; [
-    ./arion.nix
     # ./flake-utils-plus.nix
     ./home-manager.nix
     #./microvm.nix

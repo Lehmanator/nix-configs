@@ -1,10 +1,4 @@
-{ inputs
-, config
-, lib
-, pkgs
-, user
-, ...
-}:
+{ inputs, config, lib, pkgs, ... }:
 {
   imports = [ inputs.arion.nixosModules.arion ];
   virtualisation.arion = {
