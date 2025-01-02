@@ -18,7 +18,6 @@
     # https://github.com/nix-community/nixos-generators
     # nix build .#nixosConfigurations.<host>.config.formats.<format>
     nixos-generators.nixosModules.all-formats
-    nur.modules.nixos.default
     #nixified-ai.nixosModules.invokeai
     #nixified-ai.nixosModules.textgen
     # https://github.com/polygon/scalpel
@@ -30,8 +29,6 @@
     # mixins-cloud-init, mixins-systemd-boot, mixins-telegraf
     srvos.nixosModules.mixins-trusted-nix-caches # roles-github-actions-runner, roles-nix-remote-builder
   ];
-
-  home-manager.sharedModules = [inputs.nur.modules.homeManager.default];
 
   services.envfs.enable = lib.mkDefault true;
 
