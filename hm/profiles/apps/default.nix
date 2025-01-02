@@ -1,7 +1,6 @@
 { inputs, lib, config, pkgs, ... }:
 {
   imports = [
-    #./browsers.nix
     ./browser-chromium
     ./browser-firefox
     #./browser-tor
@@ -14,7 +13,6 @@
     #./onlyoffice
 
     #./passwords.nix
-    #./bitwarden
     #./keepass
     #./nextcloud-passwords
     #./pass

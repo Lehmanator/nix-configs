@@ -4,7 +4,6 @@
 # TODO: [fast-syntax-highlighting](https://github.com/zdharma-continuum/fast-syntax-highlighting/)
 # TODO: https://github.com/chrissicool/zsh-256color
 # TODO: https://github.com/hchbaw/auto-fu.zsh
-# TODO: https://github.com/kalsowerus/zsh-bitwarden
 # TODO: https://github.com/bartboy011/cd-reminder
 # TODO: https://github.com/ael-code/zsh-colored-man-pages
 # TODO: https://github.com/zuxfoucault/colored-man-pages_mod

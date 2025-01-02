@@ -1,10 +1,4 @@
-{ self
-, inputs
-, config
-, lib
-, pkgs
-, ...
-}:
+{ inputs, config, lib, pkgs, ... }:
 #let
 #  #foldImport = with lib.lists; t: (fold (x: y: unique (x ++ import "../${t}/${y}.nix")) "default");
 #  #importTitle     = t: f:  import "../${t}/${f}.nix";
@@ -39,7 +33,6 @@
 #in
 let
   ff-extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-    #bitwarden
   ];
 in
 {
@@ -57,10 +50,9 @@ in
   programs.firefox.profiles.default = {
     isDefault = true;
     name = "Default";
-
+    extensions = ff-extensions;
     #bookmarks      = import ../bookmarks;
     #extensions     = import ../extensions { inherit inputs pkgs; };
-    extensions = ff-extensions;
     #search.default = "DuckDuckGo";
     #settings       = import ../settings;
   };

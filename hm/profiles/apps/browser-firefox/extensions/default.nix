@@ -3,17 +3,14 @@
 # TODO: `./ublock/default.nix`         # uBlock Origin ext, custom blocklists & rules
 # TODO: `./vimium.nix`                 # Set global option for system-wide vim keybinds
 # TODO: `./violentmonkey/default.nix`  # Custom userScripts (firemonkey vs violentmonkey)
-# TODO: `./bitwarden.nix`              # Bitwarden password manager
 # TODO: `./pass.nix`                   # Pass password manager
 # TODO: `./keepass.nix`                # Pass password manager
-
 { inputs
 , pkgs
 #, config, lib, pkgs
 , ...
 }:
 with pkgs.nur.repos.rycee.firefox-addons;
-#with inputs.nur.repos.rycee.firefox-addons;
 [
   #inputs.nur.repos.bandithedoge.firefoxAddons.downthemall
   #inputs.nur.repos.bandithedoge.firefoxAddons.sponsorblock
@@ -123,7 +120,6 @@ with pkgs.nur.repos.rycee.firefox-addons;
   #vimium  #vimium-ff
 
   # --- Password Managers ---
-  bitwarden #bitwarden-password-manager
   #browserpass  #browserpass-ce
   #gopass-bridge
   #keepass-helper #keepass-helper-url-in-title  #keepass-helper

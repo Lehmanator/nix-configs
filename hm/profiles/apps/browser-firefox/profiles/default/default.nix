@@ -1,16 +1,9 @@
-{ inputs
-, config, lib, pkgs
-, ...
-}:
+{ inputs, config, lib, pkgs, ... }:
 {
-  imports = [
-  ];
-
   programs.firefox.profiles.default = {
     name = "Default";
     isDefault = true;
 
-    bookmarks = import ../../bookmarks;
     extensions = with pkgs.nur.repos.rycee.firefox-addons; [
       firemonkey
       adnauseam
@@ -32,7 +25,6 @@
       lovely-forks
       react-devtools
       wayback-machine
-      bitwarden
       floccus
       export-tabs-urls-and-titles
       sidebery
@@ -40,10 +32,13 @@
       tab-session-manager
       tab-stash
     ];
+
     search = {
-      default     = "DuckDuckGo";
-      engines     = import ../../search { inherit inputs pkgs; };
+      default = "DuckDuckGo";
+      engines = import ../../search { inherit inputs pkgs; };
     };
+
+    bookmarks = import ../../bookmarks;
     settings    = import ../../settings;
     userChrome  = import ../../styles/chrome;
     userContent = import ../../styles/content;

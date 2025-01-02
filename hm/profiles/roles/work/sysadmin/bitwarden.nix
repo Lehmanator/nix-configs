@@ -1,15 +1,9 @@
-{ inputs
-, config
-, lib
-, pkgs
-, user
-, ...
-}:
+{ inputs, config, lib, pkgs, ... }:
 {
-  #home.packages = [ pkgs.bitwarden ];
+  imports = [(inputs.self + /hm/profiles/bitwarden.nix)];
   programs.rbw = {
     enable = true;
-    #settings.email = "slehman@piwine.com";
+    settings.email = "slehman@piwine.com";
     pinentry = lib.mkIf config.services.gnome-keyring.enable "gnome3";
   };
 }

@@ -6,7 +6,6 @@
   # https://github.com/mikeroyal/NixOS-Guide
 
   # --- Apps ---
-  # https://github.com/Bitsteward/bitsteward     # WIP Libadwaita Bitwarden client
   # https://github.com/Vanilla-OS/AdwDialog      # GTK4/Libadwaita dialogs from terminal/scripts
   # https://github.com/superwhiskers/layer-cake  # Minecraft Launcher
   # https://github.com/DeedleFake/trayscale      # GTK4 Tailscale CLI wrapper GUI
