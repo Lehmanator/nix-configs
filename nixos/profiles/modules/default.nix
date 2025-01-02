@@ -18,7 +18,6 @@
     # https://github.com/nix-community/nixos-generators
     # nix build .#nixosConfigurations.<host>.config.formats.<format>
     nixos-generators.nixosModules.all-formats
-    nix-flatpak.nixosModules.nix-flatpak
     nur.modules.nixos.default
     #nixified-ai.nixosModules.invokeai
     #nixified-ai.nixosModules.textgen
@@ -32,10 +31,7 @@
     srvos.nixosModules.mixins-trusted-nix-caches # roles-github-actions-runner, roles-nix-remote-builder
   ];
 
-  home-manager.sharedModules = with inputs; [
-    nix-flatpak.homeManagerModules.nix-flatpak
-    nur.modules.homeManager.default
-  ];
+  home-manager.sharedModules = [inputs.nur.modules.homeManager.default];
 
   services.envfs.enable = lib.mkDefault true;
 
