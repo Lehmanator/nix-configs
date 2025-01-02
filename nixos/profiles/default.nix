@@ -22,6 +22,7 @@
     ./adb.nix
     ./colmena.nix
     ./motd.nix
+    ./nixvim.nix
     ./normalize.nix
     ./ollama.nix
     # ./ollama-ui.nix
