@@ -7,12 +7,6 @@
     #./nixos-images.nix
     #./quick-nix-registry.nix
 
-    #colmena.nixosModules.assertionModule
-    #colmena.nixosModules.deploymentOptions
-    #colmena.nixosModules.keyChownModule
-    #colmena.nixosModules.keyServiceModule
-    #colmena.nixosModules.metaOptions
-    
     #./nixified-ai.nix
     #nixified-ai.nixosModules.invokeai
     #nixified-ai.nixosModules.textgen
