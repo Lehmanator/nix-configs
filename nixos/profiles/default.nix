@@ -23,6 +23,7 @@
     ./agenix.nix
     ./arion.nix
     ./colmena.nix
+    ./home-manager.nix
     ./motd.nix
     ./nixvim.nix
     ./normalize.nix

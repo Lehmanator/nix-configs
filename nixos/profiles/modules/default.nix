@@ -2,7 +2,6 @@
 {
   imports = with inputs; [
     # ./flake-utils-plus.nix
-    ./home-manager.nix
     #./microvm.nix
     #./nix-index.nix
     #./nixified-ai.nix
