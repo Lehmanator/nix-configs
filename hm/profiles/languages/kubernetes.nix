@@ -5,7 +5,6 @@
   # --- Packages -----------------------------------------------------
   # TODO: Distinguish between Kubernetes user & Kubernetes admin
   home.packages = [
-    pkgs.kubeadm
     pkgs.kubectl
     pkgs.k9s
     pkgs.helm

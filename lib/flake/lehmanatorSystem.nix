@@ -26,7 +26,7 @@ let
                 { system.build.installHostname = selfSystem.config.networking.hostName;
                   system.build.installClosure = selfSystem.config.system.build.toplevel;
                 }
-                ../../nixos/profiles/installer.nix   #self.nixosModules.installer
+                (inputs.self + /nixos/profiles/installer.nix)   #self.nixosModules.installer
                 installer
               ];
             };

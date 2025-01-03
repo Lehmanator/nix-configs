@@ -5,18 +5,15 @@
   
   programs.firefox = {
     enable = true;
-    package = if pkgs.stdenv.isx86_64
-      then inputs.firefox.packages.${pkgs.system}.firefox-bin
-      else pkgs.firefox;
+    package = inputs.firefox.packages.${pkgs.system}.firefox-bin;
 
     # https://support.mozilla.org/en-US/kb/customizing-firefox-using-autoconfig
-    #autoConfig = ''
-    #'';
+    # autoConfig = ''
+    # '';
 
     # https://github.com/mozilla/policy-templates/blob/master/README.md
     policies = {
-      Bookmarks = [
-      ];
+      Bookmarks = [ ];
       DisableFirefoxStudies = true;
       DisablePocket = true;
       DisableTelemetry = true;
@@ -50,31 +47,32 @@
     preferences = { };
 
     preferencesStatus = "default";
+    
+    nativeMessagingHosts = {
+      packages = [pkgs.tridactyl-native];
+      # ugetIntegrator = false;
+      # #tridactyl = true;
+      # passff = true;
+      # jabref = false;
+      # #gsconnect = config.programs.kdeconnect.enable;
+      # fxCast = true;
+      # ff2mpv = true;
+      # euwebid = true;
+      # bukubrow = true;
+      # browserpass = true;
+    };
+
+    # TODO: Move to locale profile
+    languagePacks = [ "en-US" "es-MX" "zh-CN" ];
+  
   };
 
-  #nativeMessagingHosts = {
-  #  packages = [pkgs.tridactyl-native];
-  #  ugetIntegrator = false;
-  #  #tridactyl = true;
-  #  passff = true;
-  #  jabref = false;
-  #  #gsconnect = config.programs.kdeconnect.enable;
-  #  fxCast = true;
-  #  ff2mpv = true;
-  #  euwebid = true;
-  #  bukubrow = true;
-  #  browserpass = true;
-  #};
-
-  # TODO: Move to locale profile
-  languagePacks = [ "en-US" "es-MX" "zh-CN" ];
-  
   # Nixpkgs Package Names: pkgs.firefox-{,beta,devedition,esr}{,-bin}{,-unwrapped}
-  environment.systemPackages = [
-    # pkgs.firefox_decrypt  # Decrypt Firefox passwords from profiles
-    # pkgs.firefoxpwa       # Util to install PWAs in Firefox (native component)
-  ] ++ (lib.optionals pkgs.stdenv.isx86_64 (with inputs.firefox.packages.${pkgs.system}; [
-    firefox-nightly-bin
-  ])); 
+  # environment.systemPackages = [
+  #   # pkgs.firefox_decrypt  # Decrypt Firefox passwords from profiles
+  #   # pkgs.firefoxpwa       # Util to install PWAs in Firefox (native component)
+  # ] ++ (lib.optionals pkgs.stdenv.isx86_64 (with inputs.firefox.packages.${pkgs.system}; [
+  #   # firefox-nightly-bin
+  # ])); 
 
 }

@@ -54,7 +54,7 @@
 
   home.packages = [
     pkgs.hunspell
-    pkgs.hunspellDicts.en_US
+    pkgs.hunspellDicts.en_US-large
     pkgs.onlyoffice-bin
   ];
 }

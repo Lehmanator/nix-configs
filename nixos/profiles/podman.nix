@@ -27,11 +27,11 @@
     #   This allows Docker clients to connect w/ the equivalents of the Docker CLI `-H` & `--tls*` family of options
     #   Cert Setup: https://docs.docker.com/engine/security/protect-access/
     networkSocket = {
-      enable = true;
+      enable = false;
       listenAddress = "0.0.0.0";  # Interface addr for receiving TLS connections
-      # openFirewall = true;        # Open port in firewall
+      server = "ghostunnel";      # Choice of TLS proxy server. Options: "ghostunnel"
+      openFirewall = true;        # Open port in firewall
       # port = 2376;                # TCP port number for receiving TLS connections [0-65535]
-      # server = "ghostunnel";      # Choice of TLS proxy server. Options: "ghostunnel"
       # tls.cacert = <PATH>;        # Path to CA certificate to use for client authentication
       # tls.cert = <PATH>;          # Path to certificate describing the server
       # tls.key = <PATH>;           # Path to private key for server cert. Warn: use string, else copied to nix store & readable by all processes.

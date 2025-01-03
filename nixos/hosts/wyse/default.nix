@@ -23,7 +23,7 @@
     (inputs.self + /nixos/profiles/boot)
     (inputs.self + /nixos/profiles/cachix-agent.nix)
     (inputs.self + /nixos/profiles/desktop)
-    (inputs.self + /nixos/profiles/desktop/gnome)
+    (inputs.self + /nixos/profiles/gnome)
     (inputs.self + /nixos/profiles/hardware/display)
     (inputs.self + /nixos/profiles/hardware/fwupd.nix)
     (inputs.self + /nixos/profiles/hardware/peripherals/logitech.nix)

@@ -1,11 +1,6 @@
 { inputs, config, lib, pkgs, ... }:
 {
   imports = [
-    # --- Distro-independent Apps ---
-    # TODO: Import same category files from `../../apps` in `./<category>.nix`
-    # ../../apps
-    (inputs.self + /hm/profiles/apps)
-
     ./dbus.nix
     ./developer.nix
     ./finance.nix

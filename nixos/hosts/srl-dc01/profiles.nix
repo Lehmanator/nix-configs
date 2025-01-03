@@ -1,21 +1,15 @@
-{ modulesPath, ... }:
+{ inputs, ... }:
 {
   imports = [
-    ../../profiles/server/headscale.nix
-    ../../profiles/server/keycloak.nix
-    ../../profiles/server/lldap.nix
-    ../../profiles/server/wireguard.nix
-    ../../profiles/locale
-    ../../profiles/network
-    ../../profiles
-    ../../profiles/boot
-    ../../profiles/shell
-    ../../profiles/users
-
-    #../../profiles/hardware/fwupd.nix
-    #../../profiles/hardware/tpm2.nix
-    #../../profiles/security/sops.nix
-    #../../profiles/server/openldap.nix
-    #../../../common/profiles/editor
+    (inputs.self + /nixos/profiles)
+    (inputs.self + /nixos/profiles/boot)
+    (inputs.self + /nixos/profiles/server/headscale.nix)
+    (inputs.self + /nixos/profiles/server/keycloak.nix)
+    (inputs.self + /nixos/profiles/server/lldap.nix)
+    (inputs.self + /nixos/profiles/server/wireguard.nix)
+    (inputs.self + /nixos/profiles/locale)
+    (inputs.self + /nixos/profiles/network)
+    (inputs.self + /nixos/profiles/shell)
+    (inputs.self + /nixos/profiles/users)
   ];
 }

@@ -22,5 +22,9 @@
 
   };
 
-  sops.secrets.luks-password = { };
+  sops.secrets = {
+    luks-password-system = {};
+    luks-password-home   = {};
+    luks-password-data   = {};
+  };
 }

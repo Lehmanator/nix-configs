@@ -10,7 +10,7 @@
     remotes = [
       {name="flathub-beta";  location="https://flathub.org/beta-repo/flathub-beta.flatpakrepo"; }
       {name="flathub";       location="https://dl.flathub.org/repo/flathub.flatpakrepo";        }
-    ] ++ lib.optional config.services.xserver.desktopManager.gnome.enable 
+    ] ++ lib.optional config.programs.gnome-shell.enable
       {name="gnome-nightly"; location="https://nightly.gnome.org/gnome-nightly.flatpakrepo";    }
     ;
 

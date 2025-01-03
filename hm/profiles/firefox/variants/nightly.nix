@@ -1,21 +1,11 @@
-{ self
-, inputs
-, config
-, lib
-, pkgs
-, ...
-}:
+{ inputs, config, lib, pkgs, ... }:
 {
-  #nixpkgs.overlays = [
-  #  inputs.nixpkgs-mozilla.overlay   # Imported in flake
-  #];
 
+  # https://github.com/mozilla/nixpkgs-mozilla
+  # https://github.com/colemickens/flake-firefox-nightly
   home.packages = [
-    # https://github.com/mozilla/nixpkgs-mozilla
-    # Docs say to build w/ flag --impure
-    #pkgs.latest.firefox-nightly-bin      #firefox-{,beta,nightly,esr}-bin
-
-    # https://github.com/colemickens/flake-firefox-nightly
-    #inputs.firefox.packages.${pkgs.system}.firefox-nightly-bin  # TODO: Add to inputs in flake.nix
+    inputs.firefox.packages.${pkgs.system}.firefox-nightly-bin  # TODO: Add to inputs in flake.nix
   ];
+
+  programs.firefox.package = inputs.firefox.packages.${pkgs.system}.firefox-bin;
 }

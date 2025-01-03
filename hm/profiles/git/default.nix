@@ -27,7 +27,8 @@
         ui = "always";
       };
       core = {
-        autocrlf = true;
+        #core.autocrlf = true;  # Fix Windows: CR + LF  ->  LF  (input="fix CRLF on add", true="convert on add/checkout")
+        autocrlf = false;
         whitespace = "trailing-space,space-before-tab";
       };
       column.ui = "auto,column,dense";
@@ -47,7 +48,6 @@
       url."git@github.com:".pushInsteadOf = "https://github.com/";
       url."git@gitlab.com:".pushInsteadOf = "https://gitlab.com/";
 
-      #core.autocrlf = true;  # Fix Windows: CR + LF  ->  LF  (input="fix CRLF on add", true="convert on add/checkout")
       #core.askPass = "";
       #merge.autoStash = true;
       #web.browser = "";

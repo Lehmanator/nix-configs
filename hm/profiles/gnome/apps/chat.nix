@@ -1,18 +1,13 @@
 { inputs, config, lib, pkgs, ... }:
 {
   imports = [
-    ../../apps/chat-pidgin
-
     # --- SMS ----------------
-    #../../apps/chat-sms
     ./chatty
 
     # --- XMPP ---------------
-    #../../apps/chat-xmpp
     ./dino
 
     # --- Signal -------------
-    ../../apps/chat-signal
     ./flare
   ];
 

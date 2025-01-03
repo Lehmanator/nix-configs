@@ -4,5 +4,5 @@
   home-manager.sharedModules = [inputs.nur.modules.homeManager.default];
 
   # TODO: Need to configure?
-  # nixpkgs.overlays = [];
+  # nixpkgs.overlays = [inputs.nur.overlays.default];
 }

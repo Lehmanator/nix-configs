@@ -10,8 +10,9 @@
   programs.rbw = {
     enable = true;
     settings = {
-      # lock_timeout = 3600;
+      lock_timeout = 3600;
       # TODO: Use secret
+      email = "bitwarden@samlehman.dev";
       # email = config.sops.secrets.email.text; #"slehman@piwine.com";
       # base_url = "bitwarden.${config.networking.fqdn}";
       # identity_url = "identity.${config.networking.fqdn}";

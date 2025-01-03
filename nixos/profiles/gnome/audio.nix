@@ -1,9 +1,6 @@
-{ inputs
-, config, lib, pkgs
-, ...
-}:
+{ inputs, config, lib, pkgs, ... }:
 {
-  imports = [ (inputs.self + /nixos/profiles/desktop/pipewire.nix) ];
+  imports = [ (inputs.self + /nixos/profiles/pipewire.nix) ];
 
   # Audio effects for Pipewire & apps
   environment.systemPackages = lib.mkIf config.services.pipewire.audio.enable [

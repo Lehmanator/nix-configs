@@ -5,7 +5,7 @@ let
 
   unstable = inputs.nixpkgs-unstable.legacyPackages.${pkgs.system};
 
-  walbottle = pkgs.callPackage (inputs.self + "/nixos/packages/walbottle.nix") {};
+  walbottle = pkgs.callPackage (inputs.self + /nixos/packages/walbottle.nix) {};
 
   valent-app = unstable.valent.overrideAttrs (p: {
     version = "1.0.0.alpha.47-unstable-2024-11-20";
@@ -54,13 +54,18 @@ in
   };
 
   # Enable Firefox integration
-  programs.firefox.nativeMessagingHosts = {
-    gsconnect = true;
-    packages = [config.programs.kdeconnect.package extension-package];
-  };
+  programs.firefox.nativeMessagingHosts.packages = [
+    config.programs.kdeconnect.package
+    pkgs.gnomeExtensions.gsconnect
+    valent-ext
+  ];
 
   # Install implementation of GSConnect & shell-extension
-  environment.systemPackages = [config.programs.kdeconnect.package extension-package];
+  environment.systemPackages = [
+    config.programs.kdeconnect.package
+    pkgs.gnomeExtensions.gsconnect
+    valent-ext
+  ];
 
   services.flatpak = lib.mkIf prefer-flatpak {
     remotes  = [{ name="valent"; location = "https://valent.andyholmes.ca/repo"; }];

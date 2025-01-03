@@ -26,6 +26,7 @@
     ./normalize.nix
     ./ollama.nix
     # ./ollama-ui.nix
+    ./sops.nix
     ./sshd.nix
     #./auto-upgrade.nix
     #./specialization.nix

@@ -6,7 +6,7 @@
   # Enable kernel modules & udev rules for GameCube adapter
   gamecube-controller-adapter = {
     enable = true;
-    overclocking-kernel-module = true;
+    overclocking-kernel-module.enable = true;
     udev-rules.enable = true;
     # udev-rules.rules = ''
     #   ATTRS{idVendor}=="057e", ATTRS{idProduct}=="0337", MODE="666", SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device" TAG+="uaccess"

@@ -1,9 +1,6 @@
 { config, lib, pkgs, ... }:
 {
   imports = [
-    ./modules
-
-    ./apps
     ./git
     ./gnome
     ./helix
@@ -55,13 +52,6 @@
 
     ./monado.nix
     ./steam.nix
-
-    # ./codium
-    # ./neovim
-    # ./nixvim
-
-    # ./emanote.nix
-    # ./nextcloud.nix
   ];
 
   home = {

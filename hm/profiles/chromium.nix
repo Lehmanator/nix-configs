@@ -12,10 +12,10 @@
   ];
 
   home.packages = [
-    pkgs.ungoogled-chromium
-    # pkgs.chromium
-    #pkgs.chromiumBeta
-    #pkgs.chromiumDev
+    pkgs.chromium
+    # pkgs.chromiumBeta
+    # pkgs.chromiumDev
+    # pkgs.ungoogled-chromium
   ];
 
 }

@@ -17,7 +17,7 @@
     #    ];
     #  };
     #}
-  ] #++ (lib.lists.optional config.gtk.enable ../../desktop/gnome/apps/phone.nix)
+  ] #++ (lib.lists.optional config.gtk.enable (inputs.self + /hm/profiles/gnome/apps/phone.nix))
   ;
   home.packages = lib.mkIf (pkgs.system=="x86_64-linux") [
     pkgs.adbtuifm           # ADB TUI

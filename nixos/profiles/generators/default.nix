@@ -15,9 +15,9 @@
     # TODO: Create custom `formatConfigs` for these
     # WARN: Probably cant use all of these at once
     # WARN: Probably cant use in live system
-    inputs.nixos-images.nixosModules.kexec-installer
-    inputs.nixos-images.nixosModules.netboot-installer
-    inputs.nixos-images.nixosModules.noninteractive
+    # inputs.nixos-images.nixosModules.kexec-installer
+    # inputs.nixos-images.nixosModules.netboot-installer
+    # inputs.nixos-images.nixosModules.noninteractive
   ];
   
   # nixos-generators.nixosModules: all-formats,

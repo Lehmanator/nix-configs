@@ -1,7 +1,4 @@
-{ inputs
-, config, lib, pkgs
-, ...
-}:
+{ inputs, config, lib, pkgs, ... }:
 {
   services.wgautomesh = {
     enable = true;                 # Whether to enable the wgautomesh daemon.

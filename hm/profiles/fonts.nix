@@ -1,10 +1,4 @@
-{
-  inputs,
-  config,
-  lib,
-  pkgs, # , useNerdfonts ? true
-  ...
-}:
+{ inputs, config, lib, pkgs, ... }:
 # TODO: Convert this file into {nixosModule,homeManagerModule,darwinModule}.nerdfonts
 # TODO: Automatically set `nerdfonts = false` when:
 #   - `deviceType = server | no-gui | console | terminal`
@@ -69,10 +63,8 @@ let
     ];
   };
 in {
-  imports = [
-    # TODO: Split ./fonts.nix into ./desktop/fonts.nix & ./shell/fonts.nix
-    inputs.home-extra-xhmm.homeManagerModules.desktop.fonts
-  ];
+  # TODO: Split ./fonts.nix into ./desktop/fonts.nix & ./shell/fonts.nix
+  imports = [inputs.home-extra-xhmm.homeManagerModules.desktop.fonts];
 
   #let
   #  base = favorites.packages.normal;
@@ -93,6 +85,25 @@ in {
     pkgs.nur.repos.minion3665.monocraft
     pkgs.nur.repos.sigprof.cosevka
 
+    # Show which fonts have a glyph for unicode char
+    (pkgs.writeShellApplication {
+      name = "fonts-list-has-glyph";
+      runtimeInputs = [pkgs.fontconfig pkgs.less];
+      text = ''fc-list :charset="$1" | bat'';
+    })
+
+    (pkgs.writeShellApplication {
+      name = "font-list-unicode-points";
+      runtimeInputs = [pkgs.fontconfig pkgs.less];
+      text = ''fc-query "$1" | bat'';
+    })
+
+    (pkgs.writeShellApplication {
+      name = "font-list-unicode-ranges";
+      runtimeInputs = [pkgs.fontconfig pkgs.less];
+      text = ''fc-query --format='%{charset}\n' "$1" | bat'';
+    })
+    
     # List all chars a specific font can render.
     #(pkgs.writeShellApplication {
     #  name = "font-charlist";
@@ -121,30 +132,5 @@ in {
     #    done | grep -oP '.{'"$width"'}'
     #  '';
     #})
-
-    # Show which fonts have a glyph for unicode char
-    (pkgs.writeShellApplication {
-      name = "fonts-list-has-glyph";
-      runtimeInputs = [pkgs.fontconfig pkgs.less];
-      text = ''
-        fc-list :charset="$1" | ''${PAGER:-less}
-      '';
-    })
-
-    (pkgs.writeShellApplication {
-      name = "font-list-unicode-points";
-      runtimeInputs = [pkgs.fontconfig pkgs.less];
-      text = ''
-        fc-query "$1" | ''${PAGER:-less}
-      '';
-    })
-
-    (pkgs.writeShellApplication {
-      name = "font-list-unicode-ranges";
-      runtimeInputs = [pkgs.fontconfig pkgs.less];
-      text = ''
-        fc-query --format='%{charset}\n' "$1" | ''${PAGER:-less}
-      '';
-    })
   ];
 }

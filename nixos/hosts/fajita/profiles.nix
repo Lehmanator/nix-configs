@@ -1,27 +1,27 @@
 { config, lib, pkgs, inputs, ... }:
 {
   imports = [
-    "${inputs.self}/nixos/profiles"
-    "${inputs.self}/nixos/profiles/flatpak.nix"
-    "${inputs.self}/nixos/profiles/mobile"
+    (inputs.self + /nixos/profiles)
+    (inputs.self + /nixos/profiles/flatpak.nix)
+    (inputs.self + /nixos/profiles/mobile.nix)
     (inputs.self + /nixos/profiles/slippi.nix)
 
-    #../../profiles/desktop
-    #../../profiles/desktop/gnome
+    # (inputs.self + /nixos/profiles/desktop)
+    # (inputs.self + /nixos/profiles/gnome)
 
     # --- Disabled ---
-    #../../profiles/hardware/fprintd.nix
-    #../../profiles/virt/windows
-    #../../../common/profiles/editor
+    # (inputs.self + /nixos/profiles/hardware/fprintd.nix)
+    # (inputs.self + /nixos/profiles/virt/windows)
+    # (inputs.self + /common/profiles/editor)
 
     # --- Imported by profiles/nixos ---
-    #../../profiles/boot
-    #../../profiles/hardware
-    #../../profiles/locale
-    #../../profiles/network
-    #../../profiles/security
-    #../../profiles/security/sops.nix
-    #../../profiles/shell
-    #../../profiles/users
+    # (inputs.self + /nixos/profiles/boot)
+    # (inputs.self + /nixos/profiles/hardware)
+    # (inputs.self + /nixos/profiles/locale)
+    # (inputs.self + /nixos/profiles/network)
+    # (inputs.self + /nixos/profiles/security)
+    # (inputs.self + /nixos/profiles/sops.nix)
+    # (inputs.self + /nixos/profiles/shell)
+    # (inputs.self + /nixos/profiles/users)
   ];
 }

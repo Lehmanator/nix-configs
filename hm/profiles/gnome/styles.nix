@@ -19,7 +19,7 @@
   };
 
   # --- Pinentry ---
-  programs.rbw.settings.pinentry = "gnome3";  # TODO: Use grc_4 like with gpg-agent
+  # programs.rbw.settings.pinentry = "gnome3";  # TODO: Use grc_4 like with gpg-agent
   # services.gpg-agent = {     # Use GTK4 pinentry (requires services.dbus.packages = [ pkgs.gcr_4 ];)
   #   pinentryFlavor = null;   # Overriding default to use GTK4. Default=gtk2, gnome3 (when gnome desktop enabled)
   #   extraConfig = ''

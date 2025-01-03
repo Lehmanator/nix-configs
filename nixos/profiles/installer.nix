@@ -1,14 +1,6 @@
+{ inputs, config, lib, pkgs, modulesPath, ... }:
 {
-  config,
-  lib,
-  pkgs,
-  self,
-  inputs,
-  ...
-}: {
-  imports = [
-    "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
-  ];
+  imports = [(modulesPath + /installer/cd-dvd/installation-cd-minimal.nix)];
 
   # Disable sudo-rs on install media
   security.sudo-rs.enable = lib.mkImageMediaOverride false;
@@ -125,7 +117,7 @@
     installer-script = pkgs.writeShellApplication {
       name = "lehmanator-install";
       runtimeInputs = [
-        pkgs.nixUnstable
+        config.nix.package
         pkgs.openssh
         pkgs.gitAndTools.gitFull
         pkgs.figlet

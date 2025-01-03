@@ -1,10 +1,4 @@
-{ inputs
-, config
-, lib
-, pkgs
-, osConfig
-, ...
-}:
+{ inputs, config, lib, pkgs, osConfig, ... }:
 {
   # ./<console>/developer
   # ./<console>/emu/{<emu>,default}.nix

@@ -82,7 +82,9 @@
     nixpkgs-gnome-apps.url = "github:chuangzhu/nixpkgs-gnome-apps";
     nixpkgs-android       = {inputs.nixpkgs.follows="nixpkgs"; url="github:tadfisher/android-nixpkgs";}; #xtra: devshell,flake-utils
     nixpkgs-wayland       = {inputs.nixpkgs.follows="nixpkgs"; url="github:nix-community/nixpkgs-wayland";}; #xtra: lib-aggregate,nix-eval-jobs,flake-compat
-    firefox               = {inputs.nixpkgs.follows="nixpkgs"; url="github:nix-community/flake-firefox-nightly";}; #xtra: lib-aggregate, cachix, mozilla, flake-compat
+    firefox               = {
+      #inputs.nixpkgs.follows="nixpkgs";
+       url="github:nix-community/flake-firefox-nightly";}; #xtra: lib-aggregate, cachix, mozilla, flake-compat
     nixGL                 = {inputs.nixpkgs.follows="nixpkgs"; url="github:nix-community/nixGL";}; #xtra: flake-utils
     nur                   = {inputs.nixpkgs.follows="nixpkgs"; url="github:nix-community/NUR";}; # xtra: flake-parts, treefmt-nix
     neovim                = {inputs.nixpkgs.follows="nixpkgs"; url="github:nix-community/neovim-nightly-overlay";}; #xtra: flake-parts, hercules-ci-effects, flake-compat, git-hooks, treefmt-nix

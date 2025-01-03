@@ -5,7 +5,7 @@
     # (inputs.self + /nixos/profiles/auditd.nix)
     # (inputs.self + /nixos/profiles/polkit.nix) # Desktop only?
     (inputs.self + /nixos/profiles/security/sudo-rs.nix)
-    # (inputs.self + /nixos/profiles/security/sops.nix)
+    # (inputs.self + /nixos/profiles/sops.nix)
     # (inputs.self + /nixos/profiles/security/networking.nix)
   ];
 

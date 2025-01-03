@@ -6,7 +6,7 @@
     deploymentOptions
     keyChownModule 
     keyServiceModule 
-    metaOptions
+    # metaOptions
   ];
 
   # TODO: Default system config
