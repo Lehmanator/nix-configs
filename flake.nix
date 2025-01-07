@@ -13,15 +13,19 @@
       flake = {
         inherit inputs self;
         overlays = import ./nixos/overlays;
-        nixosConfigurations = let
-          mkSystem = import ./lib/flake/mkSystem.nix { inherit inputs self; hostsDir = ./nixos/hosts; };
-          mkSystems = builtins.mapAttrs (n: v: mkSystem ({ host = n; } // v));
-        in mkSystems {
-          fw             = { device = "laptop"; };
-          wyse           = {};
-          # fajita         = { mobile = true; device="oneplus-fajita"; system="aarch64-linux"; };
-          # fajita-minimal = { mobile = true; device="oneplus-fajita"; };
+        nixosConfigurations.fw = nixos.lib.nixosSystem {
+          modules = [./nixos/hosts/fw];
+          specialArgs = { inherit inputs; user = "sam"; };
         };
+        # nixosConfigurations = let
+        #   mkSystem = import ./lib/flake/mkSystem.nix { inherit inputs self; hostsDir = ./nixos/hosts; };
+        #   mkSystems = builtins.mapAttrs (n: v: mkSystem ({ host = n; } // v));
+        # in mkSystems {
+        #   fw             = { device = "laptop"; };
+        #   wyse           = {};
+        #   # fajita         = { mobile = true; device="oneplus-fajita"; system="aarch64-linux"; };
+        #   # fajita-minimal = { mobile = true; device="oneplus-fajita"; };
+        # };
       };
     };
 
@@ -138,7 +142,7 @@
 
     # https://github.com/srid/devour-flake
     # Consumer flake to depend on all outputs of a given flake, building all its packages
-    flake-devour = {inputs.nixpkgs.follows="nixpkgs"; url="github:srid/devour-flake";}; 
+    # flake-devour = {inputs.nixpkgs.follows="nixpkgs"; url="github:srid/devour-flake";}; 
 
     devshell    = {inputs.nixpkgs.follows="nixpkgs"; url="github:numtide/devshell";};
     treefmt     = {inputs.nixpkgs.follows="nixpkgs"; url="github:numtide/treefmt-nix";};

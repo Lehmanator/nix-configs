@@ -1,10 +1,7 @@
 { inputs, config, lib, pkgs, user, ... }:
 {
   # Overlay our mobile forks of gnome-shell & mutter.
-  nixpkgs.overlays = [
-    # (import ../../overlays/gnome-mobile)
-    inputs.self.overlays.gnome-mobile
-  ];
+  nixpkgs.overlays = [ inputs.self.overlays.gnome-mobile ];
 
   # Configure options from nixosModule: NixOS/mobile-nixos
   mobile = {

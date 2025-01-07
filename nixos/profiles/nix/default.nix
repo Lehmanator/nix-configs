@@ -1,6 +1,7 @@
 { inputs, lib, ... }: {
   imports = [
-    inputs.flake-utils-plus.nixosModules.autoGenFromInputs
+    (inputs.self + /common/profiles/nix)
+    (inputs.self + /nixos/profiles/flake-registry.nix)
     ./activation-script.nix
     ./cachix.nix
     ./nom.nix
@@ -9,9 +10,6 @@
   ];
 
   # --- Registry ---
-  # Set NIX_PATH to contain all my flake inputs (with nixpkgs & config sorted first)
-  # nix.settings.nix-path = with lib.lists; (builtins.map (i: "${i}=/etc/nix/inputs/${i}") (["nixpkgs" "self"]
-  #     ++ (remove "nixpkgs" (remove "self" (builtins.attrNames inputs)))));
   nix = {
     generateNixPathFromInputs = lib.mkDefault true;
     generateRegistryFromInputs = lib.mkDefault true;

@@ -2,10 +2,8 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 { config, lib, pkgs, user, ... }: {
-  imports = [
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
-  ];
+  # Include the results of the hardware scan.
+  imports = [ ./hardware-configuration.nix ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -15,19 +13,16 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   #system.stateVersion = "23.11"; # Did you read the comment?
   system.stateVersion = "23.05"; # Did you read the comment?
+  networking.hostName = "fw";
 
   # --- Cross-compilation ---
-  boot.binfmt.emulatedSystems = [
-    "aarch64-linux"
-    #"aarch64-darwin" "x86_64-darwin"
-  ];
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ]; #"aarch64-darwin" "x86_64-darwin"
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
   console.useXkbConfig = true;
   hardware = {
     enableAllFirmware = true;
     framework.enableKmod = true;
   };
-  networking.hostName = "fw";
 
   # --- Users ---
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -110,28 +105,22 @@
 
   # --- Shell ---
   programs = {
-
     git = {
       enable = true;
       package = pkgs.gitFull;
     };
-
     less = {
       enable = true;
       lessopen = "|${pkgs.lesspipe}/bin/lesspipe.sh %s";
     };
-
     traceroute.enable = true;
-
     # --- Keys ---
     gnupg = {
       dirmngr.enable = true;
       agent.enableExtraSocket = true;
       agent.enableBrowserSocket = true;
     };
-
   };
-
   qt.enable = true;
   nix.settings.trusted-public-keys = [
     "hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs="

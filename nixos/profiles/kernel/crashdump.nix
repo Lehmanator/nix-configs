@@ -1,12 +1,7 @@
+{ lib, config, pkgs, ... }:
 {
-  lib,
-  config,
-  pkgs,
-  ...
-}: {
   boot.kernelPatches = [
-    {
-      name = "crashdump-config";
+    { name = "crashdump-config";
       patch = null;
       extraConfig = ''
         CRASH_DUMP y

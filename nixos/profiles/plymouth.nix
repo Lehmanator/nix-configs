@@ -1,10 +1,10 @@
-{ config, lib, pkgs, ... }:
+{ inputs, config, lib, pkgs, ... }:
 #
 # Set quiet boot so splash isnt interrupted by scrolling boot logging text.
 # TODO: Determine if using disk encryption. If so, display unlock util (requires systemd-based initrd?)
 #
 {
-  imports = [ ./quiet.nix ];
+  imports = [(inputs.self + /nixos/profiles/quiet-boot.nix)];
   boot = {
     initrd.unl0kr.enable = false;
     plymouth = with pkgs; {

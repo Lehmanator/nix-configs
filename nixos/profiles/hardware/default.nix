@@ -1,26 +1,15 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
+{ inputs, config, lib, pkgs, ... }:
 {
   imports = [
-    #./bluetooth.nix
-    #./fprind.nix
-    ./fwupd.nix
-    #./mobile.nix
-    ./power-management.nix
-    ./thunderbolt.nix
-    #./tpm2.nix
-    ./usb.nix
-    ./wifi.nix
-    #./peripherals/printers.nix
-    #./peripherals/scanners.nix
+    (inputs.self + /nixos/profiles/fwupd.nix)
+    (inputs.self + /nixos/profiles/thunderbolt.nix)
+    (inputs.self + /nixos/profiles/tlp.nix)
+    (inputs.self + /nixos/profiles/usb.nix)
+    # (inputs.self + /nixos/profiles/hardware/peripherals/printers.nix)
+    # (inputs.self + /nixos/profiles/hardware/peripherals/scanners.nix)
+    (inputs.self + /nixos/profiles/hardware/wifi.nix)
 
     #./disks
-    #./display
-    #./touch.nix
     #./laptop.nix
     #./tablet.nix
     #./phone.nix

@@ -5,7 +5,6 @@
   boot.initrd.availableKernelModules = [
     "xhci_pci" #  # USB 3.0 controller interface
     "ehci_pci" #  # USB 2.0 controller interface (necessary in initrd? move?)
-    "thunderbolt" #
     "usbhid" #    # USB human-interface devices
     "usb_storage" # USB flash drives
     "uas" #       # USB-attached SCSI drives

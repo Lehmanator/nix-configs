@@ -1,13 +1,13 @@
-{ config, lib, pkgs, user, ... }:
-let
-  mkAliasWord = lst: lib.genAttrs lst (name: "nix " + name);
-  mkAliasPrefix = pre: lst: lib.genAttrs lst (name: pre + name);
-  mkAliasAbbr = lst: lib.genAttrs lst (name: "n" + name);
-  sudoConfig = lib.filterAttrs (a: v: config.security.sudo-rs ? a) config.security.sudo;
-in
+{ inputs, config, lib, pkgs, ... }:
+# let
+#   mkAliasWord = lst: lib.genAttrs lst (name: "nix " + name);
+#   mkAliasPrefix = pre: lst: lib.genAttrs lst (name: pre + name);
+#   mkAliasAbbr = lst: lib.genAttrs lst (name: "n" + name);
+#   sudoConfig = lib.filterAttrs (a: v: config.security.sudo-rs ? a) config.security.sudo;
+# in
 {
-  environment.shellAliases.s = "sudo";
-
+  imports = [(inputs.self + /nixos/profiles/sudo.nix)];
+  
   # Inherit sudo config, if any.
   # TODO: Filter out attr: `keepTerminfo`, `defaultOptions`
   #security.sudo-rs = lib.recursiveUpdate sudoConfig {
@@ -15,8 +15,8 @@ in
     enable = lib.mkDefault true;
     execWheelOnly = true; #  # Only allow users in group `wheel` to access sudo.
   };
-  #extraRules =
-  #  #let
+  
+  #extraRules = let
   #  #  exemptIfEnabled = lib.filter (prog: config.programs.${prog}.enable);
   #  #  #lsCmds = exemptIfEnabled [
   #  #  #  #"lsd"
@@ -28,8 +28,7 @@ in
   #  #  systemdCmds = [ "systemctl" "sctl" "stl" "ctl" "nixos-rebuild build" "nixos-rebuild dry-activate" ];
   #  #  userCmds = [ ];
   #  #  viewerCmds = [ "cat" "bat" "b" ];
-  #  #in
-  #  [
+  #  in [
   #    {
   #      # Run commands without password if user is in `wheel` group.
   #      groups = [ "wheel" ];

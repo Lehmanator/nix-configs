@@ -19,6 +19,13 @@ in
     
   ];
 
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+    # extraPackages = [pkgs.intel-media-driver pkgs.intel-ocl pkgs.intel-vaapi-driver];
+  };
+  qt.enable = lib.mkDefault true;
+
   # Use more responsive kernel on desktops (Non-ARM for now?)
   boot.kernelPackages = mkIf pkgs.stdenv.isx86_64 pkgs.linuxPackages_zen;
 
@@ -28,6 +35,9 @@ in
   programs.fuse.userAllowOther = true;
 
   services = {
+    autorandr.enable = true;
+    xserver.enable = true;
+    
     #systemd.oomd.enable = true;  # default: true
     earlyoom.enable = true;  # Out of Memory, early process killer
     gvfs.enable     = true;  # Userspace virtual filesystem
