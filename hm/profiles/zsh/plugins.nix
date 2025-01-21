@@ -63,14 +63,12 @@
         file = "share/zsh-nix-shell/nix-shell.plugin.zsh";
       }
       { # https://github.com/jeffreytse/zsh-vi-mode
-        name = "vi-mode";
-        src = pkgs.zsh-vi-mode;
-        file = "share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
+        name = "zsh-vi-mode";
+        src = "${pkgs.zsh-vi-mode}/share/zsh-vi-mode";
       }
       { # https://github.com/Aloxaf/fzf-tab
         name = "fzf-tab";
-        src = pkgs.zsh-fzf-tab;
-        file = "share/fzf-tab/fzf-tab.plugin.zsh";
+        src = "${pkgs.zsh-fzf-tab}/share/fzf-tab";
       }
       { # https://github.com/wfxr/forgit 
         name = "forgit";
