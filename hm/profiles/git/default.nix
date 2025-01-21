@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   imports = [
     ./aliases.nix
     ./diff.nix
@@ -28,7 +34,7 @@
       };
       core = {
         #core.autocrlf = true;  # Fix Windows: CR + LF  ->  LF  (input="fix CRLF on add", true="convert on add/checkout")
-        autocrlf = false;
+        autocrlf = "input";
         whitespace = "trailing-space,space-before-tab";
       };
       column.ui = "auto,column,dense";

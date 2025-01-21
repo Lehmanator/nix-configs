@@ -60,10 +60,11 @@
   ];
 
   # Mount /etc via overlay filesystem (faster activation)
-  system.etc.overlay = {
-    enable  = lib.mkForce true;
-    mutable = lib.mkForce true;
-  };
+  # system.etc.overlay = {
+  #   enable  = lib.mkForce true;
+  #   mutable = lib.mkForce true;
+  # };
+  # users.mutableUsers = lib.mkForce false;
 
   # Enable extra info/metadata for packages
   appstream.enable = lib.mkIf config.services.xserver.enable true;
@@ -71,6 +72,7 @@
   # Always load modules: USB controller, NVMe controller, SATA controller, USB gadgets/peripherals
   boot.initrd.availableKernelModules = ["xhci_pci" "nvme" "ahci" "usbhid" "usb_storage"];
   boot.initrd.includeDefaultModules = true;
+  # boot.initrd.systemd.enable = true;
   boot.hardwareScan = true;
   boot.loader = {
     timeout = lib.mkDefault 6;  # Sec until default entry boots.  `null`=wait-for-input
@@ -83,8 +85,8 @@
     #    - TODO: Rewrite to `/efi`, `/boot`, or `/boot/efi`?
     #  NOTE: Set to "/boot/efi" in `nixos/hosts/fw/configuration.nix`
     #  Default: "/boot"
-    efi.efiSysMountPoint = lib.mkDefault "/boot"; #"/boot/efi";
-    efi.canTouchEfiVariables = lib.mkDefault true;  # Whether allow install process to modify EFI boot vars
+    efi.efiSysMountPoint     = lib.mkDefault "/boot"; # "/boot/efi";
+    efi.canTouchEfiVariables = lib.mkDefault true;    # Whether allow install process to modify EFI boot vars
   };
 
   environment.systemPackages = [pkgs.systemctl-tui];
