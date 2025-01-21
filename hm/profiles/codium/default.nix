@@ -1,15 +1,12 @@
-{ self, inputs, config, lib, pkgs,
-  host, user, repo, network, machine,
-  ...
-}:
-
-# https://nixos.wiki/wiki/Visual_Studio_Code
-# TODO: Use VSCodium
-# TODO: Add extensions
-# TODO: Add FOSS extension marketplace
-
+{ inputs, config, lib, pkgs, ... }:
 {
-  imports = [];
-
+  # https://nixos.wiki/wiki/Visual_Studio_Code
+  # TODO: Use VSCodium
+  # TODO: Add extensions
+  # TODO: Add FOSS extension marketplace
+  imports = [
+    inputs.nix-vscode-ide.homeManagerModules.default
+    inputs.nix-vscode-extensions.homeManagerModules.default
+  ];
 
 }
