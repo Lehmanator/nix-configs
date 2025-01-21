@@ -127,6 +127,8 @@ in
   pam.yubico.authorizedYubiKeys.path = "${config.xdg.dataHome}/yubico/authorized_yubikeys";
 
   programs = with config.xdg; with config.xdg.userDirs.extraConfig; {
+    firefox.profiles.default.settings."widget.use-xdg-desktop-portal.file-picker" = 1;
+
     # --- Programming Languages --------------------
     go = {
       goPath       = ".local/go";
@@ -191,7 +193,6 @@ in
       };
     };
   };
-  firefox.settings."widget.use-xdg-desktop-portal.file-picker" = 1;
 
 
 }
