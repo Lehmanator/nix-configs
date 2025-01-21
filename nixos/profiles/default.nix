@@ -9,6 +9,7 @@
     (inputs.self + /nixos/profiles/bootspec.nix)
     (inputs.self + /nixos/profiles/cachix-agent.nix)
     (inputs.self + /nixos/profiles/colmena.nix)
+    (inputs.self + /nixos/profiles/facter.nix)
     (inputs.self + /nixos/profiles/fs-btrfs.nix)
     (inputs.self + /nixos/profiles/fs-ntfs.nix)
     (inputs.self + /nixos/profiles/fwupd.nix)
