@@ -1,19 +1,29 @@
-{ inputs, config, lib, pkgs, ... }@moduleArgs:
+{
+  inputs,
+  config,
+  lib,
+  pkgs,
+  ...
+}@moduleArgs:
 let
   emptyRepo = (
-    builtins.hasAttr "repo" moduleArgs ||
-    !builtins.isAttrs moduleArgs.repo  ||
-    moduleArgs.repo == null            ||
-    moduleArgs.repo == {}
+    builtins.hasAttr "repo" moduleArgs
+    || !builtins.isAttrs (moduleArgs.repo or null)
+    || moduleArgs.repo == null
+    || moduleArgs.repo == { }
   );
-  repo = if emptyRepo then {
-    protocol = "https";
-    host = "github.com";
-    user = "Lehmanator";
-    org = "Lehmanator";
-    name = "nix-configs";
-    branch = "main"; #"develop";
-  } else moduleArgs.repo;
+  repo =
+    if emptyRepo then
+      {
+        protocol = "https";
+        host = "github.com";
+        user = "Lehmanator";
+        org = "Lehmanator";
+        name = "nix-configs";
+        branch = "main"; # "develop";
+      }
+    else
+      moduleArgs.repo;
 
   # Only auto-upgrade if current config came from clean true.
   isClean = inputs.self ? rev;
