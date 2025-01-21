@@ -88,7 +88,10 @@
   };
 
   environment.systemPackages = [pkgs.systemctl-tui];
-
+  
+  # Symlink our repo to /etc/nixos, for shorter nixos-rebuild command
+  environment.etc."nixos".source = inputs.self.outPath;
+  
   #environment.etc = let
   #  needsEscaping = s: null != builtins.match "[a-zA-Z0-9]+" s;
   #  escapeIfNeccessary = s:
