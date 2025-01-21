@@ -33,9 +33,18 @@
 # Explicitly declare text files you want to always be normalized and converted
 # to native line endings on checkout.
 # --- Text Files ----------------------------------------------
+# --- Git Files ---
+*.gitattributes text
+*.gitignore text
+
 # --- Document Files ---
 *.md text
 *.txt text
+README text
+LICENSE text
+CODEOWNERS text
+CONTRIBUTING text
+CONTRIBUTORS text
 
 # --- Config Files ---
 *.nix text
