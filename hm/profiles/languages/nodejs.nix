@@ -16,7 +16,7 @@ in
     nodePackages.nrm                 # NPM registry manager
     nodePackages.node2nix            # Convert npm packages to Nix
     nodePackages.tailwindcss         # CSS framework for rapidly building UIs.
-    pkgs.haskellPackages.nixfromnpm  # Generate Nix expressions from NPM packages
+    # pkgs.haskellPackages.nixfromnpm  # Generate Nix expressions from NPM packages # Broken: 2025-01-21
     pkgs.npm-lockfile-fix            # Add missing integrity & resolved fields to a `package-lock.json` file
     pkgs.prefetch-npm-deps           # 
     pkgs.prefetch-yarn-deps          # 
