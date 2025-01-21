@@ -1,0 +1,81 @@
+#
+# https://git-scm.com/book/en/v2/Customizing-Git-Git-Attributes
+# https://adaptivepatchwork.com/2012/03/01/mind-the-end-of-your-line/
+# https://docs.github.com/en/get-started/getting-started-with-git/configuring-git-to-handle-line-endings
+#
+# The git config core.autocrlf command is used to change how Git handles line endings. It takes a single argument.
+#
+# On Linux, you simply pass input to the configuration. For example:
+#  Configure Git to ensure line endings in files you checkout are correct for Linux
+#   $ git config --global core.autocrlf input
+#
+# To avoid losing any local changes to files in the repository,
+#  add & commit any outstanding changes by running the following commands:
+#   $ git add . -u
+#   $ git commit -m "Saving files before refreshing line endings"
+# 
+# To update all files on the current branch to reflect the new configuration,
+#  run the following command:
+#   $ git add --renormalize .
+#
+# To display the rewritten, normalized files, run the following command:
+#   $ git status
+#
+# Optionally, to commit any outstanding changes in your repository, run the following command.
+#   $ git commit -m "Normalize all the line endings"
+
+
+# Set the default behavior, in case people don't have core.autocrlf set.
+# * text=auto
+* text eol=lf
+
+#
+# Explicitly declare text files you want to always be normalized and converted
+# to native line endings on checkout.
+# --- Text Files ----------------------------------------------
+# --- Document Files ---
+*.md text
+*.txt text
+
+# --- Config Files ---
+*.nix text
+*.cfg text
+*.conf text
+*.ini text
+*.json text
+*.toml text
+*.xml text
+*.yaml text
+
+# --- Lockfiles ---
+*.lock text
+
+# --- Shell Scripts ---
+*.bash text
+*.fish text
+*.nu text
+*.py text
+*.sh text
+*.zsh text
+
+# --- Code Files ---
+*.c text
+*.h text
+*.pl text
+*.css text
+*.scss text
+*.sass text
+*.html text
+*.js text
+*.jsx text
+*.mjs text
+*.rs text
+
+# --- Windows ----------------------------------------------
+# Declare files that will always have CRLF line endings on checkout.
+*.sln text eol=crlf
+
+# --- Binaries ---------------------------------------------
+# Denote all files that are truly binary and should not be modified.
+*.png binary
+*.jpg binary

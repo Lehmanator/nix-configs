@@ -35,6 +35,7 @@
       core = {
         #core.autocrlf = true;  # Fix Windows: CR + LF  ->  LF  (input="fix CRLF on add", true="convert on add/checkout")
         autocrlf = "input";
+        eol = "lf"; # "native";
         whitespace = "trailing-space,space-before-tab";
       };
       column.ui = "auto,column,dense";
