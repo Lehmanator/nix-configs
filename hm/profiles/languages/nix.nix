@@ -14,14 +14,16 @@
   # --- Helix ---
   programs.helix = {
     extraPackages = [
+      pkgs.nixd
       pkgs.nil
       pkgs.deadnix
+      pkgs.statix
     ];
     languages = {
       language = [
         {
           name = "nix";
-          auto-format = false;
+          auto-format = true;
           formatter.command = lib.getExe pkgs.nixfmt-rfc-style;
         }
       ];
