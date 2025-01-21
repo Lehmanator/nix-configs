@@ -61,7 +61,7 @@ in {
         ++ lib.optionals cfg.adw-gtk3.enable [pkgs.adw-gtk3]
         ++ lib.optionals (cfg.adw-gtk3.enable && cfg.adw-colors.enable) [
           (pkgs.callPackage ../pkgs/adw-colors.nix {})
-          pkgs.sass # pkgs.dart-sass #pkgs.sassc #pkgs.nodePackages_latest.sass #pkgs.rsass #pkgs.grass-sass
+          pkgs.sass # pkgs.dart-sass #pkgs.sassc #pkgs.nodePackages.sass #pkgs.rsass #pkgs.grass-sass
         ];
       activation = {
         switcher = lib.mkIf cfg.auto-switcher ''

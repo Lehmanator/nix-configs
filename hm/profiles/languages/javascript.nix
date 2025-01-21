@@ -1,4 +1,9 @@
 { config, lib, pkgs, ... }:
+let
+  # NOTE: nodePackages_latest may not be in binary cache. Building nodejs takes a long time.
+  latest = false;
+  nodePackages = if latest then pkgs.nodePackages_latest else pkgs.nodePackages;
+in
 {
   imports = [./json.nix];
 
@@ -8,7 +13,7 @@
 
     # TODO: Split this file into parts? (nodejs, react, react-native, svelte, tailwindcss, vue)
     extraPackages = [
-      pkgs.nodePackages_latest.prettier
+      nodePackages.prettier
       pkgs.tree-sitter-grammars.tree-sitter-html
       pkgs.tree-sitter-grammars.tree-sitter-javascript
       pkgs.tree-sitter-grammars.tree-sitter-jsdoc
@@ -18,7 +23,7 @@
   };
 
   # --- Neovim ---
-  # pkgs.nodePackages_latest.coc-prettier
+  # nodePackages.coc-prettier
   # pkgs.vimPlugins.vim-prettier
 
   # --- VSCode ---
