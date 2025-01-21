@@ -184,8 +184,8 @@
     srvos = {inputs.nixpkgs.follows="nixpkgs"; url="github:nix-community/srvos";};
     # --- Modules: Filesystems -------------------------------------
     impermanence.url = "github:nix-community/impermanence";
+    facter.url       = "github:nix-community/nixos-facter-modules";
     disko    = {inputs.nixpkgs.follows="nixpkgs"; url="github:nix-community/disko";};
-    facter   = {inputs.nixpkgs.follows="nixpkgs"; url="github:nix-community/nixos-facter-modules";};
     envfs    = {inputs.nixpkgs.follows="nixpkgs"; url="github:Mic92/envfs";};
     # --- Modules: Containers --------------------------------------
     nix-helm = {inputs.nixpkgs.follows="nixpkgs"; url="github:gytis-ivaskevicius/nix-helm";};
