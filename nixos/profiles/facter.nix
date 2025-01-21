@@ -62,6 +62,8 @@ let
       "x86emu"
     ];
   };
+  useLatest = false;
+  nixos-facter = if useLatest then inputs.facter.packages.${pkgs.system}.nixos-facter else pkgs.nixos-facter;
 in
 {
   imports = [inputs.facter.nixosModules.facter];
@@ -69,10 +71,10 @@ in
 
   # Include binary in system environment.
   environment.systemPackages = [
-    inputs.facter.packages.${pkgs.system}.nixos-facter
+    nixos-facter
     (pkgs.writeShellApplication {
       name = "facter";
-      runtimeInputs = [inputs.facter.packages.${pkgs.system}.nixos-facter];
+      runtimeInputs = [nixos-facter];
       text = ''
         nixos-facter                                                        \
           --hardware ${builtins.concatStringsSep "," hardware.default-used} \
