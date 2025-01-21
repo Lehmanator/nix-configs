@@ -8,12 +8,12 @@ let
   walbottle = pkgs.callPackage (inputs.self + /nixos/packages/walbottle.nix) {};
 
   valent-app = unstable.valent.overrideAttrs (p: {
-    version = "1.0.0.alpha.47-unstable-2024-11-20";
+    version = "1.0.0.alpha.47-unstable-2025-01-09";
     src = pkgs.fetchFromGitHub {
       owner = "andyholmes";
       repo = "valent";
-      rev = "0ea090301e6095e4d2141e557b32a68e03f3452c";
-      hash = "sha256-quSa3rXtRNvig31dfurbDllBDG4h09wRk9dhWEBLc+s=";
+      rev = "49014fa095f69c5b8c9e42aaae4faff402f6dc73";
+      hash = "sha256-88l5Na/TLDamDnqce3CxLopT0V5Lp276zalM2mxeBmc=";
       fetchSubmodules = true;
     };
 
@@ -25,7 +25,7 @@ let
   });
 
   valent-ext = inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.gnomeExtensions.valent.overrideAttrs (p: {
-    version = "1.0.0.alpha.47-unstable-2024-11-20";
+    version = "1.0.0.alpha.47-unstable-2024-11-14";
     src = pkgs.fetchFromGitHub {
       owner = "andyholmes";
       repo = "gnome-shell-extension-valent";
