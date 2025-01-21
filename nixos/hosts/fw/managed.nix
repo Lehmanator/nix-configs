@@ -17,10 +17,7 @@
     pkgs.dino
     pkgs.flare-signal
     pkgs.gnome-network-displays
-    #pkgs.pitivi                   # Broken dep: python310Packages.librosa-0.10.0 (2023-08-14)
     pkgs.jellyfin-media-player
-    #pkgs.teams-for-linux # Outdated dep: electron_24
-    #pkgs.paper-note  (abandoned)
     pkgs.megapixels
     pkgs.inkscape
     pkgs.gnome-obfuscate

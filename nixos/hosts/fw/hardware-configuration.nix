@@ -6,8 +6,11 @@
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
   boot = {
+    binfmt.emulatedSystems = ["aarch64-linux"];  # Enable cross-compilation for ARM CPUs.
     extraModulePackages = [ ];
     kernelModules = [ "kvm-intel" ];
+    loader.efi.efiSysMountPoint = "/boot/efi";
+    loader.efi.canTouchEfiVariables = true;
     initrd = {
       availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "usb_storage" "sd_mod" ];
       kernelModules = [ ];
@@ -15,22 +18,15 @@
   };
 
   fileSystems = {
-    "/" = { fsType = "ext4"; device = "/dev/disk/by-uuid/d1f565b9-ff81-430d-a963-01556f876f68"; };
+    "/"         = { fsType = "ext4"; device = "/dev/disk/by-uuid/d1f565b9-ff81-430d-a963-01556f876f68"; };
     "/boot/efi" = { fsType = "vfat"; device = "/dev/disk/by-uuid/6674-832F"; };
   };
   #swapDevices = [
   #  { device = "/dev/nvme0n1p3"; }
   #];
 
-  hardware = {
-    enableRedistributableFirmware = lib.mkDefault true;
-    cpu.intel.updateMicrocode = lib.mkDefault true;
-    framework.enableKmod = lib.mkDefault true;
-
-    # Sensors
-    sensor.iio.enable = true;
-
-  };
+  hardware.enableRedistributableFirmware = true;
+  hardware.enableAllFirmware = true;
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
@@ -43,5 +39,9 @@
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 
-  environment.systemPackages = [pkgs.fw-ectool];
+  environment.systemPackages = [
+    pkgs.fw-ectool
+    pkgs.framework-tool
+    pkgs.framework-system-tools
+  ];
 }
