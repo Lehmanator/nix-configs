@@ -151,8 +151,7 @@
     git-hooks = {
       url = "github:cachix/git-hooks.nix";
       inputs = {
-        nixpkgs.follows = "unstable";
-        nixpkgs-stable.follows = "stable";
+        nixpkgs.follows = "stable";
         flake-compat.follows = "flake-compat";
         gitignore.follows = "gitignore";
       };
@@ -160,8 +159,7 @@
     pre-commit-hooks = {
       url = "github:cachix/pre-commit-hooks.nix";
       inputs = {
-        nixpkgs.follows = "unstable";
-        nixpkgs-stable.follows = "stable";
+        nixpkgs.follows = "stable";
         flake-compat.follows = "flake-compat";
         gitignore.follows = "gitignore";
       };
