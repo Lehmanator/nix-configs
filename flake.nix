@@ -42,6 +42,18 @@
             user = "sam";
           };
         };
+        homeConfigurations."sam@fw" = home.lib.homeManagerConfiguration {
+          pkgs = import nixpkgs { system = "aarch64-linux"; };
+          modules = [
+            ./hm/users/sam
+            inputs.nur.modules.homeManager.default
+          ];
+          extraSpecialArgs = {
+            inherit inputs;
+            user = "sam";
+            osConfig = inputs.self.nixosConfigurations.fw.config;
+          };
+        };
         nixosConfigurations.fw = nixos.lib.nixosSystem {
           modules = [ ./nixos/hosts/fw ];
           specialArgs = {

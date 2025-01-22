@@ -1,10 +1,11 @@
-{ inputs
-, config
-, lib
-, pkgs
-, osConfig
-, nixosConfig
-, ...
+{
+  inputs,
+  config,
+  lib,
+  pkgs,
+  osConfig,
+  nixosConfig,
+  ...
 }:
 {
   imports = [
@@ -19,6 +20,8 @@
     # ./nix.nix
 
   ];
+
+  home.username = "sam";
 
   #programs.gallery-dl.settings = {};
 
