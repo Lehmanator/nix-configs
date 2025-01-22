@@ -138,4 +138,7 @@
   #  lsb-release.text = attrsToText lsb-rel;
   #  os-release.text = attrsToText os-rel;
   #};
+
+  # `at` daemon for scheduling commands
+  services.atd.enable = true;
 }
