@@ -35,6 +35,13 @@
       flake = {
         inherit inputs self;
         overlays = import ./nixos/overlays;
+        darwinConfigurations.test = inputs.darwin.lib.darwinConfiguration {
+          modules = [ ./darwin/configs/test ];
+          specialArgs = {
+            inherit inputs;
+            user = "sam";
+          };
+        };
         nixosConfigurations.fw = nixos.lib.nixosSystem {
           modules = [ ./nixos/hosts/fw ];
           specialArgs = {
@@ -90,7 +97,7 @@
       url = "github:viperML/wrapper-manager";
     };
     darwin = {
-      inputs.nixpkgs.follows = "nixos";
+      inputs.nixpkgs.follows = "nixpkgs-darwin";
       url = "github:lnl7/nix-darwin";
     };
     home = {

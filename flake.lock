@@ -568,7 +568,7 @@
     "darwin_2": {
       "inputs": {
         "nixpkgs": [
-          "nixos"
+          "nixpkgs-darwin"
         ]
       },
       "locked": {
