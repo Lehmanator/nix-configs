@@ -126,4 +126,15 @@
     #   };
     # };
   };
+
+  # TODO: Write: `/var/lib/AccountsService/users/${config.home.username}`
+  # TODO: Move to NixOS profile?
+  # accountService = ''
+  #   [User]
+  #   Languages=en_US.UTF-8;
+  #   Session=gnome
+  #   SessionType=wayland
+  #   Icon=/etc/nixos/hm/users/${config.home.username}/profile.png
+  #   SystemAccount=false
+  # '';
 }
