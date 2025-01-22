@@ -1,4 +1,10 @@
-{ config, lib, pkgs , ... }:
+{
+  inputs,
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   imports = [
     ./keymaps
@@ -9,6 +15,7 @@
   programs.helix = {
     enable = true;
     defaultEditor = true;
+    package = inputs.nixos-unstable.legacyPackages.${pkgs.system}.helix;
     settings.theme = "adwaita-dark";
     settings.editor = {
       auto-completion = true;
@@ -21,7 +28,7 @@
       completion-replace = true;
       completion-timeout = 250;
       completion-trigger-len = 2;
-      
+
       cursorline = true;
       cursor-shape = {
         insert = "bar";
@@ -32,7 +39,13 @@
       file-picker.hidden = false;
       idle-timeout = 250;
 
-      gutters.layout = ["diagnostics" "spacer" "line-numbers" "spacer" "diff"];
+      gutters.layout = [
+        "diagnostics"
+        "spacer"
+        "line-numbers"
+        "spacer"
+        "diff"
+      ];
       indent-guides = {
         render = true;
         skip-levels = 2;
@@ -44,8 +57,13 @@
       mouse = true;
       popup-border = "all";
       preview-completion-insert = true;
-      smart-tab = { enable = true; supercede-menu = false; };
-      soft-wrap = { enable = true; };
+      smart-tab = {
+        enable = true;
+        supercede-menu = false;
+      };
+      soft-wrap = {
+        enable = true;
+      };
 
       lsp = {
         enable = true;
@@ -58,7 +76,9 @@
       };
       scrolloff = 2;
     };
-    extraPackages = builtins.attrValues (builtins.removeAttrs pkgs.tree-sitter-grammars ["recurseForDerivations"]);
+    extraPackages = builtins.attrValues (
+      builtins.removeAttrs pkgs.tree-sitter-grammars [ "recurseForDerivations" ]
+    );
   };
   programs.nushell.environmentVariables = {
     inherit (config.home.sessionVariables) EDITOR GIT_EDITOR;
