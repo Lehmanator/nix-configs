@@ -40,14 +40,16 @@
     zfs.allowHibernation = lib.mkIf config.boot.zfs.enable true;
   };
 
+  # Options: lock | reboot | poweroff | hybrid-sleep | suspend-then-hibernate
+  #          halt | kexec  | suspend  | hibernate    | 
   services.logind = {
-    hibernationKey = "hibernate";
-    hibernationKeyLongPress = "suspend-then-hibernate"; # “ignore”, “poweroff”, “reboot”, “halt”, “kexec”, “suspend”, “hibernate”, “hybrid-sleep”, “suspend-then-hibernate”, “lock”
-    lidSwitch = "suspend";
-    lidSwitchDocked = "ignore";
-    lidSwitchExternalPower = config.services.logind.lidSwitch; #"ignore";
-    suspendKey = "suspend"; # “ignore”, “poweroff”, “reboot”, “halt”, “kexec”, “suspend”, “hibernate”, “hybrid-sleep”, “suspend-then-hibernate”, “lock”
-    suspendKeyLongPress = "hibernate"; # “ignore”, “poweroff”, “reboot”, “halt”, “kexec”, “suspend”, “hibernate”, “hybrid-sleep”, “suspend-then-hibernate”, “lock”
+    hibernationKey          = "hibernate";
+    hibernationKeyLongPress = "suspend-then-hibernate";
+    lidSwitch               = "suspend";
+    lidSwitchDocked         = "ignore";
+    lidSwitchExternalPower  = config.services.logind.lidSwitch; # "ignore";
+    suspendKey              = "suspend";
+    suspendKeyLongPress     = "hibernate";
   };
 
   services.physlock.lockOn.hibernate = true;
@@ -59,27 +61,26 @@
   #  - the label of the swap device (label, see mkswap -L).
   #  Using a label is recommended.
   swapDevices.primary-swap = {
-    device = "/dev/nvme0n1p2"; # Path of the device or swap file.
-    discardPolicy = null; # null | once | pages | both
-    label = "swap"; # Label of the device. Can be used instead of device.
-    options = [ "defaults" ]; # Options used to mount the swap.
-    priority = 10; # Priority of the swap device b/w [0, 32767] where higher number => higher priority. null lets kernel choose priority, which will show up as negative value.
-    size = 2048; # Swap size in Megabytes.                # TODO: Set to RAM size * 1.5
+    device        = "/dev/nvme0n1p2"; # Path of the device or swap file.
+    discardPolicy = null;             # null | once | pages | both
+    label         = "swap";           # Label of the device. Can be used instead of device.
+    options       = [ "defaults" ];   # Options used to mount the swap.
+    priority      = 10;               # Priority of swap device [0,32767] where higher number => higher priority. null lets kernel choose priority, which will show as negative value
+    size          = 2048;             # Swap size in Megabytes.                # TODO: Set to RAM size * 1.5
 
     # --- Swap Encryption ---
-    encrypted = {
-      enable = true; # The block device is backed by an encrypted one, adds this device as a initrd luks entry.
-      blkDev = "/dev/nvme0n1p2"; # Location of the backing encrypted device.
-      # Path to a keyfile used to unlock the backing encrypted device.
-      #  At the time this keyfile is accessed,
-      #   the neededForBoot filesystems (see fileSystems.<name?>.neededForBoot) will have been mounted under /mnt-root,
-      #   so the keyfile path should usually start with “/mnt-root/”.
-      keyFile = "/mnt-root/root/.swapkey";
-
-      # Label of the unlocked encrypted device. Set fileSystems.<name?>.device to /dev/mapper/<label> to mount the unlocked device.
-      label = "swap";
-    };
+    # label:   Label of unlocked encrypted device. 
+    #           Set:`fileSystems.<name?>.device`=`/dev/mapper/<label>` to mount unlocked device
+    # keyFile: Path to keyfile to unlock backing encrypted device. When keyfile accessed,
+    #           `fileSystems.<name?>.neededForBoot` FSs will have been mounted in `/mnt-root`,
+    #           so keyfile path prob starts w/ `/mnt-root/`.
     randomEncryption.enable = lib.mkForce false;
+    encrypted = {
+      enable  = true;                      # Block device backed by encrypted one, adds this device as initrd luks entry
+      blkDev  = "/dev/nvme0n1p2";          # Location of backing encrypted device.
+      keyFile = "/mnt-root/root/.swapkey";
+      label   = "swap";
+    };
   };
 
   # If you have issues w/ device not shutting off after hibernating, uncomment these lines:
