@@ -253,8 +253,8 @@
     # --- Libs: Misc -----------------------------------------------
     # https://github.com/juspay/cachix-push
     dns = {
+      url = "github:nix-community/dns.nix";
       inputs.nixpkgs.follows = "nixpkgs";
-      url = "github:kirelagin/dns.nix";
     };
     github-actions = {
       inputs.nixpkgs.follows = "nixpkgs";
