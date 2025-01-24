@@ -1,4 +1,5 @@
 {
+  inputs,
   config,
   lib,
   pkgs,
@@ -147,4 +148,8 @@
   #   Icon=/etc/nixos/hm/users/${config.home.username}/profile.png
   #   SystemAccount=false
   # '';
+  #
+  # xdg.configFile."nixos" = {
+  #   source = inputs.self.outPath;
+  # };
 }
