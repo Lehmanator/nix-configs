@@ -50,6 +50,14 @@
         render = true;
         skip-levels = 2;
       };
+
+      end-of-line-diagnostics = "hint";
+      inline-diagnostics = {
+        cursor-line = "error";
+        other-lines = "error";
+        prefix-len = 3;
+        max-wrap = lib.mkDefault 40;
+      };
       line-number = "relative";
       # line-numbers.min-width = 2;
 
@@ -69,6 +77,7 @@
         enable = true;
         auto-signature-help = true;
         display-inlay-hints = true;
+        display-progress-messages = true;
         display-signature-help-docs = true;
         display-messages = true;
         goto-reference-include-declaration = true;
