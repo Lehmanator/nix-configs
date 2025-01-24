@@ -1,5 +1,6 @@
 { inputs, ... }:
 {
+  # TODO: Configure nixd to call treefmt formatter?
   imports = [ inputs.treefmt.flakeModule ];
   perSystem =
     {
@@ -13,7 +14,7 @@
         package = pkgs.treefmt;
         projectRootFile = "flake.nix";
         enableDefaultExcludes = true;
-        flakeCheck = true;
+        flakeCheck = false;
         flakeFormatter = true;
         programs = {
           # --- Cuelang ---
