@@ -3,10 +3,13 @@
   pkgs,
   ...
 }: {
-  imports = [./zsh.nix];
+  imports = [
+    ./fish.nix
+    ./zsh.nix
+  ];
   environment = {
     # Link bash completions. Used by bash & ZSH compat.
-    pathsToLink = ["/share/bash-completion" "/share/zsh"];
+    pathsToLink = ["/share/bash-completion"];
 
     # Package to get CLI clients to connect to ODBC databases.
     systemPackages = [pkgs.bash pkgs.zsh pkgs.nushell pkgs.unixODBC];
