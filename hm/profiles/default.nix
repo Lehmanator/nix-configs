@@ -1,11 +1,11 @@
 {
   inputs,
+  osConfig,
   config,
   lib,
   pkgs,
   ...
-}:
-{
+}: {
   imports = [
     ./git
     ./gnome
@@ -63,9 +63,14 @@
   ];
 
   home.homeDirectory = lib.mkDefault (
-    (if pkgs.stdenv.isLinux then "/home/" else "/Users/") + config.home.username
+    (
+      if pkgs.stdenv.isLinux
+      then "/home/"
+      else "/Users/"
+    )
+    + config.home.username
   );
-  home.stateVersion = "23.11";
+  home.stateVersion = osConfig.system.stateVersion or "23.11";
   # home.extraOutputsToInstall = [ "doc" "info" "devdoc" "dev" "bin" ];
   home.shellAliases = {
     # --- Directory Navigation ---
