@@ -28,7 +28,6 @@
           ...
         }:
         {
-          formatter = pkgs.alejandra;
           packages = {
             inherit (inputs.disko.packages.${system}) disko disko-doc;
           };
