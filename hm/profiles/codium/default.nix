@@ -1,4 +1,10 @@
-{ inputs, config, lib, pkgs, ... }:
+{
+  inputs,
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   # https://nixos.wiki/wiki/Visual_Studio_Code
   # TODO: Use VSCodium
@@ -15,7 +21,7 @@
     enableUpdateCheck = true;
     mutableExtensionsDir = true;
     package = pkgs.vscodium;
-    extensions = [];
+    extensions = [ ];
     globalSnippets = {
       fixme = {
         prefix = [ "fixme" ];
@@ -44,14 +50,17 @@
       };
     };
     keybindings = [
-      { key = "ctrl+c";
+      {
+        key = "ctrl+c";
         command = "editor.action.clipboardCopyAction";
         when = "textInputFocus";
-        args = { direction = "up"; };
+        args = {
+          direction = "up";
+        };
       }
     ];
     # Similar to globalSnippets, but for specific languages.
-    languageSnippets = {};
+    languageSnippets = { };
     userSettings = {
       "files.autoSave" = "off";
       # "[nix]"."editor.tabSize" = 2;
@@ -63,7 +72,7 @@
         #   label = "Hello task";
         #   command = "hello";
         # }
-      ]
-    }
+      ];
+    };
   };
 }
