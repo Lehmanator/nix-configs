@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 #
 # Config for GNOME extensions that applies to all `gnomeProfiles`
 #
@@ -16,5 +21,9 @@
   home.packages = [
     # Required for tophat & possibly other system monitor extensions
     pkgs.gtop
+  ];
+
+  programs.gnome-shell.extensions = [
+    { package = pkgs.gnomeExtensions.hot-edge; }
   ];
 }
