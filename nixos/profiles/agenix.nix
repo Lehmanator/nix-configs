@@ -1,4 +1,11 @@
-{ inputs, config, lib, pkgs, user, ... }:
+{
+  inputs,
+  config,
+  lib,
+  pkgs,
+  user,
+  ...
+}:
 # Agenix CLI uses file `./secrets.nix` to determine keys used to encrypt data.
 #
 #  - This file is not controlled by your system's Nix config, but is read by the CLI directly.
@@ -14,12 +21,38 @@
 #      - Import Nix configs nested deeper in the file tree.
 #
 # Set env var `RULES` to specify path to `./secrets.nix`
+let
+  dirs = {
+    host = inputs.self + /nixos/hosts/${config.networking.hostName};
+    user = inputs.self + /hm/users/${user};
+  };
+  secretDir = "${dirs.host}/secrets";
+  keys = {
+    host = {
+      ed25519 = "${dirs.host}/ssh_host_ed25519_key.pub";
+      rsa = "${dirs.host}/ssh_host_rsa_key.pub";
+    };
+    user = {
+      ed25519 = "${dirs.user}/id_ed25519.pub";
+      rsa = "${dirs.user}/id_rsa.pub";
+    };
+  };
+in
 {
-  imports = [ inputs.agenix.nixosModules.age ];
-  home-manager.sharedModules = [ inputs.agenix.homeManagerModules.age ];
+  imports = [
+    inputs.agenix.nixosModules.default
+    inputs.agenix-rekey.nixosModules.default
+  ];
+  # home-manager.sharedModules = [
+  #   (inputs.self + /hm/profiles/agenix.nix)
+  #   # inputs.agenix.homeManagerModules.default
+  #   # inputs.agenix-rekey.homeManagerModules.default
+  # ];
 
   age = {
-    ageBin = lib.mkDefault "${pkgs.age}/bin/age";  # TODO: Replace with `rage`? (rust age CLI util)
+    # TODO: Replace with `rage`? (rust age CLI util)
+    ageBin = lib.mkDefault (lib.getExe pkgs.age);
+
     identityPaths = lib.mkDefault [
       "/var/lib/persistent/ssh_host_ed25519_key"
       "/nix/persist/etc/ssh/ssh_host_ed25519_key"
@@ -27,5 +60,47 @@
     ];
     #secretsDir = lib.mkDefault "/run/agenix";
     #secretsMountPoint = lib.mkDefault "/run/agenix.d";
+
+    rekey = {
+      storageMode = "local";
+
+      # The local storage directory for rekeyed secrets.
+      # MUST be a path inside of your repository,
+      # & it MUST be constructed by concatenating to the root directory of your flake.
+      # Follow the example.
+      localStorageDir = secretDir;
+      cacheDir = "$XDG_CACHE_HOME/agenix-rekey";
+
+      # https://github.com/oddlama/agenix-rekey?tab=readme-ov-file#agerekeyhostpubkey
+      # The age public key to use as a recipient when rekeying.
+      # This either has to be the path to an age public key file,
+      # #or the public key itself in string form.
+      hostPubkey = builtins.readFile keys.host.ed25519;
+
+      # https://github.com/oddlama/agenix-rekey?tab=readme-ov-file#agerekeymasteridentities
+      # List: age identities used by rage when decrypting stored secrets to rekey them for hosts.
+      # If multiple identities are given, they will be tried in-order.
+      # TODO: Add YubiKey (or similar hardware key)
+      masterIdentities = [
+        {
+          identity = ./hm/users/sam/privkey.age;
+          pubkey = "age13p3t3hl7uk2k5alq0p0j62kghh7926vlcts2hjl0vcy70ggjqcwscpk0ul";
+        }
+        keys.user.ed25519
+        "/home/${user}/.ssh/id_ed25519.pub"
+        "/home/${user}/.config/age/host.pub"
+        "/home/${user}/.config/sops/age/"
+      ];
+
+      # Using `agenix edit FILE`, file encrypted for all identities in `age.rekey.masterIdentities` by default.
+      # Here, specify an extra set of pubkeys for which all secrets should also be encrypted.
+      # Useful in case you want to have a backup identity that must be able to decrypt all secrets but should not be used when attempting regular decryption.
+      extraEncryptionPubkeys = [ "age1aazux953qlqlzpfvvnhtlz0qr866ae3gve9wcskj394gq9ax0pvqca44qu" ];
+    };
+  };
+
+  environment.etc = {
+    "ssh/ssh_host_ed25519_key.pub".source = keys.host.ed25519;
+    "ssh/ssh_host_rsa_key.pub".source = keys.host.rsa;
   };
 }

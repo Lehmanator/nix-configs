@@ -17,6 +17,7 @@
     ./zsh
 
     ./abook.nix
+    ./agenix.nix
     ./bash.nix
     ./bat.nix
     ./cachix-agent.nix

@@ -6,7 +6,7 @@ result
 # --- Local NUR Repos ---
 .nur/
 
-# --- Keys ---
+# --- Private Keys ---
 *.cacert
 *.cert
 *.crt
@@ -15,8 +15,6 @@ result
 *.luks
 *.lukskey
 *.privkey
-*.pubkey
-*.pub
 *.p7
 *.p11
 *.pem
@@ -36,6 +34,12 @@ ssh_*_key
 **/trustdb.gpg
 **/keys
 **/.keys
+
+# --- Public Keys ---
+!ssh_host_ed25519_key.pub
+!ssh_host_rsa_key.pub
+!id_ed25519.pub
+!id_rsa.pub
 
 # --- Private Info ---
 # hosts.nix
