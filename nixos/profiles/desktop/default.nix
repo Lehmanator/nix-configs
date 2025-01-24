@@ -67,6 +67,7 @@ in {
       # settings = {};
     };
   };
+  environment.pathsToLink = ["/share/xdg-desktop-portal" "/share/applications"];
 
   environment.systemPackages = [
     pkgs.bitwarden

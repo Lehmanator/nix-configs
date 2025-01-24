@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }:
+{
+  osConfig,
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 # TODO: Only define directories here & prevent pollution of $HOME
 # TODO: Set program data dirs, etc. in their own Nix configs if they respect XDG Base Directories spec.
 # TODO: Split into directory w/ {default,mime,basedirs,userDirs,paths,etc}.nix  ???
@@ -9,16 +15,15 @@
 #     userdirs.nix
 let
   homedir = config.home.homeDirectory;
-in
-{
+in {
   xdg = {
     enable = true;
 
     # --- Base Dirs ---
-    cacheHome  = "${homedir}/.cache";
+    cacheHome = "${homedir}/.cache";
     configHome = "${homedir}/.config";
-    dataHome   = "${homedir}/.local/share";
-    stateHome  = "${homedir}/.local/state";
+    dataHome = "${homedir}/.local/share";
+    stateHome = "${homedir}/.local/state";
 
     # --- MIME Type Handling ---
     # TODO: Move to separate file: mimetypes.nix
@@ -29,9 +34,18 @@ in
     mimeApps.enable = true;
     mime.enable = true;
 
+    portal = {
+      # TODO: Handle other desktop environments with standalone config
+      enable = osConfig.services.xserver.enable or config.programs.gnome-shell.enable or false;
+      xdgOpenUsePortal = true;
+      config = lib.recursiveUpdate (osConfig.xdg.portal.config or {}) {};
+      configPackages = (osConfig.xdg.portal.configPackages or []) ++ [];
+      extraPortals = (osConfig.xdg.portal.extraPortals or []) ++ [];
+    };
+
     systemDirs = {
-      config = [ "/etc/xdg" ];
-      data   = [ "/usr/share" "/usr/local/share" ];
+      config = ["/etc/xdg"];
+      data = ["/usr/share" "/usr/local/share"];
     };
 
     userDirs = {
@@ -108,14 +122,14 @@ in
       open = "xdg-open";
 
       cd-config = "cd $XDG_CONFIG_HOME";
-      cd-data   = "cd $XDG_DATA_HOME";
-      cd-cache  = "cd $XDG_CACHE_HOME";
-      cd-state  = "cd $XDG_STATE_HOME";
+      cd-data = "cd $XDG_DATA_HOME";
+      cd-cache = "cd $XDG_CACHE_HOME";
+      cd-state = "cd $XDG_STATE_HOME";
 
       ls-config = "ls $XDG_CONFIG_HOME";
-      ls-data   = "ls $XDG_DATA_HOME";
-      ls-cache  = "ls $XDG_CACHE_HOME";
-      ls-state  = "ls $XDG_STATE_HOME";
+      ls-data = "ls $XDG_DATA_HOME";
+      ls-cache = "ls $XDG_CACHE_HOME";
+      ls-state = "ls $XDG_STATE_HOME";
     };
   };
 
@@ -123,17 +137,18 @@ in
   nix.settings.use-xdg-base-directories = true;
 
   # --- System -----------------------------------
-  gtk.gtk2.configLocation            = "${config.xdg.configHome}/gtk-2.0/gtkrc";
+  gtk.gtk2.configLocation = "${config.xdg.configHome}/gtk-2.0/gtkrc";
   pam.yubico.authorizedYubiKeys.path = "${config.xdg.dataHome}/yubico/authorized_yubikeys";
 
-  programs = with config.xdg; with config.xdg.userDirs.extraConfig; {
+  programs = with config.xdg;
+  with config.xdg.userDirs.extraConfig; {
     firefox.profiles.default.settings."widget.use-xdg-desktop-portal.file-picker" = 1;
 
     # --- Programming Languages --------------------
     go = {
-      goPath       = ".local/go";
-      goBin        = ".local/bin.go";
-      extraGoPaths = [ "${dataHome}/go" "${config.home.homeDirectory}/.go" ];
+      goPath = ".local/go";
+      goBin = ".local/bin.go";
+      extraGoPaths = ["${dataHome}/go" "${config.home.homeDirectory}/.go"];
     };
 
     # --- Shells -----------------------------------
@@ -141,18 +156,17 @@ in
     zsh.history.path = "${dataHome}/zsh/history";
     nushell = {
       configFile.source = "${configHome}/nushell/config.nu";
-      envFile.source    = "${configHome}/nushell/env.nu";
+      envFile.source = "${configHome}/nushell/env.nu";
     };
-
 
     # --- CLI Programs -----------------------------
     gpg.homedir = "${dataHome}/gnupg";
-    navi.settings.cheats.paths = [ "${dataHome}/cheats" "${configHome}/navi/cheats" ];
+    navi.settings.cheats.paths = ["${dataHome}/cheats" "${configHome}/navi/cheats"];
     script-directory.settings.SD_ROOT = XDG_SCRIPTS_DIR;
     kodi.datadir = "${dataHome}/kodi";
     #kodi = let
     #  inherit (config.xdg) userDirs;
-    #  inherit (userDirs) music videos extraConfig; 
+    #  inherit (userDirs) music videos extraConfig;
     #in with extraConfig; {
     #  datadir = "${dataHome}/kodi";
     #  sources = {
@@ -180,9 +194,11 @@ in
   };
 
   # --- GUI Programs -----------------------------
-  services = with config.xdg.userDirs.extraConfig; with config.xdg; {
+  services = with config.xdg.userDirs.extraConfig;
+  with config.xdg; {
     dropbox.path = "${XDG_SYNC_DIR}/dropbox";
-    recoll = {  # File indexer
+    recoll = {
+      # File indexer
       configDir = "${configHome}/recoll";
       settings = {
         dbdir = "${dataHome}/recoll";
@@ -193,6 +209,4 @@ in
       };
     };
   };
-
-
 }
