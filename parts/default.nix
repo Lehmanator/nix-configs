@@ -9,20 +9,22 @@
     # inputs.std.flakeModule
 
     ./agenix-shell.nix
-    # ./devenv.nix
     ./devshell.nix
-    # ./easyOverlay.nix
-    # ./ez-configs.nix
     # ./emanote.nix
+    # ./ez-configs.nix
+    ./pre-commit-hooks.nix
+    ./treefmt.nix
+    ./wrapper-manager
+
+    # --- Unimplemented ---
+    # ./devenv.nix
+    # ./easyOverlay.nix
     # ./flake-parts-website.nix
     # ./hercules-ci.nix
     # ./nix-cargo-integration.nix
     # ./nixid.nix
-    ./pre-commit-hooks.nix
     # ./process-compose-flake.nix
     # ./proc-flake.nix
     # ./std.nix
-    ./treefmt.nix
-    ./wrapper-manager.nix
   ];
 }
