@@ -1,12 +1,16 @@
-{ inputs, config, lib, pkgs, ... }:
-let
-  inherit (lib) mkIf;
-in
 {
+  inputs,
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  inherit (lib) mkIf;
+in {
   imports = [
     # inputs.srvos.nixosModules.desktop
     (inputs.self + /nixos/profiles/gnome)
-    
+
     (inputs.self + /nixos/profiles/flatpak.nix)
     (inputs.self + /nixos/profiles/gdm.nix)
     (inputs.self + /nixos/profiles/gtk.nix)
@@ -16,7 +20,6 @@ in
     (inputs.self + /nixos/profiles/chromium.nix)
     (inputs.self + /nixos/profiles/firefox)
     # (inputs.self + /nixos/profiles/torbrowser.nix)
-    
   ];
 
   hardware.graphics = {
@@ -37,11 +40,11 @@ in
   services = {
     autorandr.enable = true;
     xserver.enable = true;
-    
+
     #systemd.oomd.enable = true;  # default: true
-    earlyoom.enable = true;  # Out of Memory, early process killer
-    gvfs.enable     = true;  # Userspace virtual filesystem
-    printing.enable = true;  # CUPS print server to enable printing
+    earlyoom.enable = true; # Out of Memory, early process killer
+    gvfs.enable = true; # Userspace virtual filesystem
+    printing.enable = true; # CUPS print server to enable printing
   };
 
   # Improve desktop responsiveness when updating system
@@ -54,6 +57,15 @@ in
     # Whether to create a directory with links to all fonts in:
     #   /run/current-system/sw/share/X11/fonts
     fontDir.enable = true;
+  };
+
+  xdg = {
+    portal.enable = true;
+    terminal-exec = {
+      enable = true;
+      # package = pkgs.xdg-terminal-exec;
+      # settings = {};
+    };
   };
 
   environment.systemPackages = [
