@@ -396,6 +396,14 @@
     # scalpel = {inputs.nixpkgs.follows="nixpkgs"; url = "github:polygon/scalpel";};
     # --- Modules: Servers -----------------------------------------
     # --- Modules: Configuration -----------------------------------
+    cosmic-manager = {
+      url = "github:HeitorAugustoLN/cosmic-manager";
+      inputs = {
+        flake-parts.follows = "flake-parts";
+        nixpkgs.follows = "nixpkgs";
+        home-manager.follows = "home";
+      };
+    };
     stylix = {
       url = "github:danth/stylix";
       inputs = {

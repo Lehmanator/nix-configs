@@ -425,6 +425,32 @@
         "type": "github"
       }
     },
+    "cosmic-manager": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "home-manager": [
+          "home"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1737594350,
+        "narHash": "sha256-qRKVW+He8GKiWuRpn+PixzhzFQZOReJ37h6MhDW5inY=",
+        "owner": "HeitorAugustoLN",
+        "repo": "cosmic-manager",
+        "rev": "dfbd4235248f65db9a15ce43fc0443b03dc10213",
+        "type": "github"
+      },
+      "original": {
+        "owner": "HeitorAugustoLN",
+        "repo": "cosmic-manager",
+        "type": "github"
+      }
+    },
     "crane": {
       "locked": {
         "lastModified": 1731098351,
@@ -7310,6 +7336,7 @@
         "arion": "arion",
         "arkenfox": "arkenfox",
         "colmena": "colmena",
+        "cosmic-manager": "cosmic-manager",
         "darwin": "darwin_2",
         "debnix": "debnix",
         "devenv": "devenv",
