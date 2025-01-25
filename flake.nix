@@ -1,49 +1,46 @@
 {
   description = "Personal Nix & NixOS configurations";
-  outputs =
-    {
-      self,
-      nixpkgs,
-      nixos,
-      home,
-      nur,
-      flake-parts,
-      ...
-    }@inputs:
-    flake-parts.lib.mkFlake { inherit inputs self; } {
-      imports = [ ./parts ];
+  outputs = {
+    self,
+    nixpkgs,
+    nixos,
+    home,
+    nur,
+    flake-parts,
+    ...
+  } @ inputs:
+    flake-parts.lib.mkFlake {inherit inputs self;} {
+      imports = [./parts];
       debug = true;
       systems = [
         "x86_64-linux"
         "aarch64-linux"
         "riscv64-linux"
       ];
-      perSystem =
-        {
-          config,
-          lib,
-          pkgs,
-          system,
-          final,
-          ...
-        }:
-        {
-          packages = {
-            inherit (inputs.disko.packages.${system}) disko disko-doc;
-          };
+      perSystem = {
+        config,
+        lib,
+        pkgs,
+        system,
+        final,
+        ...
+      }: {
+        packages = {
+          inherit (inputs.disko.packages.${system}) disko disko-doc;
         };
+      };
       flake = {
         inherit inputs self;
         overlays = import ./nixos/overlays;
         darwinConfigurations.test = inputs.darwin.lib.darwinConfiguration {
-          modules = [ ./darwin/configs/test ];
+          modules = [./darwin/configs/test];
           specialArgs = {
             inherit inputs;
             user = "sam";
           };
         };
         homeConfigurations."sam@fw" = home.lib.homeManagerConfiguration {
-          pkgs = import nixpkgs { system = "aarch64-linux"; };
+          pkgs = import nixpkgs {system = "aarch64-linux";};
           modules = [
             ./hm/users/sam
             inputs.nur.modules.homeManager.default
@@ -55,19 +52,19 @@
           };
         };
         nixosConfigurations.fw = nixos.lib.nixosSystem {
-          modules = [ ./nixos/hosts/fw ];
+          modules = [./nixos/hosts/fw];
           specialArgs = {
             inherit inputs;
             user = "sam";
           };
         };
         nixOnDroidConfigurations.cheetah = inputs.nix-on-droid.lib.nixOnDroidConfiguration {
-          pkgs = import nixpkgs { system = "aarch64-linux"; };
-          modules = [ ./droid/configs/cheetah ];
-          specialArgs = { inherit inputs; };
+          pkgs = import nixpkgs {system = "aarch64-linux";};
+          modules = [./droid/configs/cheetah];
+          specialArgs = {inherit inputs;};
         };
         systemManagerConfigurations.fajita0 = inputs.system-manager.lib.makeSystemConfig {
-          modules = [ ./sm/configs/fajita1 ];
+          modules = [./sm/configs/fajita1];
           specialArgs = {
             inherit inputs;
             user = "sam";
@@ -77,7 +74,7 @@
     };
 
   nixConfig = {
-    extra-substituters = [ "https://lehmanator.cachix.org/" ];
+    extra-substituters = ["https://lehmanator.cachix.org/"];
     extra-trusted-public-keys = [
       "lehmanator.cachix.org-1:kT+TO3tnSoz+lxk2YZSsMOtVRZ7Gc57jaKWL57ox1wU="
     ];
@@ -233,6 +230,7 @@
     std.url = "github:divnix/std";
     hive.url = "github:divnix/hive";
     omnibus.url = "github:GTrunSec/omnibus";
+    bird.url = "github:spikespaz/bird-nix-lib";
 
     # --- Libs: Packaging ------------------------------------------
     nixpak = {
