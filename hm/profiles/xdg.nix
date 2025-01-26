@@ -16,78 +16,90 @@
 let
   homedir = config.home.homeDirectory;
 in {
-  xdg = {
+  xdg.enable = true;
+
+  # --- Base Dirs ---
+  xdg.cacheHome = "${homedir}/.cache";
+  xdg.configHome = "${homedir}/.config";
+  xdg.dataHome = "${homedir}/.local/share";
+  xdg.stateHome = "${homedir}/.local/state";
+
+  # --- MIME Type Handling ---
+  # TODO: Move to separate file: mimetypes.nix
+  # TODO: Set MimeType for default terminal application: `x-scheme-handler/terminal`
+  # TODO: Configure: `~/.config/handlr/handlr.toml`
+  #xdg.mimeApps = { associations = { added={}; removed={}; }; defaultApplications={}; };
+  #home.packages = [pkgs.handlr];
+  xdg.mimeApps.enable = true;
+  xdg.mime.enable = true;
+
+  xdg.portal = {
+    # TODO: Handle other desktop environments with standalone config
+    enable = osConfig.services.xserver.enable or config.programs.gnome-shell.enable or false;
+    xdgOpenUsePortal = true;
+    config = lib.recursiveUpdate (osConfig.xdg.portal.config or {}) {};
+    configPackages = (osConfig.xdg.portal.configPackages or []) ++ [];
+    extraPortals = (osConfig.xdg.portal.extraPortals or []) ++ [];
+  };
+
+  xdg.systemDirs = {
+    config = [
+      "/etc/xdg"
+      config.xdg.configHome
+    ];
+    data = [
+      "/usr/share"
+      "/usr/local/share"
+      config.xdg.dataHome
+    ];
+  };
+
+  xdg.userDirs = {
     enable = true;
+    createDirectories = true;
+    extraConfig = with config.xdg; {
+      XDG_BACKUP_DIR = "${homedir}/Backup";
+      XDG_BOOKS_DIR = "${homedir}/Books";
+      XDG_CODE_DIR = "${homedir}/Code";
+      XDG_GAMES_DIR = "${homedir}/Games";
+      XDG_NOTES_DIR = "${homedir}/Notes";
 
-    # --- Base Dirs ---
-    cacheHome = "${homedir}/.cache";
-    configHome = "${homedir}/.config";
-    dataHome = "${homedir}/.local/share";
-    stateHome = "${homedir}/.local/state";
+      XDG_APPS_DIR = "${homedir}/.local/apps";
+      XDG_BIN_DIR = "${homedir}/.local/bin";
+      XDG_REPOS_DIR = "${homedir}/.local/repos";
+      XDG_SCRIPTS_DIR = "${homedir}/.local/scripts";
+      XDG_SECRETS_DIR = "${homedir}/.local/secrets";
+      XDG_SYNC_DIR = "${homedir}/.local/sync";
 
-    # --- MIME Type Handling ---
-    # TODO: Move to separate file: mimetypes.nix
-    # TODO: Set MimeType for default terminal application: `x-scheme-handler/terminal`
-    # TODO: Configure: `~/.config/handlr/handlr.toml`
-    #xdg.mimeApps = { associations = { added={}; removed={}; }; defaultApplications={}; };
-    #home.packages = [pkgs.handlr];
-    mimeApps.enable = true;
-    mime.enable = true;
+      XDG_LAUNCHERS_DIR = "${dataHome}/applications";
+      XDG_AUTOSTART_DIR = "${dataHome}/autostart";
+      XDG_ICONS_DIR = "${dataHome}/icons";
+      XDG_THEMES_DIR = "${dataHome}/themes";
+      XDG_UNITS_DIR = "${configHome}/systemd";
 
-    portal = {
-      # TODO: Handle other desktop environments with standalone config
-      enable = osConfig.services.xserver.enable or config.programs.gnome-shell.enable or false;
-      xdgOpenUsePortal = true;
-      config = lib.recursiveUpdate (osConfig.xdg.portal.config or {}) {};
-      configPackages = (osConfig.xdg.portal.configPackages or []) ++ [];
-      extraPortals = (osConfig.xdg.portal.extraPortals or []) ++ [];
-    };
+      # --- Audio ---
+      XDG_AUDIO_DIR = "${homedir}/Audio";
+      XDG_AUDIOBOOKS_DIR = "$XDG_AUDIO_DIR/Audiobooks";
+      XDG_SOUNDS_DIR = "$XDG_AUDIO_DIR/Sounds";
+      XDG_ALARMS_DIR = "$XDG_AUDIO_DIR/Alarms";
+      XDG_SOUNDEFFECTS_DIR = "$XDG_AUDIO_DIR/Effects";
+      XDG_NOTIFICATIONS_DIR = "$XDG_AUDIO_DIR/Notifications";
+      XDG_NOISE_DIR = "$XDG_AUDIO_DIR/Noise";
+      XDG_RINGTONES_DIR = "$XDG_AUDIO_DIR/Ringtones";
 
-    systemDirs = {
-      config = ["/etc/xdg"];
-      data = ["/usr/share" "/usr/local/share"];
-    };
+      # --- Pictures ---
+      XDG_CAMERA_PICTURES_DIR = config.xdg.userDirs.pictures + "/Camera";
+      XDG_SCREENSHOTS_DIR = config.xdg.userDirs.pictures + "/Screenshots";
 
-    userDirs = {
-      enable = true;
-      createDirectories = true;
-      extraConfig = with config.xdg; {
-        XDG_BACKUP_DIR = "${homedir}/Backup";
-        XDG_BOOKS_DIR = "${homedir}/Books";
-        XDG_CODE_DIR = "${homedir}/Code";
-        XDG_GAMES_DIR = "${homedir}/Games";
-        XDG_NOTES_DIR = "${homedir}/Notes";
-
-        XDG_AUDIO_DIR = "${homedir}/Audio";
-        #XDG_AUDIOBOOKS_DIR = "$XDG_AUDIO_DIR/Audiobooks";
-        #XDG_SOUNDS_DIR = "$XDG_AUDIO_DIR/Sounds";
-        #XDG_ALARMS_DIR = "$XDG_SOUNDS_DIR/Alarms";
-        #XDG_SOUNDEFFECTS_DIR = "$XDG_SOUNDS_DIR/Effects";
-        #XDG_NOTIFICATIONS_DIR = "$XDG_SOUNDS_DIR/Notifications";
-        #XDG_NOISE_DIR = "$XDG_SOUNDS_DIR/Relax";
-        #XDG_RINGTONES_DIR = "$XDG_SOUNDS_DIR/Ringtones";
-
-        #XDG_CLIPS_DIR = "${userdirs.videos}/Clips";
-        #XDG_MOVIES_DIR = "${userdirs.videos}/Movies";
-        #XDG_MUSICVIDEOS_DIR = "${userdirs.videos}/Songs";
-        #XDG_TV_DIR = "${userdirs.videos}/TV";
-        #XDG_YOUTUBE_DIR = "${userdirs.videos}/YouTube";
-
-        XDG_APPS_DIR = "${homedir}/.local/apps";
-        XDG_BIN_DIR = "${homedir}/.local/bin";
-        XDG_REPOS_DIR = "${homedir}/.local/repos";
-        XDG_SCRIPTS_DIR = "${homedir}/.local/scripts";
-        XDG_SECRETS_DIR = "${homedir}/.local/secrets";
-        XDG_SYNC_DIR = "${homedir}/.local/sync";
-
-        XDG_ICONS_DIR = "${dataHome}/icons";
-        XDG_THEMES_DIR = "${dataHome}/themes";
-
-        XDG_LAUNCHERS_DIR = "${dataHome}/applications";
-        XDG_AUTOSTART_DIR = "${dataHome}/autostart";
-
-        XDG_UNITS_DIR = "${configHome}/systemd";
-      };
+      # --- Videos ---
+      XDG_CAMERA_RECORDINGS_DIR = config.xdg.userDirs.videos + "/Camera";
+      XDG_CLIPS_DIR = config.xdg.userDirs.videos + "/Clips";
+      XDG_MOVIES_DIR = config.xdg.userDirs.videos + "/Movies";
+      XDG_MUSICVIDEOS_DIR = config.xdg.userDirs.videos + "/Songs";
+      XDG_SCREENCASTS_DIR = config.xdg.userDirs.videos + "/Screencasts";
+      XDG_TUTORIALS_DIR = config.xdg.userDirs.videos + "/Tutorials";
+      XDG_TV_DIR = config.xdg.userDirs.videos + "/TV";
+      XDG_YOUTUBE_DIR = config.xdg.userDirs.videos + "/YouTube";
     };
   };
 
