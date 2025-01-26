@@ -1,105 +1,128 @@
-{
-  inputs,
-  config,
-  lib,
-  pkgs,
-  ...
-}: let
-  program = "eza";
-  readable = {
-    size = true;
-    date = true;
-    perms = true;
-  };
-  sort = {
-    dirs = "first";
-    field = "name";
-    reverse = false;
-    ignored = true && show.git;
-  };
-  view = {
-    layout = "grid"; # grid | tree | oneline
-    recurse = true;
-    depth = 3;
-  };
-  show = {
-    classify = false;
-    color = true;
-    git = true;
-    icons = true;
-    headers = true;
-    links = true;
-    symlinks = true;
-    total = true;
-  };
-in {
-  # --- lsd ---
+{...}: {
   programs.lsd = {
     enable = true;
-    enableAliases = program == "lsd";
-    settings = {
-      # See: https://github.com/Peltoche/lsd#config-file-content
-      blocks = [
-        "permission"
-        "user"
-        "group"
-        "size"
-        "date"
-        "name"
-        #"context"
-        #"inode"
-        #"links"
-        (
-          if show.git
-          then "git"
-          else ""
-        ) # "git"
-      ];
-      classic = false;
-      color.theme = "default"; # default  | custom (looks for ~/.config/lsd/colors.yaml)
-      color.when =
-        if show.color
-        then "auto"
-        else "never"; # always   | auto   | never
-      hyperlink =
-        if show.links
-        then "auto"
-        else "never"; # always   | auto   | never
-      icons.when =
-        if show.icons
-        then "auto"
-        else "never"; # always   | auto   | never
-      icons.theme =
-        if show.icons
-        then "fancy"
-        else "unicode"; # unicode  | fancy
-      date =
-        if readable.date
-        then "relative"
-        else "date"; # relative | date   | +<date_format>
-      permission =
-        if readable.perms
-        then "rwx"
-        else "octal"; # octal    | rwx
-      size =
-        if readable.size
-        then "short"
-        else "default"; # default  | short  | bytes
-      recursion.enabled = view.recurse;
-      recursion.depth = view.depth;
-      layout = view.layout; # grid  | tree | oneline
-      sorting.column = sort.field; # name  | time | size    | version
-      sorting.dir-grouping = sort.dirs; # first | last | none
-      sorting.reverse = sort.reverse;
-      indicators = show.classify;
-      header = show.headers;
-      total-size = show.total; # Show total size of directories. Default=false
-      ignore-globs = [".git" ".hg" ".svn"];
+    enableAliases = false;
 
-      # --- Symlinks ---
-      dereference = true; # !show.symlinks;
-      no-symlink = !show.symlinks;
+    # https://github.com/lsd-rs/lsd/tree/v1.0.0#color-theme-file-content
+    # colors = { };
+
+    # https://github.com/Peltoche/lsd#config-file-content
+    settings = {
+      classic = false;
+
+      # https://github.com/lsd-rs/lsd#configuration
+      # Color theme options:
+      # - default (use LS_COLORS or builtin defaults)
+      # - custom  (use ~/.config/lsd/colors.yaml)
+      # - <name>  (use ~/.config/lsd/themes/<name>.yaml)
+      color.theme = "default";
+      color.when = "always";
+
+      # date: relative | date | +<date_format>
+      date = "relative";
+
+      dereference = false;
+      header = true;
+      hyperlink = "auto";
+
+      # https://github.com/lsd-rs/lsd#icon-theme-file-content
+      # https://github.com/lsd-rs/lsd/blob/master/src/theme/icon.rs
+      # theme: fancy | unicode;
+      icons = {
+        when = "auto";
+        theme = "fancy";
+        separator = " ";
+      };
+
+      ignore-globs = [".git" ".hg" ".svn"];
+      indicators = false;
+
+      # layout: grid  | tree | oneline
+      # layout = "grid";
+
+      no-symlink = false;
+
+      # permission: octal | rwx
+      permission = "octal";
+
+      recursion = {
+        enabled = false;
+        depth = 3;
+      };
+
+      # size: default | short | bytes
+      size = "short";
+
+      # --- Sorting ---
+      # column: extension | name | size | time | version
+      # grouping:   first | last | none
+      sorting = {
+        column = "name";
+        dir-grouping = "first";
+        reverse = false;
+      };
+
       symlink-arrow = "⇒";
+
+      # Show total size of directories. Default=false
+      total-size = true;
+
+      # --- Field Order ---
+      # Options: context | date | git | group | inode | links | name | permission | size
+      blocks = let
+        # Defaults used by lsd
+        default = ["permission" "user" "group" "size" "git" "name" "date"];
+        # Defaults used by eza
+        eza = ["permission" "size" "user" "group" "date" "git" "name"];
+        git-left = ["date" "git" "name"];
+        git-right = ["name" "git" "date"];
+
+        # Tree between groups of fields
+        split = {
+          # Permissions to left of file tree
+          perm-left = {
+            date = ["permission" "user" "group" "name" "date" "git" "size"];
+            git = ["permission" "user" "group" "name" "git" "date" "size"];
+            size = ["permission" "user" "group" "name" "size" "git" "date"];
+          };
+          # Permissions to right of file tree
+          perm-right = {
+            date = ["date" "git" "size" "name" "user" "group" "permission"];
+            git = ["git" "date" "size" "name" "user" "group" "permission"];
+            size = ["size" "git" "date" "name" "user" "group" "permission"];
+          };
+        };
+        # All fields left of filename
+        left = {
+          date = ["permission" "user" "group" "size" "git" "date" "name"];
+          git = ["permission" "user" "group" "size" "date" "git" "name"];
+          size = ["permission" "user" "group" "date" "git" "size" "name"];
+        };
+        # All fields right of filename
+        right = {
+          git = ["name" "git" "date" "size" "user" "group" "permission"];
+          date = ["name" "date" "git" "size" "user" "group" "permission"];
+          size = ["name" "size" "git" "date" "user" "group" "permission"];
+        };
+
+        # Dont show permissions, user, group
+        noperms = {
+          # Tree to left of fields
+          left = {
+            date = ["name" "date" "git" "size"];
+            git = ["name" "git" "date" "size"];
+            size = ["name" "size" "git" "date"];
+          };
+
+          # Tree to right of fields
+          right = {
+            size = ["size" "git" "date" "name"];
+            date = ["date" "git" "size" "name"];
+            ght-git = ["git" "date" "size" "name"];
+          };
+        };
+      in
+        git-left;
     };
   };
 }
