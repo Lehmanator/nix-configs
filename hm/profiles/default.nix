@@ -71,7 +71,14 @@
     + config.home.username
   );
   home.stateVersion = osConfig.system.stateVersion or "23.11";
-  # home.extraOutputsToInstall = [ "doc" "info" "devdoc" "dev" "bin" ];
+  home.extraOutputsToInstall = lib.unique (
+    (osConfig.environment.extraOutputsToInstall or [])
+    ++ [
+      "doc"
+      "info"
+      # "devdoc" "dev"
+    ]
+  );
   home.shellAliases = {
     # --- Directory Navigation ---
     # TODO: Use lib to extend for any number of dots.
