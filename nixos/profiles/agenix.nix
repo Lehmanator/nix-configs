@@ -21,23 +21,7 @@
 #      - Import Nix configs nested deeper in the file tree.
 #
 # Set env var `RULES` to specify path to `./secrets.nix`
-let
-  dirs = {
-    host = inputs.self + /nixos/hosts/${config.networking.hostName};
-    user = inputs.self + /hm/users/${user};
-  };
-  secretDir = "${dirs.host}/secrets";
-  keys = {
-    host = {
-      ed25519 = "${dirs.host}/ssh_host_ed25519_key.pub";
-      rsa = "${dirs.host}/ssh_host_rsa_key.pub";
-    };
-    user = {
-      ed25519 = "${dirs.user}/id_ed25519.pub";
-      rsa = "${dirs.user}/id_rsa.pub";
-    };
-  };
-in {
+{
   imports = [
     inputs.agenix.nixosModules.default
     inputs.agenix-rekey.nixosModules.default
@@ -67,14 +51,14 @@ in {
       # MUST be a path inside of your repository,
       # & it MUST be constructed by concatenating to the root directory of your flake.
       # Follow the example.
-      localStorageDir = secretDir;
+      localStorageDir = inputs.self + /nixos/hosts/${config.networking.hostName}/secrets;
       cacheDir = "$XDG_CACHE_HOME/agenix-rekey";
 
       # https://github.com/oddlama/agenix-rekey?tab=readme-ov-file#agerekeyhostpubkey
       # The age public key to use as a recipient when rekeying.
       # This either has to be the path to an age public key file,
       # #or the public key itself in string form.
-      hostPubkey = builtins.readFile keys.host.ed25519;
+      hostPubkey = inputs.self + /nixos/hosts/${config.networking.hostName}/ssh_host_ed25519_key.pub;
 
       # https://github.com/oddlama/agenix-rekey?tab=readme-ov-file#agerekeymasteridentities
       # List: age identities used by rage when decrypting stored secrets to rekey them for hosts.
@@ -85,7 +69,7 @@ in {
           identity = ./hm/users/sam/privkey.age;
           pubkey = "age13p3t3hl7uk2k5alq0p0j62kghh7926vlcts2hjl0vcy70ggjqcwscpk0ul";
         }
-        keys.user.ed25519
+        (inputs.self + /hm/users/${user}/id_ed25519.pub)
         "/home/${user}/.ssh/id_ed25519.pub"
         "/home/${user}/.config/age/host.pub"
         "/home/${user}/.config/sops/age/"
@@ -99,7 +83,7 @@ in {
   };
 
   environment.etc = {
-    "ssh/ssh_host_ed25519_key.pub".source = keys.host.ed25519;
-    "ssh/ssh_host_rsa_key.pub".source = keys.host.rsa;
+    "ssh/ssh_host_ed25519_key.pub".source = inputs.self + /nixos/hosts/${config.networking.hostName}/ssh_host_ed25519_key.pub;
+    "ssh/ssh_host_rsa_key.pub".source = inputs.self + /nixos/hosts/${config.networking.hostName}/ssh_host_rsa_key.pub;
   };
 }
