@@ -12,6 +12,7 @@
     ./helix
     ./languages
     ./nix
+    ./pls
     ./roles/dev
     ./roles/sysadmin
     ./zsh
@@ -42,7 +43,6 @@
     ./navi.nix
     ./ollama.nix
     ./playerctld.nix
-    ./pls.nix
     ./readline.nix
     ./recoll.nix
     ./ripgrep.nix
