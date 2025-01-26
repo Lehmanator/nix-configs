@@ -1,5 +1,9 @@
-{ config, lib, pkgs, ... }:
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   environment.sessionVariables.OLLAMA_HOST = "45.42.244.197:11434";
 
   services.ollama = {
@@ -29,18 +33,18 @@
         completion.http = {
           kind = "ollama/completion";
           model_name = "codellama:7b";
-          prompt_template = "<PRE> {prefix} <SUF>{suffix} <MID>";  # Example prompt template for CodeLlama model series.
+          prompt_template = "<PRE> {prefix} <SUF>{suffix} <MID>"; # Example prompt template for CodeLlama model series.
           api_endpoint = "http://${config.environment.sessionVariables.OLLAMA_HOST}";
           # api_endpoint = "http://45.42.244.197:11434";
         };
         #chat.http = {
-        #  kind = "ollama/chat";  
+        #  kind = "ollama/chat";
         #};
         #embedding.http = {
-        #  kind = "ollama/embedding";  
+        #  kind = "ollama/embedding";
         #};
       };
-      
+
       # Repos to index
       # repositories = [
       #   { name = "nix-configs"; git_url = "https://github.com/Lehmanator/nix-configs"; }
@@ -53,7 +57,6 @@
       #   # { name = "repository_a"; git_url = "file:///var/lib/tabby/repository_a"; }
       # ];
     };
-
   };
 
   systemd.services = rec {
@@ -91,7 +94,6 @@
       };
     };
   };
-
   # TODO: Configure Helix to import
   environment.etc = {
     "tabby/agent/config.toml".source = (pkgs.formats.toml {}).generate "config.toml" {

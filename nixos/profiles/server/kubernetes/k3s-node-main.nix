@@ -1,8 +1,12 @@
-{ inputs, config, lib, pkgs, ... }:
 {
+  inputs,
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   #imports = [ ./k3s-common.nix ];
-  sops.secrets.k3s-server-token = { };
-  environment.systemPackages = [ pkgs.k3s ];
+  sops.secrets.k3s-server-token = {};
   services.k3s = {
     enable = true;
     role = "server";
@@ -21,7 +25,6 @@
       #"--enable-pprof"
       #"--flannel-ipv6-masq"
       #"--multi-cluster-cidr"
-
     ];
   };
 
@@ -44,4 +47,5 @@
   # /etc/rancher/k3s/registries.yaml                - Private Registry config
   # /var/lib/rancher/credentialprovider/config.yaml - Credential Provider plugin config
   # /var/lib/rancher/k3s or ${HOME}/.rancher/k3s    - State dirs
+  environment.systemPackages = [pkgs.k3s];
 }

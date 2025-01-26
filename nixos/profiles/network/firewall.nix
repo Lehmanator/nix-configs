@@ -1,10 +1,8 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
 {
+  config,
+  lib,
+  ...
+}: {
   imports = [
     #./iptables.nix
     #./nftables.nix
@@ -22,8 +20,6 @@
         if config.networking.nftables.enable
         then "2/minute burst 5 packets"
         else "--limit 2/minute  --limit-burst 5/minute";
-
     };
-
   };
 }

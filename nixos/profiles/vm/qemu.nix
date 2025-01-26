@@ -1,12 +1,9 @@
-{ inputs
-, config
-, lib
-, pkgs
-, user
-, ...
-}:
 {
-  imports = [ ./qemu-web.nix ];
+  pkgs,
+  user,
+  ...
+}: {
+  imports = [./qemu-web.nix];
   #virtualisation.qemu = {
   #  guestAgent.enable = true;
   #  diskInterface = "virtio"; # virtio | scsi | ide
@@ -20,6 +17,6 @@
   #    packages = with pkgs; [ OVMFFull.fd pkgsCross.aarch64-multiplatform.OVMF.fd ];
   #  };
   #};
-  users.extraGroups.qemu-libvirtd.members = [ user ];
-  environment.systemPackages = [ pkgs.qemu-utils pkgs.quickemu ];
+  users.extraGroups.qemu-libvirtd.members = [user];
+  environment.systemPackages = [pkgs.qemu-utils pkgs.quickemu];
 }

@@ -1,17 +1,19 @@
-{ config, lib, pkgs, user, ... }:
-let isFunnel = false; in
 {
-  imports = [ ./personal.nix ];
-  environment.systemPackages = lib.mkIf config.services.xserver.desktopManager.gnome.enable [
-    pkgs.gnomeExtensions.tailscale-qs
-    pkgs.gnomeExtensions.tailscale-status
-  ];
+  config,
+  lib,
+  pkgs,
+  user,
+  ...
+}: let
+  isFunnel = false;
+in {
+  imports = [./personal.nix];
 
   services.tailscale = {
     enable = true;
     authKeyFile = config.sops.secrets.tailscale-auth-keyfile.path; #"/run/secrets/tailscale0.key";
     extraSetFlags = ["--operator ${user}" "--ssh"];
-    extraUpFlags  = ["--operator ${user}" "--ssh"];
+    extraUpFlags = ["--operator ${user}" "--ssh"];
     interfaceName = "tailscale0";
 
     openFirewall = true;
@@ -23,13 +25,18 @@ let isFunnel = false; in
     useRoutingFeatures = "both"; # Enable subnet routers & exit nodes.  (none|client|server|both)
   };
 
-  sops.secrets.tailscale-auth-keyfile = { };
+  environment.systemPackages = lib.mkIf config.services.xserver.desktopManager.gnome.enable [
+    pkgs.gnomeExtensions.tailscale-qs
+    pkgs.gnomeExtensions.tailscale-status
+  ];
 
   networking = {
-    nameservers = lib.mkBefore [ "100.100.100.100" ];
+    nameservers = lib.mkBefore ["100.100.100.100"];
     firewall = {
-      trustedInterfaces = [ config.services.tailscale.interfaceName ]; # Always allow traffic from Tailscale network
+      trustedInterfaces = [config.services.tailscale.interfaceName]; # Always allow traffic from Tailscale network
       allowedUDPPorts = lib.mkIf isFunnel [443 8443 10000];
     };
   };
+
+  sops.secrets.tailscale-auth-keyfile = {};
 }

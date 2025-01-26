@@ -1,4 +1,10 @@
-{ inputs, config, lib, pkgs, ... }:
+{
+  inputs,
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 #
 # https://github.com/nix-community/lanzaboote
 # https://github.com/nix-community/lanzaboote/blob/master/docs/QUICK_START.md
@@ -46,12 +52,11 @@
 let
   inherit (lib) mkDefault mkForce;
   sbctl = lib.getExe pkgs.sbctl;
-in
-{
+in {
   imports = with inputs.lanzaboote.nixosModules; [lanzaboote uki];
   boot = {
     lanzaboote = mkDefault {
-      enable =  true;
+      enable = true;
       # enrollKeys = true;
       configurationLimit = config.boot.loader.systemd-boot.configurationLimit or 20;
       pkiBundle = "/etc/secureboot"; #config.sops.secrets.secureboot-keys.path;
@@ -60,7 +65,7 @@ in
     };
     loader = {
       grub.enable = mkForce false;
-      systemd-boot.enable = mkForce false;  #mkForce (!lanzaboote.enable);
+      systemd-boot.enable = mkForce false; #mkForce (!lanzaboote.enable);
       #uki = { enable = mkDefault false; stub = "path-to-uki-stub"; };
     };
   };
@@ -76,7 +81,7 @@ in
   #   secureboot-privkey = { path = "/etc/secureboot/db/db.key"; owner="root"; group="root"; };
   #};
 
-  environment.systemPackages = [ 
+  environment.systemPackages = [
     # sbctl: Secure Boot - debug & troubleshoot
     pkgs.sbctl
     # (pkgs.writeShellScript "secureboot-enroll.sh" ''

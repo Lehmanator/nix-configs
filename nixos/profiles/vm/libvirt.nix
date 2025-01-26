@@ -1,19 +1,12 @@
-{ inputs
-, config
-, lib
-, pkgs
-, user
-, ...
-}:
-let root = true; in
-{
-  imports = [ ];
+{user, ...}: let
+  root = true;
+in {
   virtualisation.libvirtd = {
     enable = true;
-    allowedBridges = [ "virbr0" ];
+    allowedBridges = ["virbr0"];
     extraConfig = ''
     '';
-    extraOptions = [ "--verbose" ];
+    extraOptions = ["--verbose"];
     qemu = {
       # If true, libvirtd runs qemu as root.
       # If false, libvirtd runs qemu as unprivileged user qemu-libvirtd.
@@ -29,8 +22,11 @@ let root = true; in
     };
   };
 
-  users.users.${user}.extraGroups = if root then [ "qemu-libvirtd" "libvirtd" ] else [ "libvirtd" ];
   programs.virt-manager.enable = true;
+  users.users.${user}.extraGroups =
+    if root
+    then ["qemu-libvirtd" "libvirtd"]
+    else ["libvirtd"];
 
   # --- QEMU / KVM ---
   # --- User Session ---

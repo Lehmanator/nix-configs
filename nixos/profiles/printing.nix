@@ -1,5 +1,4 @@
-{ config, lib, pkgs, ... }:
-{
+{pkgs, ...}: {
   services.printing = {
     enable = true;
     browsing = true;
@@ -10,6 +9,6 @@
       CreateIPPPrinterQueues All
       BrowseProtocols all
     '';
-    drivers = [ pkgs.gutenprint ];
+    drivers = [pkgs.gutenprint];
   };
 }

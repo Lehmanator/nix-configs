@@ -1,10 +1,14 @@
-{ inputs, config, lib, pkgs, ... }:
-let
-  inherit (lib) mkDefault mkIf;
-in
 {
+  inputs,
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  inherit (lib) mkDefault mkIf;
+in {
   # https://github.com/nix-community/robotnix
-  imports = [ inputs.robotnix.nixosModules.attestation-server ];
+  imports = [inputs.robotnix.nixosModules.attestation-server];
 
   services.attestation-server = {
     enable = mkDefault false;
@@ -28,15 +32,12 @@ in
     };
   };
 
-  # Persist data directories
-  environment.persistence."/nix/persist".directories = ["/var/lib/private/attestation"];
-
   # Allow through firewall
   networking.firewall.allowedTCPPorts = mkDefault [config.services.attestation-server.port];
 
   # Store secrets for attestation signatures
   sops.secrets = mkIf config.services.attestation-server.enable {
-    attestation-signature-fingerprint = { };
-    attestation-avb-fingerprint = { };
+    attestation-signature-fingerprint = {};
+    attestation-avb-fingerprint = {};
   };
 }

@@ -1,64 +1,44 @@
-{ self, inputs, outputs, config, lib, pkgs,
-  host, repo, user, network, machine,
+{
+  inputs,
+  config,
+  lib,
   ...
 }:
-# TODO: Add impermanence
 # TODO: Create lib to automatically create for each service:
-# - TODO: Impermanence persistence for data dirs
 # - TODO: DNS entries
 # - TODO: Theme config (nix-colors | stylix)
 # - TODO: Service Accounts for backend programs
-#   - TODO: Unix:      user, group, 
+#   - TODO: Unix:      user, group,
 #   - TODO: Auth:      LDAP, Keycloak, Hashicorp Vault
 #     - Fields: client_id, client_secret, service_account_name, service_account_password
 #   - TODO: Database:  mysql, postgresql, mongodb, sqlite3
 #     - Fields: username, database name, password file secret
 #   - TODO: Cache:     redis, memcached
 #     - Fields: username, database name, password file secret
-#   - TODO: Storage:   minio, host filesystem, 
+#   - TODO: Storage:   minio, host filesystem,
 #     - Fields: bucket, encryption_key
-#   - TODO: Reverse Proxy: NGINX, Apache, Traefik, 
+#   - TODO: Reverse Proxy: NGINX, Apache, Traefik,
 #     - Fields: Virtual host, SSL certs, ingress, port-mapping,
-#   - TODO: Mailing:   maingun, 
-let
-  program = "firefly";
-  hostname = "${program}.${config.networking.hostName}";
-  fqdn     = "${program}.${config.networking.fqdn}";
-  dataDir = "/var/lib/${program}";
-  #secretDir = "${repo.base}/hosts/${config.networking.hostName}/secrets";
-  secrets = {
-    repo = "${repo.secrets}/${config.networking.hostName}";
-    host = "/run/secrets/${program}";
-  };
-  secret = "${secrets.host}/${program}-appkey.key";
-in
+#   - TODO: Mailing:   maingun,
 {
-  imports = [
-    inputs.firefly.nixosModules.firefly-iii
-    inputs.agenix.nixosModules.age
-    #inputs.impermanence.nixosModules.impermanence
-  ];
-  nix.settings.substituters = [ "https://timhae-firefly.cachix.org/" ];
-  nix.settings.trusted-public-keys = [ "timhae-firefly.cachix.org-1:TMexYUvP5SKkeKG11WDbYUVLh/4dqvCqSE/c028sqis=" ];
-
-  age.secrets."${program}-appkey" = {
-    file = "${secrets.repo}/${program}-appkey.age";
-    mode = "770";
-    owner = "firefly-iii";
-    group = "nginx";
-  };
-
+  imports = [inputs.firefly.nixosModules.firefly-iii];
   services.firefly-iii = {
     enable = true;
-    hostname = fqdn;
-    appURL = "https://${fqdn}";
-    appKeyFile = config.age.secrets."${program}-appkey".path;
-    dataDir = dataDir;       # TODO: Persist with impermanence
+    hostname = "firefly.${config.networking.hostName}";
+    appURL = "https://firefly.${config.networking.fqdn}";
+    appKeyFile = config.age.secrets."firefly-appkey".path;
+    dataDir = "/var/lib/firefly";
     group = "nginx";
     nginx = {
-      serverAliases = [ program hostname fqdn "${program}.local" "${program}.lan" ];
-      forceSSL   = lib.mkDefault true;
-      enableACME = lib.mkDefault true;
+      enableACME = config.security.acme.acceptTerms;
+      forceSSL = config.security.acme.acceptTerms;
+      serverAliases = [
+        "firefly"
+        "firefly.local"
+        "firefly.lan"
+        "firefly.${config.networking.hostName}"
+        "firefly.${config.networking.fqdn}"
+      ];
     };
     poolConfig = {
       "pm" = "dynamic";
@@ -69,16 +49,36 @@ in
       "pm.max_requests" = 500;
     };
     config = {
-      MAILGUN_SECRET = { _secret = config.age.secrets."${program}-serviceaccount-mailgun".path; };
+      MAILGUN_SECRET = {_secret = config.age.secrets."firefly-serviceaccount-mailgun".path;};
     };
     database = rec {
-      type = lib.mkDefault "pgsql";
-      host = if createLocally then "localhost" else "${type}.${config.networking.domain}";
-      port = if type == "pgsql" then 5432 else 3306;
-      name = program;
-      passwordFile = config.age.secrets."${program}-serviceaccount-${type}".path;
+      name = "firefly";
       createLocally = lib.mkDefault false;
+      type =
+        if config.services.postgresql.enable
+        then "pgsql"
+        else "mysql";
+      host =
+        if createLocally
+        then "localhost"
+        else "${type}.${config.networking.domain}";
+      port =
+        if config.services.postgresql.enable
+        then 5432
+        else 3306;
+      passwordFile = config.age.secrets."firefly-serviceaccount-${type}".path;
     };
   };
 
+  nix.settings = {
+    substituters = ["https://timhae-firefly.cachix.org/"];
+    trusted-public-keys = ["timhae-firefly.cachix.org-1:TMexYUvP5SKkeKG11WDbYUVLh/4dqvCqSE/c028sqis="];
+  };
+
+  age.secrets.firefly-appkey = {
+    file = inputs.self + /nixos/hosts/${config.networking.hostName}/secrets/firefly-appkey.age;
+    mode = "770";
+    owner = "firefly-iii";
+    group = "nginx";
+  };
 }

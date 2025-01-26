@@ -1,11 +1,9 @@
-{ inputs
-, config
-, lib
-, pkgs
-, user
-, ...
-}:
 {
+  lib,
+  pkgs,
+  user,
+  ...
+}: {
   networking.networkmanager = {
     enable = lib.mkDefault true;
     enableStrongSwan = lib.mkDefault true;
@@ -44,33 +42,30 @@
     # See:
     # - https://developer.gnome.org/NetworkManager/stable/NetworkManager.conf.html
     # - man NetworkManager.conf(5)
-    #dns = "default"; # default | dnsmasq | unbound | systemd-resolved | none
+    # dns = "default"; # default | dnsmasq | unbound | systemd-resolved | none
 
     # Append config to NetworkManager.conf
-    #extraConfig = ''
-    #'';
+    # extraConfig = ''
+    # '';
 
     # List of name servers that should be inserted before the ones configured in NetworkManager or received by DHCP
-    #insertNameservers = [
-    #];
+    # insertNameservers = [
+    # ];
 
-    #logLevel = "WARN";
+    # logLevel = "WARN";
 
-    #plugins = [
-    #];
+    # plugins = [
+    # ];
 
     # List of interfaces that will not be managed by NetworkManager
-    #unmanaged = [
-    #];
-
+    # unmanaged = [
+    # ];
   };
 
-  users.users.${user}.extraGroups = [ "networkmanager" ];
+  users.users.${user}.extraGroups = ["networkmanager"];
 
   # Disable annoying failure on activation. TODO: Possible mitigations?
   # - Reorder deps? (after/before)
   # - Downgrade severity to warning?
   systemd.services.NetworkManager-wait-online.enable = lib.mkDefault false;
-
-
 }

@@ -37,8 +37,7 @@ let
       rsa = "${dirs.user}/id_rsa.pub";
     };
   };
-in
-{
+in {
   imports = [
     inputs.agenix.nixosModules.default
     inputs.agenix-rekey.nixosModules.default
@@ -95,7 +94,7 @@ in
       # Using `agenix edit FILE`, file encrypted for all identities in `age.rekey.masterIdentities` by default.
       # Here, specify an extra set of pubkeys for which all secrets should also be encrypted.
       # Useful in case you want to have a backup identity that must be able to decrypt all secrets but should not be used when attempting regular decryption.
-      extraEncryptionPubkeys = [ "age1aazux953qlqlzpfvvnhtlz0qr866ae3gve9wcskj394gq9ax0pvqca44qu" ];
+      extraEncryptionPubkeys = ["age1aazux953qlqlzpfvvnhtlz0qr866ae3gve9wcskj394gq9ax0pvqca44qu"];
     };
   };
 
