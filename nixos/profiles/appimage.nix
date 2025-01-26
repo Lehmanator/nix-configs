@@ -1,18 +1,18 @@
-{ config, lib, pkgs, ... }:
 {
-  programs.fuse.userAllowOther = true;
-  boot.binfmt.registrations.appimage = {
-    wrapInterpreterInShell = false;
-    interpreter = "${pkgs.appimage-run}/bin/appimage-run";
-    recognitionType = "magic";
-    offset = 0;
-    mask = ''\xff\xff\xff\xff\x00\x00\x00\x00\xff\xff\xff'';
-    magicOrExtension = ''\x7fELF....AI\x02'';
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
+  programs.appimage = {
+    enable = true;
+    binfmt = true;
   };
+
+  programs.fuse.userAllowOther = true;
 
   environment.systemPackages = [
     pkgs.fuse3
     pkgs.appimagekit
-    pkgs.appimage-run
   ];
 }
