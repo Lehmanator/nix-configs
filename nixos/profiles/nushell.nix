@@ -1,17 +1,23 @@
 {
-  inputs,
   config,
   lib,
   pkgs,
   ...
 }: {
-  imports = [
-    (inputs.self + /nixos/profiles/shell.nix)
-  ];
-
-  # TODO: Remove bash, nushell config
   environment = {
-    systemPackages = [pkgs.nushell];
     shells = [pkgs.nushell];
+    systemPackages = [
+      pkgs.nushell
+      pkgs.nushellPlugins.dbus
+      pkgs.nushellPlugins.formats
+      pkgs.nushellPlugins.gstat
+      pkgs.nushellPlugins.highlight
+      pkgs.nushellPlugins.net
+      pkgs.nushellPlugins.polars
+      pkgs.nushellPlugins.query
+      pkgs.nushellPlugins.skim
+      pkgs.nushellPlugins.units
+      pkgs.nu_scripts
+    ];
   };
 }
