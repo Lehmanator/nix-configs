@@ -1,10 +1,15 @@
-{ inputs, config, lib, pkgs, ... }:
 {
+  inputs,
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   imports = [inputs.disko.nixosModules.disko];
 
   disko = {
-    enableConfig = lib.mkDefault false;
-    checkScripts = lib.mkDefault true;
+    enableConfig = lib.mkDefault true;
+    checkScripts = true;
     memSize = lib.mkDefault 4096; # Pass size of memory to runInLinuxVM (in megabytes)
     rootMountPoint = lib.mkDefault "/mnt";
 
@@ -19,12 +24,11 @@
     #  # A dummy key is in /tmp/secret.key
     #  extraConfig = { };
     #};
-
   };
 
   sops.secrets = {
     luks-password-system = {};
-    luks-password-home   = {};
-    luks-password-data   = {};
+    luks-password-home = {};
+    luks-password-data = {};
   };
 }
