@@ -132,6 +132,14 @@
 
   programs.man.generateCaches = true; # Disabled by default bc slows builds.
 
+  # Symlink config flake to ~/.config/flake
+  xdg.configFile."flake" = {
+    enable = true;
+    onChange = "echo 'flake updated!'";
+    recursive = true;
+    source = inputs.self.outPath;
+  };
+
   systemd.user = {
     # Start new/changed services wanted by active targets & stop obsolete services from prev generation
     # - "suggest"   / false = print suggested systemctl commands to run manually
