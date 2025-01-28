@@ -4,7 +4,7 @@
   lib,
   ...
 }: {
-  imports = [(inputs.self + /nixos/profiles/wireguard.nix)];
+  imports = [(inputs.self + /nixos/profiles/wireguard)];
   services.wgautomesh = {
     enable = true; # Whether to enable the wgautomesh daemon.
     enableGossipEncryption = true; # Enable encryption of gossip traffic.

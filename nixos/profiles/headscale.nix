@@ -48,7 +48,7 @@
       ]);
 in {
   imports = [
-    (inputs.self + /nixos/profiles/wireguard.nix)
+    (inputs.self + /nixos/profiles/wireguard)
     # (inputs.self + /nixos/profiles/keycloak.nix)
     # (inputs.self + /nixos/profiles/postgresql.nix)
   ];

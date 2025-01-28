@@ -3,6 +3,7 @@
   config,
   lib,
   pkgs,
+  user,
   ...
 }: {
   imports = [
@@ -70,7 +71,6 @@
     # (inputs.self + /nixos/profiles/monado.nix)
     (inputs.self + /nixos/profiles/motd.nix)
     # (inputs.self + /nixos/profiles/netbootxyz.nix)
-    (inputs.self + /nixos/profiles/network) # ./network/{iscsi-initiator,netboot,pixieboot}.nix
     (inputs.self + /nixos/profiles/networkmanager.nix)
     (inputs.self + /nixos/profiles/nix)
     (inputs.self + /nixos/profiles/nixvim.nix)
@@ -127,8 +127,9 @@
     # (inputs.self + /nixos/profiles/waydroid.nix)
     # (inputs.self + /nixos/profiles/wayland.nix)
     # (inputs.self + /nixos/profiles/wgautomesh.nix)
+    (inputs.self + /nixos/profiles/wifi)
     # (inputs.self + /nixos/profiles/wine.nix)
-    (inputs.self + /nixos/profiles/wireguard.nix)
+    (inputs.self + /nixos/profiles/wireguard)
     # (inputs.self + /nixos/profiles/xserver.nix)
     (inputs.self + /nixos/profiles/zsh.nix)
 
@@ -177,10 +178,62 @@
     efi.canTouchEfiVariables = lib.mkDefault true; # Whether allow install process to modify EFI boot vars
   };
 
-  # Set host ID to first 8 characters of /etc/machine-id
-  # TODO: Fix infinite recursion error
-  # networking.hostId = lib.substring 0 8 config.environment.etc.machine-id.text;
-  networking.domain = "lehman.run";
+  hardware.wirelessRegulatoryDatabase = true;
+
+  networking = {
+    # Set host ID to first 8 characters of /etc/machine-id
+    # TODO: Fix infinite recursion error
+    # networking.hostId = lib.substring 0 8 config.environment.etc.machine-id.text;
+    domain = "lehman.run";
+
+    # IPv6 <-> IPv4 address generation & translation
+    # default=gen temp ipv6 addrs & use as source addrs in routing.
+    # enabled=gen temp ipv6 addrs, but still use EUI-64 addresses as source addresses
+    tempAddresses = lib.mkDefault "default";
+
+    # timeServers = [ "0.nixos.pool.ntp.org" "1.nixos.pool.ntp.org" "2.nixos.pool.ntp.org" "3.nixos.pool.ntp.org" ];
+    # DHCP - Dynamically assign IP addresses
+    useDHCP = lib.mkDefault true;
+
+    # In containers, whether to use the `/etc/resolv.conf` supplied by the host
+    #  Note: Some reason why you may want to disable this, but cant remember why
+    useHostResolvConf = !config.services.resolved.enable;
+
+    # Guarantees unique interface names.
+    #  e.g. naming `eth0` -> `enp0s13f0u4u4u3` or `wlan0` -> `wlp166s0` instead of `wlan0` / `enp0s1` instead of `eth0`.
+    #  Benefit is that unique names means that if devices are detected/added in inconsistent order,
+    #   interface names don't get assigned to a different device between boots/rebuilds.
+    usePredictableInterfaceNames = lib.mkDefault false;
+
+    # Upstream DNS nameservers to resolve domain names & hostnames
+    nameservers = [
+      "1.1.1.1#one.one.one.one"
+      "1.0.0.1#one.one.one.one"
+      #"9.9.9.9"
+    ];
+
+    # Domains to search for hostnames
+    search = [
+      config.networking.domain
+      "samlehman.dev"
+      "samlehman.me"
+      "home.local"
+    ];
+
+    hosts = let
+      mkLan = hn: lib.map (tld: "${hn}.${tld}") ["local" "lan"];
+    in {
+      # --- Home Network ---
+      "192.168.1.1" = mkLan "router";
+      "192.168.1.2" = mkLan "wyse";
+      "192.168.1.6" = mkLan "cheetah";
+      "192.168.1.20" = mkLan "nintendo";
+      "192.168.1.30" = mkLan "fw";
+      "192.168.1.100" = mkLan "flame";
+    };
+  };
+
+  users.users.${user}.extraGroups = ["network"];
 
   # Unix ODBC drivers to register in /etc/odbcinst.ini
   environment.unixODBCDrivers = [pkgs.unixODBCDrivers.sqlite pkgs.unixODBCDrivers.psql];
