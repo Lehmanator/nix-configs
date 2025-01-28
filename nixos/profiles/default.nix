@@ -237,6 +237,7 @@
 
   # Unix ODBC drivers to register in /etc/odbcinst.ini
   environment.unixODBCDrivers = [pkgs.unixODBCDrivers.sqlite pkgs.unixODBCDrivers.psql];
+  environment.wordlist.enable = true;
   environment.systemPackages = [
     pkgs.systemctl-tui
     # Package to get CLI clients to connect to ODBC databases.
