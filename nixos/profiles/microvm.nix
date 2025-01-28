@@ -6,9 +6,7 @@
   user,
   ...
 }: {
-  #
   # https://github.com/astro/microvm.nix
-  #
   imports = [
     inputs.microvm.nixosModules.host
     inputs.microvm.nixosModules.microvm
@@ -24,7 +22,7 @@
       name = {
         autostart = true;
         flake = inputs.self; #flake = self;
-        pkgs = inputs.nixpkgs-unstable {system = "x86_64-linux";};
+        pkgs = inputs.nixos-stable {system = "x86_64-linux";};
         restartIfChanged = true;
         specialArgs = {inherit inputs pkgs user;};
         updateFlake = "git+file:///etc/nixos"; # Specify from where to let `microvm -u` update later on
@@ -43,8 +41,9 @@
               pivotRoot = "";
               extraArgs = [];
             };
+
+            # PCI / USB devices for host-to-vm passthrough
             devices = [
-              # PCI / USB devices for host-to-vm passthrough
               {
                 bus = "pci";
                 path = "0000:01:00.0";
@@ -58,9 +57,10 @@
                 path = "vendorid=0xabcd,productid=0x0123";
               } # QEMU-only !
             ];
+
             # TCP/UDP port forwarding (QEMU user-networking only)
+            # from=host|guest, proto=tcp|udp,
             forwardPorts = [
-              # from=host|guest, proto=tcp|udp,
               {
                 from = "host";
                 host.port = 10022;
@@ -89,38 +89,48 @@
                 guest.address = "10.0.2.10";
               }
             ];
+            # Path of vhost-user socket.
             graphics = {
               enable = true;
               socket = "${config.networking.hostName}-gpu.sock";
-            }; # Path of vhost-user socket.
+            };
             hugepageMem = false; #
-            hypervisor = ""; #           # Hypervisor to use by default in `microvm.declaredRunner`
+
+            # Hypervisor to use by default in `microvm.declaredRunner`
+            hypervisor = "";
+
+            # Network Interfaces
             interfaces = [
-              #             # Network Interfaces
               {
                 id = "vm-${vm-name}"; #    # Interface name on the host
                 bridge = ""; #             # Attach network interface to host interface for type=macvlan
                 mac = "02:00:00:00:00:01"; # Eth MAC addr of MicroVM guest's network interface (not the host's)
                 type = "user"; #           # user (qemu-only) | tap (tuntap) | macvtap (attach to host's physical net interface | bridge (attach qemu-created tap interface to a bridge)
                 macvtap = {
-                  #
                   link = ""; # Attach network interface to host interface for type=macvlan
                   mode = ""; # MACVLAN mode to use. (private | vepa | bridge | passthru | source)
                 };
               }
             ];
-            kernelParams = [""]; # `boot.kernelParams`, without ending up in `system.build.toplevel`, saving rebuilds
+
+            # `boot.kernelParams`, without ending up in `system.build.toplevel`, saving rebuilds
+            kernelParams = [""];
             kernel = config.boot.kernelPackages.kernel;
             initrdPath = "${config.system.build.initialRamdisk}/${config.system.boot.loader.initrdFile}";
-            mem = 512; # RAM allocation in MB.
+
+            # RAM allocation in MB.
+            mem = 512;
+
+            # Commands to run before starting the hypervisor
             preStart = ''
-            ''; # Commands to run before starting the hypervisor
+            '';
             qemu.extraArgs = [""]; # Extra arguments to pass to QEMU.
             runner = {};
+
+            # Shared filesystem directories (protos: virtiofs | 9p)
+            # Share directories from host (source/socket) -> VM (mountPoint)
+            # Pass logs from VM -> host
             shares = [
-              # Shared filesystem directories (protos: virtiofs | 9p)
-              # Share directories from host (source/socket) -> VM (mountPoint)
-              # Pass logs from VM -> host
               {
                 proto = "virtiofs";
                 tag = "journal";
@@ -146,13 +156,17 @@
                 mountPoint = "/home/${user}/Public";
               }
             ];
-            socket = "${config.networking.hostName}.sock"; # Control socket for Hypervisor so MicroVM can be shutdown cleanly.
-            storeOnDisk = false; # Enables store on boot squashfs even in presence of share with host's /nix/store
+            # Control socket for Hypervisor so MicroVM can be shutdown cleanly.
+            socket = "${config.networking.hostName}.sock";
+
+            # Enables store on boot squashfs even in presence of share with host's /nix/store
+            storeOnDisk = false;
+
             vcpu = 4; # Number of virtual CPU cores
             vsock.cid = 0; # Virtual Machine address. Setting it enables `AF_VSOCK`. Reserved: 0=hypervisor, 1=loopback, 2=host
+            # Block device images
             volumes = [
               {
-                # Block device images
                 image = ""; # Path to disk image on the host
                 mountPoint = "/nix/.rw-store"; # Where to mount the volume inside the container.
                 size = 1024; # Volume size if created automatically
@@ -160,7 +174,9 @@
                 fsType = "ext4"; # Filesystem for automatic creation & mounting.
               }
             ];
-            writableStoreOverlay = "/nix/.rw-store"; # Optional string of the path where all writes to /nix/store should go to.
+
+            # Optional string of the path where all writes to /nix/store should go to.
+            writableStoreOverlay = "/nix/.rw-store";
           };
         };
       };
@@ -188,18 +204,16 @@
     hydraHost = "https://hydra.${config.networking.domain}";
     binaryCacheHost = "https://nix-cache.${config.networking.domain}";
   in [
+    # Provide a manual updating script that fetches the latest
+    # updated+built system from Hydra
     (
-      # Provide a manual updating script that fetches the latest
-      # updated+built system from Hydra
       pkgs.writeScriptBin "update-microvm" ''
         #! ${pkgs.runtimeShell} -e
-
         if [ $# -lt 1 ]; then
           NAMES="$(ls -1 /var/lib/microvms)"
         else
           NAMES="$@"
         fi
-
         for NAME in $NAMES; do
           echo MicroVM $NAME
           cd ${config.microvms.stateDir}/$NAME
@@ -207,7 +221,6 @@
           if [ "$(cat flake)" = "git+${git.host}/${git.owner}/${git.repo}?ref=${git.ref}" ]; then
             NEW=$(curl -sLH "Accept: application/json" ${hydraHost}/job/${git.owner}/${git.repo}/$NAME/latest | ${pkgs.jq}/bin/jq -er .buildoutputs.out.path)
             nix copy --from ${binaryCacheHost} $NEW
-
             if [ -e booted ]; then
               nix store diff-closures $(readlink booted) $NEW
             elif [ -e current ]; then
@@ -216,7 +229,6 @@
             else
               echo "NOT BOOTED?"
             fi
-
             CHANGED=no
             if ! [ -e current ]; then
               ln -s $NEW current
@@ -229,7 +241,6 @@
               CHANGED=yes
             fi
           fi
-
           if [ "$CHANGED" = "yes" ]; then
             systemctl restart microvm@$NAME
           fi

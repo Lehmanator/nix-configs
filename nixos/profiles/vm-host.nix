@@ -1,22 +1,28 @@
-{ inputs, config, lib, pkgs, ... }:
+{
+  inputs,
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 #let
 #  uuid = "6a1eb126-267f-11ee-a91c-075c79e9269a";
 #in
 {
   # https://nixos.wiki/wiki/NixOps/Virtualization
   imports = [
-    #./integration.nix
-    #./hyperv.nix
-    #./xen.nix
+    # ./integration.nix
+    # ./hyperv.nix
+    # ./xen.nix
   ];
 
   # --- Hypervisors ---
   # Hyper-V, Xen, KVM
   # TODO: Configure Xen
-  #virtualisation.hypervGuest = {
-  #  enable = true;
-  #  videoMode = "1152x864";
-  #};
+  # virtualisation.hypervGuest = {
+  #   enable = true;
+  #   videoMode = "1152x864";
+  # };
 
   # --- Guest Integration ---
   environment.systemPackages = [
@@ -27,14 +33,17 @@
     pkgs.spice
     pkgs.spice-protocol
     pkgs.spice-gtk
-
-    pkgs.python311Packages.guestfs
+    pkgs.python3Packages.guestfs
   ];
-  services.spice-vdagentd.enable = true; # Guest-only?
-  services.spice-webdavd.enable =
-    true; # Share files between host & guest via WebDAV
-  virtualisation.spiceUSBRedirection.enable =
-    true; # USB device access in guest VM
+
+  # Guest-only?
+  services.spice-vdagentd.enable = true;
+
+  # Share files between host & guest via WebDAV
+  services.spice-webdavd.enable = true;
+
+  # USB device access in guest VM
+  virtualisation.spiceUSBRedirection.enable = true;
 
   #virtualisation.sharedDirectories = {   # nixos-rebuild says this option doesnt exist
   #  windows   = { source = "/mnt/share/windows";   target = "C:/host-share/windows";   };

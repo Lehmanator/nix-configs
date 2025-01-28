@@ -1,5 +1,5 @@
 {user, ...}: let
-  root = true;
+  root = false;
 in {
   virtualisation.libvirtd = {
     enable = true;
@@ -23,10 +23,7 @@ in {
   };
 
   programs.virt-manager.enable = true;
-  users.users.${user}.extraGroups =
-    if root
-    then ["qemu-libvirtd" "libvirtd"]
-    else ["libvirtd"];
+  users.users.${user}.extraGroups = ["libvirtd" "qemu-libvirtd"];
 
   # --- QEMU / KVM ---
   # --- User Session ---
