@@ -235,6 +235,8 @@
 
   users.users.${user}.extraGroups = ["network"];
 
+  # Add ~/.local/bin  to users' $PATH
+  environment.localBinInPath = true;
   # Unix ODBC drivers to register in /etc/odbcinst.ini
   environment.unixODBCDrivers = [pkgs.unixODBCDrivers.sqlite pkgs.unixODBCDrivers.psql];
   environment.wordlist.enable = true;
