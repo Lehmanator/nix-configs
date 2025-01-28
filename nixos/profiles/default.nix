@@ -235,47 +235,39 @@
 
   users.users.${user}.extraGroups = ["network"];
 
-  # Add ~/.local/bin  to users' $PATH
-  environment.localBinInPath = true;
-  # Unix ODBC drivers to register in /etc/odbcinst.ini
-  environment.unixODBCDrivers = [pkgs.unixODBCDrivers.sqlite pkgs.unixODBCDrivers.psql];
-  environment.wordlist.enable = true;
-  environment.systemPackages = [
-    pkgs.systemctl-tui
-    # Package to get CLI clients to connect to ODBC databases.
-    pkgs.unixODBC
+  environment = {
+    # Symlink our repo to /etc/nixos, for shorter nixos-rebuild command
+    etc."nixos".source = inputs.self.outPath;
 
-    # TODO: Move most of these to home-manager profile (default user?)
-    pkgs.bat
-    pkgs.eza
-    pkgs.gcc
-    pkgs.lsd
-    pkgs.tealdeer
-    pkgs.gnumake
-    pkgs.lynis
-  ];
+    # Add ~/.local/bin  to users' $PATH
+    localBinInPath = true;
+
+    # Unix ODBC drivers to register in /etc/odbcinst.ini
+    unixODBCDrivers = [pkgs.unixODBCDrivers.sqlite pkgs.unixODBCDrivers.psql];
+
+    # Enable wordlist
+    wordlist.enable = true;
+
+    # Package to get CLI clients to connect to ODBC databases.
+    systemPackages = [pkgs.unixODBC];
+  };
 
   # TODO: Find nix-related program from old config that was better
   # - manix, comma ?
-  programs.command-not-found.enable = lib.mkDefault false;
-
-  programs.git = {
-    enable = true;
-    package = pkgs.gitFull;
+  programs = {
+    command-not-found.enable = lib.mkDefault false;
+    git.enable = true;
+    less = {
+      enable = true;
+      lessopen = "|${pkgs.lesspipe}/bin/lesspipe.sh %s";
+    };
+    traceroute.enable = true;
+    gnupg = {
+      dirmngr.enable = true;
+      agent.enableExtraSocket = true;
+      agent.enableBrowserSocket = true;
+    };
   };
-  programs.less = {
-    enable = true;
-    lessopen = "|${pkgs.lesspipe}/bin/lesspipe.sh %s";
-  };
-  programs.traceroute.enable = true;
-  programs.gnupg = {
-    dirmngr.enable = true;
-    agent.enableExtraSocket = true;
-    agent.enableBrowserSocket = true;
-  };
-
-  # Symlink our repo to /etc/nixos, for shorter nixos-rebuild command
-  environment.etc."nixos".source = inputs.self.outPath;
 
   # `at` daemon for scheduling commands
   services.atd.enable = true;

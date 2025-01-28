@@ -116,13 +116,18 @@
   };
 
   home.packages = [
-    pkgs.cmatrix # Cool matrix screensaver program
-    pkgs.figlet # Print ASCII art text
-
-    pkgs.ntfs3g
+    pkgs.ntfs3g # Mount NTFS partitions in userspace
 
     # TODO: Also set PKG_CONFIG_PATH="${lib.getExe pkgs.pkg-config}:$XDG_DATA_HOME/nix/profile/lib/pkg-config"
-    pkgs.pkg-config
+    pkgs.pkg-config # Find libraries for linking
+
+    pkgs.cmatrix # Cool matrix screensaver program
+    pkgs.comma # Run any package by prefixing command name with comma
+    pkgs.gcc # Compilers
+    pkgs.gnumake # Make
+    pkgs.figlet # Print ASCII art text
+    pkgs.lynis # System audit CLI
+    pkgs.systemctl-tui # systemd/systemctl TUI
   ];
 
   programs.man.generateCaches = true; # Disabled by default bc slows builds.
