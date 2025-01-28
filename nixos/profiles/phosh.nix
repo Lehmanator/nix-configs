@@ -1,5 +1,10 @@
-{ inputs, config, lib, pkgs, ... }:
 {
+  inputs,
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   # --- Phosh Desktop -----------------------------------------------
   imports = [
     (inputs.self + /nixos/profiles/gtk.nix)
@@ -8,7 +13,7 @@
     (inputs.self + /nixos/profiles/wayland.nix)
   ];
 
-  services.desktopManager.phosh = {
+  services.xserver.desktopManager.phosh = {
     enable = true;
     package = pkgs.phosh;
 
@@ -30,9 +35,10 @@
     };
   };
 
+  services.xserver.desktopManager.gnome.enable = lib.mkDefault false;
+
   environment.systemPackages = [
     pkgs.phosh-mobile-settings
     pkgs.mepo
   ];
-
 }

@@ -1,54 +1,54 @@
-{ inputs
-, config, lib, pkgs
-, user
-, ...
+{
+  inputs,
+  config,
+  lib,
+  pkgs,
+  user,
+  ...
 }: {
   imports = [
-    inputs.agenix.nixosModules.age
     inputs.flake-utils-plus.nixosModules.autoGenFromInputs
-    inputs.home.nixosModules.home-manager
-    inputs.nixvim.nixosModules.nixvim
     inputs.nix-flatpak.nixosModules.nix-flatpak
     inputs.nur.modules.nixos.default
     inputs.scalpel.nixosModules.scalpel
-    inputs.sops-nix.nixosModules.sops
     inputs.srvos.nixosModules.mixins-nix-experimental
     inputs.srvos.nixosModules.mixins-trusted-nix-caches
-    ../../profiles/locale
-    #../../profiles/mobile
-    #../../profiles/nix
-    ../../profiles/shell
-    ../../profiles/users
-    ../../profiles/adb.nix
-    ../../profiles/sshd.nix
+    (inputs.self + /nixos/profiles/adb.nix)
+    (inputs.self + /nixos/profiles/agenix.nix)
+    (inputs.self + /nixos/profiles/bash.nix)
+    (inputs.self + /nixos/profiles/home-manager.nix)
+    (inputs.self + /nixos/profiles/locale-est.nix)
+    (inputs.self + /nixos/profiles/mobile)
+    (inputs.self + /nixos/profiles/nix)
+    (inputs.self + /nixos/profiles/nixvim)
+    (inputs.self + /nixos/profiles/sops.nix)
+    (inputs.self + /nixos/profiles/sshd.nix)
+    (inputs.self + /nixos/profiles/user-primary.nix)
+    (inputs.self + /nixos/profiles/zsh.nix)
   ];
 
-  #home-manager = {
-  #  useGlobalPkgs = true;
-  #  useUserPackages = true;
-  #  verbose = true;
-  #  extraSpecialArgs = { inherit inputs user; };
-  #  sharedModules = [
-  #    inputs.agenix.homeManagerModules.age
-  #    inputs.nix-flatpak.homeManagerModules.nix-flatpak
-  #    inputs.nixvim.homeManagerModules.nixvim
-  #    inputs.nur.modules.homeManager.default
-  #    inputs.sops-nix.homeManagerModules.sops
-  #  ];
-  #  users.${user} = import ../../../hm/users/${user};
-  #};
+  # home-manager = {
+  #   useGlobalPkgs = true;
+  #   useUserPackages = true;
+  #   verbose = true;
+  #   extraSpecialArgs = { inherit inputs user; };
+  #   sharedModules = [
+  #     inputs.nix-flatpak.homeManagerModules.nix-flatpak
+  #     inputs.nixvim.homeManagerModules.nixvim
+  #     inputs.nur.modules.homeManager.default
+  #   ];
+  #   users.${user} = import (inputs.self + /hm/users/${user});
+  # };
 
   sops = {
-    defaultSopsFile = ./secrets/default.yaml;
-    age.sshKeyPaths =
-      map (k: k.path) (builtins.filter (k: k.type == "ed25519")
-        config.services.openssh.hostKeys);
+    defaultSopsFile = inputs.self + /nixos/hosts/${config.networking.hostName}/secrets/default.yaml;
+    age.sshKeyPaths = map (k: k.path) (builtins.filter (k: k.type == "ed25519") config.services.openssh.hostKeys);
     secrets = {github-token = {};};
   };
 
   services.flatpak = {
     enable = true;
-    #packages = [];
+    # packages = [];
     overrides = {
       global.filesystems = lib.mkDefault [
         "xdg-config:gtk-4.0:ro"
@@ -88,7 +88,7 @@
   };
 
   services.openssh.enable = true;
-  #services.pipewire.enable = false;
+  # services.pipewire.enable = false;
   sound.enable = true;
   hardware = {
     pulseaudio.enable = true;
@@ -103,7 +103,7 @@
     hostPlatform = "aarch64-linux";
     overlays = [inputs.fenix.overlays.default inputs.nur.overlays.default];
   };
-  #nix.registry.self = inputs.self.outPath;
+  # nix.registry.self = inputs.self.outPath;
   environment.etc."nix/inputs/self".source = inputs.self.outPath;
 
   # Reset IM_MODULE to fix on-screen keyboard

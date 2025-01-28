@@ -1,18 +1,21 @@
-{ inputs
-, config
-, lib
-, pkgs
-, user
-, ...
-}:
 {
-  imports = [ ];
-  network.hostId = "aa38a832"; # 32-bit host ID in hex. Required by ZFS. Run: $ head -c 8 /etc/machine-id
+  config,
+  lib,
+  pkgs,
+  user,
+  ...
+}: {
+  # 32-bit host ID in hex.
+  # Required by ZFS.
+  # Run: $ head -c 8 /etc/machine-id
+  # NOTE: set in `nixos/profiles/default.nix`
+  # networking.hostId = "aa38a832";
+
   boot = {
     loader.grub.copyKernels = true; # Similar for systemd-boot ?
-    initrd.supportedFilesystems = [ "zfs" ];
+    initrd.supportedFilesystems = ["zfs"];
     #kernelParams = ["nohibernate"];
-    supportedFilesystems = [ "zfs" ];
+    supportedFilesystems = ["zfs"];
 
     zfs = {
       allowHibernation = true;
@@ -59,7 +62,7 @@
     autoScrub = {
       enable = true; # Enable periodic scrubbing of ZFS pools
       interval = "Sun, 02:00";
-      pools = [ "tank" ];
+      pools = ["tank"];
     };
     autoSnapshot = {
       enable = true; # Number of <period>  auto-snapshots that you wish to keep. Default=4
@@ -74,5 +77,4 @@
     trim.enable = true;
     trim.interval = "weekly";
   };
-
 }

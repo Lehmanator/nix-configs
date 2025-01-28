@@ -1,5 +1,11 @@
-{ config, lib, pkgs, device ? "/dev/nvme0n1", ... }:
 {
+  config,
+  lib,
+  pkgs,
+  device ? "/dev/nvme0n1",
+  ...
+}: {
+  disko.memSize = 64 * 1024;
   disko.devices = {
     disk.main = {
       inherit device;
@@ -25,7 +31,7 @@
           end = "100%";
           content = {
             type = "luks";
-            name = "nixos";  # device-mapper name when decrypted
+            name = "nixos"; # device-mapper name when decrypted
             extraOpenArgs = {};
             # NOTE: Secret must be on disk at partition time.
             #  sops-nix relies on activationScripts to decrypt secrets to /run/secrets
@@ -33,9 +39,9 @@
             #  We must find some other mechanism to decrypt the secrets or activate the
             #  configuration before partitioning.
             # passwordFile = "/tmp/secret.key";
-            passwordFile = config.sops.secrets.luks-password.path;
+            passwordFile = config.sops.secrets.luks-password-system.path;
             additionalKeyFiles = [
-              config.sops.secrets.luks-password.path
+              config.sops.secrets.luks-password-system.path
               "/tmp/additionalSecret.key"
             ];
 
@@ -43,7 +49,7 @@
               # if you want to use the key for interactive login be sure there is no trailing newline
               # example:  `echo -n "password" > /tmp/secret.key`
               # keyFile = "/tmp/secret.key";
-              keyFile = config.sops.secrets.luks-password.path;
+              keyFile = config.sops.secrets.luks-password-system.path;
               allowDiscards = true;
             };
 
@@ -62,7 +68,7 @@
           size = "100%";
           content = {
             type = "btrfs";
-            extraArgs = ["-f"];  # Override existing partition
+            extraArgs = ["-f"]; # Override existing partition
             subvolumes = {
               home = {
                 mountOptions = ["compress=zstd"];
