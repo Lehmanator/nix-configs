@@ -41,6 +41,7 @@
     ./manix.nix
     ./media.nix
     ./navi.nix
+    ./nh.nix
     ./ollama.nix
     ./playerctld.nix
     ./readline.nix

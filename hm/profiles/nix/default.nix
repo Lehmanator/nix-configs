@@ -4,8 +4,7 @@
   lib,
   pkgs,
   ...
-}:
-{
+}: {
   imports = [
     ./access-tokens.nix
     ./binary-caches.nix
@@ -17,27 +16,27 @@
 
   nix = {
     package = lib.mkDefault pkgs.lix;
-    registry = osConfig.nix.registry or { };
-    nixPath = [
-      "nixpkgs=/etc/nix/inputs/nixpkgs"
-      "nixpkgs-unstable=/etc/nix/inputs/nixpkgs-unstable"
-      "nixpkgs-stable=/etc/nix/inputs/nixpkgs-stable"
-      "nixos=/etc/nix/inputs/nixos"
-      "nixos-unstable=/etc/nix/inputs/nixos-unstable"
-      "nixos-stable=/etc/nix/inputs/nixos-stable"
-      "home-manager=/etc/nix/inputs/home"
-      "home=/etc/nix/inputs/home"
-      "self=/etc/nix/inputs/self"
-    ] ++ (osConfig.nix.nixPath or [ ]);
+    registry = osConfig.nix.registry or {};
+    nixPath =
+      [
+        "nixpkgs=/etc/nix/inputs/nixpkgs"
+        "nixpkgs-unstable=/etc/nix/inputs/nixpkgs-unstable"
+        "nixpkgs-stable=/etc/nix/inputs/nixpkgs-stable"
+        "nixos=/etc/nix/inputs/nixos"
+        "nixos-unstable=/etc/nix/inputs/nixos-unstable"
+        "nixos-stable=/etc/nix/inputs/nixos-stable"
+        "home-manager=/etc/nix/inputs/home"
+        "home=/etc/nix/inputs/home"
+        "self=/etc/nix/inputs/self"
+      ]
+      ++ (osConfig.nix.nixPath or []);
   };
 
   home = {
-    extraOutputsToInstall = [ "bin" ]; # [ "doc" "info" "devdoc" "dev" "bin" ];
     sessionVariables.NIX_BIN_DIR = "${config.nix.package}/bin";
-    shellAliases =
-      let
-        clip-bin = "${pkgs.wl-clipboard}/bin/wl-paste";
-      in
+    shellAliases = let
+      clip-bin = "${pkgs.wl-clipboard}/bin/wl-paste";
+    in
       #   mkAliasPrefix = pre: lib.lists.foldr (item: acc: acc // { "${item}" = "${pre} ${item}"; }) {};
       #   baseCommands = mkAliasPrefix "nix" [
       #     "build" "bundle" "derivation" "develop" "doctor"
@@ -65,7 +64,6 @@
         print-dev-env = "nix print-dev-env";
         profile = "nix profile";
         run = "nix run";
-        search = "nix search";
         shell = "nix shell";
         store = "nix store";
         realisation = "nix realisation";
