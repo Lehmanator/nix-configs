@@ -220,6 +220,38 @@
         "type": "github"
       }
     },
+    "bats-assert": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1692829535,
+        "narHash": "sha256-oDqhUQ6Xg7a3xx537SWLGRzqP3oKKeyY4UYGCdz9z/Y=",
+        "owner": "bats-core",
+        "repo": "bats-assert",
+        "rev": "e2d855bc78619ee15b0c702b5c30fb074101159f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "bats-core",
+        "repo": "bats-assert",
+        "type": "github"
+      }
+    },
+    "bats-support": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1693050811,
+        "narHash": "sha256-PxJaH16+QrsfZqtkWVt5K6TwJB5gjIXnbGo+MB84WIU=",
+        "owner": "bats-core",
+        "repo": "bats-support",
+        "rev": "9bf10e876dd6b624fe44423f0b35e064225f7556",
+        "type": "github"
+      },
+      "original": {
+        "owner": "bats-core",
+        "repo": "bats-support",
+        "type": "github"
+      }
+    },
     "bird": {
       "inputs": {
         "nixpkgs": "nixpkgs_2",
@@ -1617,6 +1649,23 @@
         "owner": "hercules-ci",
         "repo": "flake-parts",
         "type": "github"
+      }
+    },
+    "flake-parts_19": {
+      "inputs": {
+        "nixpkgs-lib": "nixpkgs-lib_5"
+      },
+      "locked": {
+        "lastModified": 1727826117,
+        "narHash": "sha256-K5ZLCyfO/Zj9mPFldf3iwS6oZStJcU4tSpiXTMYaaL0=",
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "rev": "3d04084d54bedc3d6b8b736c70ef449225c361b1",
+        "type": "github"
+      },
+      "original": {
+        "id": "flake-parts",
+        "type": "indirect"
       }
     },
     "flake-parts_2": {
@@ -4922,6 +4971,18 @@
         "type": "github"
       }
     },
+    "nixpkgs-lib_5": {
+      "locked": {
+        "lastModified": 1727825735,
+        "narHash": "sha256-0xHYkMkeLVQAMa7gvkddbPqpxph+hDzdu1XdGPJR+Os=",
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs/archive/fb192fec7cc7a4c26d51779e9bab07ce6fa5597a.tar.gz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs/archive/fb192fec7cc7a4c26d51779e9bab07ce6fa5597a.tar.gz"
+      }
+    },
     "nixpkgs-master": {
       "locked": {
         "lastModified": 1738084804,
@@ -5242,6 +5303,21 @@
       "original": {
         "owner": "nixos",
         "ref": "release-23.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_21": {
+      "locked": {
+        "lastModified": 1728956102,
+        "narHash": "sha256-J8zo+UYNjHATsxn2/ROl8iaji2RgLm+sG7b3VcD36YM=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "3d85bae2431f20ab1ac5cf14d03d314dffe629af",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -5916,6 +5992,7 @@
         "std": "std_2",
         "stylix": "stylix",
         "system-manager": "system-manager",
+        "terranix": "terranix",
         "tf-providers": "tf-providers",
         "treefmt": "treefmt_2",
         "unstable": [
@@ -6791,6 +6868,21 @@
         "type": "github"
       }
     },
+    "systems_24": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
     "systems_3": {
       "locked": {
         "lastModified": 1681028828,
@@ -6892,6 +6984,44 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "terranix": {
+      "inputs": {
+        "bats-assert": "bats-assert",
+        "bats-support": "bats-support",
+        "flake-parts": "flake-parts_19",
+        "nixpkgs": "nixpkgs_21",
+        "systems": "systems_24",
+        "terranix-examples": "terranix-examples"
+      },
+      "locked": {
+        "lastModified": 1736894800,
+        "narHash": "sha256-Wt3MohH6lx3dQnpYdkq1r3kopWaKVCiKesAzI10Jek0=",
+        "owner": "terranix",
+        "repo": "terranix",
+        "rev": "cd369149ebe821ed81f58410f889e369820eb1a4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "terranix",
+        "repo": "terranix",
+        "type": "github"
+      }
+    },
+    "terranix-examples": {
+      "locked": {
+        "lastModified": 1637156952,
+        "narHash": "sha256-KqvXIe1yiKOEP9BRYqNQN+LOWPCsWojh0WjEgv5jfEI=",
+        "owner": "terranix",
+        "repo": "terranix-examples",
+        "rev": "921680efb8af0f332d8ad73718d53907f9483e24",
+        "type": "github"
+      },
+      "original": {
+        "owner": "terranix",
+        "repo": "terranix-examples",
         "type": "github"
       }
     },
